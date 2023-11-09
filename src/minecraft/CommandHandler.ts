@@ -14,7 +14,6 @@ export class CommandHandler {
     this.prefix = minecraftConfig.bot.prefix;
     this.commands = new Collection();
 
-    // todo fix
     (async () => {
       const commandFiles = readdirSync('./src/minecraft/commands');
       for (const file of commandFiles) {

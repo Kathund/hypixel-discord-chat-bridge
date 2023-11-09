@@ -6,9 +6,7 @@ import { readdirSync } from 'fs';
 export const data = new SlashCommandBuilder().setName('info').setDescription('Shows information about the bot.');
 
 export const execute = async (interaction: ChatInputCommandInteraction) => {
-  const commands = interaction.client.commands;
-
-  const { discordCommands, minecraftCommands } = getCommands(commands);
+  const { discordCommands, minecraftCommands } = await getCommands(interaction);
 
   const infoEmbed = new EmbedBuilder()
     .setColor(39423)
@@ -16,7 +14,7 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
     .addFields(
       {
         name: '**Minecraft Commands**: ',
-        value: `${minecraftCommands}`,
+        value: `${minecraftCommands.join('\n')}`,
         inline: true,
       },
       {
@@ -61,27 +59,26 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
   await interaction.followUp({ embeds: [infoEmbed] });
 };
 
-function getCommands(commands: any) {
-  const discordCommands = commands
-    .map(({ name, options }: any) => {
-      const optionsString = options
-        ?.map(({ name, required }: any) => (required ? ` (${name})` : ` [${name}]`))
+async function getCommands(interaction: ChatInputCommandInteraction) {
+  const discordCommands = interaction.client.commands
+    .map((command) => {
+      const optionsString = command.data.options
+        ?.map(({ name, required }: { name: string; required: boolean }) => (required ? ` (${name})` : ` [${name}]`))
         .join('');
-      return `- \`${name}${optionsString ? optionsString : ''}\`\n`;
+      return `- \`${command.data.name}${optionsString ? optionsString : ''}\`\n`;
     })
     .join('');
 
-  const minecraftCommands = readdirSync('./src/minecraft/commands')
-    .filter((file) => file.endsWith('.js'))
-    .map((file) => {
-      const command = new (require(`../../minecraft/commands/${file}`))();
+  const minecraftCommands = await Promise.all(
+    readdirSync('./src/minecraft/commands').map(async (file) => {
+      const command = new (await import(`../../minecraft/commands/${file}`)).default(minecraft);
       const optionsString = command.options
-        ?.map(({ name, required }: any) => (required ? ` (${name})` : ` [${name}]`))
+        ?.map(({ name, required }: { name: string; required: boolean }) => (required ? ` (${name})` : ` [${name}]`))
         .join('');
 
-      return `- \`${command.name}${optionsString}\`\n`;
+      return `- \`${command.name}${optionsString}\``;
     })
-    .join('');
+  );
 
   return { discordCommands, minecraftCommands };
 }

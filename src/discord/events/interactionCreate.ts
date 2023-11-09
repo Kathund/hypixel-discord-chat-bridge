@@ -1,5 +1,5 @@
 import { HypixelDiscordChatBridgeError } from '../../contracts/errorHandler';
-import { EmbedBuilder, Interaction, TextChannel, TextChannelResolvable } from 'discord.js';
+import { EmbedBuilder, Interaction, TextChannel } from 'discord.js';
 import { discordMessage } from '../../Logger';
 import { discord } from '../../../config.json';
 

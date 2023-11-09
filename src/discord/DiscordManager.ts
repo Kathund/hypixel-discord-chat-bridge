@@ -42,7 +42,7 @@ export class DiscordManager extends CommunicationBridge {
     });
 
     const eventsPath = join(__dirname, 'events');
-    const eventFiles = readdirSync(eventsPath).filter((file) => file.endsWith('.js'));
+    const eventFiles = readdirSync(eventsPath);
 
     for (const file of eventFiles) {
       const filePath = join(eventsPath, file);

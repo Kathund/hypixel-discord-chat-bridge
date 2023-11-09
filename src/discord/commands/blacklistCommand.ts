@@ -5,21 +5,15 @@ import { discord } from '../../../config.json';
 export const data = new SlashCommandBuilder()
   .setName('blacklist')
   .setDescription('Blacklist a user from the bot.')
-  .addSubcommand((subcommand) =>
-    subcommand
-      .setName('add')
-      .setDescription('Add a user to the blacklist.')
-      .addStringOption((option) =>
-        option.setName('name').setDescription('The name of the user to blacklist.').setRequired(true)
-      )
+  .addStringOption((option) =>
+    option
+      .setName('arg')
+      .setDescription('Argument to blacklist')
+      .setRequired(true)
+      .addChoices({ name: 'add', value: 'add' }, { name: 'remove', value: 'remove' })
   )
-  .addSubcommand((subcommand) =>
-    subcommand
-      .setName('remove')
-      .setDescription('Remove a user from the blacklist.')
-      .addStringOption((option) =>
-        option.setName('name').setDescription('The name of the user to remove from the blacklist.').setRequired(true)
-      )
+  .addStringOption((option) =>
+    option.setName('name').setDescription('The name of the user to remove from the blacklist.').setRequired(true)
   );
 
 export const execute = async (interaction: ChatInputCommandInteraction) => {
@@ -32,7 +26,7 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
     throw new HypixelDiscordChatBridgeError('You do not have permission to use this command', interaction.commandName);
   }
 
-  const arg = interaction.options.getSubcommand();
+  const arg = interaction.options.getString('arg');
   const name = interaction.options.getString('name');
 
   global.bot.chat(`/ignore ${arg} ${name}`);

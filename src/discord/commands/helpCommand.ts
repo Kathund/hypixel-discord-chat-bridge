@@ -1,4 +1,9 @@
-import { ChatInputCommandInteraction, EmbedBuilder, SlashCommandBuilder } from 'discord.js';
+import {
+  ChatInputCommandInteraction,
+  EmbedBuilder,
+  SlashCommandBuilder,
+  SlashCommandSubcommandBuilder,
+} from 'discord.js';
 import { HypixelDiscordChatBridgeError } from '../../contracts/errorHandler';
 import { minecraft } from '../../../config.json';
 import { readdirSync } from 'fs';
@@ -15,26 +20,24 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 
   if (commandName === undefined) {
     const discordCommands = interaction.client.commands
-      .map(({ name, options }: any) => {
-        const optionsString = options
-          ?.map(({ name, required }: any) => (required ? ` (${name})` : ` [${name}]`))
+      .map((command) => {
+        const optionsString = command.data.options
+          ?.map(({ name, required }: { name: string; required: boolean }) => (required ? ` (${name})` : ` [${name}]`))
           .join('');
-        return `- \`${name}${optionsString ? optionsString : ''}\`\n`;
+        return `- \`${command.data.name}${optionsString ? optionsString : ''}\`\n`;
       })
       .join('');
 
-    // todo fix
-    const minecraftCommands = readdirSync('./src/minecraft/commands')
-      .filter((file) => file.endsWith('.js'))
-      .map((file) => {
-        const command = new (require(`../../minecraft/commands/${file}`))();
+    const minecraftCommands = await Promise.all(
+      readdirSync('./src/minecraft/commands').map(async (file) => {
+        const command = new (await import(`../../minecraft/commands/${file}`)).default(minecraft);
         const optionsString = command.options
-          ?.map(({ name, required }: any) => (required ? ` (${name})` : ` [${name}]`))
+          ?.map(({ name, required }: { name: string; required: boolean }) => (required ? ` (${name})` : ` [${name}]`))
           .join('');
 
-        return `- \`${command.name}${optionsString}\`\n`;
+        return `- \`${command.name}${optionsString}\``;
       })
-      .join('');
+    );
 
     const helpMenu = new EmbedBuilder()
       .setColor(39423)
@@ -43,7 +46,7 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
       .addFields(
         {
           name: '**Minecraft**: ',
-          value: `${minecraftCommands}`,
+          value: `${minecraftCommands.join('\n')}`,
           inline: true,
         },
         {
@@ -59,9 +62,8 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 
     await interaction.followUp({ embeds: [helpMenu] });
   } else {
-    // todo fix this
+    // TODO fix this
     const minecraftCommand = readdirSync('./src/minecraft/commands')
-      .filter((file) => file.endsWith('.js'))
       .map(async (file) => new (await import(`../../minecraft/commands/${file}`))())
       .find((command: any) => command.name === commandName || command.aliases.includes(commandName));
 
