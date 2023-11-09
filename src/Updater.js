@@ -1,14 +1,14 @@
-import { updateMessage } from "./Logger.js";
-import { other } from "../config.json";
-import { schedule } from "node-cron";
-import { exec } from "child_process";
+import { updateMessage } from './Logger.js';
+import { other } from '../config.json';
+import { schedule } from 'node-cron';
+import { exec } from 'child_process';
 
 function updateCode() {
   if (other.autoUpdater === false) {
     return;
   }
 
-  exec("git pull", (error, stdout, stderr) => {
+  exec('git pull', (error, stdout, stderr) => {
     if (error) {
       console.error(`Git pull error: ${error}`);
       return;
@@ -16,7 +16,7 @@ function updateCode() {
 
     // console.log(`Git pull output: ${stdout}`);
 
-    if (stdout === "Already up to date.\n") {
+    if (stdout === 'Already up to date.\n') {
       return;
     }
 

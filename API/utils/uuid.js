@@ -1,6 +1,6 @@
 //CREDIT: https://github.com/Senither/hypixel-skyblock-facade (Modified)
 function isUuid(uuid) {
-  if (uuid === undefined || uuid === null || typeof uuid !== "string") {
+  if (uuid === undefined || uuid === null || typeof uuid !== 'string') {
     return false;
   }
 

@@ -1,6 +1,6 @@
 /* eslint-disable no-throw-literal */
-import { minecraft } from "../../config.json";
-import axios from "axios";
+import { minecraft } from '../../config.json';
+import axios from 'axios';
 
 export const getMuseum = async (profileID, uuid) => {
   try {
@@ -9,7 +9,7 @@ export const getMuseum = async (profileID, uuid) => {
     );
 
     if (data === undefined || data.success === false) {
-      throw "Request to Hypixel API failed. Please try again!";
+      throw 'Request to Hypixel API failed. Please try again!';
     }
 
     if (data.members === null || Object.keys(data.members).length === 0) {

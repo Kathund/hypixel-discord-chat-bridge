@@ -1,19 +1,19 @@
-import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
-import { minecraftCommand } from "../../contracts/minecraftCommand.js";
-import { formatUsername } from "../../contracts/helperFunctions.js";
-import { getSkills } from "../../../API/stats/skills.js";
+import { getLatestProfile } from '../../../API/functions/getLatestProfile.js';
+import { minecraftCommand } from '../../contracts/minecraftCommand.js';
+import { formatUsername } from '../../contracts/helperFunctions.js';
+import { getSkills } from '../../../API/stats/skills.js';
 
 export class SkillsCommand extends minecraftCommand {
   constructor(minecraft) {
     super(minecraft);
 
-    this.name = "skills";
-    this.aliases = ["skill", "sa"];
-    this.description = "Skills and Skill Average of specified user.";
+    this.name = 'skills';
+    this.aliases = ['skill', 'sa'];
+    this.description = 'Skills and Skill Average of specified user.';
     this.options = [
       {
-        name: "username",
-        description: "Minecraft username",
+        name: 'username',
+        description: 'Minecraft username',
         required: false,
       },
     ];
@@ -31,7 +31,7 @@ export class SkillsCommand extends minecraftCommand {
 
       const skillAverage = (
         Object.keys(profile)
-          .filter((skill) => !["runecrafting", "social"].includes(skill))
+          .filter((skill) => !['runecrafting', 'social'].includes(skill))
           .map((skill) => profile[skill].levelWithProgress || 0)
           .reduce((a, b) => a + b, 0) /
         (Object.keys(profile).length - 2)
@@ -43,7 +43,7 @@ export class SkillsCommand extends minecraftCommand {
           const skillName = skill[0].toUpperCase() + skill[1];
           return `${level}${skillName}`;
         })
-        .join(", ");
+        .join(', ');
 
       this.send(`/gc ${username}'s Skill Average: ${skillAverage ?? 0} (${skillsFormatted})`);
     } catch (error) {

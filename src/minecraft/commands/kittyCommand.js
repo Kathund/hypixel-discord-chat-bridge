@@ -1,14 +1,14 @@
-import { minecraftCommand } from "../../contracts/minecraftCommand.js";
-import { uploadImage } from "../../contracts/API/imgurAPI.js";
-import axios from "axios";
+import { minecraftCommand } from '../../contracts/minecraftCommand.js';
+import { uploadImage } from '../../contracts/API/imgurAPI.js';
+import axios from 'axios';
 
 export class KittyCommand extends minecraftCommand {
   constructor(minecraft) {
     super(minecraft);
 
-    this.name = "kitty";
-    this.aliases = ["cat", "cutecat"];
-    this.description = "Random image of cute cat.";
+    this.name = 'kitty';
+    this.aliases = ['cat', 'cutecat'];
+    this.description = 'Random image of cute cat.';
     this.options = [];
   }
 
@@ -18,7 +18,7 @@ export class KittyCommand extends minecraftCommand {
 
       if (data === undefined) {
         // eslint-disable-next-line no-throw-literal
-        throw "An error occurred while fetching the image. Please try again later.";
+        throw 'An error occurred while fetching the image. Please try again later.';
       }
 
       const link = data[0].url;
@@ -26,7 +26,7 @@ export class KittyCommand extends minecraftCommand {
 
       this.send(`/gc Cute Cat: ${upload.data.link}`);
     } catch (error) {
-      this.send(`/gc [ERROR] ${error ?? "Something went wrong.."}`);
+      this.send(`/gc [ERROR] ${error ?? 'Something went wrong..'}`);
     }
   }
 }

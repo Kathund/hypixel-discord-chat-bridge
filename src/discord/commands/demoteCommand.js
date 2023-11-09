@@ -1,13 +1,13 @@
-import HypixelDiscordChatBridgeError from "../../contracts/errorHandler.js";
-import { discord } from "../../../config.json";
-import { EmbedBuilder } from "discord.js";
+import HypixelDiscordChatBridgeError from '../../contracts/errorHandler.js';
+import { discord } from '../../../config.json';
+import { EmbedBuilder } from 'discord.js';
 
-export const name = "demote";
-export const description = "Demotes the given user by one guild rank.";
+export const name = 'demote';
+export const description = 'Demotes the given user by one guild rank.';
 export const options = [
   {
-    name: "name",
-    description: "Minecraft Username",
+    name: 'name',
+    description: 'Minecraft Username',
     type: 3,
     required: true,
   },
@@ -18,19 +18,19 @@ export async function execute(interaction) {
     discord.commands.checkPerms === true &&
     !(user.roles.cache.has(discord.commands.commandRole) || discord.commands.users.includes(user.id))
   ) {
-    throw new HypixelDiscordChatBridgeError("You do not have permission to use this command.");
+    throw new HypixelDiscordChatBridgeError('You do not have permission to use this command.');
   }
 
-  const name = interaction.options.getString("name");
+  const name = interaction.options.getString('name');
   bot.chat(`/g demote ${name}`);
 
   const embed = new EmbedBuilder()
     .setColor(5763719)
-    .setAuthor({ name: "Demote" })
+    .setAuthor({ name: 'Demote' })
     .setDescription(`Successfully executed \`/g demote ${name}\``)
     .setFooter({
       text: `by @duckysolucky | /help [command] for more information`,
-      iconURL: "https://imgur.com/tgwQJTX.png",
+      iconURL: 'https://imgur.com/tgwQJTX.png',
     });
 
   await interaction.followUp({

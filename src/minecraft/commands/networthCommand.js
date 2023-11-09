@@ -1,19 +1,19 @@
-import { formatNumber, formatUsername } from "../../contracts/helperFunctions.js";
-import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
-import { minecraftCommand } from "../../contracts/minecraftCommand.js";
-import { getNetworth } from "skyhelper-networth";
+import { formatNumber, formatUsername } from '../../contracts/helperFunctions.js';
+import { getLatestProfile } from '../../../API/functions/getLatestProfile.js';
+import { minecraftCommand } from '../../contracts/minecraftCommand.js';
+import { getNetworth } from 'skyhelper-networth';
 
 export class NetWorthCommand extends minecraftCommand {
   constructor(minecraft) {
     super(minecraft);
 
-    this.name = "networth";
-    this.aliases = ["nw"];
-    this.description = "Networth of specified user.";
+    this.name = 'networth';
+    this.aliases = ['nw'];
+    this.description = 'Networth of specified user.';
     this.options = [
       {
-        name: "username",
-        description: "Minecraft username",
+        name: 'username',
+        description: 'Minecraft username',
         required: false,
       },
     ];
@@ -40,8 +40,8 @@ export class NetWorthCommand extends minecraftCommand {
       const networth = formatNumber(profile.networth);
       const unsoulboundNetworth = formatNumber(profile.unsoulboundNetworth);
       const purse = formatNumber(profile.purse);
-      const bank = profile.bank ? formatNumber(profile.bank) : "N/A";
-      const museum = data.museum ? formatNumber(profile.types.museum?.total ?? 0) : "N/A";
+      const bank = profile.bank ? formatNumber(profile.bank) : 'N/A';
+      const museum = data.museum ? formatNumber(profile.types.museum?.total ?? 0) : 'N/A';
 
       this.send(
         `/gc ${username}'s Networth is ${networth} | Unsoulbound Networth: ${unsoulboundNetworth} | Purse: ${purse} | Bank: ${bank} | Museum: ${museum}`

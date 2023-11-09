@@ -1,23 +1,23 @@
-import { minecraftCommand } from "../../contracts/minecraftCommand.js";
-import { hypixel } from "../../contracts/API/HypixelRebornAPI.js";
-import { formatNumber } from "../../contracts/helperFunctions.js";
+import { minecraftCommand } from '../../contracts/minecraftCommand.js';
+import { hypixel } from '../../contracts/API/HypixelRebornAPI.js';
+import { formatNumber } from '../../contracts/helperFunctions.js';
 
 export class DuelsStatsCommand extends minecraftCommand {
   constructor(minecraft) {
     super(minecraft);
 
-    this.name = "duels";
-    this.aliases = ["duel"];
-    this.description = "Duel stats of specified user.";
+    this.name = 'duels';
+    this.aliases = ['duel'];
+    this.description = 'Duel stats of specified user.';
     this.options = [
       {
-        name: "username",
-        description: "Minecraft username",
+        name: 'username',
+        description: 'Minecraft username',
         required: false,
       },
       {
-        name: "duel",
-        description: "Type of duel",
+        name: 'duel',
+        description: 'Type of duel',
         required: false,
       },
     ];
@@ -26,32 +26,32 @@ export class DuelsStatsCommand extends minecraftCommand {
   async onCommand(username, message) {
     try {
       const duelTypes = [
-        "blitz",
-        "uhc",
-        "parkour",
-        "boxing",
-        "bowspleef",
-        "spleef",
-        "arena",
-        "megawalls",
-        "op",
-        "sumo",
-        "classic",
-        "combo",
-        "bridge",
-        "nodebuff",
-        "bow",
+        'blitz',
+        'uhc',
+        'parkour',
+        'boxing',
+        'bowspleef',
+        'spleef',
+        'arena',
+        'megawalls',
+        'op',
+        'sumo',
+        'classic',
+        'combo',
+        'bridge',
+        'nodebuff',
+        'bow',
       ];
       const arg = this.getArgs(message) ?? [username];
       let duel;
 
-      if (!arg[0] || arg[0].includes("/")) {
+      if (!arg[0] || arg[0].includes('/')) {
         arg[0] = username;
       }
 
       if (duelTypes.includes(arg[0].toLowerCase())) {
         duel = arg[0].toLowerCase();
-        if (arg[1] && !arg[1].includes("/")) {
+        if (arg[1] && !arg[1].includes('/')) {
           username = arg[1];
         }
       } else {
@@ -74,14 +74,14 @@ export class DuelsStatsCommand extends minecraftCommand {
         );
       } else {
         const duelData = player.stats.duels?.[duel]?.[Object.keys(player.stats.duels[duel])[0]];
-        const division = duelData?.division ?? player.stats.duels?.[duel]?.division ?? "Unknown";
+        const division = duelData?.division ?? player.stats.duels?.[duel]?.division ?? 'Unknown';
         const wins = duelData?.wins ?? 0;
         const winstreak = duelData?.winstreak ?? 0;
         const bestWinstreak = duelData?.bestWinstreak ?? 0;
         const WLRatio = duelData?.WLRatio ?? 0;
 
         this.send(
-          `/gc [${duel.toUpperCase() ?? "Unknown"}] [${division}] ${
+          `/gc [${duel.toUpperCase() ?? 'Unknown'}] [${division}] ${
             username ?? 0
           } Wins: ${wins} | CWS: ${winstreak} | BWS: ${bestWinstreak} | WLR: ${WLRatio}`
         );
@@ -90,9 +90,9 @@ export class DuelsStatsCommand extends minecraftCommand {
       this.send(
         `/gc ${error
           .toString()
-          .replace("[hypixel-api-reborn] ", "")
-          .replace("For help join our Discord Server https://discord.gg/NSEBNMM", "")
-          .replace("Error:", "[ERROR]")}`
+          .replace('[hypixel-api-reborn] ', '')
+          .replace('For help join our Discord Server https://discord.gg/NSEBNMM', '')
+          .replace('Error:', '[ERROR]')}`
       );
     }
   }

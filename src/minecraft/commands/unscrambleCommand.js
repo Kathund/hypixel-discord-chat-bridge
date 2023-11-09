@@ -1,7 +1,7 @@
-import { getRandomWord, scrambleWord } from "../constants/words.js";
-import { minecraftCommand } from "../../contracts/minecraftCommand.js";
+import { getRandomWord, scrambleWord } from '../constants/words.js';
+import { minecraftCommand } from '../../contracts/minecraftCommand.js';
 
-const getWord = (message) => message.split(" ").pop();
+const getWord = (message) => message.split(' ').pop();
 
 const cooldowns = new Map();
 
@@ -9,13 +9,13 @@ export class unscrambleCommand extends minecraftCommand {
   constructor(minecraft) {
     super(minecraft);
 
-    this.name = "unscramble";
-    this.aliases = ["unscramble", "unscrambleme", "us"];
-    this.description = "Unscramble the word and type it in chat to win!";
+    this.name = 'unscramble';
+    this.aliases = ['unscramble', 'unscrambleme', 'us'];
+    this.description = 'Unscramble the word and type it in chat to win!';
     this.options = [
       {
-        name: "length",
-        description: "Length of the word to unscramble",
+        name: 'length',
+        description: 'Length of the word to unscramble',
         required: false,
       },
     ];
@@ -49,18 +49,18 @@ export class unscrambleCommand extends minecraftCommand {
             `/gc ${userUsername} guessed it right! Time elapsed: ${(Date.now() - startTime).toLocaleString()}ms!`
           );
 
-          bot.removeListener("chat", listener);
+          bot.removeListener('chat', listener);
           answered = true;
           cooldowns.delete(this.name);
         }
       };
 
-      bot.on("chat", listener);
+      bot.on('chat', listener);
       this.send(`/gc Unscramble the following word: "${scrambledWord}"`);
       const startTime = Date.now();
 
       setTimeout(() => {
-        bot.removeListener("chat", listener);
+        bot.removeListener('chat', listener);
         cooldowns.delete(this.name);
 
         if (answered === false) {
@@ -68,7 +68,7 @@ export class unscrambleCommand extends minecraftCommand {
         }
       }, 30000);
     } catch (error) {
-      this.send(`/gc [ERROR] ${error || "Something went wrong.."}`);
+      this.send(`/gc [ERROR] ${error || 'Something went wrong..'}`);
     }
   }
 }

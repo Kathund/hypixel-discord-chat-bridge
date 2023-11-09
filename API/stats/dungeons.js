@@ -1,5 +1,5 @@
-import { titleCase } from "../constants/functions.js";
-import { calcSkill } from "../constants/skills.js";
+import { titleCase } from '../constants/functions.js';
+import { calcSkill } from '../constants/skills.js';
 
 export const getDungeons = (player, profile) => {
   try {
@@ -11,7 +11,7 @@ export const getDungeons = (player, profile) => {
     const AVAILABLE_FLOORS = Object.keys(dungeons?.dungeon_types.catacombs.times_played || []);
 
     for (const floor in AVAILABLE_FLOORS) {
-      let floorName = "entrance";
+      let floorName = 'entrance';
       if (floor != 0) floorName = `floor_${floor}`;
       floors[floorName] = {
         times_played: catacombs?.times_played ? catacombs?.times_played[floor] || 0 : 0,
@@ -70,14 +70,14 @@ export const getDungeons = (player, profile) => {
       selected_class: titleCase(dungeons?.selected_dungeon_class),
       secrets_found: player?.achievements?.skyblock_treasure_hunter ?? 0,
       classes: {
-        healer: calcSkill("dungeoneering", dungeons?.player_classes.healer.experience || 0),
-        mage: calcSkill("dungeoneering", dungeons?.player_classes.mage.experience || 0),
-        berserk: calcSkill("dungeoneering", dungeons?.player_classes.berserk.experience || 0),
-        archer: calcSkill("dungeoneering", dungeons?.player_classes.archer.experience || 0),
-        tank: calcSkill("dungeoneering", dungeons?.player_classes.tank.experience || 0),
+        healer: calcSkill('dungeoneering', dungeons?.player_classes.healer.experience || 0),
+        mage: calcSkill('dungeoneering', dungeons?.player_classes.mage.experience || 0),
+        berserk: calcSkill('dungeoneering', dungeons?.player_classes.berserk.experience || 0),
+        archer: calcSkill('dungeoneering', dungeons?.player_classes.archer.experience || 0),
+        tank: calcSkill('dungeoneering', dungeons?.player_classes.tank.experience || 0),
       },
       catacombs: {
-        skill: calcSkill("dungeoneering", dungeons?.dungeon_types.catacombs.experience || 0),
+        skill: calcSkill('dungeoneering', dungeons?.dungeon_types.catacombs.experience || 0),
         perks,
         HIGEHST_TIER_COMPLETED,
         floors,
@@ -90,9 +90,9 @@ export const getDungeons = (player, profile) => {
 };
 
 function getScoreName(score) {
-  if (score >= 300) return "S+";
-  if (score >= 270) return "S";
-  if (score >= 240) return "A";
-  if (score >= 175) return "B";
-  return "C";
+  if (score >= 300) return 'S+';
+  if (score >= 270) return 'S';
+  if (score >= 240) return 'A';
+  if (score >= 175) return 'B';
+  return 'C';
 }

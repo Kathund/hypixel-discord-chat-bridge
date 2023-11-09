@@ -1,18 +1,18 @@
-import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
-import { minecraftCommand } from "../../contracts/minecraftCommand.js";
-import { formatUsername } from "../../contracts/helperFunctions.js";
+import { getLatestProfile } from '../../../API/functions/getLatestProfile.js';
+import { minecraftCommand } from '../../contracts/minecraftCommand.js';
+import { formatUsername } from '../../contracts/helperFunctions.js';
 
 export class FairySoulsCommand extends minecraftCommand {
   constructor(minecraft) {
     super(minecraft);
 
-    this.name = "fairysouls";
-    this.aliases = ["fs"];
-    this.description = "Fairy Souls of specified user.";
+    this.name = 'fairysouls';
+    this.aliases = ['fs'];
+    this.description = 'Fairy Souls of specified user.';
     this.options = [
       {
-        name: "username",
-        description: "Minecraft username",
+        name: 'username',
+        description: 'Minecraft username',
         required: false,
       },
     ];
@@ -25,7 +25,7 @@ export class FairySoulsCommand extends minecraftCommand {
       const data = await getLatestProfile(username);
       username = formatUsername(username, data.profileData.game_mode);
 
-      const total = data.profileData.game_mode === "island" ? 5 : 242;
+      const total = data.profileData.game_mode === 'island' ? 5 : 242;
 
       const { fairy_souls_collected } = data.profile;
 

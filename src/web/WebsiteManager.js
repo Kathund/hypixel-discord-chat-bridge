@@ -1,7 +1,7 @@
-import { EndpointHandler } from "./handlers/EndpointHandler.js";
-import { webMessage } from "../Logger.js";
-import { web } from "../../config.json";
-import express, { json } from "express";
+import { EndpointHandler } from './handlers/EndpointHandler.js';
+import { webMessage } from '../Logger.js';
+import { web } from '../../config.json';
+import express, { json } from 'express';
 
 export class WebManager {
   constructor(app) {

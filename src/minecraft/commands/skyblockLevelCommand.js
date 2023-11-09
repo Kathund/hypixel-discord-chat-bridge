@@ -1,18 +1,18 @@
-import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
-import { formatUsername } from "../../contracts/helperFunctions.js";
-import { minecraftCommand } from "../../contracts/minecraftCommand.js";
+import { getLatestProfile } from '../../../API/functions/getLatestProfile.js';
+import { formatUsername } from '../../contracts/helperFunctions.js';
+import { minecraftCommand } from '../../contracts/minecraftCommand.js';
 
 export class CatacombsCommand extends minecraftCommand {
   constructor(minecraft) {
     super(minecraft);
 
-    this.name = "level";
-    this.aliases = ["lvl"];
-    this.description = "Skyblock Level of specified user.";
+    this.name = 'level';
+    this.aliases = ['lvl'];
+    this.description = 'Skyblock Level of specified user.';
     this.options = [
       {
-        name: "username",
-        description: "Minecraft username",
+        name: 'username',
+        description: 'Minecraft username',
         required: false,
       },
     ];

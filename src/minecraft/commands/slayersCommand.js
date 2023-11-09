@@ -1,25 +1,25 @@
-import { formatNumber, formatUsername } from "../../contracts/helperFunctions.js";
-import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
-import { minecraftCommand } from "../../contracts/minecraftCommand.js";
-import { getSlayers } from "../../../API/stats/slayer.js";
-import { capitalize } from "lodash";
+import { formatNumber, formatUsername } from '../../contracts/helperFunctions.js';
+import { getLatestProfile } from '../../../API/functions/getLatestProfile.js';
+import { minecraftCommand } from '../../contracts/minecraftCommand.js';
+import { getSlayers } from '../../../API/stats/slayer.js';
+import { capitalize } from 'lodash';
 
 export class SlayersCommand extends minecraftCommand {
   constructor(minecraft) {
     super(minecraft);
 
-    this.name = "slayer";
-    this.aliases = ["slayers"];
-    this.description = "Slayer of specified user.";
+    this.name = 'slayer';
+    this.aliases = ['slayers'];
+    this.description = 'Slayer of specified user.';
     this.options = [
       {
-        name: "username",
-        description: "Minecraft username",
+        name: 'username',
+        description: 'Minecraft username',
         required: false,
       },
       {
-        name: "slayer",
-        description: "Slayer type",
+        name: 'slayer',
+        description: 'Slayer type',
         required: false,
       },
     ];
@@ -29,18 +29,18 @@ export class SlayersCommand extends minecraftCommand {
     try {
       const args = this.getArgs(message);
       const slayer = [
-        "zombie",
-        "rev",
-        "spider",
-        "tara",
-        "wolf",
-        "sven",
-        "eman",
-        "enderman",
-        "blaze",
-        "demonlord",
-        "vamp",
-        "vampire",
+        'zombie',
+        'rev',
+        'spider',
+        'tara',
+        'wolf',
+        'sven',
+        'eman',
+        'enderman',
+        'blaze',
+        'demonlord',
+        'vamp',
+        'vampire',
       ];
 
       const slayerType = slayer.includes(args[1]) ? args[1] : null;
@@ -62,7 +62,7 @@ export class SlayersCommand extends minecraftCommand {
         const slayer = Object.keys(profile).reduce(
           (acc, slayer) =>
             `${acc} | ${capitalize(slayer)}: ${profile[slayer].level} (${formatNumber(profile[slayer].xp)})`,
-          ""
+          ''
         );
         this.send(`/gc ${username}'s Slayer: ${slayer.slice(3)}`);
       }

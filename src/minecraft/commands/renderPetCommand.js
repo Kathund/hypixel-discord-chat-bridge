@@ -1,21 +1,21 @@
-import { getRarityColor, formatUsername } from "../../contracts/helperFunctions.js";
-import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
-import { minecraftCommand } from "../../contracts/minecraftCommand.js";
-import { uploadImage } from "../../contracts/API/imgurAPI.js";
-import { renderLore } from "../../contracts/renderItem.js";
-import { getPets } from "../../../API/stats/pets.js";
+import { getRarityColor, formatUsername } from '../../contracts/helperFunctions.js';
+import { getLatestProfile } from '../../../API/functions/getLatestProfile.js';
+import { minecraftCommand } from '../../contracts/minecraftCommand.js';
+import { uploadImage } from '../../contracts/API/imgurAPI.js';
+import { renderLore } from '../../contracts/renderItem.js';
+import { getPets } from '../../../API/stats/pets.js';
 
 export class PetCommand extends minecraftCommand {
   constructor(minecraft) {
     super(minecraft);
 
-    this.name = "pet";
-    this.aliases = ["pets"];
-    this.description = "Renders active pet of specified user.";
+    this.name = 'pet';
+    this.aliases = ['pets'];
+    this.description = 'Renders active pet of specified user.';
     this.options = [
       {
-        name: "username",
-        description: "Minecraft username",
+        name: 'username',
+        description: 'Minecraft username',
         required: false,
       },
     ];
@@ -44,7 +44,7 @@ export class PetCommand extends minecraftCommand {
 
       const upload = await uploadImage(renderedItem);
 
-      return this.send(`/gc ${username}'s Active Pet: ${upload.data.link ?? "Something went Wrong.."}`);
+      return this.send(`/gc ${username}'s Active Pet: ${upload.data.link ?? 'Something went Wrong..'}`);
     } catch (error) {
       console.log(error);
       this.send(`/gc [ERROR] ${error}`);

@@ -1,7 +1,7 @@
-import { formatUsername, formatNumber } from "../../contracts/helperFunctions.js";
-import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
-import { minecraftCommand } from "../../contracts/minecraftCommand.js";
-import { getWeight } from "../../../API/stats/weight.js";
+import { formatUsername, formatNumber } from '../../contracts/helperFunctions.js';
+import { getLatestProfile } from '../../../API/functions/getLatestProfile.js';
+import { minecraftCommand } from '../../contracts/minecraftCommand.js';
+import { getWeight } from '../../../API/stats/weight.js';
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -9,13 +9,13 @@ export class StatsCommand extends minecraftCommand {
   constructor(minecraft) {
     super(minecraft);
 
-    this.name = "weight";
-    this.aliases = ["w"];
-    this.description = "Skyblock Weight of specified user.";
+    this.name = 'weight';
+    this.aliases = ['w'];
+    this.description = 'Skyblock Weight of specified user.';
     this.options = [
       {
-        name: "username",
-        description: "Minecraft username",
+        name: 'username',
+        description: 'Minecraft username',
         required: false,
       },
     ];

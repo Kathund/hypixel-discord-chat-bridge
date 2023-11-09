@@ -1,8 +1,8 @@
-import { getSkyblockCalendar } from "../../../API/functions/getCalendar.js";
-import { minecraftCommand } from "../../contracts/minecraftCommand.js";
+import { getSkyblockCalendar } from '../../../API/functions/getCalendar.js';
+import { minecraftCommand } from '../../contracts/minecraftCommand.js';
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-import { minecraft } from "../../../config.json";
-import axios from "axios";
+import { minecraft } from '../../../config.json';
+import axios from 'axios';
 
 if (minecraft.skyblockEventsNotifications.enabled) {
   const { notifiers, customTime } = minecraft.skyblockEventsNotifications;
@@ -23,15 +23,15 @@ if (minecraft.skyblockEventsNotifications.enabled) {
 
         const minutes = Math.floor((eventData.events[0].start_timestamp - Date.now()) / 1000 / 60);
 
-        let extraInfo = "";
-        if (event == "JACOBS_CONTEST") {
-          const { data: jacobResponse } = await axios.get("https://dawjaw.net/jacobs");
+        let extraInfo = '';
+        if (event == 'JACOBS_CONTEST') {
+          const { data: jacobResponse } = await axios.get('https://dawjaw.net/jacobs');
           const jacobCrops = jacobResponse.find(
             (crop) => crop.time >= Math.floor(eventData.events[0].start_timestamp / 1000)
           );
 
           if (jacobCrops?.crops !== undefined) {
-            extraInfo = ` (${jacobCrops.crops.join(", ")})`;
+            extraInfo = ` (${jacobCrops.crops.join(', ')})`;
           }
         }
 

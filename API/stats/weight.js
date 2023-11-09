@@ -1,8 +1,8 @@
-import { calculateTotalSenitherWeight } from "../constants/weight.js";
-import { getDungeons } from "../stats/dungeons.js";
-import { getSlayers } from "../stats/slayer.js";
-import { getSkills } from "../stats/skills.js";
-import { getWeightRaw } from "lilyweight";
+import { calculateTotalSenitherWeight } from '../constants/weight.js';
+import { getDungeons } from '../stats/dungeons.js';
+import { getSlayers } from '../stats/slayer.js';
+import { getSkills } from '../stats/skills.js';
+import { getWeightRaw } from 'lilyweight';
 
 export const getWeight = (profile) => {
   const { skills_levels, skills_experience } = formatLilySkills(getSkills(profile));
@@ -257,9 +257,9 @@ export const getWeight = (profile) => {
 
 function formatLilySkills(skills) {
   //  enchanting, taming, alchemy, mining, farming, foraging, combat, fishing.
-  const skillSort = ["enchanting", "taming", "alchemy", "mining", "farming", "foraging", "combat", "fishing"];
+  const skillSort = ['enchanting', 'taming', 'alchemy', 'mining', 'farming', 'foraging', 'combat', 'fishing'];
   const whitelistedSkills = Object.keys(skills).filter(
-    (skill) => !["runecrafting", "social", "carpentry"].includes(skill)
+    (skill) => !['runecrafting', 'social', 'carpentry'].includes(skill)
   );
   const skills_levels = whitelistedSkills
     .sort((a, b) => skillSort.indexOf(a) - skillSort.indexOf(b))
@@ -275,20 +275,20 @@ function formatLilyDungeons(dungeons) {
   const catacombs_experience = dungeons.catacombs?.skill?.totalXp || 0;
   const catacombs = {};
   for (const floor of Object.keys(dungeons.catacombs?.floors || {})) {
-    const formattedFloor = floor === "entrance" ? 0 : floor.split("_")[1];
+    const formattedFloor = floor === 'entrance' ? 0 : floor.split('_')[1];
     Object.assign(catacombs, { [formattedFloor]: dungeons.catacombs.floors[floor].completions });
   }
 
   const master_mode = {};
   for (const floor of Object.keys(dungeons.catacombs?.master_mode_floors || {})) {
-    Object.assign(master_mode, { [floor.split("_")[1]]: dungeons.catacombs.master_mode_floors[floor].completions });
+    Object.assign(master_mode, { [floor.split('_')[1]]: dungeons.catacombs.master_mode_floors[floor].completions });
   }
 
   return { catacombs, master_mode, catacombs_experience };
 }
 
 function formatLilySlayer(slayer) {
-  const slayerSort = ["zombie", "spider", "wolf", "enderman", "blaze"];
+  const slayerSort = ['zombie', 'spider', 'wolf', 'enderman', 'blaze'];
   const slayer_experience = Object.keys(slayer)
     .sort((a, b) => slayerSort.indexOf(a) - slayerSort.indexOf(b))
     .map((type) => slayer[type].xp);

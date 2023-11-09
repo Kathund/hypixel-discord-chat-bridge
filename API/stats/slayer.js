@@ -1,4 +1,4 @@
-import { slayer as slayerTable } from "../constants/xp_tables.js";
+import { slayer as slayerTable } from '../constants/xp_tables.js';
 
 export const getSlayers = (profile) => {
   function getSlayer(slayer) {
@@ -33,9 +33,9 @@ export const getSlayers = (profile) => {
 
     const kills = {};
     let total = 0;
-    if (slayer === "zombie") kills[5] = 0;
+    if (slayer === 'zombie') kills[5] = 0;
     for (let i = 0; i < Object.keys(slayers).length; i++) {
-      if (Object.keys(slayers)[i].startsWith("boss_kills_tier_")) {
+      if (Object.keys(slayers)[i].startsWith('boss_kills_tier_')) {
         // This indeed looks pretty bad I know... (kills[boss tier number])
         total += Object.values(slayers)[i];
         kills[Number(Object.keys(slayers)[i].charAt(Object.keys(slayers)[i].length - 1)) + 1] =
@@ -54,11 +54,11 @@ export const getSlayers = (profile) => {
   }
 
   return {
-    zombie: getSlayer("zombie"),
-    spider: getSlayer("spider"),
-    wolf: getSlayer("wolf"),
-    enderman: getSlayer("enderman"),
-    blaze: getSlayer("blaze"),
-    vampire: getSlayer("vampire"),
+    zombie: getSlayer('zombie'),
+    spider: getSlayer('spider'),
+    wolf: getSlayer('wolf'),
+    enderman: getSlayer('enderman'),
+    blaze: getSlayer('blaze'),
+    vampire: getSlayer('vampire'),
   };
 };

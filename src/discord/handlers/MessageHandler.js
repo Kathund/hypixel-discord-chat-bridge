@@ -1,6 +1,6 @@
-import { discord as discordConfig } from "../../../config.json";
-import { uploadImage } from "../../contracts/API/imgurAPI.js";
-import { demojify } from "discord-emoji-converter";
+import { discord as discordConfig } from '../../../config.json';
+import { uploadImage } from '../../contracts/API/imgurAPI.js';
+import { demojify } from 'discord-emoji-converter';
 
 export class MessageHandler {
   constructor(discord, command) {
@@ -22,13 +22,13 @@ export class MessageHandler {
       const messageData = {
         member: message.member.user,
         channel: message.channel.id,
-        username: message.member.displayName.replaceAll(" ", ""),
+        username: message.member.displayName.replaceAll(' ', ''),
         message: content,
         replyingTo: await this.fetchReply(message),
         discord: message,
       };
 
-      const images = content.split(" ").filter((line) => line.startsWith("http"));
+      const images = content.split(' ').filter((line) => line.startsWith('http'));
       for (const attachment of message.attachments.values()) {
         images.push(attachment.url);
       }
@@ -65,7 +65,7 @@ export class MessageHandler {
 
       const mentionedUserName = message.mentions.repliedUser.globalName ?? message.mentions.repliedUser.username;
 
-      if (discordConfig.other.messageMode === "bot" && reference.embed !== null) {
+      if (discordConfig.other.messageMode === 'bot' && reference.embed !== null) {
         const name = reference.embeds[0]?.author?.name;
         if (name === undefined) {
           return mentionedUserName;
@@ -74,16 +74,16 @@ export class MessageHandler {
         return name;
       }
 
-      if (discordConfig.other.messageMode === "minecraft" && reference.attachments !== null) {
+      if (discordConfig.other.messageMode === 'minecraft' && reference.attachments !== null) {
         const name = reference.attachments.values()?.next()?.value?.name;
         if (name === undefined) {
           return mentionedUserName;
         }
 
-        return name.split(".")[0];
+        return name.split('.')[0];
       }
 
-      if (discordConfig.other.messageMode === "webhook") {
+      if (discordConfig.other.messageMode === 'webhook') {
         if (reference.author.username === undefined) {
           return mentionedUserName;
         }
@@ -100,12 +100,12 @@ export class MessageHandler {
 
   stripDiscordContent(message) {
     let output = message.content
-      .split("\n")
+      .split('\n')
       .map((part) => {
         part = part.trim();
-        return part.length === 0 ? "" : part.replace(/@(everyone|here)/gi, "").trim() + " ";
+        return part.length === 0 ? '' : part.replace(/@(everyone|here)/gi, '').trim() + ' ';
       })
-      .join("");
+      .join('');
 
     const hasMentions = /<@|<#|<:|<a:/.test(message);
     if (hasMentions) {
@@ -129,12 +129,12 @@ export class MessageHandler {
 
       // Replace <:KEKW:628249422253391902> with :KEKW: || Replace <a:KEKW:628249422253391902> with :KEKW:
       const emojiMentionPattern = /<a?:(\w+):\d+>/g;
-      output = output.replace(emojiMentionPattern, ":$1:");
+      output = output.replace(emojiMentionPattern, ':$1:');
     }
 
     // Replace IP Adresses with [IP Address Removed]
     const IPAddressPattern = /(?:\d{1,3}\s*\s\s*){3}\d{1,3}/g;
-    output = output.replaceAll(IPAddressPattern, "[IP Address Removed]");
+    output = output.replaceAll(IPAddressPattern, '[IP Address Removed]');
 
     // ? demojify() function has a bug. It throws an error when it encounters channel with emoji in its name. Example: #💬・guild-chat
     try {

@@ -1,20 +1,20 @@
-import { decodeData, formatUsername } from "../../contracts/helperFunctions.js";
-import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
-import { minecraftCommand } from "../../contracts/minecraftCommand.js";
-import { uploadImage } from "../../contracts/API/imgurAPI.js";
-import { renderLore } from "../../contracts/renderItem.js";
+import { decodeData, formatUsername } from '../../contracts/helperFunctions.js';
+import { getLatestProfile } from '../../../API/functions/getLatestProfile.js';
+import { minecraftCommand } from '../../contracts/minecraftCommand.js';
+import { uploadImage } from '../../contracts/API/imgurAPI.js';
+import { renderLore } from '../../contracts/renderItem.js';
 
 export class EquipmentCommand extends minecraftCommand {
   constructor(minecraft) {
     super(minecraft);
 
-    this.name = "equipment";
+    this.name = 'equipment';
     this.aliases = [];
-    this.description = "Renders equipment of specified user.";
+    this.description = 'Renders equipment of specified user.';
     this.options = [
       {
-        name: "username",
-        description: "Minecraft username",
+        name: 'username',
+        description: 'Minecraft username',
         required: false,
       },
     ];
@@ -32,9 +32,9 @@ export class EquipmentCommand extends minecraftCommand {
         return this.send(`/gc This player has an Inventory API off.`);
       }
 
-      const { i: inventoryData } = await decodeData(Buffer.from(profile.profile.equippment_contents.data, "base64"));
+      const { i: inventoryData } = await decodeData(Buffer.from(profile.profile.equippment_contents.data, 'base64'));
 
-      let response = "";
+      let response = '';
       for (const piece of Object.values(inventoryData)) {
         if (piece?.tag?.display?.Name === undefined || piece?.tag?.display?.Lore === undefined) {
           continue;
@@ -49,7 +49,7 @@ export class EquipmentCommand extends minecraftCommand {
 
         const link = upload.data.link;
 
-        response += response.split(" | ").length == 4 ? link : `${link} | `;
+        response += response.split(' | ').length == 4 ? link : `${link} | `;
       }
 
       this.send(`/gc ${username}'s Equipment: ${response}`);

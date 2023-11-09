@@ -1,17 +1,17 @@
-import { minecraftCommand } from "../../contracts/minecraftCommand.js";
-import { hypixel } from "../../contracts/API/HypixelRebornAPI.js";
+import { minecraftCommand } from '../../contracts/minecraftCommand.js';
+import { hypixel } from '../../contracts/API/HypixelRebornAPI.js';
 
 export class MegaWallsCommand extends minecraftCommand {
   constructor(minecraft) {
     super(minecraft);
 
-    this.name = "megawalls";
-    this.aliases = ["mw"];
-    this.description = "View the Megawalls stats of a player";
+    this.name = 'megawalls';
+    this.aliases = ['mw'];
+    this.description = 'View the Megawalls stats of a player';
     this.options = [
       {
-        name: "username",
-        description: "Minecraft username",
+        name: 'username',
+        description: 'Minecraft username',
         required: false,
       },
     ];
@@ -25,20 +25,20 @@ export class MegaWallsCommand extends minecraftCommand {
         stats: { megawalls },
       } = await hypixel.getPlayer(username);
 
-      const { selectedClass = "None", finalKills, finalKDRatio, wins, WLRatio, kills, KDRatio, assists } = megawalls;
+      const { selectedClass = 'None', finalKills, finalKDRatio, wins, WLRatio, kills, KDRatio, assists } = megawalls;
 
       this.send(
         `/gc ${username}'s Megawalls: Class: ${
-          selectedClass ?? "None"
+          selectedClass ?? 'None'
         } | FK: ${finalKills} | FKDR: ${finalKDRatio} | W: ${wins} | WLR: ${WLRatio} | K: ${kills} | KDR: ${KDRatio} | A: ${assists}`
       );
     } catch (error) {
       this.send(
         `/gc ${error
           .toString()
-          .replace("[hypixel-api-reborn] ", "")
-          .replace("For help join our Discord Server https://discord.gg/NSEBNMM", "")
-          .replace("Error:", "[ERROR]")}`
+          .replace('[hypixel-api-reborn] ', '')
+          .replace('For help join our Discord Server https://discord.gg/NSEBNMM', '')
+          .replace('Error:', '[ERROR]')}`
       );
     }
   }

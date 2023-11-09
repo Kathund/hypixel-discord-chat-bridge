@@ -1,9 +1,9 @@
-import { MinecraftManager } from "./minecraft/MinecraftManager.js";
-import { DiscordManager } from "./discord/DiscordManager.js";
-import { WebManager } from "./web/WebsiteManager.js";
+import { MinecraftManager } from './minecraft/MinecraftManager.js';
+import { DiscordManager } from './discord/DiscordManager.js';
+import { WebManager } from './web/WebsiteManager.js';
 
-import "./Configuration.js";
-import "./Updater.js";
+import './Configuration.js';
+import './Updater.js';
 
 class Application {
   async register() {

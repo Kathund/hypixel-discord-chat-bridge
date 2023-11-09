@@ -1,23 +1,23 @@
-import { addCommas, timeSince } from "../../contracts/helperFunctions.js";
-import { minecraftCommand } from "../../contracts/minecraftCommand.js";
-import { minecraft as minecraftConfig } from "../../../config.json";
-import { uploadImage } from "../../contracts/API/imgurAPI.js";
-import { getUUID } from "../../contracts/API/PlayerDBAPI.js";
-import { renderLore } from "../../contracts/renderItem.js";
-import getRank from "../../../API/stats/rank.js";
-import axios from "axios";
+import { addCommas, timeSince } from '../../contracts/helperFunctions.js';
+import { minecraftCommand } from '../../contracts/minecraftCommand.js';
+import { minecraft as minecraftConfig } from '../../../config.json';
+import { uploadImage } from '../../contracts/API/imgurAPI.js';
+import { getUUID } from '../../contracts/API/PlayerDBAPI.js';
+import { renderLore } from '../../contracts/renderItem.js';
+import getRank from '../../../API/stats/rank.js';
+import axios from 'axios';
 
 export class AuctionHouseCommand extends minecraftCommand {
   constructor(minecraft) {
     super(minecraft);
 
-    this.name = "auction";
-    this.aliases = ["ah", "auctions"];
-    this.description = "Listed Auctions of specified user.";
+    this.name = 'auction';
+    this.aliases = ['ah', 'auctions'];
+    this.description = 'Listed Auctions of specified user.';
     this.options = [
       {
-        name: "username",
-        description: "Minecraft username",
+        name: 'username',
+        description: 'Minecraft username',
         required: false,
       },
     ];
@@ -27,7 +27,7 @@ export class AuctionHouseCommand extends minecraftCommand {
     try {
       username = this.getArgs(message)[0] || username;
 
-      let string = "";
+      let string = '';
 
       const uuid = await getUUID(username);
 
@@ -47,9 +47,9 @@ export class AuctionHouseCommand extends minecraftCommand {
       const activeAuctions = auctions.filter((auction) => auction.end >= Date.now());
 
       for (const auction of activeAuctions) {
-        const lore = auction.item_lore.split("\n");
+        const lore = auction.item_lore.split('\n');
 
-        lore.push("§8§m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯", `§7Seller: ${getRank(player)} ${player.displayname}`);
+        lore.push('§8§m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯', `§7Seller: ${getRank(player)} ${player.displayname}`);
 
         if (auction.bin === undefined) {
           if (auction.bids.length === 0) {
@@ -68,7 +68,7 @@ export class AuctionHouseCommand extends minecraftCommand {
             }
 
             const { amount } = auction.bids[auction.bids.length - 1];
-            const bidOrBids = auction.bids.length === 1 ? "bids" : "bid";
+            const bidOrBids = auction.bids.length === 1 ? 'bids' : 'bid';
 
             lore.push(
               `§7Bids: §a${auction.bids.length} ${bidOrBids}`,
@@ -87,7 +87,7 @@ export class AuctionHouseCommand extends minecraftCommand {
         const renderedItem = await renderLore(` ${auction.item_name}`, lore);
         const upload = await uploadImage(renderedItem);
 
-        string += string === "" ? upload.data.link : " | " + upload.data.link;
+        string += string === '' ? upload.data.link : ' | ' + upload.data.link;
       }
 
       this.send(`/gc ${`${username}'s Active Auctions: ${string}`}`);

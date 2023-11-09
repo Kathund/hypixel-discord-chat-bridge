@@ -1,19 +1,19 @@
-import { formatNumber, formatUsername } from "../../contracts/helperFunctions.js";
-import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
-import { minecraftCommand } from "../../contracts/minecraftCommand.js";
-import { getDungeons } from "../../../API/stats/dungeons.js";
+import { formatNumber, formatUsername } from '../../contracts/helperFunctions.js';
+import { getLatestProfile } from '../../../API/functions/getLatestProfile.js';
+import { minecraftCommand } from '../../contracts/minecraftCommand.js';
+import { getDungeons } from '../../../API/stats/dungeons.js';
 
 export class CatacombsCommand extends minecraftCommand {
   constructor(minecraft) {
     super(minecraft);
 
-    this.name = "catacombs";
-    this.aliases = ["cata", "dungeons"];
-    this.description = "Skyblock Dungeons Stats of specified user.";
+    this.name = 'catacombs';
+    this.aliases = ['cata', 'dungeons'];
+    this.description = 'Skyblock Dungeons Stats of specified user.';
     this.options = [
       {
-        name: "username",
-        description: "Minecraft username",
+        name: 'username',
+        description: 'Minecraft username',
         required: false,
       },
     ];

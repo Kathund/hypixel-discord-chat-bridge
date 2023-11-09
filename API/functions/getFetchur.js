@@ -1,4 +1,4 @@
-import items from "../constants/fetchur_items.js";
+import items from '../constants/fetchur_items.js';
 
 export const getFetchur = () => {
   const today = new Date();

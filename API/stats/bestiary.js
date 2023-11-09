@@ -1,4 +1,4 @@
-import { BESTIARY_BRACKETS, BESTIARY } from "../constants/bestiary.js";
+import { BESTIARY_BRACKETS, BESTIARY } from '../constants/bestiary.js';
 
 function formatBestiaryMobs(userProfile, mobs) {
   const output = [];
@@ -39,9 +39,9 @@ export const getBestiary = (userProfile) => {
       const { name, mobs } = data;
       output[category] = { name };
 
-      if (category === "fishing") {
+      if (category === 'fishing') {
         for (const [key, value] of Object.entries(data)) {
-          if (key === "name") continue;
+          if (key === 'name') continue;
 
           output[category][key] = {
             name: value.name,

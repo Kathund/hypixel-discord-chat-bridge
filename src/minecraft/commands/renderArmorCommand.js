@@ -1,20 +1,20 @@
-import { decodeData, formatUsername } from "../../contracts/helperFunctions.js";
-import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
-import { minecraftCommand } from "../../contracts/minecraftCommand.js";
-import { uploadImage } from "../../contracts/API/imgurAPI.js";
-import { renderLore } from "../../contracts/renderItem.js";
+import { decodeData, formatUsername } from '../../contracts/helperFunctions.js';
+import { getLatestProfile } from '../../../API/functions/getLatestProfile.js';
+import { minecraftCommand } from '../../contracts/minecraftCommand.js';
+import { uploadImage } from '../../contracts/API/imgurAPI.js';
+import { renderLore } from '../../contracts/renderItem.js';
 
 export class ArmorCommand extends minecraftCommand {
   constructor(minecraft) {
     super(minecraft);
 
-    this.name = "armor";
+    this.name = 'armor';
     this.aliases = [];
-    this.description = "Renders armor of specified user.";
+    this.description = 'Renders armor of specified user.';
     this.options = [
       {
-        name: "username",
-        description: "Minecraft username",
+        name: 'username',
+        description: 'Minecraft username',
         required: false,
       },
     ];
@@ -32,7 +32,7 @@ export class ArmorCommand extends minecraftCommand {
         return this.send(`/gc This player has an Inventory API off.`);
       }
 
-      const { i: inventoryData } = await decodeData(Buffer.from(profile.profile.inv_armor.data, "base64"));
+      const { i: inventoryData } = await decodeData(Buffer.from(profile.profile.inv_armor.data, 'base64'));
 
       if (
         inventoryData === undefined ||
@@ -41,7 +41,7 @@ export class ArmorCommand extends minecraftCommand {
         return this.send(`/gc ${username} has no armor equipped.`);
       }
 
-      let response = "";
+      let response = '';
       for (const piece of Object.values(inventoryData)) {
         if (piece?.tag?.display?.Name === undefined || piece?.tag?.display?.Lore === undefined) {
           continue;
@@ -56,7 +56,7 @@ export class ArmorCommand extends minecraftCommand {
 
         const link = upload.data.link;
 
-        response += response.split(" | ").length == 4 ? link : `${link} | `;
+        response += response.split(' | ').length == 4 ? link : `${link} | `;
       }
 
       this.send(`/gc ${username}'s Armor: ${response}`);

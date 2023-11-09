@@ -1,17 +1,17 @@
-import { minecraftCommand } from "../../contracts/minecraftCommand.js";
-import { hypixel } from "../../contracts/API/HypixelRebornAPI.js";
+import { minecraftCommand } from '../../contracts/minecraftCommand.js';
+import { hypixel } from '../../contracts/API/HypixelRebornAPI.js';
 
 export class UHCStatsCommand extends minecraftCommand {
   constructor(minecraft) {
     super(minecraft);
 
-    this.name = "UHC";
-    this.aliases = ["uhc"];
-    this.description = "UHC Stats of specified user.";
+    this.name = 'UHC';
+    this.aliases = ['uhc'];
+    this.description = 'UHC Stats of specified user.';
     this.options = [
       {
-        name: "username",
-        description: "Minecraft username",
+        name: 'username',
+        description: 'Minecraft username',
         required: false,
       },
     ];
@@ -30,9 +30,9 @@ export class UHCStatsCommand extends minecraftCommand {
       this.send(
         `/gc ${error
           .toString()
-          .replace("[hypixel-api-reborn] ", "")
-          .replace("For help join our Discord Server https://discord.gg/NSEBNMM", "")
-          .replace("Error:", "[ERROR]")}`
+          .replace('[hypixel-api-reborn] ', '')
+          .replace('For help join our Discord Server https://discord.gg/NSEBNMM', '')
+          .replace('Error:', '[ERROR]')}`
       );
     }
   }

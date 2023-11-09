@@ -1,5 +1,5 @@
-import { parse, simplify } from "prismarine-nbt";
-import { promisify } from "util";
+import { parse, simplify } from 'prismarine-nbt';
+import { promisify } from 'util';
 
 const parseNbt = promisify(parse);
 

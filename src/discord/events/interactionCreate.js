@@ -1,9 +1,9 @@
-import HypixelDiscordChatBridgeError from "../../contracts/errorHandler.js";
-import { discord } from "../../../config.json";
-import { EmbedBuilder } from "discord.js";
-import { discordMessage } from "../.././Logger.js";
+import HypixelDiscordChatBridgeError from '../../contracts/errorHandler.js';
+import { discord } from '../../../config.json';
+import { EmbedBuilder } from 'discord.js';
+import { discordMessage } from '../.././Logger.js';
 
-export const name = "interactionCreate";
+export const name = 'interactionCreate';
 export async function execute(interaction) {
   try {
     if (interaction.isChatInputCommand()) {
@@ -22,15 +22,15 @@ export async function execute(interaction) {
 
     const errrorMessage =
       error instanceof HypixelDiscordChatBridgeError === false
-        ? "Please try again later. The error has been sent to the Developers.\n\n"
-        : "";
+        ? 'Please try again later. The error has been sent to the Developers.\n\n'
+        : '';
     const errorEmbed = new EmbedBuilder()
       .setColor(15548997)
-      .setAuthor({ name: "An Error has occurred" })
+      .setAuthor({ name: 'An Error has occurred' })
       .setDescription(`${errrorMessage}\`\`\`${error}\`\`\``)
       .setFooter({
         text: `by @duckysolucky | /help [command] for more information`,
-        iconURL: "https://imgur.com/tgwQJTX.png",
+        iconURL: 'https://imgur.com/tgwQJTX.png',
       });
 
     await interaction.editReply({ embeds: [errorEmbed] });
@@ -38,7 +38,7 @@ export async function execute(interaction) {
     if (error instanceof HypixelDiscordChatBridgeError === false) {
       const errorLog = new EmbedBuilder()
         .setColor(15158332)
-        .setTitle("Error")
+        .setTitle('Error')
         .setDescription(
           `Command: \`${interaction.commandName}\`\nOptions: \`${JSON.stringify(
             interaction.options.data
@@ -48,7 +48,7 @@ export async function execute(interaction) {
         )
         .setFooter({
           text: `by DuckySoLucky#5181`,
-          iconURL: "https://imgur.com/tgwQJTX.png",
+          iconURL: 'https://imgur.com/tgwQJTX.png',
         });
 
       interaction.client.channels.cache.get(discord.channels.loggingChannel).send({

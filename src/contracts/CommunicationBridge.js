@@ -28,11 +28,11 @@ class CommunicationBridge {
   }
 
   connect() {
-    throw new Error("Communication bridge connection is not implemented yet!");
+    throw new Error('Communication bridge connection is not implemented yet!');
   }
 
   onBroadcast(event) {
-    throw new Error("Communication bridge broadcast handling is not implemented yet!");
+    throw new Error('Communication bridge broadcast handling is not implemented yet!');
   }
 }
 

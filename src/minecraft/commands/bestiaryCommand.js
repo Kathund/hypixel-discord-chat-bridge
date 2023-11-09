@@ -1,19 +1,19 @@
-import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
-import { minecraftCommand } from "../../contracts/minecraftCommand.js";
-import { formatUsername } from "../../contracts/helperFunctions.js";
-import { getBestiary } from "../../../API/stats/bestiary.js";
+import { getLatestProfile } from '../../../API/functions/getLatestProfile.js';
+import { minecraftCommand } from '../../contracts/minecraftCommand.js';
+import { formatUsername } from '../../contracts/helperFunctions.js';
+import { getBestiary } from '../../../API/stats/bestiary.js';
 
 export class BestiaryCommand extends minecraftCommand {
   constructor(minecraft) {
     super(minecraft);
 
-    this.name = "bestiary";
-    this.aliases = ["be"];
-    this.description = "Bestiary of specified user.";
+    this.name = 'bestiary';
+    this.aliases = ['be'];
+    this.description = 'Bestiary of specified user.';
     this.options = [
       {
-        name: "username",
-        description: "Minecraft Username",
+        name: 'username',
+        description: 'Minecraft Username',
         required: false,
       },
     ];
@@ -66,7 +66,7 @@ export class BestiaryCommand extends minecraftCommand {
 
         await new Promise((resolve) => setTimeout(resolve, 1000));
 
-        this.send(`/gc Closest to level up: ${topFiveMobs.join(", ")}`);
+        this.send(`/gc Closest to level up: ${topFiveMobs.join(', ')}`);
       }
     } catch (error) {
       console.log(error);
@@ -77,9 +77,9 @@ export class BestiaryCommand extends minecraftCommand {
   getBestiaryObject(bestiary) {
     return Object.keys(bestiary.categories)
       .map((category) => {
-        if (category === "fishing") {
+        if (category === 'fishing') {
           Object.keys(bestiary.categories[category]).map((key) => {
-            if (key === "name") return;
+            if (key === 'name') return;
             return bestiary.categories[category][key].mobs.map((mob) => mob);
           });
         } else {

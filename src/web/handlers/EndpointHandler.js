@@ -6,12 +6,12 @@ export class EndpointHandler {
   registerEvents() {
     const { web } = this.server;
 
-    web.get("*", this.get.bind(this));
-    web.post("*", this.post.bind(this));
+    web.get('*', this.get.bind(this));
+    web.post('*', this.post.bind(this));
   }
 
   async get(req, res) {
-    res.send("API is running.");
+    res.send('API is running.');
   }
 
   async post(req, res) {

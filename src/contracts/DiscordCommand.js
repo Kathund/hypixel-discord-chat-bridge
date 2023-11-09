@@ -4,7 +4,7 @@ class DiscordCommand {
   }
 
   getArgs(message) {
-    const args = message.content.split(" ");
+    const args = message.content.split(' ');
 
     args.shift();
 
@@ -18,7 +18,7 @@ class DiscordCommand {
   }
 
   onCommand(message) {
-    throw new Error("Command onCommand method is not implemented yet!");
+    throw new Error('Command onCommand method is not implemented yet!');
   }
 }
 

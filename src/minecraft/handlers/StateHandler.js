@@ -1,5 +1,5 @@
-import { minecraftMessage, warnMessage } from "../../Logger.js";
-import { EventHandler } from "../../contracts/EventHandler.js";
+import { minecraftMessage, warnMessage } from '../../Logger.js';
+import { EventHandler } from '../../contracts/EventHandler.js';
 
 export class StateHandler extends EventHandler {
   constructor(minecraft) {
@@ -13,20 +13,20 @@ export class StateHandler extends EventHandler {
   registerEvents(bot) {
     this.bot = bot;
 
-    this.bot.on("login", (...args) => this.onLogin(...args));
-    this.bot.on("end", (...args) => this.onEnd(...args));
-    this.bot.on("kicked", (...args) => this.onKicked(...args));
+    this.bot.on('login', (...args) => this.onLogin(...args));
+    this.bot.on('end', (...args) => this.onEnd(...args));
+    this.bot.on('kicked', (...args) => this.onKicked(...args));
   }
 
   onLogin() {
-    minecraftMessage("Client ready, logged in as " + this.bot.username);
+    minecraftMessage('Client ready, logged in as ' + this.bot.username);
 
     this.loginAttempts = 0;
     this.exactDelay = 0;
   }
 
   onEnd(reason) {
-    if (reason === "restart") {
+    if (reason === 'restart') {
       return;
     }
 

@@ -1,41 +1,41 @@
-import { readJson, writeJson } from "fs-promise";
-import { parse, simplify } from "prismarine-nbt";
-import { dirname as getDirName } from "path";
-import { promisify } from "util";
-import { sync } from "mkdirp";
-import { set } from "lodash";
-import moment from "moment";
+import { readJson, writeJson } from 'fs-promise';
+import { parse, simplify } from 'prismarine-nbt';
+import { dirname as getDirName } from 'path';
+import { promisify } from 'util';
+import { sync } from 'mkdirp';
+import { set } from 'lodash';
+import moment from 'moment';
 
 const parseNbt = promisify(parse);
 
 export const replaceAllRanks = (input) => {
-  input = input.replaceAll("[OWNER] ", "");
-  input = input.replaceAll("[ADMIN] ", "");
-  input = input.replaceAll("[MCP] ", "");
-  input = input.replaceAll("[GM] ", "");
-  input = input.replaceAll("[PIG+++] ", "");
-  input = input.replaceAll("[YOUTUBE] ", "");
-  input = input.replaceAll("[MVP++] ", "");
-  input = input.replaceAll("[MVP+] ", "");
-  input = input.replaceAll("[MVP] ", "");
-  input = input.replaceAll("[VIP+] ", "");
-  input = input.replaceAll("[VIP] ", "");
+  input = input.replaceAll('[OWNER] ', '');
+  input = input.replaceAll('[ADMIN] ', '');
+  input = input.replaceAll('[MCP] ', '');
+  input = input.replaceAll('[GM] ', '');
+  input = input.replaceAll('[PIG+++] ', '');
+  input = input.replaceAll('[YOUTUBE] ', '');
+  input = input.replaceAll('[MVP++] ', '');
+  input = input.replaceAll('[MVP+] ', '');
+  input = input.replaceAll('[MVP] ', '');
+  input = input.replaceAll('[VIP+] ', '');
+  input = input.replaceAll('[VIP] ', '');
   return input;
 };
 
 export const addNotation = (type, value) => {
   let returnVal = value;
   let notList = [];
-  if (type === "shortScale") {
-    notList = [" Thousand", " Million", " Billion", " Trillion", " Quadrillion", " Quintillion"];
+  if (type === 'shortScale') {
+    notList = [' Thousand', ' Million', ' Billion', ' Trillion', ' Quadrillion', ' Quintillion'];
   }
 
-  if (type === "oneLetters") {
-    notList = [" K", " M", " B", " T"];
+  if (type === 'oneLetters') {
+    notList = [' K', ' M', ' B', ' T'];
   }
 
   let checkNum = 1000;
-  if (type !== "none" && type !== "commas") {
+  if (type !== 'none' && type !== 'commas') {
     let notValue = notList[notList.length - 1];
     for (let u = notList.length; u >= 1; u--) {
       notValue = notList.shift();
@@ -57,12 +57,12 @@ export const addNotation = (type, value) => {
 };
 
 export const numberWithCommas = (x) => {
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 };
 
 export const generateID = (length) => {
-  let result = "";
-  const characters = "abcde0123456789",
+  let result = '';
+  const characters = 'abcde0123456789',
     charactersLength = characters.length;
   for (var i = 0; i < length; i++) {
     result += characters.charAt(Math.floor(Math.random() * charactersLength));
@@ -71,13 +71,13 @@ export const generateID = (length) => {
 };
 
 export const getRarityColor = (rarity) => {
-  if (rarity.toLowerCase() == "mythic") return "d";
-  if (rarity.toLowerCase() == "legendary") return "6";
-  if (rarity.toLowerCase() == "epic") return "5";
-  if (rarity.toLowerCase() == "rare") return "9";
-  if (rarity.toLowerCase() == "uncommon") return "a";
-  if (rarity.toLowerCase() == "common") return "f";
-  else return "f";
+  if (rarity.toLowerCase() == 'mythic') return 'd';
+  if (rarity.toLowerCase() == 'legendary') return '6';
+  if (rarity.toLowerCase() == 'epic') return '5';
+  if (rarity.toLowerCase() == 'rare') return '9';
+  if (rarity.toLowerCase() == 'uncommon') return 'a';
+  if (rarity.toLowerCase() == 'common') return 'f';
+  else return 'f';
 };
 
 export const addCommas = (num) => {
@@ -89,7 +89,7 @@ export const addCommas = (num) => {
 };
 
 export const toFixed = (num, fixed) => {
-  const response = new RegExp("^-?\\d+(?:.\\d{0," + (fixed || -1) + "})?");
+  const response = new RegExp('^-?\\d+(?:.\\d{0,' + (fixed || -1) + '})?');
   return num.toString().match(response)[0];
 };
 
@@ -99,13 +99,13 @@ export const timeSince = (timeStamp) => {
   secondsPast = Math.abs(secondsPast);
 
   if (secondsPast < 60) {
-    return parseInt(secondsPast) + "s";
+    return parseInt(secondsPast) + 's';
   }
   if (secondsPast < 3600) {
-    return parseInt(secondsPast / 60) + "m";
+    return parseInt(secondsPast / 60) + 'm';
   }
   if (secondsPast <= 86400) {
-    return parseInt(secondsPast / 3600) + "h";
+    return parseInt(secondsPast / 3600) + 'h';
   }
   if (secondsPast > 86400) {
     const d = toFixed(parseInt(secondsPast / 86400), 0);
@@ -115,7 +115,7 @@ export const timeSince = (timeStamp) => {
     const m = toFixed(parseInt(secondsPast / 60), 0);
     secondsPast -= 60 * m;
     const s = toFixed(parseInt(secondsPast), 0);
-    return d + "d " + h + "h " + m + "m " + s + "s";
+    return d + 'd ' + h + 'h ' + m + 'm ' + s + 's';
   }
 };
 
@@ -136,13 +136,13 @@ export const writeAt = (filePath, jsonPath, value) => {
 
 export const capitalize = (str) => {
   if (!str) return str;
-  const words = str.replace(/_/g, " ").toLowerCase().split(" ");
+  const words = str.replace(/_/g, ' ').toLowerCase().split(' ');
 
   const upperCased = words.map((word) => {
     return word.charAt(0).toUpperCase() + word.substr(1);
   });
 
-  return upperCased.join(" ");
+  return upperCased.join(' ');
 };
 
 export const decodeData = async (buffer) => {
@@ -151,13 +151,13 @@ export const decodeData = async (buffer) => {
 };
 
 export const nth = (i) => {
-  return i + ["st", "nd", "rd"][((((i + 90) % 100) - 10) % 10) - 1] || `${i}th`;
+  return i + ['st', 'nd', 'rd'][((((i + 90) % 100) - 10) % 10) - 1] || `${i}th`;
 };
 
-const units = new Set(["y", "M", "w", "d", "h", "m", "s"]);
+const units = new Set(['y', 'M', 'w', 'd', 'h', 'm', 's']);
 
 function parseDateMath(mathString, time) {
-  const strippedMathString = mathString.replace(/\s/g, "");
+  const strippedMathString = mathString.replace(/\s/g, '');
   const dateTime = time;
   let i = 0;
   const { length } = strippedMathString;
@@ -168,11 +168,11 @@ function parseDateMath(mathString, time) {
     let type;
     let number;
 
-    if (c === "/") {
+    if (c === '/') {
       type = 0;
-    } else if (c === "+") {
+    } else if (c === '+') {
       type = 1;
-    } else if (c === "-") {
+    } else if (c === '-') {
       type = 2;
     } else {
       return;
@@ -218,7 +218,7 @@ function parseDateMath(mathString, time) {
 export const parseTimestamp = (text) => {
   if (!text) return;
 
-  if (typeof text !== "string") {
+  if (typeof text !== 'string') {
     if (moment.isMoment(text)) {
       return text;
     }
@@ -229,18 +229,18 @@ export const parseTimestamp = (text) => {
   }
 
   let time;
-  let mathString = "";
+  let mathString = '';
   let index;
   let parseString;
 
-  if (text.slice(0, 3) === "now") {
+  if (text.slice(0, 3) === 'now') {
     time = moment.utc();
     mathString = text.slice(3);
   } else {
-    index = text.indexOf("||");
+    index = text.indexOf('||');
     if (index === -1) {
       parseString = text;
-      mathString = "";
+      mathString = '';
     } else {
       parseString = text.slice(0, Math.max(0, index));
       mathString = text.slice(Math.max(0, index + 2));
@@ -258,9 +258,9 @@ export const parseTimestamp = (text) => {
 };
 
 export const formatUsername = (username, gamemode) => {
-  if (gamemode === "ironman") return `♲ ${username}`;
-  if (gamemode === "bingo") return `Ⓑ ${username}`;
-  if (gamemode === "island") return `	☀ ${username}`;
+  if (gamemode === 'ironman') return `♲ ${username}`;
+  if (gamemode === 'bingo') return `Ⓑ ${username}`;
+  if (gamemode === 'island') return `	☀ ${username}`;
 
   return username;
 };
@@ -272,13 +272,13 @@ export const formatNumber = (number, decimals = 2) => {
 
   if (number < 100000 && number > -100000) return parseInt(number).toLocaleString();
 
-  const abbrev = ["", "K", "M", "B", "T", "Qa", "Qi", "S", "O", "N", "D"];
+  const abbrev = ['', 'K', 'M', 'B', 'T', 'Qa', 'Qi', 'S', 'O', 'N', 'D'];
   const unformattedNumber = Math.abs(number);
 
   const abbrevIndex = Math.floor(Math.log10(unformattedNumber) / 3);
   const shortNumber = (unformattedNumber / Math.pow(10, abbrevIndex * 3)).toFixed(decimals);
 
-  return `${isNegative ? "-" : ""}${shortNumber}${abbrev[abbrevIndex]}`;
+  return `${isNegative ? '-' : ''}${shortNumber}${abbrev[abbrevIndex]}`;
 };
 
 export const replaceVariables = (template, variables) => {

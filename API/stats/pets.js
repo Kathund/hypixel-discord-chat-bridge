@@ -1,35 +1,35 @@
 // CREDIT: https://github.com/SkyCryptWebsite/SkyCrypt/ (Modified)
-import { pet_data, petStats, pet_items, rarityColors, PET_RARITY_OFFSET, PET_LEVELS } from "../constants/pets.js";
-import { titleCase, capitalize, renderLore, formatNumber } from "../constants/functions.js";
-import { pet_skins } from "../constants/skins.js";
+import { pet_data, petStats, pet_items, rarityColors, PET_RARITY_OFFSET, PET_LEVELS } from '../constants/pets.js';
+import { titleCase, capitalize, renderLore, formatNumber } from '../constants/functions.js';
+import { pet_skins } from '../constants/skins.js';
 
 const rarities = [
-  "common",
-  "uncommon",
-  "rare",
-  "epic",
-  "legendary",
-  "mythic",
-  "divine",
-  "supreme",
-  "special",
-  "very_special",
+  'common',
+  'uncommon',
+  'rare',
+  'epic',
+  'legendary',
+  'mythic',
+  'divine',
+  'supreme',
+  'special',
+  'very_special',
 ];
 
 export const getPets = (profile) => {
   let output = [];
 
-  if (!("pets" in profile)) return output;
+  if (!('pets' in profile)) return output;
 
   for (const pet of profile.pets) {
-    if (!("tier" in pet)) {
+    if (!('tier' in pet)) {
       continue;
     }
 
     const petData = pet_data[pet.type] || {
-      head: "/head/bc8ea1f51f253ff5142ca11ae45193a4ad8c3ab5e9c6eec8ba7a4fcb7bac40",
-      type: "???",
-      maxTier: "LEGENDARY",
+      head: '/head/bc8ea1f51f253ff5142ca11ae45193a4ad8c3ab5e9c6eec8ba7a4fcb7bac40',
+      type: '???',
+      maxTier: 'LEGENDARY',
       maxLevel: 100,
     };
 
@@ -44,21 +44,21 @@ export const getPets = (profile) => {
         ? petData.hatching.name
         : petData.name
         ? petData.name[pet.rarity] ?? petData.name
-        : titleCase(pet.type.replaceAll("_", " "));
+        : titleCase(pet.type.replaceAll('_', ' '));
 
     // Rarity upgrades
-    if (pet.heldItem == "PET_ITEM_TIER_BOOST" && !pet.ignoresTierBoost) {
+    if (pet.heldItem == 'PET_ITEM_TIER_BOOST' && !pet.ignoresTierBoost) {
       pet.rarity = rarities[Math.min(rarities.indexOf(petData.maxTier), rarities.indexOf(pet.rarity) + 1)];
     }
 
-    if (pet.heldItem == "PET_ITEM_VAMPIRE_FANG" || pet.heldItem == "PET_ITEM_TOY_JERRY") {
+    if (pet.heldItem == 'PET_ITEM_VAMPIRE_FANG' || pet.heldItem == 'PET_ITEM_TOY_JERRY') {
       if (rarities.indexOf(pet.rarity) === rarities.indexOf(petData.maxTier) - 1) {
         pet.rarity = petData.maxTier;
       }
     }
 
     // Get texture
-    if (typeof petData.head === "object") {
+    if (typeof petData.head === 'object') {
       pet.texture_path = `https://sky.shiiyu.moe${petData.head[pet.rarity]}` ?? `https://sky.shiiyu.moe${petData.head}`;
     } else {
       pet.texture_path = `https://sky.shiiyu.moe${petData.head}`;
@@ -75,9 +75,9 @@ export const getPets = (profile) => {
     }
     const levelData = getPetLevel(pet.exp, petData.customLevelExpRarityOffset ?? pet.rarity, petData.maxLevel);
 
-    pet.name = `[Lvl ${levelData[0]}] ${petName}${petSkin ? " ✦" : ""}`;
+    pet.name = `[Lvl ${levelData[0]}] ${petName}${petSkin ? ' ✦' : ''}`;
 
-    pet.display_name = `${petName}${petSkin ? " ✦" : ""}`;
+    pet.display_name = `${petName}${petSkin ? ' ✦' : ''}`;
 
     pet.xpMaxLevel = levelData[4];
     pet.level = levelData[0];
@@ -86,15 +86,15 @@ export const getPets = (profile) => {
     pet.progress = levelData[3];
 
     // Get first row of lore
-    const loreFirstRow = ["§8"];
+    const loreFirstRow = ['§8'];
 
-    if (petData.type === "all") {
-      loreFirstRow.push("All Skills");
+    if (petData.type === 'all') {
+      loreFirstRow.push('All Skills');
     } else {
-      loreFirstRow.push(capitalize(petData.type), " ", petData.category ?? "Pet");
+      loreFirstRow.push(capitalize(petData.type), ' ', petData.category ?? 'Pet');
 
-      if (petData.obtainsExp === "feed") {
-        loreFirstRow.push(", feed to gain XP");
+      if (petData.obtainsExp === 'feed') {
+        loreFirstRow.push(', feed to gain XP');
       }
 
       if (petSkin) {
@@ -102,11 +102,11 @@ export const getPets = (profile) => {
       }
     }
 
-    lore.push(loreFirstRow.join(""), "");
+    lore.push(loreFirstRow.join(''), '');
 
     const rarity = rarities.indexOf(pet.rarity);
 
-    const searchName = pet.type in petStats ? pet.type : "???";
+    const searchName = pet.type in petStats ? pet.type : '???';
     const petInstance = new petStats[searchName](rarity, pet.level, pet.extra);
     pet.stats = Object.assign({}, petInstance.stats);
     pet.ref = petInstance;
@@ -127,7 +127,7 @@ export const getPets = (profile) => {
             pet.stats[stat] = (pet.stats[stat] || 0) * pet_items[heldItem].multStats[stat];
           }
         }
-        if ("multAllStats" in pet_items[heldItem]) {
+        if ('multAllStats' in pet_items[heldItem]) {
           for (const stat in pet.stats) {
             pet.stats[stat] *= pet_items[heldItem].multAllStats;
           }
@@ -143,7 +143,7 @@ export const getPets = (profile) => {
       // then the ability lore
       const abilities = pet.ref.abilities;
       abilities.forEach((ability) => {
-        lore.push(" ", ability.name);
+        lore.push(' ', ability.name);
         ability.desc.forEach((line) => {
           lore.push(line);
         });
@@ -153,13 +153,13 @@ export const getPets = (profile) => {
       if (!heldItemObj) {
         heldItemObj = pet_items[heldItem];
       }
-      lore.push("", `§6Held Item: §${rarityColors[heldItemObj.tier.toLowerCase()]}${heldItemObj.name}`);
+      lore.push('', `§6Held Item: §${rarityColors[heldItemObj.tier.toLowerCase()]}${heldItemObj.name}`);
 
       if (heldItem in pet_items) {
         lore.push(pet_items[heldItem].description);
       }
       // extra line
-      lore.push(" ");
+      lore.push(' ');
     } else {
       // no held items so push the new stats
       const stats = pet.ref.lore();
@@ -169,27 +169,27 @@ export const getPets = (profile) => {
 
       const abilities = pet.ref.abilities;
       abilities.forEach((ability) => {
-        lore.push(" ", ability.name);
+        lore.push(' ', ability.name);
         ability.desc.forEach((line) => {
           lore.push(line);
         });
       });
 
       // extra line
-      lore.push(" ");
+      lore.push(' ');
     }
 
     // passive perks text
     if (petData.passivePerks) {
-      lore.push("§8This pet's perks are active even when the pet is not summoned!", "");
+      lore.push("§8This pet's perks are active even when the pet is not summoned!", '');
     }
 
     // always gains exp text
     if (petData.alwaysGainsExp) {
-      lore.push("§8This pet gains XP even when not summoned!", "");
+      lore.push('§8This pet gains XP even when not summoned!', '');
 
-      if (typeof petData.alwaysGainsExp === "string") {
-        lore.push(`§8This pet only gains XP on the ${petData.alwaysGainsExp}§8!`, "");
+      if (typeof petData.alwaysGainsExp === 'string') {
+        lore.push(`§8This pet only gains XP on the ${petData.alwaysGainsExp}§8!`, '');
       }
     }
 
@@ -200,23 +200,23 @@ export const getPets = (profile) => {
       const numerator = pet.xpCurrent.toLocaleString();
       const denominator = formatNumber(pet.xpForNext, false, 10);
 
-      lore.push(`§2${"-".repeat(progress)}§f${"-".repeat(20 - progress)} §e${numerator} §6/ §e${denominator}`);
+      lore.push(`§2${'-'.repeat(progress)}§f${'-'.repeat(20 - progress)} §e${numerator} §6/ §e${denominator}`);
     } else {
-      lore.push("§bMAX LEVEL");
+      lore.push('§bMAX LEVEL');
     }
 
     lore.push(
-      "",
+      '',
       `§7Total XP: §e${formatNumber(pet.exp, true, 10)} §6/ §e${formatNumber(pet.xpMaxLevel, true, 10)} §6(${Math.floor(
         (pet.exp / pet.xpMaxLevel) * 100
       )}%)`
     );
 
-    if (petData.obtainsExp !== "feed") {
+    if (petData.obtainsExp !== 'feed') {
       lore.push(`§7Candy Used: §e${pet.candyUsed || 0} §6/ §e10`);
     }
 
-    pet.lore = "";
+    pet.lore = '';
 
     // pet.ref = null
     delete pet.ref;
@@ -224,9 +224,9 @@ export const getPets = (profile) => {
 
     // eslint-disable-next-line no-unused-vars
     for (const [index, line] of lore.entries()) {
-      pet.lore += "" + renderLore(line) + "\n";
+      pet.lore += '' + renderLore(line) + '\n';
     }
-    pet.lore = pet.lore.split("\n");
+    pet.lore = pet.lore.split('\n');
 
     output.push(pet);
   }

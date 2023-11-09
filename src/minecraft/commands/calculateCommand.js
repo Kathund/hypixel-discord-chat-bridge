@@ -1,17 +1,17 @@
-import { minecraftCommand } from "../../contracts/minecraftCommand.js";
-import { formatNumber } from "../../contracts/helperFunctions.js";
+import { minecraftCommand } from '../../contracts/minecraftCommand.js';
+import { formatNumber } from '../../contracts/helperFunctions.js';
 
 export class CalculateCommand extends minecraftCommand {
   constructor(minecraft) {
     super(minecraft);
 
-    this.name = "calculate";
-    this.aliases = ["calc", "math"];
-    this.description = "Calculate.";
+    this.name = 'calculate';
+    this.aliases = ['calc', 'math'];
+    this.description = 'Calculate.';
     this.options = [
       {
-        name: "calculation",
-        description: "Any kind of math equation",
+        name: 'calculation',
+        description: 'Any kind of math equation',
         required: true,
       },
     ];
@@ -19,7 +19,7 @@ export class CalculateCommand extends minecraftCommand {
 
   onCommand(username, message) {
     try {
-      const calculation = message.replace(/[^-()\d/*+.]/g, "");
+      const calculation = message.replace(/[^-()\d/*+.]/g, '');
       const answer = eval(calculation);
 
       if (answer === Infinity) {

@@ -1,24 +1,24 @@
-import { formatNumber, formatUsername } from "../../contracts/helperFunctions.js";
-import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
-import { minecraftCommand } from "../../contracts/minecraftCommand.js";
-import { getTalismans } from "../../../API/stats/talismans.js";
-import { getDungeons } from "../../../API/stats/dungeons.js";
-import { getSlayers } from "../../../API/stats/slayer.js";
-import { getSkills } from "../../../API/stats/skills.js";
-import { getWeight } from "../../../API/stats/weight.js";
-import { getNetworth } from "skyhelper-networth";
+import { formatNumber, formatUsername } from '../../contracts/helperFunctions.js';
+import { getLatestProfile } from '../../../API/functions/getLatestProfile.js';
+import { minecraftCommand } from '../../contracts/minecraftCommand.js';
+import { getTalismans } from '../../../API/stats/talismans.js';
+import { getDungeons } from '../../../API/stats/dungeons.js';
+import { getSlayers } from '../../../API/stats/slayer.js';
+import { getSkills } from '../../../API/stats/skills.js';
+import { getWeight } from '../../../API/stats/weight.js';
+import { getNetworth } from 'skyhelper-networth';
 
 export class SkyblockCommand extends minecraftCommand {
   constructor(minecraft) {
     super(minecraft);
 
-    this.name = "skyblock";
-    this.aliases = ["stats", "sb"];
-    this.description = "Skyblock Stats of specified user.";
+    this.name = 'skyblock';
+    this.aliases = ['stats', 'sb'];
+    this.description = 'Skyblock Stats of specified user.';
     this.options = [
       {
-        name: "username",
-        description: "Minecraft username",
+        name: 'username',
+        description: 'Minecraft username',
         required: false,
       },
     ];
@@ -47,7 +47,7 @@ export class SkyblockCommand extends minecraftCommand {
       const lilyWeight = Math.floor(weight?.lily?.total || 0).toLocaleString();
       const skillAverage = (
         Object.keys(skills)
-          .filter((skill) => !["runecrafting", "social"].includes(skill))
+          .filter((skill) => !['runecrafting', 'social'].includes(skill))
           .map((skill) => skills[skill].level)
           .reduce((a, b) => a + b, 0) /
         (Object.keys(skills).length - 2)

@@ -1,8 +1,8 @@
-import { minecraft as minecraftConfig } from "../../config.json";
-import { minecraftMessage } from "../Logger.js";
-import { Collection } from "discord.js";
+import { minecraft as minecraftConfig } from '../../config.json';
+import { minecraftMessage } from '../Logger.js';
+import { Collection } from 'discord.js';
 // import { readdirSync } from "fs";
-import axios from "axios";
+import axios from 'axios';
 
 export class CommandHandler {
   constructor(minecraft) {
@@ -37,14 +37,14 @@ export class CommandHandler {
 
       minecraftMessage(`${player} - [${command.name}] ${message}`);
       command.onCommand(player, message);
-    } else if (message.startsWith("-") && message.startsWith("- ") === false) {
-      if (minecraftConfig.commands.soopy === false || message.at(1) === "-") {
+    } else if (message.startsWith('-') && message.startsWith('- ') === false) {
+      if (minecraftConfig.commands.soopy === false || message.at(1) === '-') {
         return;
       }
 
       bot.chat(`/gc [SOOPY V2] ${message}`);
 
-      const command = message.slice(1).split(" ")[0];
+      const command = message.slice(1).split(' ')[0];
 
       minecraftMessage(`${player} - [${command}] ${message}`);
 
@@ -59,7 +59,7 @@ export class CommandHandler {
 
           bot.chat(`/gc [SOOPY V2] ${response.data.msg}`);
         } catch (e) {
-          bot.chat(`/gc [SOOPY V2] ${e.cause ?? e.message ?? "Unknown error"}`);
+          bot.chat(`/gc [SOOPY V2] ${e.cause ?? e.message ?? 'Unknown error'}`);
         }
       })();
     }

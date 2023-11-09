@@ -1,7 +1,7 @@
-import { minecraft } from "../../../config.json";
-import { load } from "cheerio";
-import Rss from "rss-parser";
-import axios from "axios";
+import { minecraft } from '../../../config.json';
+import { load } from 'cheerio';
+import Rss from 'rss-parser';
+import axios from 'axios';
 const parser = new Rss();
 
 if (minecraft.hypixelUpdates.enabled === true) {
@@ -21,7 +21,7 @@ if (minecraft.hypixelUpdates.enabled === true) {
 const hypixelIncidents = {};
 async function checkForIncidents() {
   try {
-    const { items: status } = await parser.parseURL("https://status.hypixel.net/history.rss");
+    const { items: status } = await parser.parseURL('https://status.hypixel.net/history.rss');
 
     const latestIcidents = status.filter((data) => new Date(data.pubDate).getTime() / 1000 + 43200 > Date.now() / 1000);
 
@@ -35,7 +35,7 @@ async function checkForIncidents() {
       }
 
       const updates = JSON.stringify(incident.contentSnippet)
-        .split("\\n")
+        .split('\\n')
         .filter((_, index) => index % 2 !== 0);
 
       for (const update of updates) {
@@ -58,8 +58,8 @@ const hypixelUpdates = [];
 async function checkForHypixelUpdates(firstTime = false) {
   try {
     const [{ items: news }, { items: skyblockNews }] = await Promise.all([
-      parser.parseURL("https://hypixel.net/forums/news-and-announcements.4/index.rss"),
-      parser.parseURL("https://hypixel.net/forums/skyblock-patch-notes.158/index.rss"),
+      parser.parseURL('https://hypixel.net/forums/news-and-announcements.4/index.rss'),
+      parser.parseURL('https://hypixel.net/forums/skyblock-patch-notes.158/index.rss'),
     ]);
 
     const latestFeed = news.concat(skyblockNews);
@@ -72,12 +72,12 @@ async function checkForHypixelUpdates(firstTime = false) {
       if (bot !== undefined && bot._client.chat !== undefined && firstTime === false) {
         const response = await axios.get(link, {
           headers: {
-            "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:89.0) Gecko/20100101 Firefox/89.0",
+            'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:89.0) Gecko/20100101 Firefox/89.0',
           },
         });
 
         const $ = load(response.data);
-        const time = parseInt($("time.u-dt").eq(0).attr("data-time"));
+        const time = parseInt($('time.u-dt').eq(0).attr('data-time'));
         if (time + 43200 < Math.floor(Date.now() / 1000)) {
           continue;
         }
@@ -100,7 +100,7 @@ checkForHypixelUpdates(true);
 let skyblockVersion;
 async function checkForSkyblockVersion() {
   try {
-    const { data } = await axios.get("https://api.hypixel.net/resources/skyblock/skills");
+    const { data } = await axios.get('https://api.hypixel.net/resources/skyblock/skills');
 
     if (skyblockVersion !== data.version) {
       if (skyblockVersion !== undefined) {

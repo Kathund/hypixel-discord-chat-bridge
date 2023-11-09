@@ -1,18 +1,18 @@
-import { EmbedBuilder } from "discord.js";
+import { EmbedBuilder } from 'discord.js';
 
-export const name = "guildtop";
-export const description = "Top 10 members with the most guild experience.";
+export const name = 'guildtop';
+export const description = 'Top 10 members with the most guild experience.';
 export const options = [
   {
-    name: "time",
-    description: "Days Ago",
+    name: 'time',
+    description: 'Days Ago',
     type: 3,
     required: false,
   },
 ];
 
 export async function execute(interaction) {
-  const time = interaction.options.getString("time");
+  const time = interaction.options.getString('time');
 
   const cachedMessages = [];
   const messages = new Promise((resolve, reject) => {
@@ -20,39 +20,39 @@ export async function execute(interaction) {
       message = message.toString();
       cachedMessages.push(message);
 
-      if (message.startsWith("10.") && message.endsWith("Guild Experience")) {
-        bot.removeListener("message", listener);
+      if (message.startsWith('10.') && message.endsWith('Guild Experience')) {
+        bot.removeListener('message', listener);
         resolve(cachedMessages);
       }
     };
 
-    bot.on("message", listener);
-    bot.chat(`/g top ${time || ""}`);
+    bot.on('message', listener);
+    bot.chat(`/g top ${time || ''}`);
 
     setTimeout(() => {
-      bot.removeListener("message", listener);
-      reject("Command timed out. Please try again.");
+      bot.removeListener('message', listener);
+      reject('Command timed out. Please try again.');
     }, 5000);
   });
 
   const message = await messages;
 
-  const trimmedMessages = message.map((message) => message.trim()).filter((message) => message.includes("."));
+  const trimmedMessages = message.map((message) => message.trim()).filter((message) => message.includes('.'));
   const description = trimmedMessages
     .map((message) => {
-      const [position, , name, guildExperience] = message.split(" ");
+      const [position, , name, guildExperience] = message.split(' ');
 
       return `\`${position}\` **${name}** - \`${guildExperience}\` Guild Experience\n`;
     })
-    .join("");
+    .join('');
 
   const embed = new EmbedBuilder()
-    .setColor("#2ECC71")
-    .setTitle("Top 10 Guild Members")
+    .setColor('#2ECC71')
+    .setTitle('Top 10 Guild Members')
     .setDescription(description)
     .setFooter({
-      text: "by @duckysolucky | /help [command] for more information",
-      iconURL: "https://imgur.com/tgwQJTX.png",
+      text: 'by @duckysolucky | /help [command] for more information',
+      iconURL: 'https://imgur.com/tgwQJTX.png',
     });
 
   return await interaction.followUp({ embeds: [embed] });

@@ -1,5 +1,5 @@
-import { minecraft } from "../../../config.json";
-import { ImgurClient } from "imgur";
+import { minecraft } from '../../../config.json';
+import { ImgurClient } from 'imgur';
 
 const imgurClient = new ImgurClient({
   clientId: minecraft.API.imgurAPIkey,
@@ -8,12 +8,12 @@ const imgurClient = new ImgurClient({
 export const uploadImage = async (image) => {
   const response = await imgurClient.upload({
     image: image,
-    type: "stream",
+    type: 'stream',
   });
 
   if (response.success === false) {
     // eslint-disable-next-line no-throw-literal
-    throw "An error occurred while uploading the image. Please try again later.";
+    throw 'An error occurred while uploading the image. Please try again later.';
   }
 
   return response;

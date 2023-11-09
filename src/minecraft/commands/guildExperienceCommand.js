@@ -1,18 +1,18 @@
-import { minecraftCommand } from "../../contracts/minecraftCommand.js";
-import { hypixel } from "../../contracts/API/HypixelRebornAPI.js";
-import { getUUID } from "../../contracts/API/PlayerDBAPI.js";
+import { minecraftCommand } from '../../contracts/minecraftCommand.js';
+import { hypixel } from '../../contracts/API/HypixelRebornAPI.js';
+import { getUUID } from '../../contracts/API/PlayerDBAPI.js';
 
 export class GuildExperienceCommand extends minecraftCommand {
   constructor(minecraft) {
     super(minecraft);
 
-    this.name = "guildexp";
-    this.aliases = ["gexp"];
-    this.description = "Guilds experience of specified user.";
+    this.name = 'guildexp';
+    this.aliases = ['gexp'];
+    this.description = 'Guilds experience of specified user.';
     this.options = [
       {
-        name: "username",
-        description: "Minecraft username",
+        name: 'username',
+        description: 'Minecraft username',
         required: false,
       },
     ];
@@ -22,13 +22,13 @@ export class GuildExperienceCommand extends minecraftCommand {
     username = this.getArgs(message)[0] || username;
 
     try {
-      const [uuid, guild] = await Promise.all([getUUID(username), hypixel.getGuild("player", username)]);
+      const [uuid, guild] = await Promise.all([getUUID(username), hypixel.getGuild('player', username)]);
 
       const player = guild.members.find((member) => member.uuid == uuid);
 
       if (player === undefined) {
         // eslint-disable-next-line no-throw-literal
-        throw "Player is not in the Guild.";
+        throw 'Player is not in the Guild.';
       }
 
       this.send(`/gc ${username}'s Weekly Guild Experience: ${player.weeklyExperience.toLocaleString()}.`);
@@ -36,9 +36,9 @@ export class GuildExperienceCommand extends minecraftCommand {
       this.send(
         `/gc ${error
           .toString()
-          .replace("[hypixel-api-reborn] ", "")
-          .replace("For help join our Discord Server https://discord.gg/NSEBNMM", "")
-          .replace("Error:", "[ERROR]")}`
+          .replace('[hypixel-api-reborn] ', '')
+          .replace('For help join our Discord Server https://discord.gg/NSEBNMM', '')
+          .replace('Error:', '[ERROR]')}`
       );
     }
   }

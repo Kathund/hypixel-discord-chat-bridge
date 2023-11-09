@@ -1,19 +1,19 @@
-import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
-import { minecraftCommand } from "../../contracts/minecraftCommand.js";
-import { formatUsername } from "../../contracts/helperFunctions.js";
-import { getTalismans } from "../../../API/stats/talismans.js";
+import { getLatestProfile } from '../../../API/functions/getLatestProfile.js';
+import { minecraftCommand } from '../../contracts/minecraftCommand.js';
+import { formatUsername } from '../../contracts/helperFunctions.js';
+import { getTalismans } from '../../../API/stats/talismans.js';
 
 export class AccessoriesCommand extends minecraftCommand {
   constructor(minecraft) {
     super(minecraft);
 
-    this.name = "accessories";
-    this.aliases = ["acc", "talismans", "talisman"];
-    this.description = "Accessories of specified user.";
+    this.name = 'accessories';
+    this.aliases = ['acc', 'talismans', 'talisman'];
+    this.description = 'Accessories of specified user.';
     this.options = [
       {
-        name: "username",
-        description: "Minecraft username",
+        name: 'username',
+        description: 'Minecraft username',
         required: false,
       },
     ];
@@ -30,12 +30,12 @@ export class AccessoriesCommand extends minecraftCommand {
       const talismans = await getTalismans(data.profile);
       const rarities = Object.keys(talismans)
         .map((key) => {
-          if (["recombed", "enriched", "total"].includes(key)) return;
+          if (['recombed', 'enriched', 'total'].includes(key)) return;
 
           return [`${talismans[key]}${key[0].toUpperCase()}`];
         })
         .filter((x) => x)
-        .join(", ");
+        .join(', ');
 
       this.send(
         `/gc ${username}'s Accessories: ${talismans?.total ?? 0} (${rarities}), Recombed: ${

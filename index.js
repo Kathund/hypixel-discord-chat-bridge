@@ -1,7 +1,7 @@
-process.on("uncaughtException", (error) => console.log(error));
-import App from "./src/Application.js";
+process.on('uncaughtException', (error) => console.log(error));
+import App from './src/Application.js';
 
-("use strict");
+('use strict');
 
 App.register()
   .then(() => {

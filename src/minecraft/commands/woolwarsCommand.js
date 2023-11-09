@@ -1,17 +1,17 @@
-import { minecraftCommand } from "../../contracts/minecraftCommand.js";
-import { hypixel } from "../../contracts/API/HypixelRebornAPI.js";
+import { minecraftCommand } from '../../contracts/minecraftCommand.js';
+import { hypixel } from '../../contracts/API/HypixelRebornAPI.js';
 
 export class WoolwarsCommand extends minecraftCommand {
   constructor(minecraft) {
     super(minecraft);
 
-    this.name = "woolwars";
-    this.aliases = ["ww"];
-    this.description = "WoolWars stats of specified user.";
+    this.name = 'woolwars';
+    this.aliases = ['ww'];
+    this.description = 'WoolWars stats of specified user.';
     this.options = [
       {
-        name: "username",
-        description: "Minecraft username",
+        name: 'username',
+        description: 'Minecraft username',
         required: false,
       },
     ];
@@ -25,14 +25,14 @@ export class WoolwarsCommand extends minecraftCommand {
 
       if (response.player === null) {
         // eslint-disable-next-line no-throw-literal
-        throw "This player has never joined Hypixel.";
+        throw 'This player has never joined Hypixel.';
       }
 
       const woolWars = response?.player?.stats?.WoolGames?.wool_wars?.stats;
 
       if (woolWars == undefined) {
         // eslint-disable-next-line no-throw-literal
-        throw "This player has never played WoolWars.";
+        throw 'This player has never played WoolWars.';
       }
 
       const { wins = 0, games_played = 0, kills = 0, deaths = 0, blocks_broken = 0, wool_placed = 0 } = woolWars;

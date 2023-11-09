@@ -1,19 +1,19 @@
 // CREDITS: https://github.com/slothpixel/core (Modified)
-import { nth, parseTimestamp } from "../../src/contracts/helperFunctions.js";
+import { nth, parseTimestamp } from '../../src/contracts/helperFunctions.js';
 
 const months = [
-  "Early Spring",
-  "Spring",
-  "Late Spring",
-  "Early Summer",
-  "Summer",
-  "Late Summer",
-  "Early Autumn",
-  "Autumn",
-  "Late Autumn",
-  "Early Winter",
-  "Winter",
-  "Late Winter",
+  'Early Spring',
+  'Spring',
+  'Late Spring',
+  'Early Summer',
+  'Summer',
+  'Late Summer',
+  'Early Autumn',
+  'Autumn',
+  'Late Autumn',
+  'Early Winter',
+  'Winter',
+  'Late Winter',
 ];
 
 const hourMs = 50000;
@@ -29,7 +29,7 @@ const yearZero = 1560275700000;
 const zooStart = yearZero + yearMs * 66;
 const zooTimeLength = yearMs / 2;
 
-const pets = ["Elephant", "Giraffe", "Blue Whale", "Tiger", "Lion", "Monkey"];
+const pets = ['Elephant', 'Giraffe', 'Blue Whale', 'Tiger', 'Lion', 'Monkey'];
 
 function getOffset(month, day, hour = 0) {
   return months.indexOf(month) * monthLength * dayMs + (day - 1) * dayMs + hour * hourMs;
@@ -109,58 +109,58 @@ function getUniqueListBy(array, key) {
 
 const eventTimes = {
   BANK_INTEREST: {
-    name: "Bank Interest",
+    name: 'Bank Interest',
     times: [
       {
-        start: getOffset("Early Spring", 1),
-        end: getOffset("Early Spring", 1),
+        start: getOffset('Early Spring', 1),
+        end: getOffset('Early Spring', 1),
       },
       {
-        start: getOffset("Early Summer", 1),
-        end: getOffset("Early Summer", 1),
+        start: getOffset('Early Summer', 1),
+        end: getOffset('Early Summer', 1),
       },
       {
-        start: getOffset("Early Autumn", 1),
-        end: getOffset("Early Autumn", 1),
+        start: getOffset('Early Autumn', 1),
+        end: getOffset('Early Autumn', 1),
       },
       {
-        start: getOffset("Early Winter", 1),
-        end: getOffset("Early Winter", 1),
+        start: getOffset('Early Winter', 1),
+        end: getOffset('Early Winter', 1),
       },
     ],
   },
   DARK_AUCTION: {
-    name: "Dark Auction",
+    name: 'Dark Auction',
     times: getDarkAuctionEventTimes(),
   },
   ELECTION_BOOTH_OPENS: {
-    name: "Election Booth Opens",
+    name: 'Election Booth Opens',
     times: [
       {
-        start: getOffset("Late Summer", 27),
-        end: getOffset("Late Summer", 27),
+        start: getOffset('Late Summer', 27),
+        end: getOffset('Late Summer', 27),
       },
     ],
   },
   ELECTION_OVER: {
-    name: "Election Over",
+    name: 'Election Over',
     times: [
       {
-        start: getOffset("Late Spring", 27),
-        end: getOffset("Late Spring", 27),
+        start: getOffset('Late Spring', 27),
+        end: getOffset('Late Spring', 27),
       },
     ],
   },
   FALLEN_STAR_CULT: {
-    name: "Cult of the Fallen Star",
+    name: 'Cult of the Fallen Star',
     times: getFallenStarCultTimes(),
   },
   FEAR_MONGERER: {
-    name: "Fear Mongerer",
+    name: 'Fear Mongerer',
     times: [
       {
-        start: getOffset("Autumn", 26),
-        end: getOffset("Late Autumn", 3),
+        start: getOffset('Autumn', 26),
+        end: getOffset('Late Autumn', 3),
       },
     ],
   },
@@ -172,48 +172,48 @@ const eventTimes = {
     name: "Jerry's Workshop",
     times: [
       {
-        start: getOffset("Late Winter", 1),
-        end: getOffset("Late Winter", 31),
+        start: getOffset('Late Winter', 1),
+        end: getOffset('Late Winter', 31),
       },
     ],
   },
   NEW_YEAR_CELEBRATION: {
-    name: "New Year Celebration",
+    name: 'New Year Celebration',
     times: [
       {
-        start: getOffset("Late Winter", 29),
-        end: getOffset("Late Winter", 31),
+        start: getOffset('Late Winter', 29),
+        end: getOffset('Late Winter', 31),
       },
     ],
   },
   SEASON_OF_JERRY: {
-    name: "Season of Jerry",
+    name: 'Season of Jerry',
     times: [
       {
-        start: getOffset("Late Winter", 24),
-        end: getOffset("Late Winter", 26),
+        start: getOffset('Late Winter', 24),
+        end: getOffset('Late Winter', 26),
       },
     ],
   },
   SPOOKY_FESTIVAL: {
-    name: "Spooky Festival",
+    name: 'Spooky Festival',
     times: [
       {
-        start: getOffset("Autumn", 29),
-        end: getOffset("Autumn", 31),
+        start: getOffset('Autumn', 29),
+        end: getOffset('Autumn', 31),
       },
     ],
   },
   TRAVELING_ZOO: {
-    name: "Traveling Zoo",
+    name: 'Traveling Zoo',
     times: [
       {
-        start: getOffset("Early Summer", 1),
-        end: getOffset("Early Summer", 3),
+        start: getOffset('Early Summer', 1),
+        end: getOffset('Early Summer', 3),
       },
       {
-        start: getOffset("Early Winter", 1),
-        end: getOffset("Early Winter", 3),
+        start: getOffset('Early Winter', 1),
+        end: getOffset('Early Winter', 3),
       },
     ],
   },
@@ -223,11 +223,11 @@ export const buildSkyblockCalendar = (events, from, to, years, stopAtYearEnd = t
   const now = Date.now();
   let fromDate = from || now;
 
-  if (typeof from === "string") fromDate = parseTimestamp(from);
+  if (typeof from === 'string') fromDate = parseTimestamp(from);
   fromDate = Math.max(fromDate, yearZero);
 
   let toDate = to || fromDate + yearMs * years || now;
-  if (typeof to === "string") toDate = parseTimestamp(to);
+  if (typeof to === 'string') toDate = parseTimestamp(to);
 
   if (Number.isNaN(Number(fromDate)) || Number.isNaN(Number(toDate))) {
     throw new TypeError("Parameters 'from' and 'to' must be integers");
@@ -249,18 +249,18 @@ export const buildSkyblockCalendar = (events, from, to, years, stopAtYearEnd = t
   let currentHour = Math.floor(currentDayOffset / hourMs);
   const currentMinute = Math.floor(((currentDayOffset - currentHour * hourMs) / hourMs) * 60);
 
-  const suffix = currentHour >= 12 ? "pm" : "am";
+  const suffix = currentHour >= 12 ? 'pm' : 'am';
 
   if (currentHour > 12) currentHour -= 12;
   if (currentHour === 0) currentHour = 12;
 
-  const formattedTime = `${currentHour}:${(Math.floor(currentMinute / 10) * 10).toString().padStart(2, "0")}${suffix}`;
+  const formattedTime = `${currentHour}:${(Math.floor(currentMinute / 10) * 10).toString().padStart(2, '0')}${suffix}`;
 
   const eventList = {};
 
   Object.keys(eventTimes).forEach((key) => {
     eventList[key] = {
-      name: "",
+      name: '',
       duration: 0,
       events: [],
     };
@@ -274,7 +274,7 @@ export const buildSkyblockCalendar = (events, from, to, years, stopAtYearEnd = t
   if (toToYears <= 0) throw new Error("Parameter 'years' must be positive");
 
   // convert string to boolean
-  const stopBoolean = String(stopAtYearEnd).toLowerCase() === "true";
+  const stopBoolean = String(stopAtYearEnd).toLowerCase() === 'true';
 
   if (!stopBoolean) toToYears++;
 
@@ -304,7 +304,7 @@ export const buildSkyblockCalendar = (events, from, to, years, stopAtYearEnd = t
           ending_in: msTill + duration,
         };
 
-        if (name === "Traveling Zoo") o.pet = getZooPet(fromDate + msTill);
+        if (name === 'Traveling Zoo') o.pet = getZooPet(fromDate + msTill);
 
         eventList[event].events.push(o);
       }
@@ -312,12 +312,12 @@ export const buildSkyblockCalendar = (events, from, to, years, stopAtYearEnd = t
   }
 
   Object.keys(eventList).forEach((key) => {
-    eventList[key].events = getUniqueListBy(eventList[key].events, "start_timestamp")
+    eventList[key].events = getUniqueListBy(eventList[key].events, 'start_timestamp')
       .filter(({ start_timestamp }) => start_timestamp < toDate)
       .sort((a, b) => a.start_timestamp - b.start_timestamp);
   });
 
-  const eventsToFilter = events ? events.split(",") : Object.keys(eventTimes);
+  const eventsToFilter = events ? events.split(',') : Object.keys(eventTimes);
 
   const filteredEvents = {};
   for (const event of eventsToFilter) {

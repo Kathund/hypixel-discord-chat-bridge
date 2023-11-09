@@ -1,11 +1,11 @@
 //CREDIT: https://github.com/SkyCrypt/SkyCryptWebsite (Modified)
-import xp_tables, { max_levels } from "./xp_tables.js";
+import xp_tables, { max_levels } from './xp_tables.js';
 
 export const calcSkill = (skill, experience, type) => {
-  let table = "normal";
-  if (skill === "runecrafting") table = "runecrafting";
-  if (skill === "social") table = "social";
-  if (skill === "dungeoneering") table = "catacombs";
+  let table = 'normal';
+  if (skill === 'runecrafting') table = 'runecrafting';
+  if (skill === 'social') table = 'social';
+  if (skill === 'dungeoneering') table = 'catacombs';
 
   if (experience <= 0) {
     return {
@@ -35,7 +35,7 @@ export const calcSkill = (skill, experience, type) => {
     }
   }
 
-  if (skill === "dungeoneering") {
+  if (skill === 'dungeoneering') {
     level += Math.floor((experience - xp) / 200_000_000);
     xp += Math.floor((experience - xp) / 200_000_000) * 200_000_000;
 
@@ -50,7 +50,7 @@ export const calcSkill = (skill, experience, type) => {
     xpForNext = Math.ceil(xp_tables[table][level] || 200000000);
   }
 
-  progress = level >= maxLevel && skill !== "dungeoneering" ? 0 : Math.max(0, Math.min(xpCurrent / xpForNext, 1));
+  progress = level >= maxLevel && skill !== 'dungeoneering' ? 0 : Math.max(0, Math.min(xpCurrent / xpForNext, 1));
 
   return {
     totalXp,
