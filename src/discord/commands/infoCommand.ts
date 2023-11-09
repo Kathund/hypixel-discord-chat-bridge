@@ -27,7 +27,7 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
       { name: '\u200B', value: '\u200B' },
       {
         name: '**Minecraft Information**:',
-        value: `Bot Username: \`${bot.username}\`\nPrefix: \`${minecraft.bot.prefix}\`\nSkyBlock Events: \`${
+        value: `Bot Username: \`${global.bot.username}\`\nPrefix: \`${minecraft.bot.prefix}\`\nSkyBlock Events: \`${
           minecraft.skyblockEventsNotifications.enabled ? 'enabled' : 'disabled'
         }\`\nAuto Accept: \`${
           minecraft.guildRequirements.autoAccept ? 'enabled' : 'disabled'

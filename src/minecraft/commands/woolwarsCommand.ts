@@ -1,7 +1,7 @@
 import { minecraftCommand } from '../../contracts/minecraftCommand';
 import { hypixel } from '../../contracts/API/HypixelRebornAPI';
 
-export class WoolwarsCommand extends minecraftCommand {
+export default class WoolwarsCommand extends minecraftCommand {
   name: string;
   aliases: string[];
   description: string;

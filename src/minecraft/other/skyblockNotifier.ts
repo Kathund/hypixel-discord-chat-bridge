@@ -32,7 +32,7 @@ async function checkForIncidents() {
 
       if ((hypixelIncidents as any)[title]?.notified !== true) {
         (hypixelIncidents as any)[title] = { notified: true };
-        bot.chat(`/gc [HYPIXEL STATUS] ${title} | ${link}`);
+        global.bot.chat(`/gc [HYPIXEL STATUS] ${title} | ${link}`);
         await new Promise((resolve) => setTimeout(resolve, 1500));
       }
 
@@ -44,9 +44,9 @@ async function checkForIncidents() {
         if ((hypixelIncidents as any)[title]?.updates?.includes(update) === true) continue;
 
         (hypixelIncidents as any)[title].updates ??= [];
-        if (bot !== undefined && bot._client.chat !== undefined) {
+        if (global.bot !== undefined && global.bot._client.chat !== undefined) {
           (hypixelIncidents as any)[title].updates.push(update);
-          bot.chat(`/gc [HYPIXEL STATUS UPDATE] ${title} | ${update}`);
+          global.bot.chat(`/gc [HYPIXEL STATUS UPDATE] ${title} | ${update}`);
           await new Promise((resolve) => setTimeout(resolve, 1500));
         }
       }
@@ -71,7 +71,7 @@ async function checkForHypixelUpdates(firstTime = false) {
         continue;
       }
 
-      if (bot !== undefined && bot._client.chat !== undefined && firstTime === false) {
+      if (global.bot !== undefined && global.bot._client.chat !== undefined && firstTime === false) {
         const response = await axios.get(link, {
           headers: {
             'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:89.0) Gecko/20100101 Firefox/89.0',
@@ -84,7 +84,7 @@ async function checkForHypixelUpdates(firstTime = false) {
           continue;
         }
 
-        bot.chat(`/gc [HYPIXEL UPDATE] ${title} | ${link}`);
+        global.bot.chat(`/gc [HYPIXEL UPDATE] ${title} | ${link}`);
         hypixelUpdates.push(title);
 
         await new Promise((resolve) => setTimeout(resolve, 1500));
@@ -106,7 +106,7 @@ async function checkForSkyblockVersion() {
 
     if (skyblockVersion !== data.version) {
       if (skyblockVersion !== undefined) {
-        bot.chat(
+        global.bot.chat(
           `/gc [HYPIXEL SKYBLOCK] Skyblock version has been updated to ${data.version}! Server restarts might occur!`
         );
       }

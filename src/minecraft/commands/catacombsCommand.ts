@@ -3,7 +3,7 @@ import { getLatestProfile } from '../../../API/functions/getLatestProfile';
 import { minecraftCommand } from '../../contracts/minecraftCommand';
 import { getDungeons } from '../../../API/stats/dungeons';
 
-export class CatacombsCommand extends minecraftCommand {
+export default class CatacombsCommand extends minecraftCommand {
   name: string;
   aliases: string[];
   description: string;

@@ -29,8 +29,8 @@ export class MinecraftManager extends CommunicationBridge {
   }
 
   connect() {
-    bot = this.createBotConnection();
-    this.bot = bot;
+    global.bot = this.createBotConnection();
+    this.bot = global.bot;
 
     this.errorHandler.registerEvents(this.bot);
     this.stateHandler.registerEvents(this.bot);
@@ -83,16 +83,16 @@ export class MinecraftManager extends CommunicationBridge {
         receivedMessage.includes(message) &&
         (this.chatHandler.isGuildMessage(receivedMessage) || this.chatHandler.isOfficerMessage(receivedMessage))
       ) {
-        bot.removeListener('message', messageListener);
+        global.bot.removeListener('message', messageListener);
         successfullySent = true;
       }
     };
 
-    bot.on('message', messageListener);
+    global.bot.on('message', messageListener);
     this.bot.chat(`${chat} ${message}`);
 
     setTimeout(() => {
-      bot.removeListener('message', messageListener);
+      global.bot.removeListener('message', messageListener);
       if (successfullySent === true) {
         return;
       }

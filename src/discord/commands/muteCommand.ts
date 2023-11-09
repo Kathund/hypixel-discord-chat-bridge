@@ -19,7 +19,7 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
   }
 
   const [name, time] = [interaction.options.getString('name'), interaction.options.getString('time')];
-  bot.chat(`/g mute ${name} ${time}`);
+  global.bot.chat(`/g mute ${name} ${time}`);
 
   const embed = new EmbedBuilder()
     .setColor(5763719)

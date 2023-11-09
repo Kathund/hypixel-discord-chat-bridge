@@ -5,7 +5,7 @@ const getWord = (message: any) => message.split(' ').pop();
 
 const cooldowns = new Map();
 
-export class unscrambleCommand extends minecraftCommand {
+export default class unscrambleCommand extends minecraftCommand {
   name: string;
   aliases: string[];
   description: string;
@@ -54,18 +54,18 @@ export class unscrambleCommand extends minecraftCommand {
             `/gc ${userUsername} guessed it right! Time elapsed: ${(Date.now() - startTime).toLocaleString()}ms!`
           );
 
-          bot.removeListener('chat', listener);
+          global.bot.removeListener('chat', listener);
           answered = true;
           cooldowns.delete(this.name);
         }
       };
 
-      bot.on('chat', listener);
+      global.bot.on('chat', listener);
       this.send(`/gc Unscramble the following word: "${scrambledWord}"`);
       const startTime = Date.now();
 
       setTimeout(() => {
-        bot.removeListener('chat', listener);
+        global.bot.removeListener('chat', listener);
         cooldowns.delete(this.name);
 
         if (answered === false) {

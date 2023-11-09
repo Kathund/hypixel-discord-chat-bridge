@@ -3,7 +3,7 @@ import { hypixel } from '../../contracts/API/HypixelRebornAPI';
 import { capitalize } from '../../contracts/helperFunctions';
 import { Player, BedWars } from 'hypixel-api-reborn';
 
-export class BedwarsCommand extends minecraftCommand {
+export default class BedwarsCommand extends minecraftCommand {
   name: string;
   aliases: string[];
   description: string;

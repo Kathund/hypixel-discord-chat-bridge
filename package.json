@@ -4,15 +4,15 @@
   "description": "A Hypixel guild chat and Discord chat bridge",
   "main": "index.js",
   "scripts": {
-    "start": "tsx index.ts",
-    "test": "jest --detectOpenHandles --forceExit",
+    "start": "npx tsx index.ts",
+    "test": "npx jest --detectOpenHandles --forceExit",
     "lint": "npx eslint .",
     "lint:fix": "npx eslint . --fix",
-    "lint:ejs": "ejslint **/*.ejs",
+    "lint:ejs": "npx ejslint **/*.ejs",
     "prettier": "npx prettier --check .",
     "prettier:fix": "npx prettier --write .",
-    "nodemon": "nodemon index",
-    "build": "tsc --build"
+    "nodemon": "nmpx nodemon index",
+    "build": "npx tsc --build"
   },
   "repository": {
     "type": "git",

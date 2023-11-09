@@ -18,7 +18,7 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
   }
 
   const name = interaction.options.getString('name');
-  bot.chat(`/g promote ${name}`);
+  global.bot.chat(`/g promote ${name}`);
 
   const embed = new EmbedBuilder()
     .setColor(5763719)

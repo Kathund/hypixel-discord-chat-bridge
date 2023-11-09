@@ -1,7 +1,7 @@
 import { minecraftCommand } from '../../contracts/minecraftCommand';
 import { formatNumber } from '../../contracts/helperFunctions';
 
-export class CalculateCommand extends minecraftCommand {
+export default class CalculateCommand extends minecraftCommand {
   name: string;
   aliases: string[];
   description: string;

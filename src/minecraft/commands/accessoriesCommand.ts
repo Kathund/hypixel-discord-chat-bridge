@@ -3,7 +3,7 @@ import { minecraftCommand } from '../../contracts/minecraftCommand';
 import { formatUsername } from '../../contracts/helperFunctions';
 import { getTalismans } from '../../../API/stats/talismans';
 
-export class AccessoriesCommand extends minecraftCommand {
+export default class AccessoriesCommand extends minecraftCommand {
   name: string;
   aliases: string[];
   description: string;

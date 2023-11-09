@@ -35,7 +35,7 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
   const arg = interaction.options.getSubcommand();
   const name = interaction.options.getString('name');
 
-  bot.chat(`/ignore ${arg} ${name}`);
+  global.bot.chat(`/ignore ${arg} ${name}`);
 
   const embed = new EmbedBuilder()
     .setColor(5763719)

@@ -1,5 +1,5 @@
 import { broadcast, broadcastCleanEmbed, broadcastHeadedEmbed, playerToggle } from '../types/global';
-import { Client, Collection, AttachmentBuilder, GatewayIntentBits } from 'discord.js';
+import { Client, AttachmentBuilder, GatewayIntentBits } from 'discord.js';
 import { CommunicationBridge } from '../contracts/CommunicationBridge';
 import { generateMessageImage } from '../contracts/messageToImage';
 import { replaceVariables } from '../contracts/helperFunctions';
@@ -24,15 +24,15 @@ export class DiscordManager extends CommunicationBridge {
 
     this.stateHandler = new StateHandler(this);
     this.messageHandler = new MessageHandler(this, null);
-    this.commandHandler = new CommandHandler();
   }
 
   async connect() {
-    client = new Client({
+    global.client = new Client({
       intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent],
     });
 
-    this.client = client;
+    this.client = global.client;
+    this.commandHandler = new CommandHandler();
 
     this.client.on('ready', () => this.stateHandler.onReady());
     this.client.on('messageCreate', (message: any) => this.messageHandler.onMessage(message));
@@ -48,8 +48,8 @@ export class DiscordManager extends CommunicationBridge {
       const filePath = join(eventsPath, file);
       const event = await import(filePath);
       event.once
-        ? client.once(event.name, (...args: any) => event.execute(...args))
-        : client.on(event.name, (...args: any) => event.execute(...args));
+        ? global.client.once(event.name, (...args: any) => event.execute(...args))
+        : global.client.on(event.name, (...args: any) => event.execute(...args));
     }
 
     process.on('SIGINT', async () => {

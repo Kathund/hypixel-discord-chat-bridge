@@ -2,7 +2,7 @@ import { minecraftCommand } from '../../contracts/minecraftCommand';
 import { hypixel } from '../../contracts/API/HypixelRebornAPI';
 import { UHC } from 'hypixel-api-reborn';
 
-export class UHCStatsCommand extends minecraftCommand {
+export default class UHCStatsCommand extends minecraftCommand {
   name: string;
   aliases: string[];
   description: string;

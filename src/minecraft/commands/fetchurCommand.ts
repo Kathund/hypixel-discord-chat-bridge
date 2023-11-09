@@ -1,7 +1,7 @@
 import { minecraftCommand } from '../../contracts/minecraftCommand';
 import { getFetchur } from '../../../API/functions/getFetchur';
 
-export class FetchurCommand extends minecraftCommand {
+export default class FetchurCommand extends minecraftCommand {
   name: string;
   aliases: never[];
   description: string;

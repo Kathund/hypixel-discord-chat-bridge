@@ -8,7 +8,7 @@ import { getSkills } from '../../../API/stats/skills';
 import { getWeight } from '../../../API/stats/weight';
 import { getNetworth } from 'skyhelper-networth';
 
-export class SkyblockCommand extends minecraftCommand {
+export default class SkyblockCommand extends minecraftCommand {
   name: string;
   aliases: string[];
   description: string;

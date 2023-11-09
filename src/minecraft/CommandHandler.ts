@@ -16,10 +16,10 @@ export class CommandHandler {
 
     // todo fix
     (async () => {
-      const commandFiles = readdirSync('./src/minecraft/commands').filter((file) => file.endsWith('.js'));
+      const commandFiles = readdirSync('./src/minecraft/commands');
       for (const file of commandFiles) {
+        console.log(file);
         const command = new (await import(`./commands/${file}`)).default(minecraft);
-
         this.commands.set(command.name, command);
       }
     })();
@@ -48,7 +48,7 @@ export class CommandHandler {
         return;
       }
 
-      bot.chat(`/gc [SOOPY V2] ${message}`);
+      global.bot.chat(`/gc [SOOPY V2] ${message}`);
 
       const command = message.slice(1).split(' ')[0];
 
@@ -60,12 +60,12 @@ export class CommandHandler {
           const response = await axios.get(URI);
 
           if (response?.data?.msg === undefined) {
-            return bot.chat(`/gc [SOOPY V2] An error occurred while running the command`);
+            return global.bot.chat(`/gc [SOOPY V2] An error occurred while running the command`);
           }
 
-          bot.chat(`/gc [SOOPY V2] ${response.data.msg}`);
+          global.bot.chat(`/gc [SOOPY V2] ${response.data.msg}`);
         } catch (e: any) {
-          bot.chat(`/gc [SOOPY V2] ${e.cause ?? e.message ?? 'Unknown error'}`);
+          global.bot.chat(`/gc [SOOPY V2] ${e.cause ?? e.message ?? 'Unknown error'}`);
         }
       })();
     }

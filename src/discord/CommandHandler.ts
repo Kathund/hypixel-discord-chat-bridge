@@ -8,7 +8,7 @@ export class CommandHandler {
   constructor() {
     try {
       (async () => {
-        client.commands = new Collection<string, SlashCommand>();
+        global.client.commands = new Collection<string, SlashCommand>();
         const commandFiles = readdirSync('./src/discord/commands');
         const commands = [];
 
@@ -16,7 +16,7 @@ export class CommandHandler {
           const command = await import(`../discord/commands/${file}`);
           commands.push(command.data.toJSON());
           if (command.data.name) {
-            client.commands.set(command.data.name, command);
+            global.client.commands.set(command.data.name, command);
           }
         }
 

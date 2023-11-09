@@ -1,7 +1,7 @@
 import { minecraftCommand } from '../../contracts/minecraftCommand';
 import axios from 'axios';
 
-export class EightBallCommand extends minecraftCommand {
+export default class EightBallCommand extends minecraftCommand {
   name: string;
   aliases: string[];
   description: string;

@@ -1,7 +1,7 @@
 import { minecraftCommand } from '../../contracts/minecraftCommand';
 import { hypixel } from '../../contracts/API/HypixelRebornAPI';
 import { Player, SkyWars } from 'hypixel-api-reborn';
-export class SkywarsCommand extends minecraftCommand {
+export default class SkywarsCommand extends minecraftCommand {
   name: string;
   aliases: string[];
   description: string;

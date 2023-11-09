@@ -1,6 +1,6 @@
 import { minecraftCommand } from '../../contracts/minecraftCommand';
 
-export class HelpCommand extends minecraftCommand {
+export default class HelpCommand extends minecraftCommand {
   name: string;
   aliases: string[];
   description: string;

@@ -4,7 +4,7 @@ import { minecraftCommand } from '../../contracts/minecraftCommand';
 import { getSlayers } from '../../../API/stats/slayer';
 import { capitalize } from 'lodash';
 
-export class SlayersCommand extends minecraftCommand {
+export default class SlayersCommand extends minecraftCommand {
   name: string;
   aliases: string[];
   description: string;

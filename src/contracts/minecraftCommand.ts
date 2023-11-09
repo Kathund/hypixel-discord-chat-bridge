@@ -17,7 +17,7 @@ export class minecraftCommand {
   }
 
   send(message: any, n = 1) {
-    if (bot === undefined && bot._client.chat === undefined) {
+    if (global.bot === undefined && global.bot._client.chat === undefined) {
       return;
     }
 
@@ -26,7 +26,7 @@ export class minecraftCommand {
         msg.toString().includes('You are sending commands too fast! Please slow down.') &&
         !msg.toString().includes(':')
       ) {
-        bot.removeListener('message', listener);
+        global.bot.removeListener('message', listener);
         n++;
 
         if (n >= 5) {
@@ -39,7 +39,7 @@ export class minecraftCommand {
         msg.toString().includes('You cannot say the same message twice!') === true &&
         msg.toString().includes(':') === false
       ) {
-        bot.removeListener('message', listener);
+        global.bot.removeListener('message', listener);
         n++;
 
         if (n >= 5) {
@@ -51,11 +51,11 @@ export class minecraftCommand {
       }
     };
 
-    bot.once('message', listener);
-    bot.chat(message);
+    global.bot.once('message', listener);
+    global.bot.chat(message);
 
     setTimeout(() => {
-      bot.removeListener('message', listener);
+      global.bot.removeListener('message', listener);
     }, 500);
   }
 

@@ -1,5 +1,3 @@
-import { Client } from 'discord.js';
-
 export type broadcast = {
   fullMessage?: any;
   chat?: any;
@@ -37,8 +35,8 @@ export type playerToggle = {
 };
 
 declare global {
-  let bot: any;
-  let client: any;
+  var bot: any;
+  var client: Client;
 }
 
 export type maxSkillsLevelsType = {

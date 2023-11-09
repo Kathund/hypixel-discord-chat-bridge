@@ -12,7 +12,7 @@ export class MessageHandler {
 
   async onMessage(message: any) {
     try {
-      if (message.author.id === client.user.id || !this.shouldBroadcastMessage(message)) {
+      if (message.author.id === global.client.user.id || !this.shouldBroadcastMessage(message)) {
         return;
       }
 

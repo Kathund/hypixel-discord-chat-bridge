@@ -5,7 +5,7 @@ import { uploadImage } from '../../contracts/API/imgurAPI';
 import { renderLore } from '../../contracts/renderItem';
 import { getPets } from '../../../API/stats/pets';
 
-export class PetCommand extends minecraftCommand {
+export default class PetCommand extends minecraftCommand {
   name: string;
   aliases: string[];
   description: string;

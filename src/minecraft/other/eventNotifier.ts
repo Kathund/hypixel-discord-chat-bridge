@@ -9,7 +9,7 @@ if (minecraft.skyblockEventsNotifications.enabled) {
 
   setInterval(async () => {
     try {
-      const eventBOT = new minecraftCommand(bot);
+      const eventBOT = new minecraftCommand(global.bot);
       const EVENTS = getSkyblockCalendar();
       for (const event in (EVENTS.data as any).events) {
         const eventData = ((EVENTS.data as any).events as any)[event];

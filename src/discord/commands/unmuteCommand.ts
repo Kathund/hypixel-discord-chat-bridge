@@ -18,7 +18,7 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
   }
 
   const name = interaction.options.getString('name');
-  bot.chat(`/g unmute ${name}`);
+  global.bot.chat(`/g unmute ${name}`);
 
   const embed = new EmbedBuilder()
     .setColor(5763719)

@@ -10,7 +10,7 @@ const getAnswer = (message: any) => {
   return message.split(': ')[1];
 };
 
-export class QuickMathsCommand extends minecraftCommand {
+export default class QuickMathsCommand extends minecraftCommand {
   name: string;
   aliases: string[];
   description: string;
@@ -48,13 +48,13 @@ export class QuickMathsCommand extends minecraftCommand {
 
         answered = true;
         this.send(`/gc ${userUsername} Correct! It took you ${(Date.now() - startTime).toLocaleString()}ms`);
-        bot.removeListener('chat', listener);
+        global.bot.removeListener('chat', listener);
       };
 
-      bot.on('chat', listener);
+      global.bot.on('chat', listener);
 
       setTimeout(() => {
-        bot.removeListener('chat', listener);
+        global.bot.removeListener('chat', listener);
 
         if (!answered) {
           this.send(`/gc ${userUsername} Time's up! The answer was ${answer}`);

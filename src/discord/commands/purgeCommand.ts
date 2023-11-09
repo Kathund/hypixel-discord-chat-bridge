@@ -1,7 +1,7 @@
 import { ChatInputCommandInteraction, GuildMember, SlashCommandBuilder, TextChannel } from 'discord.js';
 import { HypixelDiscordChatBridgeError } from '../../contracts/errorHandler';
 import { discord } from '../../../config.json';
-const data = new SlashCommandBuilder()
+export const data = new SlashCommandBuilder()
   .setName('purge')
   .setDescription('Purges the given amount of messages.')
   .addNumberOption((option) =>

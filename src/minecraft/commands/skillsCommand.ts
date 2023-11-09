@@ -3,7 +3,7 @@ import { minecraftCommand } from '../../contracts/minecraftCommand';
 import { formatUsername } from '../../contracts/helperFunctions';
 import { getSkills } from '../../../API/stats/skills';
 
-export class SkillsCommand extends minecraftCommand {
+export default class SkillsCommand extends minecraftCommand {
   name: string;
   aliases: string[];
   description: string;

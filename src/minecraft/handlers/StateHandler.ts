@@ -14,7 +14,7 @@ export class StateHandler extends EventHandler {
   }
 
   registerEvents(bot: any) {
-    this.bot = bot;
+    this.bot = global.bot;
 
     this.bot.on('login', () => this.onLogin());
     this.bot.on('end', (msg: any) => this.onEnd(msg));

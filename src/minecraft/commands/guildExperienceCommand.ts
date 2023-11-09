@@ -2,7 +2,7 @@ import { minecraftCommand } from '../../contracts/minecraftCommand';
 import { hypixel } from '../../contracts/API/HypixelRebornAPI';
 import { getUUID } from '../../contracts/API/PlayerDBAPI';
 
-export class GuildExperienceCommand extends minecraftCommand {
+export default class GuildExperienceCommand extends minecraftCommand {
   name: string;
   aliases: string[];
   description: string;

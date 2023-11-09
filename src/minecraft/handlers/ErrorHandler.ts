@@ -10,7 +10,7 @@ export class ErrorHandler extends EventHandler {
   }
 
   registerEvents(bot: any) {
-    this.bot = bot;
+    this.bot = global.bot;
 
     this.bot.on('error', (error: any) => this.onError(error));
   }

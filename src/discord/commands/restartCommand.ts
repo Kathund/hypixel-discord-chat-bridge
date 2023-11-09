@@ -25,8 +25,8 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 
   interaction.followUp({ embeds: [restartEmbed] });
 
-  await bot.end('restart');
-  await client.destroy();
+  await global.bot.end('restart');
+  await global.client.destroy();
 
   app.register().then(() => {
     app.connect();

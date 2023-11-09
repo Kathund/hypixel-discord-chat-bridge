@@ -7,7 +7,7 @@ import { renderLore } from '../../contracts/renderItem';
 import { getRank } from '../../../API/stats/rank';
 import axios from 'axios';
 
-export class AuctionHouseCommand extends minecraftCommand {
+export default class AuctionHouseCommand extends minecraftCommand {
   name: string;
   aliases: string[];
   description: string;

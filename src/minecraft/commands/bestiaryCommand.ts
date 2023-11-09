@@ -3,7 +3,7 @@ import { minecraftCommand } from '../../contracts/minecraftCommand';
 import { formatUsername } from '../../contracts/helperFunctions';
 import { getBestiary } from '../../../API/stats/bestiary';
 
-export class BestiaryCommand extends minecraftCommand {
+export default class BestiaryCommand extends minecraftCommand {
   name: string;
   aliases: string[];
   description: string;

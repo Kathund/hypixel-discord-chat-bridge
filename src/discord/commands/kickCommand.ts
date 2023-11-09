@@ -21,7 +21,7 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
   }
 
   const [name, reason] = [interaction.options.getString('name'), interaction.options.getString('reason')];
-  bot.chat(`/g kick ${name} ${reason}`);
+  global.bot.chat(`/g kick ${name} ${reason}`);
 
   const embed = new EmbedBuilder()
     .setColor(5763719)

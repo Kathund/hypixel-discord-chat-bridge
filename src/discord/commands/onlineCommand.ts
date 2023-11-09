@@ -10,16 +10,16 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 
       cachedMessages.push(message);
       if (message.startsWith('Offline Members')) {
-        bot.removeListener('message', listener);
+        global.bot.removeListener('message', listener);
         resolve(cachedMessages);
       }
     };
 
-    bot.on('message', listener);
-    bot.chat('/g online');
+    global.bot.on('message', listener);
+    global.bot.chat('/g online');
 
     setTimeout(() => {
-      bot.removeListener('message', listener);
+      global.bot.removeListener('message', listener);
       reject('Command timed out. Please try again.');
     }, 5000);
   });

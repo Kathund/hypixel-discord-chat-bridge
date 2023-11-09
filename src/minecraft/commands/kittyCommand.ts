@@ -2,7 +2,7 @@ import { minecraftCommand } from '../../contracts/minecraftCommand';
 import { uploadImage } from '../../contracts/API/imgurAPI';
 import axios from 'axios';
 
-export class KittyCommand extends minecraftCommand {
+export default class KittyCommand extends minecraftCommand {
   name: string;
   aliases: string[];
   description: string;

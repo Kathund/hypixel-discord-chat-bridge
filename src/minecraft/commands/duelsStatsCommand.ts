@@ -3,7 +3,7 @@ import { hypixel } from '../../contracts/API/HypixelRebornAPI';
 import { formatNumber } from '../../contracts/helperFunctions';
 import { Duels, Player } from 'hypixel-api-reborn';
 
-export class DuelsStatsCommand extends minecraftCommand {
+export default class DuelsStatsCommand extends minecraftCommand {
   name: string;
   aliases: string[];
   description: string;

@@ -256,7 +256,7 @@ export const parseTimestamp = (text: any) => {
   return dateMath ? dateMath.valueOf() : undefined;
 };
 
-export const formatUsername = (username: string, gamemode: 'ironman' | 'bingo' | 'island' | string) => {
+export const formatUsername = (username: string, gamemode: 'ironman' | 'bingo' | 'island' | string | null) => {
   if (gamemode === 'ironman') return `♲ ${username}`;
   if (gamemode === 'bingo') return `Ⓑ ${username}`;
   if (gamemode === 'island') return `	☀ ${username}`;

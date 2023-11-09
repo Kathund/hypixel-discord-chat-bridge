@@ -2,7 +2,7 @@ import { capitalize, formatNumber } from '../../contracts/helperFunctions';
 import { minecraftCommand } from '../../contracts/minecraftCommand';
 import { hypixel } from '../../contracts/API/HypixelRebornAPI';
 
-export class GuildInformationCommand extends minecraftCommand {
+export default class GuildInformationCommand extends minecraftCommand {
   name: string;
   aliases: string[];
   description: string;

@@ -2,7 +2,7 @@ import { minecraftCommand } from '../../contracts/minecraftCommand';
 import { hypixel } from '../../contracts/API/HypixelRebornAPI';
 import { MegaWalls } from 'hypixel-api-reborn';
 
-export class MegaWallsCommand extends minecraftCommand {
+export default class MegaWallsCommand extends minecraftCommand {
   name: string;
   aliases: string[];
   description: string;

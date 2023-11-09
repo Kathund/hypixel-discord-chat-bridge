@@ -1,15 +1,11 @@
 import { ChatInputCommandInteraction, EmbedBuilder, SlashCommandBuilder } from 'discord.js';
 
-export const name = 'guildtop';
-export const description = 'Top 10 members with the most guild experience.';
-export const options = [
-  {
-    name: 'time',
-    description: 'Days Ago',
-    type: 3,
-    required: false,
-  },
-];
+export const data = new SlashCommandBuilder()
+  .setName('guildtop')
+  .setDescription('Top 10 members with the most guild experience.')
+  .addNumberOption((option) =>
+    option.setName('time').setDescription('Days Ago').setRequired(false).setMinValue(1).setMaxValue(7)
+  );
 
 export const execute = async (interaction: ChatInputCommandInteraction) => {
   const time = interaction.options.getString('time');
@@ -21,16 +17,16 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
       cachedMessages.push(message);
 
       if (message.startsWith('10.') && message.endsWith('Guild Experience')) {
-        bot.removeListener('message', listener);
+        global.bot.removeListener('message', listener);
         resolve(cachedMessages);
       }
     };
 
-    bot.on('message', listener);
-    bot.chat(`/g top ${time || ''}`);
+    global.bot.on('message', listener);
+    global.bot.chat(`/g top ${time || ''}`);
 
     setTimeout(() => {
-      bot.removeListener('message', listener);
+      global.bot.removeListener('message', listener);
       reject('Command timed out. Please try again.');
     }, 5000);
   });

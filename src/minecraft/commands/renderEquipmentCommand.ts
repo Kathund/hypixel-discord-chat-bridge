@@ -4,7 +4,7 @@ import { minecraftCommand } from '../../contracts/minecraftCommand';
 import { uploadImage } from '../../contracts/API/imgurAPI';
 import { renderLore } from '../../contracts/renderItem';
 
-export class EquipmentCommand extends minecraftCommand {
+export default class EquipmentCommand extends minecraftCommand {
   name: string;
   aliases: never[];
   description: string;

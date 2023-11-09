@@ -18,7 +18,7 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
   }
 
   const command = interaction.options.getString('command');
-  bot.chat(`/${command}`);
+  global.bot.chat(`/${command}`);
 
   const commandMessage = new EmbedBuilder()
     .setColor(2067276)

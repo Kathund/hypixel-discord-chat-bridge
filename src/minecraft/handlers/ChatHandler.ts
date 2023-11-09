@@ -23,7 +23,7 @@ export class ChatHandler extends EventHandler {
   }
 
   registerEvents(bot: any) {
-    this.bot = bot;
+    this.bot = global.bot;
     this.bot.on('message', (message: any) => this.onMessage(message));
   }
 
@@ -45,7 +45,7 @@ export class ChatHandler extends EventHandler {
     }
 
     if (this.isLobbyJoinMessage(message)) {
-      // return bot.chat("\u00a7");
+      return global.bot.chat('\u00a7');
     }
 
     if (this.isPartyMessage(message) && minecraftConfig.fragBot.enabled === true) {
@@ -64,7 +64,7 @@ export class ChatHandler extends EventHandler {
         }
 
         const members = await hypixel
-          .getGuild('player', bot.username, {})
+          .getGuild('player', global.bot.username, {})
           .then(async (guild: Guild) => guild.members.map((member) => member.uuid));
         if ((minecraftConfig.fragBot.whitelist && (whitelisted.includes as any)(username)) || members.includes(uuid)) {
           this.send(`/party accept ${username}`);
@@ -138,7 +138,7 @@ export class ChatHandler extends EventHandler {
           meetRequirements = true;
         }
 
-        bot.chat(
+        global.bot.chat(
           `/oc ${username} ${meetRequirements ? 'meets' : "Doesn't meet"} Requirements. [BW] [${
             (player.stats?.bedwars as BedWars).level
           }✫] FKDR: ${(player.stats?.bedwars as BedWars).finalKDRatio} | [SW] [${
@@ -153,7 +153,7 @@ export class ChatHandler extends EventHandler {
 
         if (meetRequirements === true) {
           if (minecraftConfig.guildRequirements.autoAccept === true) {
-            bot.chat(`/guild accept ${username}`);
+            global.bot.chat(`/guild accept ${username}`);
           }
 
           const statsEmbed = new EmbedBuilder()
@@ -208,7 +208,9 @@ export class ChatHandler extends EventHandler {
               iconURL: 'https://imgur.com/tgwQJTX.png',
             });
 
-          await client.channels.cache.get(`${discordConfig.channels.loggingChannel}`).send({ embeds: [statsEmbed] });
+          await global.client.channels.cache
+            .get(`${discordConfig.channels.loggingChannel}`)
+            .send({ embeds: [statsEmbed] });
         }
       }
     }
@@ -245,7 +247,7 @@ export class ChatHandler extends EventHandler {
         .trim()
         .split(/ +/g)[0];
       await delay(1000);
-      bot.chat(
+      global.bot.chat(
         `/gc ${replaceVariables(messages.guildJoinMessage, {
           prefix: minecraftConfig.bot.prefix,
         })} | by @duckysolucky`
@@ -398,7 +400,7 @@ export class ChatHandler extends EventHandler {
     }
 
     if (this.isRepeatMessage(message)) {
-      return client.channels.cache.get(discordConfig.channels.guildChatChannel).send({
+      return global.client.channels.cache.get(discordConfig.channels.guildChatChannel).send({
         embeds: [
           {
             color: 15548997,
@@ -817,7 +819,7 @@ export class ChatHandler extends EventHandler {
   }
 
   isMessageFromBot(username: any) {
-    return bot.username === username;
+    return global.bot.username === username;
   }
 
   isAlreadyBlacklistedMessage(message: any) {

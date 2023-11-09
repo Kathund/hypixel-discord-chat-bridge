@@ -4,7 +4,7 @@ import { getLatestProfile } from '../../../API/functions/getLatestProfile';
 import { minecraftCommand } from '../../contracts/minecraftCommand';
 import { getWeight } from '../../../API/stats/weight';
 
-export class StatsCommand extends minecraftCommand {
+export default class StatsCommand extends minecraftCommand {
   name: string;
   aliases: string[];
   description: string;
