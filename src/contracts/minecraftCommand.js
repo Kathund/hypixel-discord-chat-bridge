@@ -1,8 +1,8 @@
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-const helperFunctions = require("./helperFunctions.js");
-const config = require("../../config.json");
+import { minecraft as minecraftConfig } from "../../config.json";
+import { generateID } from "./helperFunctions.js";
 
-class minecraftCommand {
+export class minecraftCommand {
   constructor(minecraft) {
     this.minecraft = minecraft;
   }
@@ -46,10 +46,7 @@ class minecraftCommand {
         }
 
         await delay(250);
-        return this.send(
-          `${message} - ${helperFunctions.generateID(config.minecraft.bot.messageRepeatBypassLength)}`,
-          n + 1
-        );
+        return this.send(`${message} - ${generateID(minecraftConfig.bot.messageRepeatBypassLength)}`, n + 1);
       }
     };
 
@@ -65,5 +62,3 @@ class minecraftCommand {
     throw new Error("Command onCommand method is not implemented yet!");
   }
 }
-
-module.exports = minecraftCommand;

@@ -1,15 +1,16 @@
 // Credits https://github.com/Altpapier/hypixel-discord-guild-bridge/blob/master/helper/loreRenderer.js
-const Canvas = require("canvas");
-Canvas.registerFont("src/contracts/Fonts/2_Minecraft-Italic.otf", {
+// eslint-disable-next-line import/no-unresolved
+import { registerFont, createCanvas } from "canvas";
+registerFont("src/contracts/Fonts/2_Minecraft-Italic.otf", {
   family: "MinecraftItalic",
 });
-Canvas.registerFont("src/contracts/Fonts/MinecraftRegular-Bmg3.ttf", {
+registerFont("src/contracts/Fonts/MinecraftRegular-Bmg3.ttf", {
   family: "Minecraft",
 });
-Canvas.registerFont("src/contracts/Fonts/minecraft-bold.otf", {
+registerFont("src/contracts/Fonts/minecraft-bold.otf", {
   family: "MinecraftBold",
 });
-Canvas.registerFont("src/contracts/Fonts/unifont.ttf", {
+registerFont("src/contracts/Fonts/unifont.ttf", {
   family: "MinecraftUnicode",
 });
 
@@ -33,7 +34,7 @@ const RGBA_COLOR = {
 };
 
 async function getCanvasWidthAndHeight(lore) {
-  const canvas = Canvas.createCanvas(1, 1);
+  const canvas = createCanvas(1, 1);
   const ctx = canvas.getContext("2d");
   ctx.font = "24px Minecraft";
 
@@ -49,11 +50,11 @@ async function getCanvasWidthAndHeight(lore) {
   return { height: lore.length * 24 + 15, width: highestWidth + 20 };
 }
 
-async function renderLore(itemName, lore) {
+export const renderLore = async (itemName, lore) => {
   if (itemName) lore.unshift(itemName);
   const measurements = await getCanvasWidthAndHeight(lore);
   if (!measurements) return;
-  const canvas = Canvas.createCanvas(measurements.width, measurements.height);
+  const canvas = createCanvas(measurements.width, measurements.height);
   const ctx = canvas.getContext("2d");
   // BACKGROUND
   ctx.fillStyle = "#100110";
@@ -89,6 +90,4 @@ async function renderLore(itemName, lore) {
   }
 
   return canvas.toBuffer();
-}
-
-module.exports = { renderLore };
+};

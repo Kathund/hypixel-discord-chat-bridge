@@ -1,19 +1,19 @@
-const config = require("../../../config.json");
-const cheerio = require("cheerio");
-const Rss = require("rss-parser");
-const axios = require("axios");
+import { minecraft } from "../../../config.json";
+import { load } from "cheerio";
+import Rss from "rss-parser";
+import axios from "axios";
 const parser = new Rss();
 
-if (config.minecraft.hypixelUpdates.enabled === true) {
-  if (config.minecraft.hypixelUpdates.hypixelNews === true) {
+if (minecraft.hypixelUpdates.enabled === true) {
+  if (minecraft.hypixelUpdates.hypixelNews === true) {
     setInterval(checkForHypixelUpdates, 10000);
   }
 
-  if (config.minecraft.hypixelUpdates.statusUpdates === true) {
+  if (minecraft.hypixelUpdates.statusUpdates === true) {
     setInterval(checkForIncidents, 10000);
   }
 
-  if (config.minecraft.hypixelUpdates.skyblockVersion === true) {
+  if (minecraft.hypixelUpdates.skyblockVersion === true) {
     setInterval(checkForSkyblockVersion, 10000);
   }
 }
@@ -76,7 +76,7 @@ async function checkForHypixelUpdates(firstTime = false) {
           },
         });
 
-        const $ = cheerio.load(response.data);
+        const $ = load(response.data);
         const time = parseInt($("time.u-dt").eq(0).attr("data-time"));
         if (time + 43200 < Math.floor(Date.now() / 1000)) {
           continue;

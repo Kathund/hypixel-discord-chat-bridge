@@ -1,11 +1,11 @@
 /* eslint-disable no-throw-literal */
-const config = require("../../config.json");
-const axios = require("axios");
+import { minecraft } from "../../config.json";
+import axios from "axios";
 
-async function getMuseum(profileID, uuid) {
+export const getMuseum = async (profileID, uuid) => {
   try {
     const { data } = await axios.get(
-      `https://api.hypixel.net/skyblock/museum?key=${config.minecraft.API.hypixelAPIkey}&profile=${profileID}`
+      `https://api.hypixel.net/skyblock/museum?key=${minecraft.API.hypixelAPIkey}&profile=${profileID}`
     );
 
     if (data === undefined || data.success === false) {
@@ -27,6 +27,4 @@ async function getMuseum(profileID, uuid) {
   } catch (e) {
     throw new Error(e);
   }
-}
-
-module.exports = { getMuseum };
+};

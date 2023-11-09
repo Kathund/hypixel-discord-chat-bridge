@@ -1,6 +1,6 @@
-const { decodeData } = require("../../src/contracts/helperFunctions.js");
+import { decodeData } from "../../src/contracts/helperFunctions.js";
 
-module.exports = async (profile) => {
+export const getTalismans = async (profile) => {
   try {
     const output = {
       common: 0,

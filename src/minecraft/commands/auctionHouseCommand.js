@@ -1,13 +1,13 @@
-const config = require("../../../config.json");
-const { addCommas, timeSince } = require("../../contracts/helperFunctions.js");
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
-const { renderLore } = require("../../contracts/renderItem.js");
-const getRank = require("../../../API/stats/rank.js");
-const axios = require("axios");
-const { getUUID } = require("../../contracts/API/PlayerDBAPI.js");
-const { uploadImage } = require("../../contracts/API/imgurAPI.js");
+import { addCommas, timeSince } from "../../contracts/helperFunctions.js";
+import { minecraftCommand } from "../../contracts/minecraftCommand.js";
+import { minecraft as minecraftConfig } from "../../../config.json";
+import { uploadImage } from "../../contracts/API/imgurAPI.js";
+import { getUUID } from "../../contracts/API/PlayerDBAPI.js";
+import { renderLore } from "../../contracts/renderItem.js";
+import getRank from "../../../API/stats/rank.js";
+import axios from "axios";
 
-class AuctionHouseCommand extends minecraftCommand {
+export class AuctionHouseCommand extends minecraftCommand {
   constructor(minecraft) {
     super(minecraft);
 
@@ -31,7 +31,7 @@ class AuctionHouseCommand extends minecraftCommand {
 
       const uuid = await getUUID(username);
 
-      const { hypixelAPIkey } = config.minecraft.API;
+      const { hypixelAPIkey } = minecraftConfig.API;
       const [auctionResponse, playerResponse] = await Promise.all([
         axios.get(`https://api.hypixel.net/skyblock/auction?key=${hypixelAPIkey}&player=${uuid}`),
         axios.get(`https://api.hypixel.net/player?key=${hypixelAPIkey}&uuid=${uuid}`),
@@ -97,5 +97,3 @@ class AuctionHouseCommand extends minecraftCommand {
     }
   }
 }
-
-module.exports = AuctionHouseCommand;

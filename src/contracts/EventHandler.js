@@ -1,4 +1,4 @@
-class EventHandler {
+export class EventHandler {
   registerEvents(bot) {
     throw new Error("Event Handler registerEvents is not implemented yet!");
   }
@@ -8,5 +8,3 @@ class EventHandler {
     }
   }
 }
-
-module.exports = EventHandler;

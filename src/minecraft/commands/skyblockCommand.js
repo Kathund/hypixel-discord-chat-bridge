@@ -1,14 +1,14 @@
-const { formatNumber, formatUsername } = require("../../contracts/helperFunctions.js");
-const { getLatestProfile } = require("../../../API/functions/getLatestProfile.js");
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
-const getTalismans = require("../../../API/stats/talismans.js");
-const getDungeons = require("../../../API/stats/dungeons.js");
-const getSkills = require("../../../API/stats/skills.js");
-const getSlayer = require("../../../API/stats/slayer.js");
-const getWeight = require("../../../API/stats/weight.js");
-const { getNetworth } = require("skyhelper-networth");
+import { formatNumber, formatUsername } from "../../contracts/helperFunctions.js";
+import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
+import { minecraftCommand } from "../../contracts/minecraftCommand.js";
+import { getTalismans } from "../../../API/stats/talismans.js";
+import { getDungeons } from "../../../API/stats/dungeons.js";
+import { getSlayers } from "../../../API/stats/slayer.js";
+import { getSkills } from "../../../API/stats/skills.js";
+import { getWeight } from "../../../API/stats/weight.js";
+import { getNetworth } from "skyhelper-networth";
 
-class SkyblockCommand extends minecraftCommand {
+export class SkyblockCommand extends minecraftCommand {
   constructor(minecraft) {
     super(minecraft);
 
@@ -33,7 +33,7 @@ class SkyblockCommand extends minecraftCommand {
 
       const [skills, slayer, networth, weight, dungeons, talismans] = await Promise.all([
         getSkills(data.profile),
-        getSlayer(data.profile),
+        getSlayers(data.profile),
         getNetworth(data.profile, data.profileData?.banking?.balance || 0, {
           cache: true,
           onlyNetworth: true,
@@ -76,5 +76,3 @@ class SkyblockCommand extends minecraftCommand {
     }
   }
 }
-
-module.exports = SkyblockCommand;

@@ -1,10 +1,11 @@
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
-const { getLatestProfile } = require("../../../API/functions/getLatestProfile.js");
-const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-const getWeight = require("../../../API/stats/weight.js");
-const { formatUsername, formatNumber } = require("../../contracts/helperFunctions.js");
+import { formatUsername, formatNumber } from "../../contracts/helperFunctions.js";
+import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
+import { minecraftCommand } from "../../contracts/minecraftCommand.js";
+import { getWeight } from "../../../API/stats/weight.js";
 
-class StatsCommand extends minecraftCommand {
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+export class StatsCommand extends minecraftCommand {
   constructor(minecraft) {
     super(minecraft);
 
@@ -47,5 +48,3 @@ class StatsCommand extends minecraftCommand {
     }
   }
 }
-
-module.exports = StatsCommand;

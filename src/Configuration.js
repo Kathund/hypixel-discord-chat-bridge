@@ -1,8 +1,8 @@
-const Logger = require("./Logger.js");
-const fs = require("fs");
+import { configUpdateMessage } from "./Logger.js";
+import { readFileSync, writeFileSync } from "fs";
 
-const exampleConfig = JSON.parse(fs.readFileSync("config.example.json"));
-const config = JSON.parse(fs.readFileSync("config.json"));
+const exampleConfig = JSON.parse(readFileSync("config.example.json"));
+const config = JSON.parse(readFileSync("config.json"));
 
 function checkConfig(object, exampleObject) {
   for (const [key, value] of Object.entries(exampleObject)) {
@@ -12,7 +12,7 @@ function checkConfig(object, exampleObject) {
 
     if (object[key] === undefined) {
       object[key] = value;
-      Logger.configUpdateMessage(`${key}: ${JSON.stringify(value)}`);
+      configUpdateMessage(`${key}: ${JSON.stringify(value)}`);
     }
 
     if (typeof value === "object") {
@@ -24,7 +24,7 @@ function checkConfig(object, exampleObject) {
 for (const [key, value] of Object.entries(exampleConfig)) {
   if (config[key] === undefined) {
     config[key] = value;
-    Logger.configUpdateMessage(`${key}: ${JSON.stringify(value)}`);
+    configUpdateMessage(`${key}: ${JSON.stringify(value)}`);
   }
 
   if (typeof value === "object") {
@@ -32,4 +32,4 @@ for (const [key, value] of Object.entries(exampleConfig)) {
   }
 }
 
-fs.writeFileSync("config.json", JSON.stringify(config, null, 2));
+writeFileSync("config.json", JSON.stringify(config, null, 2));

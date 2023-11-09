@@ -1,8 +1,8 @@
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
-const { formatUsername } = require("../../contracts/helperFunctions.js");
-const { getLatestProfile } = require("../../../API/functions/getLatestProfile.js");
+import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
+import { formatUsername } from "../../contracts/helperFunctions.js";
+import { minecraftCommand } from "../../contracts/minecraftCommand.js";
 
-class CatacombsCommand extends minecraftCommand {
+export class CatacombsCommand extends minecraftCommand {
   constructor(minecraft) {
     super(minecraft);
 
@@ -35,5 +35,3 @@ class CatacombsCommand extends minecraftCommand {
     }
   }
 }
-
-module.exports = CatacombsCommand;

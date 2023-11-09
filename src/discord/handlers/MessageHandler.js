@@ -1,8 +1,8 @@
-const { uploadImage } = require("../../contracts/API/imgurAPI.js");
-const { demojify } = require("discord-emoji-converter");
-const config = require("../../../config.json");
+import { discord as discordConfig } from "../../../config.json";
+import { uploadImage } from "../../contracts/API/imgurAPI.js";
+import { demojify } from "discord-emoji-converter";
 
-class MessageHandler {
+export class MessageHandler {
   constructor(discord, command) {
     this.discord = discord;
     this.command = command;
@@ -65,7 +65,7 @@ class MessageHandler {
 
       const mentionedUserName = message.mentions.repliedUser.globalName ?? message.mentions.repliedUser.username;
 
-      if (config.discord.other.messageMode === "bot" && reference.embed !== null) {
+      if (discordConfig.other.messageMode === "bot" && reference.embed !== null) {
         const name = reference.embeds[0]?.author?.name;
         if (name === undefined) {
           return mentionedUserName;
@@ -74,7 +74,7 @@ class MessageHandler {
         return name;
       }
 
-      if (config.discord.other.messageMode === "minecraft" && reference.attachments !== null) {
+      if (discordConfig.other.messageMode === "minecraft" && reference.attachments !== null) {
         const name = reference.attachments.values()?.next()?.value?.name;
         if (name === undefined) {
           return mentionedUserName;
@@ -83,7 +83,7 @@ class MessageHandler {
         return name.split(".")[0];
       }
 
-      if (config.discord.other.messageMode === "webhook") {
+      if (discordConfig.other.messageMode === "webhook") {
         if (reference.author.username === undefined) {
           return mentionedUserName;
         }
@@ -146,16 +146,14 @@ class MessageHandler {
 
   shouldBroadcastMessage(message) {
     const isBot =
-      message.author.bot && config.discord.channels.allowedBots.includes(message.author.id) === false ? true : false;
+      message.author.bot && discordConfig.channels.allowedBots.includes(message.author.id) === false ? true : false;
     const isValid = !isBot && message.content.length > 0;
     const validChannelIds = [
-      config.discord.channels.officerChannel,
-      config.discord.channels.guildChatChannel,
-      config.discord.channels.debugChannel,
+      discordConfig.channels.officerChannel,
+      discordConfig.channels.guildChatChannel,
+      discordConfig.channels.debugChannel,
     ];
 
     return isValid && validChannelIds.includes(message.channel.id);
   }
 }
-
-module.exports = MessageHandler;

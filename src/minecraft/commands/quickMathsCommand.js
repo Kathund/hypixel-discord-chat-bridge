@@ -1,16 +1,16 @@
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
-const config = require("../../../config.json");
+import { minecraftCommand } from "../../contracts/minecraftCommand.js";
+import { minecraft as minecraftConfig } from "../../../config.json";
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 const getAnswer = (message) => {
-  if (message.includes(config.minecraft.bot.messageFormat)) {
-    return message.split(config.minecraft.bot.messageFormat)[1].trim();
+  if (message.includes(minecraftConfig.bot.messageFormat)) {
+    return message.split(minecraftConfig.bot.messageFormat)[1].trim();
   }
 
   return message.split(": ")[1];
 };
 
-class QuickMathsCommand extends minecraftCommand {
+export class QuickMathsCommand extends minecraftCommand {
   constructor(minecraft) {
     super(minecraft);
 
@@ -61,5 +61,3 @@ class QuickMathsCommand extends minecraftCommand {
     }
   }
 }
-
-module.exports = QuickMathsCommand;

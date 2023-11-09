@@ -1,10 +1,10 @@
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
-const { getLatestProfile } = require("../../../API/functions/getLatestProfile.js");
-const getSlayer = require("../../../API/stats/slayer.js");
-const { formatNumber, formatUsername } = require("../../contracts/helperFunctions.js");
-const { capitalize } = require("lodash");
+import { formatNumber, formatUsername } from "../../contracts/helperFunctions.js";
+import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
+import { minecraftCommand } from "../../contracts/minecraftCommand.js";
+import { getSlayers } from "../../../API/stats/slayer.js";
+import { capitalize } from "lodash";
 
-class SlayersCommand extends minecraftCommand {
+export class SlayersCommand extends minecraftCommand {
   constructor(minecraft) {
     super(minecraft);
 
@@ -50,7 +50,7 @@ class SlayersCommand extends minecraftCommand {
 
       username = formatUsername(username, data.profileData.cute_name);
 
-      const profile = getSlayer(data.profile);
+      const profile = getSlayers(data.profile);
 
       if (slayerType) {
         this.send(
@@ -71,5 +71,3 @@ class SlayersCommand extends minecraftCommand {
     }
   }
 }
-
-module.exports = SlayersCommand;

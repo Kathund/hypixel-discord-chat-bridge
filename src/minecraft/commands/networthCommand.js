@@ -1,9 +1,9 @@
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
-const { getNetworth } = require("skyhelper-networth");
-const { getLatestProfile } = require("../../../API/functions/getLatestProfile.js");
-const { formatNumber, formatUsername } = require("../../contracts/helperFunctions.js");
+import { formatNumber, formatUsername } from "../../contracts/helperFunctions.js";
+import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
+import { minecraftCommand } from "../../contracts/minecraftCommand.js";
+import { getNetworth } from "skyhelper-networth";
 
-class NetWorthCommand extends minecraftCommand {
+export class NetWorthCommand extends minecraftCommand {
   constructor(minecraft) {
     super(minecraft);
 
@@ -52,5 +52,3 @@ class NetWorthCommand extends minecraftCommand {
     }
   }
 }
-
-module.exports = NetWorthCommand;

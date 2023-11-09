@@ -1,7 +1,7 @@
 // CREDIT: https://github.com/SkyCryptWebsite/SkyCrypt/ (Modified)
-const { titleCase, capitalize, renderLore, formatNumber } = require("../constants/functions.js");
-const { pet_skins } = require("../constants/skins.js");
-const constants = require("../constants/pets.js");
+import { pet_data, petStats, pet_items, rarityColors, PET_RARITY_OFFSET, PET_LEVELS } from "../constants/pets.js";
+import { titleCase, capitalize, renderLore, formatNumber } from "../constants/functions.js";
+import { pet_skins } from "../constants/skins.js";
 
 const rarities = [
   "common",
@@ -16,7 +16,7 @@ const rarities = [
   "very_special",
 ];
 
-module.exports = (profile) => {
+export const getPets = (profile) => {
   let output = [];
 
   if (!("pets" in profile)) return output;
@@ -26,7 +26,7 @@ module.exports = (profile) => {
       continue;
     }
 
-    const petData = constants.pet_data[pet.type] || {
+    const petData = pet_data[pet.type] || {
       head: "/head/bc8ea1f51f253ff5142ca11ae45193a4ad8c3ab5e9c6eec8ba7a4fcb7bac40",
       type: "???",
       maxTier: "LEGENDARY",
@@ -43,7 +43,7 @@ module.exports = (profile) => {
       petData.hatching?.level > pet.level
         ? petData.hatching.name
         : petData.name
-        ? petData.name[pet.rarity] ?? petData.name.default
+        ? petData.name[pet.rarity] ?? petData.name
         : titleCase(pet.type.replaceAll("_", " "));
 
     // Rarity upgrades
@@ -59,8 +59,7 @@ module.exports = (profile) => {
 
     // Get texture
     if (typeof petData.head === "object") {
-      pet.texture_path =
-        `https://sky.shiiyu.moe${petData.head[pet.rarity]}` ?? `https://sky.shiiyu.moe${petData.head.default}`;
+      pet.texture_path = `https://sky.shiiyu.moe${petData.head[pet.rarity]}` ?? `https://sky.shiiyu.moe${petData.head}`;
     } else {
       pet.texture_path = `https://sky.shiiyu.moe${petData.head}`;
     }
@@ -107,30 +106,30 @@ module.exports = (profile) => {
 
     const rarity = rarities.indexOf(pet.rarity);
 
-    const searchName = pet.type in constants.petStats ? pet.type : "???";
-    const petInstance = new constants.petStats[searchName](rarity, pet.level, pet.extra);
+    const searchName = pet.type in petStats ? pet.type : "???";
+    const petInstance = new petStats[searchName](rarity, pet.level, pet.extra);
     pet.stats = Object.assign({}, petInstance.stats);
     pet.ref = petInstance;
 
     if (pet.heldItem) {
       const { heldItem } = pet;
-      let heldItemObj = constants.pet_items[heldItem];
+      let heldItemObj = pet_items[heldItem];
 
-      if (heldItem in constants.pet_items) {
-        for (const stat in constants.pet_items[heldItem]?.stats) {
-          pet.stats[stat] = (pet.stats[stat] || 0) + constants.pet_items[heldItem].stats[stat];
+      if (heldItem in pet_items) {
+        for (const stat in pet_items[heldItem]?.stats) {
+          pet.stats[stat] = (pet.stats[stat] || 0) + pet_items[heldItem].stats[stat];
         }
-        for (const stat in constants.pet_items[heldItem]?.statsPerLevel) {
-          pet.stats[stat] = (pet.stats[stat] || 0) + constants.pet_items[heldItem].statsPerLevel[stat] * pet.level;
+        for (const stat in pet_items[heldItem]?.statsPerLevel) {
+          pet.stats[stat] = (pet.stats[stat] || 0) + pet_items[heldItem].statsPerLevel[stat] * pet.level;
         }
-        for (const stat in constants.pet_items[heldItem]?.multStats) {
+        for (const stat in pet_items[heldItem]?.multStats) {
           if (pet.stats[stat]) {
-            pet.stats[stat] = (pet.stats[stat] || 0) * constants.pet_items[heldItem].multStats[stat];
+            pet.stats[stat] = (pet.stats[stat] || 0) * pet_items[heldItem].multStats[stat];
           }
         }
-        if ("multAllStats" in constants.pet_items[heldItem]) {
+        if ("multAllStats" in pet_items[heldItem]) {
           for (const stat in pet.stats) {
-            pet.stats[stat] *= constants.pet_items[heldItem].multAllStats;
+            pet.stats[stat] *= pet_items[heldItem].multAllStats;
           }
         }
       }
@@ -152,12 +151,12 @@ module.exports = (profile) => {
 
       // now we push the lore of the held items
       if (!heldItemObj) {
-        heldItemObj = constants.pet_items[heldItem];
+        heldItemObj = pet_items[heldItem];
       }
-      lore.push("", `§6Held Item: §${constants.rarityColors[heldItemObj.tier.toLowerCase()]}${heldItemObj.name}`);
+      lore.push("", `§6Held Item: §${rarityColors[heldItemObj.tier.toLowerCase()]}${heldItemObj.name}`);
 
-      if (heldItem in constants.pet_items) {
-        lore.push(constants.pet_items[heldItem].description);
+      if (heldItem in pet_items) {
+        lore.push(pet_items[heldItem].description);
       }
       // extra line
       lore.push(" ");
@@ -271,8 +270,8 @@ module.exports = (profile) => {
 };
 
 function getPetLevel(petExp, offsetRarity, maxLevel) {
-  const rarityOffset = constants.PET_RARITY_OFFSET[offsetRarity];
-  const levels = constants.PET_LEVELS.slice(rarityOffset, rarityOffset + maxLevel - 1);
+  const rarityOffset = PET_RARITY_OFFSET[offsetRarity];
+  const levels = PET_LEVELS.slice(rarityOffset, rarityOffset + maxLevel - 1);
 
   const xpMaxLevel = levels.reduce((a, b) => a + b, 0);
   let xpTotal = 0;

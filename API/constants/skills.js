@@ -1,7 +1,7 @@
 //CREDIT: https://github.com/SkyCrypt/SkyCryptWebsite (Modified)
-const xp_tables = require("./xp_tables.js");
+import xp_tables, { max_levels } from "./xp_tables.js";
 
-module.exports = function calcSkill(skill, experience, type) {
+export const calcSkill = (skill, experience, type) => {
   let table = "normal";
   if (skill === "runecrafting") table = "runecrafting";
   if (skill === "social") table = "social";
@@ -23,7 +23,7 @@ module.exports = function calcSkill(skill, experience, type) {
   let progress = 0;
   let maxLevel = 0;
 
-  if (xp_tables.max_levels[skill]) maxLevel = xp_tables.max_levels[skill];
+  if (max_levels[skill]) maxLevel = max_levels[skill];
 
   for (let i = 1; i <= maxLevel; i++) {
     xp += xp_tables[table][i - 1];

@@ -1,16 +1,16 @@
-const { Client, Collection, AttachmentBuilder, GatewayIntentBits } = require("discord.js");
-const CommunicationBridge = require("../contracts/CommunicationBridge.js");
-const { replaceVariables } = require("../contracts/helperFunctions.js");
-const messageToImage = require("../contracts/messageToImage.js");
-const MessageHandler = require("./handlers/MessageHandler.js");
-const StateHandler = require("./handlers/StateHandler.js");
-const CommandHandler = require("./CommandHandler.js");
-const config = require("../../config.json");
-const Logger = require(".././Logger.js");
-const path = require("node:path");
-const fs = require("fs");
+import { generateMessageImage as messageToImage } from "../contracts/messageToImage.js";
+import { Client, Collection, AttachmentBuilder, GatewayIntentBits } from "discord.js";
+import CommunicationBridge from "../contracts/CommunicationBridge.js";
+import { replaceVariables } from "../contracts/helperFunctions.js";
+import { errorMessage, broadcastMessage } from ".././Logger.js";
+import { discord as discordConfig } from "../../config.json";
+import { MessageHandler } from "./handlers/MessageHandler.js";
+import { StateHandler } from "./handlers/StateHandler.js";
+import { CommandHandler } from "./CommandHandler.js";
+import { join } from "node:path";
+import { readdirSync } from "fs";
 
-class DiscordManager extends CommunicationBridge {
+export class DiscordManager extends CommunicationBridge {
   constructor(app) {
     super();
 
@@ -21,7 +21,7 @@ class DiscordManager extends CommunicationBridge {
     this.commandHandler = new CommandHandler(this);
   }
 
-  connect() {
+  async connect() {
     global.client = new Client({
       intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent],
     });
@@ -31,24 +31,24 @@ class DiscordManager extends CommunicationBridge {
     this.client.on("ready", () => this.stateHandler.onReady());
     this.client.on("messageCreate", (message) => this.messageHandler.onMessage(message));
 
-    this.client.login(config.discord.bot.token).catch((error) => {
-      Logger.errorMessage(error);
+    this.client.login(discordConfig.bot.token).catch((error) => {
+      errorMessage(error);
     });
 
     client.commands = new Collection();
-    const commandFiles = fs.readdirSync("src/discord/commands").filter((file) => file.endsWith(".js"));
+    const commandFiles = readdirSync("src/discord/commands").filter((file) => file.endsWith(".js"));
 
     for (const file of commandFiles) {
-      const command = require(`./commands/${file}`);
+      const command = await import(`./commands/${file}`);
       client.commands.set(command.name, command);
     }
 
-    const eventsPath = path.join(__dirname, "events");
-    const eventFiles = fs.readdirSync(eventsPath).filter((file) => file.endsWith(".js"));
+    const eventsPath = join(__dirname, "events");
+    const eventFiles = readdirSync(eventsPath).filter((file) => file.endsWith(".js"));
 
     for (const file of eventFiles) {
-      const filePath = path.join(eventsPath, file);
-      const event = require(filePath);
+      const filePath = join(eventsPath, file);
+      const event = await import(filePath);
       event.once
         ? client.once(event.name, (...args) => event.execute(...args))
         : client.on(event.name, (...args) => event.execute(...args));
@@ -85,23 +85,23 @@ class DiscordManager extends CommunicationBridge {
       return;
     }
 
-    const mode = chat === "debugChannel" ? "minecraft" : config.discord.other.messageMode.toLowerCase();
+    const mode = chat === "debugChannel" ? "minecraft" : discordConfig.other.messageMode.toLowerCase();
     message = chat === "debugChannel" ? fullMessage : message;
     if (message !== undefined && chat !== "debugChannel") {
-      Logger.broadcastMessage(
+      broadcastMessage(
         `${username} [${guildRank.replace(/§[0-9a-fk-or]/g, "").replace(/^\[|\]$/g, "")}]: ${message}`,
         `Discord`
       );
     }
 
     // ? custom message format (config.discord.other.messageFormat)
-    if (config.discord.other.messageMode === "minecraft" && chat !== "debugChannel") {
-      message = replaceVariables(config.discord.other.messageFormat, { chatType, username, rank, guildRank, message });
+    if (discordConfig.other.messageMode === "minecraft" && chat !== "debugChannel") {
+      message = replaceVariables(discordConfig.other.messageFormat, { chatType, username, rank, guildRank, message });
     }
 
     const channel = await this.stateHandler.getChannel(chat || "Guild");
     if (channel === undefined) {
-      Logger.errorMessage(`Channel ${chat} not found!`);
+      errorMessage(`Channel ${chat} not found!`);
       return;
     }
 
@@ -172,7 +172,7 @@ class DiscordManager extends CommunicationBridge {
   }
 
   async onBroadcastCleanEmbed({ message, color, channel }) {
-    Logger.broadcastMessage(message, "Event");
+    broadcastMessage(message, "Event");
 
     channel = await this.stateHandler.getChannel(channel);
     channel.send({
@@ -186,7 +186,7 @@ class DiscordManager extends CommunicationBridge {
   }
 
   async onBroadcastHeadedEmbed({ message, title, icon, color, channel }) {
-    Logger.broadcastMessage(message, "Event");
+    broadcastMessage(message, "Event");
 
     channel = await this.stateHandler.getChannel(channel);
     channel.send({
@@ -204,9 +204,9 @@ class DiscordManager extends CommunicationBridge {
   }
 
   async onPlayerToggle({ fullMessage, username, message, color, channel }) {
-    Logger.broadcastMessage(message, "Event");
+    broadcastMessage(message, "Event");
     channel = await this.stateHandler.getChannel(channel);
-    switch (config.discord.other.messageMode.toLowerCase()) {
+    switch (discordConfig.other.messageMode.toLowerCase()) {
       case "bot":
         channel.send({
           embeds: [
@@ -284,5 +284,3 @@ class DiscordManager extends CommunicationBridge {
     return replaceVariables(message, data);
   }
 }
-
-module.exports = DiscordManager;

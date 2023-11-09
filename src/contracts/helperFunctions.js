@@ -1,13 +1,14 @@
-const fs = require("fs-promise");
-const { set } = require("lodash");
-const mkdirp = require("mkdirp");
-const getDirName = require("path").dirname;
-const nbt = require("prismarine-nbt");
-const util = require("util");
-const parseNbt = util.promisify(nbt.parse);
-const moment = require("moment");
+import { readJson, writeJson } from "fs-promise";
+import { parse, simplify } from "prismarine-nbt";
+import { dirname as getDirName } from "path";
+import { promisify } from "util";
+import { sync } from "mkdirp";
+import { set } from "lodash";
+import moment from "moment";
 
-function replaceAllRanks(input) {
+const parseNbt = promisify(parse);
+
+export const replaceAllRanks = (input) => {
   input = input.replaceAll("[OWNER] ", "");
   input = input.replaceAll("[ADMIN] ", "");
   input = input.replaceAll("[MCP] ", "");
@@ -20,9 +21,9 @@ function replaceAllRanks(input) {
   input = input.replaceAll("[VIP+] ", "");
   input = input.replaceAll("[VIP] ", "");
   return input;
-}
+};
 
-function addNotation(type, value) {
+export const addNotation = (type, value) => {
   let returnVal = value;
   let notList = [];
   if (type === "shortScale") {
@@ -53,13 +54,13 @@ function addNotation(type, value) {
   }
 
   return returnVal;
-}
+};
 
-function numberWithCommas(x) {
+export const numberWithCommas = (x) => {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
+};
 
-function generateID(length) {
+export const generateID = (length) => {
   let result = "";
   const characters = "abcde0123456789",
     charactersLength = characters.length;
@@ -67,9 +68,9 @@ function generateID(length) {
     result += characters.charAt(Math.floor(Math.random() * charactersLength));
   }
   return result;
-}
+};
 
-function getRarityColor(rarity) {
+export const getRarityColor = (rarity) => {
   if (rarity.toLowerCase() == "mythic") return "d";
   if (rarity.toLowerCase() == "legendary") return "6";
   if (rarity.toLowerCase() == "epic") return "5";
@@ -77,22 +78,22 @@ function getRarityColor(rarity) {
   if (rarity.toLowerCase() == "uncommon") return "a";
   if (rarity.toLowerCase() == "common") return "f";
   else return "f";
-}
+};
 
-function addCommas(num) {
+export const addCommas = (num) => {
   try {
     return num.toLocaleString();
   } catch (error) {
     return 0;
   }
-}
+};
 
-function toFixed(num, fixed) {
+export const toFixed = (num, fixed) => {
   const response = new RegExp("^-?\\d+(?:.\\d{0," + (fixed || -1) + "})?");
   return num.toString().match(response)[0];
-}
+};
 
-function timeSince(timeStamp) {
+export const timeSince = (timeStamp) => {
   var now = new Date(),
     secondsPast = (now.getTime() - timeStamp) / 1000;
   secondsPast = Math.abs(secondsPast);
@@ -116,25 +117,24 @@ function timeSince(timeStamp) {
     const s = toFixed(parseInt(secondsPast), 0);
     return d + "d " + h + "h " + m + "m " + s + "s";
   }
-}
+};
 
-async function writeAt(filePath, jsonPath, value) {
-  mkdirp.sync(getDirName(filePath));
+export const writeAt = (filePath, jsonPath, value) => {
+  sync(getDirName(filePath));
 
-  return fs
-    .readJson(filePath)
+  return readJson(filePath)
     .then(function (json) {
       set(json, jsonPath, value);
-      return fs.writeJson(filePath, json);
+      return writeJson(filePath, json);
     })
     .catch(function (error) {
       const json = {};
       set(json, jsonPath, value);
-      return fs.writeJson(filePath, json);
+      return writeJson(filePath, json);
     });
-}
+};
 
-function capitalize(str) {
+export const capitalize = (str) => {
   if (!str) return str;
   const words = str.replace(/_/g, " ").toLowerCase().split(" ");
 
@@ -143,16 +143,16 @@ function capitalize(str) {
   });
 
   return upperCased.join(" ");
-}
+};
 
-async function decodeData(buffer) {
+export const decodeData = async (buffer) => {
   const parsedNbt = await parseNbt(buffer);
-  return nbt.simplify(parsedNbt);
-}
+  return simplify(parsedNbt);
+};
 
-function nth(i) {
+export const nth = (i) => {
   return i + ["st", "nd", "rd"][((((i + 90) % 100) - 10) % 10) - 1] || `${i}th`;
-}
+};
 
 const units = new Set(["y", "M", "w", "d", "h", "m", "s"]);
 
@@ -215,7 +215,7 @@ function parseDateMath(mathString, time) {
   return dateTime;
 }
 
-const parseTimestamp = function (text) {
+export const parseTimestamp = (text) => {
   if (!text) return;
 
   if (typeof text !== "string") {
@@ -257,15 +257,15 @@ const parseTimestamp = function (text) {
   return dateMath ? dateMath.valueOf() : undefined;
 };
 
-function formatUsername(username, gamemode) {
+export const formatUsername = (username, gamemode) => {
   if (gamemode === "ironman") return `♲ ${username}`;
   if (gamemode === "bingo") return `Ⓑ ${username}`;
   if (gamemode === "island") return `	☀ ${username}`;
 
   return username;
-}
+};
 
-function formatNumber(number, decimals = 2) {
+export const formatNumber = (number, decimals = 2) => {
   if (number === undefined || number === 0) return 0;
 
   const isNegative = number < 0;
@@ -279,27 +279,8 @@ function formatNumber(number, decimals = 2) {
   const shortNumber = (unformattedNumber / Math.pow(10, abbrevIndex * 3)).toFixed(decimals);
 
   return `${isNegative ? "-" : ""}${shortNumber}${abbrev[abbrevIndex]}`;
-}
+};
 
-function replaceVariables(template, variables) {
+export const replaceVariables = (template, variables) => {
   return template.replace(/\{(\w+)\}/g, (match, name) => variables[name] ?? match);
-}
-
-module.exports = {
-  replaceAllRanks,
-  addNotation,
-  generateID,
-  getRarityColor,
-  addCommas,
-  toFixed,
-  timeSince,
-  writeAt,
-  capitalize,
-  decodeData,
-  numberWithCommas,
-  nth,
-  parseTimestamp,
-  formatUsername,
-  formatNumber,
-  replaceVariables,
 };

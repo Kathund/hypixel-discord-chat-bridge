@@ -1,8 +1,8 @@
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
-const hypixel = require("../../contracts/API/HypixelRebornAPI.js");
-const { formatNumber } = require("../../contracts/helperFunctions.js");
+import { minecraftCommand } from "../../contracts/minecraftCommand.js";
+import { hypixel } from "../../contracts/API/HypixelRebornAPI.js";
+import { formatNumber } from "../../contracts/helperFunctions.js";
 
-class DuelsStatsCommand extends minecraftCommand {
+export class DuelsStatsCommand extends minecraftCommand {
   constructor(minecraft) {
     super(minecraft);
 
@@ -97,5 +97,3 @@ class DuelsStatsCommand extends minecraftCommand {
     }
   }
 }
-
-module.exports = DuelsStatsCommand;

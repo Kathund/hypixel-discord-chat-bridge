@@ -1,10 +1,10 @@
-const { getLatestProfile } = require("../../../API/functions/getLatestProfile.js");
-const { uploadImage } = require("../../contracts/API/imgurAPI.js");
-const { decodeData, formatUsername } = require("../../contracts/helperFunctions.js");
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
-const { renderLore } = require("../../contracts/renderItem.js");
+import { decodeData, formatUsername } from "../../contracts/helperFunctions.js";
+import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
+import { minecraftCommand } from "../../contracts/minecraftCommand.js";
+import { uploadImage } from "../../contracts/API/imgurAPI.js";
+import { renderLore } from "../../contracts/renderItem.js";
 
-class EquipmentCommand extends minecraftCommand {
+export class EquipmentCommand extends minecraftCommand {
   constructor(minecraft) {
     super(minecraft);
 
@@ -58,5 +58,3 @@ class EquipmentCommand extends minecraftCommand {
     }
   }
 }
-
-module.exports = EquipmentCommand;

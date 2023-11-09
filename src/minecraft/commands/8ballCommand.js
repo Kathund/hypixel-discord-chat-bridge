@@ -1,7 +1,7 @@
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
-const axios = require("axios");
+import { minecraftCommand } from "../../contracts/minecraftCommand.js";
+import axios from "axios";
 
-class EightBallCommand extends minecraftCommand {
+export class EightBallCommand extends minecraftCommand {
   constructor(minecraft) {
     super(minecraft);
 
@@ -32,5 +32,3 @@ class EightBallCommand extends minecraftCommand {
     }
   }
 }
-
-module.exports = EightBallCommand;

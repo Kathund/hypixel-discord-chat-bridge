@@ -1,15 +1,16 @@
-const { getRandomWord, scrambleWord } = require("../constants/words.js");
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
+import { getRandomWord, scrambleWord } from "../constants/words.js";
+import { minecraftCommand } from "../../contracts/minecraftCommand.js";
+
 const getWord = (message) => message.split(" ").pop();
 
 const cooldowns = new Map();
 
-class unscrambleCommand extends minecraftCommand {
+export class unscrambleCommand extends minecraftCommand {
   constructor(minecraft) {
     super(minecraft);
 
     this.name = "unscramble";
-    this.aliases = ["unscramble", "unscrambleme", "unscrambleme", "us"];
+    this.aliases = ["unscramble", "unscrambleme", "us"];
     this.description = "Unscramble the word and type it in chat to win!";
     this.options = [
       {
@@ -71,5 +72,3 @@ class unscrambleCommand extends minecraftCommand {
     }
   }
 }
-
-module.exports = unscrambleCommand;

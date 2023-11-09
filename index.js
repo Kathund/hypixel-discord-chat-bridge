@@ -1,12 +1,11 @@
 process.on("uncaughtException", (error) => console.log(error));
-const app = require("./src/Application.js");
+import App from "./src/Application.js";
 
 ("use strict");
 
-app
-  .register()
+App.register()
   .then(() => {
-    app.connect();
+    App.connect();
   })
   .catch((error) => {
     console.error(error);

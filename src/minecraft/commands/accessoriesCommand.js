@@ -1,9 +1,9 @@
-const { getLatestProfile } = require("../../../API/functions/getLatestProfile.js");
-const { formatUsername } = require("../../contracts/helperFunctions.js");
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
-const getTalismans = require("../../../API/stats/talismans.js");
+import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
+import { minecraftCommand } from "../../contracts/minecraftCommand.js";
+import { formatUsername } from "../../contracts/helperFunctions.js";
+import { getTalismans } from "../../../API/stats/talismans.js";
 
-class AccessoriesCommand extends minecraftCommand {
+export class AccessoriesCommand extends minecraftCommand {
   constructor(minecraft) {
     super(minecraft);
 
@@ -47,5 +47,3 @@ class AccessoriesCommand extends minecraftCommand {
     }
   }
 }
-
-module.exports = AccessoriesCommand;

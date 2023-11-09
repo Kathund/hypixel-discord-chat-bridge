@@ -1,8 +1,8 @@
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
-const hypixel = require("../../contracts/API/HypixelRebornAPI.js");
-const { getUUID } = require("../../contracts/API/PlayerDBAPI.js");
+import { minecraftCommand } from "../../contracts/minecraftCommand.js";
+import { hypixel } from "../../contracts/API/HypixelRebornAPI.js";
+import { getUUID } from "../../contracts/API/PlayerDBAPI.js";
 
-class GuildExperienceCommand extends minecraftCommand {
+export class GuildExperienceCommand extends minecraftCommand {
   constructor(minecraft) {
     super(minecraft);
 
@@ -43,5 +43,3 @@ class GuildExperienceCommand extends minecraftCommand {
     }
   }
 }
-
-module.exports = GuildExperienceCommand;

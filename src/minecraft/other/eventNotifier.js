@@ -1,11 +1,11 @@
-const { getSkyblockCalendar } = require("../../../API/functions/getCalendar.js");
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
+import { getSkyblockCalendar } from "../../../API/functions/getCalendar.js";
+import { minecraftCommand } from "../../contracts/minecraftCommand.js";
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-const config = require("../../../config.json");
-const axios = require("axios");
+import { minecraft } from "../../../config.json";
+import axios from "axios";
 
-if (config.minecraft.skyblockEventsNotifications.enabled) {
-  const { notifiers, customTime } = config.minecraft.skyblockEventsNotifications;
+if (minecraft.skyblockEventsNotifications.enabled) {
+  const { notifiers, customTime } = minecraft.skyblockEventsNotifications;
 
   setInterval(async () => {
     try {

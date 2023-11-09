@@ -1,11 +1,11 @@
-const { getRarityColor, formatUsername } = require("../../contracts/helperFunctions.js");
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
-const { renderLore } = require("../../contracts/renderItem.js");
-const { getLatestProfile } = require("../../../API/functions/getLatestProfile.js");
-const getPets = require("../../../API/stats/pets.js");
-const { uploadImage } = require("../../contracts/API/imgurAPI.js");
+import { getRarityColor, formatUsername } from "../../contracts/helperFunctions.js";
+import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
+import { minecraftCommand } from "../../contracts/minecraftCommand.js";
+import { uploadImage } from "../../contracts/API/imgurAPI.js";
+import { renderLore } from "../../contracts/renderItem.js";
+import { getPets } from "../../../API/stats/pets.js";
 
-class RenderCommand extends minecraftCommand {
+export class PetCommand extends minecraftCommand {
   constructor(minecraft) {
     super(minecraft);
 
@@ -34,7 +34,7 @@ class RenderCommand extends minecraftCommand {
       const pet = profile.pets.find((pet) => pet.active === true);
 
       if (pet === undefined) {
-        return this.send(`/gc ${username} does not have pet equiped.`);
+        return this.send(`/gc ${username} does not have pet equipped.`);
       }
 
       const renderedItem = await renderLore(
@@ -51,5 +51,3 @@ class RenderCommand extends minecraftCommand {
     }
   }
 }
-
-module.exports = RenderCommand;

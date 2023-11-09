@@ -1,10 +1,10 @@
-const { exec } = require("child_process");
-const config = require("../config.json");
-const Logger = require("./Logger.js");
-const cron = require("node-cron");
+import { updateMessage } from "./Logger.js";
+import { other } from "../config.json";
+import { schedule } from "node-cron";
+import { exec } from "child_process";
 
 function updateCode() {
-  if (config.other.autoUpdater === false) {
+  if (other.autoUpdater === false) {
     return;
   }
 
@@ -20,9 +20,9 @@ function updateCode() {
       return;
     }
 
-    Logger.updateMessage();
+    updateMessage();
   });
 }
 
-cron.schedule(`0 */${config.other.autoUpdaterInterval} * * *`, () => updateCode());
+schedule(`0 */${other.autoUpdaterInterval} * * *`, () => updateCode());
 updateCode();

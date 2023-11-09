@@ -1,9 +1,9 @@
-const constants = require("../constants/bestiary.js");
+import { BESTIARY_BRACKETS, BESTIARY } from "../constants/bestiary.js";
 
 function formatBestiaryMobs(userProfile, mobs) {
   const output = [];
   for (const mob of mobs) {
-    const mobBracket = constants.BESTIARY_BRACKETS[mob.bracket];
+    const mobBracket = BESTIARY_BRACKETS[mob.bracket];
 
     const totalKills = mob.mobs.reduce((acc, cur) => {
       return acc + (userProfile.bestiary.kills[cur] ?? 0);
@@ -26,7 +26,7 @@ function formatBestiaryMobs(userProfile, mobs) {
   return output;
 }
 
-function getBestiary(userProfile) {
+export const getBestiary = (userProfile) => {
   try {
     if (userProfile.bestiary?.kills === undefined) {
       return null;
@@ -35,7 +35,7 @@ function getBestiary(userProfile) {
     const output = {};
     let tiersUnlocked = 0,
       totalTiers = 0;
-    for (const [category, data] of Object.entries(constants.BESTIARY)) {
+    for (const [category, data] of Object.entries(BESTIARY)) {
       const { name, mobs } = data;
       output[category] = { name };
 
@@ -75,8 +75,4 @@ function getBestiary(userProfile) {
     console.log(error);
     return null;
   }
-}
-
-module.exports = {
-  getBestiary,
 };

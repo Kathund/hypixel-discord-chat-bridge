@@ -1,4 +1,4 @@
-class EndpointHandler {
+export class EndpointHandler {
   constructor(server) {
     this.server = server;
   }
@@ -18,5 +18,3 @@ class EndpointHandler {
     res.json({ success: true });
   }
 }
-
-module.exports = EndpointHandler;

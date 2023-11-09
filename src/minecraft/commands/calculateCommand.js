@@ -1,7 +1,7 @@
-const { formatNumber } = require("../../contracts/helperFunctions.js");
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
+import { minecraftCommand } from "../../contracts/minecraftCommand.js";
+import { formatNumber } from "../../contracts/helperFunctions.js";
 
-class CalculateCommand extends minecraftCommand {
+export class CalculateCommand extends minecraftCommand {
   constructor(minecraft) {
     super(minecraft);
 
@@ -32,5 +32,3 @@ class CalculateCommand extends minecraftCommand {
     }
   }
 }
-
-module.exports = CalculateCommand;

@@ -1,5 +1,5 @@
 // CREDITS: https://github.com/slothpixel/core (Modified)
-const { nth, parseTimestamp } = require("../../src/contracts/helperFunctions.js");
+import { nth, parseTimestamp } from "../../src/contracts/helperFunctions.js";
 
 const months = [
   "Early Spring",
@@ -219,7 +219,7 @@ const eventTimes = {
   },
 };
 
-function buildSkyblockCalendar(events, from, to, years, stopAtYearEnd = true) {
+export const buildSkyblockCalendar = (events, from, to, years, stopAtYearEnd = true) => {
   const now = Date.now();
   let fromDate = from || now;
 
@@ -343,17 +343,12 @@ function buildSkyblockCalendar(events, from, to, years, stopAtYearEnd = true) {
 
     events: filteredEvents,
   };
-}
+};
 
-function buildSkyblockEvents() {
+export const buildSkyblockEvents = () => {
   const o = {};
   Object.entries(eventTimes).forEach(([key, { name }]) => {
     o[key] = name;
   });
   return o;
-}
-
-module.exports = {
-  buildSkyblockCalendar,
-  buildSkyblockEvents,
 };

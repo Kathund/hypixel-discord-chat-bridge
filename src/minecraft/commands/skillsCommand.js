@@ -1,9 +1,9 @@
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
-const { getLatestProfile } = require("../../../API/functions/getLatestProfile.js");
-const getSkills = require("../../../API/stats/skills.js");
-const { formatUsername } = require("../../contracts/helperFunctions.js");
+import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
+import { minecraftCommand } from "../../contracts/minecraftCommand.js";
+import { formatUsername } from "../../contracts/helperFunctions.js";
+import { getSkills } from "../../../API/stats/skills.js";
 
-class SkillsCommand extends minecraftCommand {
+export class SkillsCommand extends minecraftCommand {
   constructor(minecraft) {
     super(minecraft);
 
@@ -51,5 +51,3 @@ class SkillsCommand extends minecraftCommand {
     }
   }
 }
-
-module.exports = SkillsCommand;

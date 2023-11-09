@@ -1,29 +1,28 @@
 // eslint-disable-next-line import/extensions
-const { Routes } = require("discord-api-types/v9");
-const config = require("../../config.json");
-const { REST } = require("@discordjs/rest");
-const fs = require("fs");
+import { discord as discordConfig } from "../../config.json";
+// eslint-disable-next-line import/extensions
+import { Routes } from "discord-api-types/v9";
+import { REST } from "@discordjs/rest";
+import { readdirSync } from "fs";
 
-class CommandHandler {
+export class CommandHandler {
   constructor(discord) {
     this.discord = discord;
 
     const commands = [];
-    const commandFiles = fs.readdirSync("src/discord/commands").filter((file) => file.endsWith(".js"));
+    const commandFiles = readdirSync("src/discord/commands").filter((file) => file.endsWith(".js"));
 
     for (const file of commandFiles) {
-      const command = require(`./commands/${file}`);
+      const command = import(`./commands/${file}`);
       commands.push(command);
     }
 
-    const rest = new REST({ version: "10" }).setToken(config.discord.bot.token);
+    const rest = new REST({ version: "10" }).setToken(discordConfig.bot.token);
 
-    const clientID = Buffer.from(config.discord.bot.token.split(".")[0], "base64").toString("ascii");
+    const clientID = Buffer.from(discordConfig.bot.token.split(".")[0], "base64").toString("ascii");
 
     rest
-      .put(Routes.applicationGuildCommands(clientID, config.discord.bot.serverID), { body: commands })
+      .put(Routes.applicationGuildCommands(clientID, discordConfig.bot.serverID), { body: commands })
       .catch(console.error);
   }
 }
-
-module.exports = CommandHandler;

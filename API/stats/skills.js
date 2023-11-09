@@ -1,6 +1,6 @@
-const calcSkill = require("../constants/skills.js");
+import { calcSkill } from "../constants/skills.js";
 
-module.exports = function getSkills(profile) {
+export const getSkills = (profile) => {
   const skill_experience = {
     farming: profile?.experience_skill_farming || 0,
     mining: profile?.experience_skill_mining || 0,

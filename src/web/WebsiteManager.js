@@ -1,22 +1,22 @@
-const EndpointHandler = require("./handlers/EndpointHandler.js");
-const { webMessage } = require("../Logger.js");
-const config = require("../../config.json");
-const express = require("express");
+import { EndpointHandler } from "./handlers/EndpointHandler.js";
+import { webMessage } from "../Logger.js";
+import { web } from "../../config.json";
+import express, { json } from "express";
 
-class WebServer {
+export class WebManager {
   constructor(app) {
     this.app = app;
 
-    this.port = config.web.port;
+    this.port = web.port;
 
     this.endpointHandler = new EndpointHandler(this);
   }
 
   connect() {
-    if (config.web.enabled === false) return;
+    if (web.enabled === false) return;
 
     this.web = express();
-    this.web.use(express.json());
+    this.web.use(json());
 
     this.endpointHandler.registerEvents();
 
@@ -25,5 +25,3 @@ class WebServer {
     });
   }
 }
-
-module.exports = WebServer;

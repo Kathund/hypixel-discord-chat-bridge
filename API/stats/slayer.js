@@ -1,6 +1,6 @@
-const xp_tables = require("../constants/xp_tables.js");
+import { slayer as slayerTable } from "../constants/xp_tables.js";
 
-module.exports = (profile) => {
+export const getSlayers = (profile) => {
   function getSlayer(slayer) {
     const slayers = profile?.slayer_bosses?.[slayer];
     const experience = slayers?.xp || 0;
@@ -8,7 +8,7 @@ module.exports = (profile) => {
       return {
         xp: 0,
         level: 0,
-        xpForNext: xp_tables.slayer[slayer][0],
+        xpForNext: slayerTable[slayer][0],
         progress: 0,
         kills: {},
       };
@@ -19,14 +19,14 @@ module.exports = (profile) => {
     let progress = 0;
     const maxLevel = 9;
 
-    for (let i = 0; i < xp_tables.slayer[slayer].length; i++) {
-      if (xp_tables.slayer[slayer][i] <= experience) {
+    for (let i = 0; i < slayerTable[slayer].length; i++) {
+      if (slayerTable[slayer][i] <= experience) {
         level = i + 1;
       }
     }
 
     if (level < maxLevel) {
-      xpForNext = Math.ceil(xp_tables.slayer[slayer][level]);
+      xpForNext = Math.ceil(slayerTable[slayer][level]);
     }
 
     progress = level >= maxLevel ? 0 : Math.max(0, Math.min(experience / xpForNext, 1));

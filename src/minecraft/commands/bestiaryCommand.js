@@ -1,9 +1,9 @@
-const { getLatestProfile } = require("../../../API/functions/getLatestProfile.js");
-const { formatUsername } = require("../../contracts/helperFunctions.js");
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
-const { getBestiary } = require("../../../API/stats/bestiary.js");
+import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
+import { minecraftCommand } from "../../contracts/minecraftCommand.js";
+import { formatUsername } from "../../contracts/helperFunctions.js";
+import { getBestiary } from "../../../API/stats/bestiary.js";
 
-class EightBallCommand extends minecraftCommand {
+export class BestiaryCommand extends minecraftCommand {
   constructor(minecraft) {
     super(minecraft);
 
@@ -13,7 +13,7 @@ class EightBallCommand extends minecraftCommand {
     this.options = [
       {
         name: "username",
-        description: "Mincraft Username",
+        description: "Minecraft Username",
         required: false,
       },
     ];
@@ -90,5 +90,3 @@ class EightBallCommand extends minecraftCommand {
       .filter((mob) => mob?.nextTierKills != null);
   }
 }
-
-module.exports = EightBallCommand;

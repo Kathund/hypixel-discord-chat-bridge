@@ -1,7 +1,7 @@
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
-const hypixel = require("../../contracts/API/HypixelRebornAPI.js");
+import { minecraftCommand } from "../../contracts/minecraftCommand.js";
+import { hypixel } from "../../contracts/API/HypixelRebornAPI.js";
 
-class WoolwarsCommand extends minecraftCommand {
+export class WoolwarsCommand extends minecraftCommand {
   constructor(minecraft) {
     super(minecraft);
 
@@ -63,5 +63,3 @@ function getWoolWarsStar(exp) {
   const lvl = minimalExp.findIndex((x) => exp < x);
   return lvl + exp / minimalExp[lvl];
 }
-
-module.exports = WoolwarsCommand;

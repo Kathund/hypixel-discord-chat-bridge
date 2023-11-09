@@ -1,8 +1,8 @@
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
-const { uploadImage } = require("../../contracts/API/imgurAPI.js");
-const axios = require("axios");
+import { minecraftCommand } from "../../contracts/minecraftCommand.js";
+import { uploadImage } from "../../contracts/API/imgurAPI.js";
+import axios from "axios";
 
-class KittyCommand extends minecraftCommand {
+export class KittyCommand extends minecraftCommand {
   constructor(minecraft) {
     super(minecraft);
 
@@ -18,7 +18,7 @@ class KittyCommand extends minecraftCommand {
 
       if (data === undefined) {
         // eslint-disable-next-line no-throw-literal
-        throw "An error occured while fetching the image. Please try again later.";
+        throw "An error occurred while fetching the image. Please try again later.";
       }
 
       const link = data[0].url;
@@ -30,5 +30,3 @@ class KittyCommand extends minecraftCommand {
     }
   }
 }
-
-module.exports = KittyCommand;

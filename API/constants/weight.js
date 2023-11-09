@@ -168,9 +168,9 @@ function calculateSlayerWeight(type, experience) {
   };
 }
 
-const calcSkill = require("./skills.js");
+import { calcSkill } from "./skills.js";
 
-function calculateTotalSenitherWeight(profile) {
+export const calculateTotalSenitherWeight = (profile) => {
   const weight = {
     skills: {
       farming: calculateSenitherWeight(
@@ -256,6 +256,4 @@ function calculateTotalSenitherWeight(profile) {
     },
   };
   return weight;
-}
-
-module.exports = { calculateTotalSenitherWeight };
+};

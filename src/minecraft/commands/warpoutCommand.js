@@ -1,7 +1,7 @@
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
+import { minecraftCommand } from "../../contracts/minecraftCommand.js";
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-class warpoutCommand extends minecraftCommand {
+export class warpoutCommand extends minecraftCommand {
   constructor(minecraft) {
     super(minecraft);
     this.name = "warpout";
@@ -41,7 +41,7 @@ class warpoutCommand extends minecraftCommand {
 
           this.send(`/gc ${user} has party requests disabled!`);
         } else if (message.includes("invited") && message.includes("to the party! They have 60 seconds to accept.")) {
-          this.send(`/gc Succesfully invited ${user} to the party!`);
+          this.send(`/gc Successfully invited ${user} to the party!`);
         } else if (message.includes(" joined the party.")) {
           this.send(`/gc ${user} joined the party! Warping them out of the game..`);
           this.send("/p warp");
@@ -126,5 +126,3 @@ class warpoutCommand extends minecraftCommand {
     }
   }
 }
-
-module.exports = warpoutCommand;

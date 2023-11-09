@@ -1,7 +1,7 @@
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
-const { getFetchur } = require("../../../API/functions/getFetchur.js");
+import { minecraftCommand } from "../../contracts/minecraftCommand.js";
+import { getFetchur } from "../../../API/functions/getFetchur.js";
 
-class FetchurCommand extends minecraftCommand {
+export class FetchurCommand extends minecraftCommand {
   constructor(minecraft) {
     super(minecraft);
 
@@ -21,5 +21,3 @@ class FetchurCommand extends minecraftCommand {
     }
   }
 }
-
-module.exports = FetchurCommand;

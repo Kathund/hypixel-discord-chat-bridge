@@ -1,13 +1,13 @@
-const { calculateTotalSenitherWeight } = require("../constants/weight.js");
-const { getWeightRaw } = require("lilyweight");
-const getSkills = require("../stats/skills.js");
-const getDungeons = require("../stats/dungeons.js");
-const getSlayer = require("../stats/slayer.js");
+import { calculateTotalSenitherWeight } from "../constants/weight.js";
+import { getDungeons } from "../stats/dungeons.js";
+import { getSlayers } from "../stats/slayer.js";
+import { getSkills } from "../stats/skills.js";
+import { getWeightRaw } from "lilyweight";
 
-module.exports = (profile) => {
+export const getWeight = (profile) => {
   const { skills_levels, skills_experience } = formatLilySkills(getSkills(profile));
   const { catacombs_experience, catacombs, master_mode } = formatLilyDungeons(getDungeons(null, profile));
-  const { slayer_experience } = formatLilySlayer(getSlayer(profile));
+  const { slayer_experience } = formatLilySlayer(getSlayers(profile));
 
   const lily = getWeightRaw(
     skills_levels,

@@ -1,16 +1,16 @@
-const { replaceAllRanks, replaceVariables } = require("../../contracts/helperFunctions.js");
-const { getLatestProfile } = require("../../../API/functions/getLatestProfile.js");
+import { discord as discordConfig, minecraft as minecraftConfig } from "../../../config.json";
+import { replaceAllRanks, replaceVariables } from "../../contracts/helperFunctions.js";
+import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-const hypixel = require("../../contracts/API/HypixelRebornAPI.js");
-const { getUUID } = require("../../contracts/API/PlayerDBAPI.js");
-const eventHandler = require("../../contracts/EventHandler.js");
-const getWeight = require("../../../API/stats/weight.js");
-const messages = require("../../../messages.json");
-const { EmbedBuilder } = require("discord.js");
-const config = require("../../../config.json");
-const Logger = require("../../Logger.js");
+import { hypixel } from "../../contracts/API/HypixelRebornAPI.js";
+import { EventHandler } from "../../contracts/EventHandler.js";
+import { getUUID } from "../../contracts/API/PlayerDBAPI.js";
+import { getWeight } from "../../../API/stats/weight.js";
+import messages from "../../../messages.json";
+import { warnMessage } from "../../Logger.js";
+import { EmbedBuilder } from "discord.js";
 
-class StateHandler extends eventHandler {
+export class ChatHandler extends EventHandler {
   constructor(minecraft, command, discord) {
     super();
     this.minecraft = minecraft;
@@ -32,7 +32,7 @@ class StateHandler extends eventHandler {
       return;
     }
 
-    if (config.discord.channels.debugMode === true) {
+    if (discordConfig.channels.debugMode === true) {
       this.minecraft.broadcastMessage({
         fullMessage: colouredMessage,
         message: message,
@@ -44,16 +44,16 @@ class StateHandler extends eventHandler {
       // return bot.chat("\u00a7");
     }
 
-    if (this.isPartyMessage(message) && config.minecraft.fragBot.enabled === true) {
+    if (this.isPartyMessage(message) && minecraftConfig.fragBot.enabled === true) {
       const username = message.substr(54).startsWith("[")
         ? message.substr(54).split(" ")[1].trim()
         : message.substr(54).split(" ")[0].trim();
 
-      const { blacklist, blacklisted, whitelist, whitelisted } = config.minecraft.fragBot;
+      const { blacklist, blacklisted, whitelist, whitelisted } = minecraftConfig.fragBot;
       if (blacklist || whitelist) {
         const uuid = await getUUID(username);
 
-        if (config.minecraft.fragBot.blacklist === true) {
+        if (minecraftConfig.fragBot.blacklist === true) {
           if (blacklisted.includes(username) || blacklisted.includes(uuid)) {
             return;
           }
@@ -62,7 +62,7 @@ class StateHandler extends eventHandler {
         const members = await hypixel
           .getGuild("player", bot.username)
           .then(async (guild) => guild.members.map((member) => member.uuid));
-        if ((config.minecraft.fragBot.whitelist && whitelisted.includes(username)) || members.includes(uuid)) {
+        if ((minecraftConfig.fragBot.whitelist && whitelisted.includes(username)) || members.includes(uuid)) {
           this.send(`/party accept ${username}`);
           await delay(Math.floor(Math.random() * (6900 - 4200 + 1)) + 4200);
           this.send(`/party leave`);
@@ -79,7 +79,7 @@ class StateHandler extends eventHandler {
         message.split("has")[0].replaceAll("-----------------------------------------------------\n", "")
       );
       const uuid = await getUUID(username);
-      if (config.minecraft.guildRequirements.enabled) {
+      if (minecraftConfig.guildRequirements.enabled) {
         const [player, profile] = await Promise.all([hypixel.getPlayer(uuid), getLatestProfile(uuid)]);
         let meetRequirements = false;
 
@@ -95,40 +95,40 @@ class StateHandler extends eventHandler {
         const duelsWins = player.stats.duels.wins;
         const dWLR = player.stats.duels.WLRatio;
 
-        if (weight > config.minecraft.guildRequirements.requirements.senitherWeight) {
+        if (weight > minecraftConfig.guildRequirements.requirements.senitherWeight) {
           meetRequirements = true;
         }
 
-        if (skyblockLevel > config.minecraft.guildRequirements.requirements.skyblockLevel) {
+        if (skyblockLevel > minecraftConfig.guildRequirements.requirements.skyblockLevel) {
           meetRequirements = true;
         }
 
-        if (bwLevel > config.minecraft.guildRequirements.requirements.bedwarsStars) {
+        if (bwLevel > minecraftConfig.guildRequirements.requirements.bedwarsStars) {
           meetRequirements = true;
         }
         if (
-          bwLevel > config.minecraft.guildRequirements.requirements.bedwarsStarsWithFKDR &&
-          bwFKDR > config.minecraft.guildRequirements.requirements.bedwarsFKDR
+          bwLevel > minecraftConfig.guildRequirements.requirements.bedwarsStarsWithFKDR &&
+          bwFKDR > minecraftConfig.guildRequirements.requirements.bedwarsFKDR
         ) {
           meetRequirements = true;
         }
 
-        if (swLevel > config.minecraft.guildRequirements.requirements.skywarsStars) {
+        if (swLevel > minecraftConfig.guildRequirements.requirements.skywarsStars) {
           meetRequirements = true;
         }
         if (
-          swLevel > config.minecraft.guildRequirements.requirements.skywarsStarsWithKDR &&
-          swKDR > config.minecraft.guildRequirements.requirements.skywarsStarsWithKDR
+          swLevel > minecraftConfig.guildRequirements.requirements.skywarsStarsWithKDR &&
+          swKDR > minecraftConfig.guildRequirements.requirements.skywarsStarsWithKDR
         ) {
           meetRequirements = true;
         }
 
-        if (duelsWins > config.minecraft.guildRequirements.requirements.duelsWins) {
+        if (duelsWins > minecraftConfig.guildRequirements.requirements.duelsWins) {
           meetRequirements = true;
         }
         if (
-          duelsWins > config.minecraft.guildRequirements.requirements.duelsWinsWithWLR &&
-          dWLR > config.minecraft.guildRequirements.requirements.duelsWinsWithWLR
+          duelsWins > minecraftConfig.guildRequirements.requirements.duelsWinsWithWLR &&
+          dWLR > minecraftConfig.guildRequirements.requirements.duelsWinsWithWLR
         ) {
           meetRequirements = true;
         }
@@ -143,7 +143,7 @@ class StateHandler extends eventHandler {
         await delay(1000);
 
         if (meetRequirements === true) {
-          if (config.minecraft.guildRequirements.autoAccept === true) {
+          if (minecraftConfig.guildRequirements.autoAccept === true) {
             bot.chat(`/guild accept ${username}`);
           }
 
@@ -199,13 +199,13 @@ class StateHandler extends eventHandler {
               iconURL: "https://imgur.com/tgwQJTX.png",
             });
 
-          await client.channels.cache.get(`${config.discord.channels.loggingChannel}`).send({ embeds: [statsEmbed] });
+          await client.channels.cache.get(`${discordConfig.channels.loggingChannel}`).send({ embeds: [statsEmbed] });
         }
       }
     }
 
     if (this.isLoginMessage(message)) {
-      if (config.discord.other.joinMessage === true) {
+      if (discordConfig.other.joinMessage === true) {
         const username = message.split(">")[1].trim().split("joined.")[0].trim();
         return this.minecraft.broadcastPlayerToggle({
           fullMessage: colouredMessage,
@@ -218,7 +218,7 @@ class StateHandler extends eventHandler {
     }
 
     if (this.isLogoutMessage(message)) {
-      if (config.discord.other.joinMessage === true) {
+      if (discordConfig.other.joinMessage === true) {
         const username = message.split(">")[1].trim().split("left.")[0].trim();
         return this.minecraft.broadcastPlayerToggle({
           fullMessage: colouredMessage,
@@ -238,7 +238,7 @@ class StateHandler extends eventHandler {
       await delay(1000);
       bot.chat(
         `/gc ${replaceVariables(messages.guildJoinMessage, {
-          prefix: config.minecraft.bot.prefix,
+          prefix: minecraftConfig.bot.prefix,
         })} | by @duckysolucky`
       );
       return [
@@ -389,7 +389,7 @@ class StateHandler extends eventHandler {
     }
 
     if (this.isRepeatMessage(message)) {
-      return client.channels.cache.get(config.discord.channels.guildChatChannel).send({
+      return client.channels.cache.get(discordConfig.channels.guildChatChannel).send({
         embeds: [
           {
             color: 15548997,
@@ -683,7 +683,7 @@ class StateHandler extends eventHandler {
     }
 
     if (this.isTooFast(message)) {
-      return Logger.warnMessage(message);
+      return warnMessage(message);
     }
 
     if (this.isPlayerNotFound(message)) {
@@ -718,11 +718,11 @@ class StateHandler extends eventHandler {
     }*/
 
     const regex =
-      config.discord.other.messageMode === "minecraft"
+      discordConfig.other.messageMode === "minecraft"
         ? /^(?<chatType>§[0-9a-fA-F](Guild|Officer)) > (?<rank>§[0-9a-fA-F](?:\[.*?\])?)?\s*(?<username>[^§\s]+)\s*(?:(?<guildRank>§[0-9a-fA-F](?:\[.*?\])?))?\s*§f: (?<message>.*)/
         : /^(?<chatType>\w+) > (?:(?:\[(?<rank>[^\]]+)\] )?(?:(?<username>\w+)(?: \[(?<guildRank>[^\]]+)\])?: )?)?(?<message>.+)$/;
 
-    const match = (config.discord.other.messageMode === "minecraft" ? colouredMessage : message).match(regex);
+    const match = (discordConfig.other.messageMode === "minecraft" ? colouredMessage : message).match(regex);
 
     if (!match) {
       return;
@@ -764,7 +764,7 @@ class StateHandler extends eventHandler {
   }
 
   isCommand(message) {
-    const regex = new RegExp(`^(?<prefix>[${config.minecraft.bot.prefix}-])(?<command>\\S+)(?:\\s+(?<args>.+))?\\s*$`);
+    const regex = new RegExp(`^(?<prefix>[${minecraftConfig.bot.prefix}-])(?<command>\\S+)(?:\\s+(?<args>.+))?\\s*$`);
 
     if (regex.test(message) === false) {
       const getMessage = /^(?<username>(?!https?:\/\/)[^\s»:>]+)\s*[»:>]\s*(?<message>.*)/;
@@ -1028,5 +1028,3 @@ class StateHandler extends eventHandler {
     }
   }
 }
-
-module.exports = StateHandler;

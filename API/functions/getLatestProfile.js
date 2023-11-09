@@ -1,13 +1,13 @@
 /* eslint-disable no-throw-literal */
-const { getUUID } = require("../../src/contracts/API/PlayerDBAPI.js");
-const { getMuseum } = require("./getMuseum.js");
-const { isUuid } = require("../utils/uuid.js");
-const config = require("../../config.json");
-const axios = require("axios");
+import { getUUID } from "../../src/contracts/API/PlayerDBAPI.js";
+import { minecraft } from "../../config.json";
+import { getMuseum } from "./getMuseum.js";
+import { isUuid } from "../utils/uuid.js";
+import { get } from "axios";
 
 const cache = new Map();
 
-async function getLatestProfile(uuid, options = { museum: false }) {
+export const getLatestProfile = async (uuid, options = { museum: false }) => {
   if (!isUuid(uuid)) {
     uuid = await getUUID(uuid).catch((error) => {
       throw error;
@@ -23,8 +23,8 @@ async function getLatestProfile(uuid, options = { museum: false }) {
   }
 
   const [{ data: playerRes }, { data: profileRes }] = await Promise.all([
-    axios.get(`https://api.hypixel.net/player?key=${config.minecraft.API.hypixelAPIkey}&uuid=${uuid}`),
-    axios.get(`https://api.hypixel.net/skyblock/profiles?key=${config.minecraft.API.hypixelAPIkey}&uuid=${uuid}`),
+    get(`https://api.hypixel.net/player?key=${minecraft.API.hypixelAPIkey}&uuid=${uuid}`),
+    get(`https://api.hypixel.net/skyblock/profiles?key=${minecraft.API.hypixelAPIkey}&uuid=${uuid}`),
   ]).catch((error) => {
     throw error?.response?.data?.cause ?? "Request to Hypixel API failed. Please try again!";
   });
@@ -64,6 +64,4 @@ async function getLatestProfile(uuid, options = { museum: false }) {
   cache.set(uuid, output);
 
   return output;
-}
-
-module.exports = { getLatestProfile };
+};

@@ -70,7 +70,7 @@ const words = [
   "storm",
   "goldor",
   "necron",
-  "maxor",
+  "major",
   "kuudra",
   "simon",
   "hypixel",

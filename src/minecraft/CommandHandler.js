@@ -1,27 +1,28 @@
-const { Collection } = require("discord.js");
-const config = require("../../config.json");
-const Logger = require("../Logger.js");
-const axios = require("axios");
-const fs = require("fs");
+import { minecraft as minecraftConfig } from "../../config.json";
+import { minecraftMessage } from "../Logger.js";
+import { Collection } from "discord.js";
+// import { readdirSync } from "fs";
+import axios from "axios";
 
-class CommandHandler {
+export class CommandHandler {
   constructor(minecraft) {
     this.minecraft = minecraft;
 
-    this.prefix = config.minecraft.bot.prefix;
+    this.prefix = minecraftConfig.bot.prefix;
     this.commands = new Collection();
 
-    const commandFiles = fs.readdirSync("./src/minecraft/commands").filter((file) => file.endsWith(".js"));
-    for (const file of commandFiles) {
-      const command = new (require(`./commands/${file}`))(minecraft);
+    // todo fix
+    // const commandFiles = readdirSync("./src/minecraft/commands").filter((file) => file.endsWith(".js"));
+    // for (const file of commandFiles) {
+    //   const command = new (require(`./commands/${file}`))(minecraft);
 
-      this.commands.set(command.name, command);
-    }
+    //   this.commands.set(command.name, command);
+    // }
   }
 
   handle(player, message) {
     if (message.startsWith(this.prefix)) {
-      if (config.minecraft.commands.normal === false) {
+      if (minecraftConfig.commands.normal === false) {
         return;
       }
 
@@ -34,10 +35,10 @@ class CommandHandler {
         return;
       }
 
-      Logger.minecraftMessage(`${player} - [${command.name}] ${message}`);
+      minecraftMessage(`${player} - [${command.name}] ${message}`);
       command.onCommand(player, message);
     } else if (message.startsWith("-") && message.startsWith("- ") === false) {
-      if (config.minecraft.commands.soopy === false || message.at(1) === "-") {
+      if (minecraftConfig.commands.soopy === false || message.at(1) === "-") {
         return;
       }
 
@@ -45,7 +46,7 @@ class CommandHandler {
 
       const command = message.slice(1).split(" ")[0];
 
-      Logger.minecraftMessage(`${player} - [${command}] ${message}`);
+      minecraftMessage(`${player} - [${command}] ${message}`);
 
       (async () => {
         try {
@@ -53,7 +54,7 @@ class CommandHandler {
           const response = await axios.get(URI);
 
           if (response?.data?.msg === undefined) {
-            return bot.chat(`/gc [SOOPY V2] An error occured while running the command`);
+            return bot.chat(`/gc [SOOPY V2] An error occurred while running the command`);
           }
 
           bot.chat(`/gc [SOOPY V2] ${response.data.msg}`);
@@ -64,5 +65,3 @@ class CommandHandler {
     }
   }
 }
-
-module.exports = CommandHandler;

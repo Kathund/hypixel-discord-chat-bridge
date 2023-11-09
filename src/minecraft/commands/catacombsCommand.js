@@ -1,9 +1,9 @@
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
-const getDungeons = require("../../../API/stats/dungeons.js");
-const { formatNumber, formatUsername } = require("../../contracts/helperFunctions.js");
-const { getLatestProfile } = require("../../../API/functions/getLatestProfile.js");
+import { formatNumber, formatUsername } from "../../contracts/helperFunctions.js";
+import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
+import { minecraftCommand } from "../../contracts/minecraftCommand.js";
+import { getDungeons } from "../../../API/stats/dungeons.js";
 
-class CatacombsCommand extends minecraftCommand {
+export class CatacombsCommand extends minecraftCommand {
   constructor(minecraft) {
     super(minecraft);
 
@@ -45,7 +45,7 @@ class CatacombsCommand extends minecraftCommand {
       ).toFixed(1);
 
       const SRValue = dungeons.secrets_found / completions;
-      const SR = isNaN(SRValue) || SRValue === Infinity ? 0 : (SRValue).toFixed(2);
+      const SR = isNaN(SRValue) || SRValue === Infinity ? 0 : SRValue.toFixed(2);
 
       this.send(
         `/gc ${username}'s Catacombs: ${level} | Class Average: ${classAvrg} (${dungeons.classes.healer.level}H, ${
@@ -61,5 +61,3 @@ class CatacombsCommand extends minecraftCommand {
     }
   }
 }
-
-module.exports = CatacombsCommand;

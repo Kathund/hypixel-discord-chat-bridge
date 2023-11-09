@@ -1,7 +1,7 @@
-const calcSkill = require("../constants/skills.js");
-const { titleCase } = require("../constants/functions.js");
+import { titleCase } from "../constants/functions.js";
+import { calcSkill } from "../constants/skills.js";
 
-module.exports = (player, profile) => {
+export const getDungeons = (player, profile) => {
   try {
     const dungeons = profile?.dungeons;
     const catacombs = dungeons?.dungeon_types.catacombs;

@@ -1,6 +1,7 @@
 // Credits https://github.com/Altpapier/hypixel-discord-guild-bridge/blob/master/helper/messageToImage.js
 
-const { registerFont, createCanvas, loadImage } = require("canvas");
+// eslint-disable-next-line import/no-unresolved
+import { registerFont, createCanvas, loadImage } from "canvas";
 registerFont("src/contracts/Fonts/MinecraftRegular-Bmg3.ttf", {
   family: "Minecraft",
 });
@@ -54,7 +55,7 @@ function getHeight(message) {
   return height + 10;
 }
 
-async function generateMessageImage(message, username) {
+export const generateMessageImage = async (message, username) => {
   const canvasHeight = getHeight(message);
   const canvas = createCanvas(1000, canvasHeight);
   const ctx = canvas.getContext("2d");
@@ -96,6 +97,4 @@ async function generateMessageImage(message, username) {
     width += ctx.measureText(currentMessage).width;
   }
   return canvas.toBuffer();
-}
-
-module.exports = generateMessageImage;
+};

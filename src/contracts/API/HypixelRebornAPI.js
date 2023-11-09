@@ -1,8 +1,6 @@
-const HypixelAPIReborn = require("hypixel-api-reborn");
-const config = require("../../../config.json");
+import { minecraft } from "../../../config.json";
+import { Client } from "hypixel-api-reborn";
 
-const hypixel = new HypixelAPIReborn.Client(config.minecraft.API.hypixelAPIkey, {
+export const hypixel = new Client(minecraft.API.hypixelAPIkey, {
   cache: true,
 });
-
-module.exports = hypixel;

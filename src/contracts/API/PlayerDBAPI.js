@@ -1,8 +1,8 @@
-const axios = require("axios");
+import axios from "axios";
 
 const cache = new Map();
 
-async function getUUID(username) {
+export const getUUID = async (username) => {
   try {
     if (cache.has(username)) {
       const data = cache.get(username);
@@ -37,18 +37,18 @@ async function getUUID(username) {
     // eslint-disable-next-line no-throw-literal
     throw "Request to Mojang API failed. Please try again!";
   }
-}
+};
 
-async function getUsername(uuid) {
+export const getUsername = async (uuid) => {
   try {
     const response = await axios.get(`https://playerdb.co/api/player/minecraft/${uuid}`);
     return response.data.data.player.username;
   } catch (error) {
     console.log(error);
   }
-}
+};
 
-async function resolveUsernameOrUUID(username) {
+export const resolveUsernameOrUUID = async (username) => {
   try {
     const { data } = await axios.get(`https://playerdb.co/api/player/minecraft/${username}`);
 
@@ -68,6 +68,4 @@ async function resolveUsernameOrUUID(username) {
   } catch (error) {
     console.log(error);
   }
-}
-
-module.exports = { getUUID, getUsername, resolveUsernameOrUUID };
+};
