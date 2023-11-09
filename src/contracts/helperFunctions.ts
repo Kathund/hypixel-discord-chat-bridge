@@ -256,7 +256,7 @@ export const parseTimestamp = (text: any) => {
   return dateMath ? dateMath.valueOf() : undefined;
 };
 
-export const formatUsername = (username: any, gamemode: any) => {
+export const formatUsername = (username: string, gamemode: 'ironman' | 'bingo' | 'island' | string) => {
   if (gamemode === 'ironman') return `♲ ${username}`;
   if (gamemode === 'bingo') return `Ⓑ ${username}`;
   if (gamemode === 'island') return `	☀ ${username}`;
@@ -264,12 +264,12 @@ export const formatUsername = (username: any, gamemode: any) => {
   return username;
 };
 
-export const formatNumber = (number: any, decimals = 2) => {
+export const formatNumber = (number: number, decimals = 2) => {
   if (number === undefined || number === 0) return 0;
 
   const isNegative = number < 0;
 
-  if (number < 100000 && number > -100000) return parseInt(number).toLocaleString();
+  if (number < 100000 && number > -100000) return number.toLocaleString();
 
   const abbrev = ['', 'K', 'M', 'B', 'T', 'Qa', 'Qi', 'S', 'O', 'N', 'D'];
   const unformattedNumber = Math.abs(number);
