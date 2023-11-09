@@ -1,4 +1,4 @@
-process.on('uncaughtException', (error: any) => console.log(error));
+process.on('uncaughtException', (error: Error) => console.log(error));
 import App from './src/Application';
 
 ('use strict');
@@ -7,6 +7,6 @@ App.register()
   .then(() => {
     App.connect();
   })
-  .catch((error: any) => {
+  .catch((error: Error) => {
     console.error(error);
   });

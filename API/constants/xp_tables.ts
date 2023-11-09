@@ -1,4 +1,5 @@
-export const xpTables = {
+import { xpTablesType } from '../../src/types/global';
+export const xpTables: xpTablesType = {
   max_levels: {
     farming: 60,
     mining: 60,

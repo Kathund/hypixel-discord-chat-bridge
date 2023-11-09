@@ -52,7 +52,8 @@ export const execute = async (interaction: Interaction) => {
             });
 
           await (interaction.client.channels.cache.get(discord.channels.loggingChannel) as TextChannel).send({
-            content: `<@&${discord.commands.commandRole}>`,
+            // set the content to be all the discord.commands.commandRoles array joined with <@& before the id and > after it
+            content: discord.commands.commandRoles.map((role) => `<@&${role}>`).join(' '),
             embeds: [errorLog],
           });
         }

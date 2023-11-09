@@ -1,3 +1,5 @@
+import { Client } from 'discord.js';
+
 export type broadcast = {
   fullMessage?: any;
   chat?: any;
@@ -35,6 +37,39 @@ export type playerToggle = {
 };
 
 declare global {
-  var bot: any;
-  var client: any;
+  let bot: any;
+  let client: Client;
 }
+
+export type maxSkillsLevelsType = {
+  farming: number;
+  mining: number;
+  combat: number;
+  foraging: number;
+  fishing: number;
+  enchanting: number;
+  alchemy: number;
+  taming: number;
+  carpentry: number;
+  runecrafting: number;
+  social: number;
+  dungeoneering: number;
+};
+
+export type slayerXpType = {
+  zombie: number[];
+  spider: number[];
+  wolf: number[];
+  enderman: number[];
+  blaze: number[];
+  vampire: number[];
+};
+
+export type xpTablesType = {
+  max_levels: maxSkillsLevelsType;
+  normal: number[];
+  social: number[];
+  runecrafting: number[];
+  catacombs: number[];
+  slayer: slayerXpType;
+};

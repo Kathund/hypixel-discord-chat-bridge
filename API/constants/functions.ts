@@ -93,8 +93,8 @@ export const round = (num: any, scale: any) => {
   if (!('' + num).includes('e')) {
     return +(Math.round((num + 'e+' + scale) as any) + 'e-' + scale);
   } else {
-    var arr = ('' + num).split('e');
-    var sig = '';
+    const arr = ('' + num).split('e');
+    let sig = '';
     if (+arr[1] + scale > 0) {
       sig = '+';
     }

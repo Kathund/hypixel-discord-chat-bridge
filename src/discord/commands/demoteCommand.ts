@@ -2,16 +2,12 @@ import { ChatInputCommandInteraction, EmbedBuilder, GuildMember, SlashCommandBui
 import { HypixelDiscordChatBridgeError } from '../../contracts/errorHandler';
 import { discord } from '../../../config.json';
 
-export const name = 'demote';
-export const description = 'Demotes the given user by one guild rank.';
-export const options = [
-  {
-    name: 'name',
-    description: 'Minecraft Username',
-    type: 3,
-    required: true,
-  },
-];
+export const data = new SlashCommandBuilder()
+  .setName('demote')
+  .setDescription('Demote a user from the guild.')
+  .addStringOption((option) =>
+    option.setName('name').setDescription('The name of the user to demote.').setRequired(true)
+  );
 
 export const execute = async (interaction: ChatInputCommandInteraction) => {
   const memberRoles = (interaction.member as GuildMember).roles.cache.map((role) => role.id);

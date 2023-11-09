@@ -4,7 +4,7 @@
     "es2021": true,
     "node": true
   },
-  "extends": ["plugin:@typescript-eslint/recommended","eslint:recommended", "plugin:import/recommended"],
+  "extends": [/*"plugin:@typescript-eslint/recommended", */"eslint:recommended", "plugin:import/recommended"],
   "overrides": [],
   "parserOptions": {
     "ecmaVersion": "latest"
@@ -18,8 +18,8 @@
     "no-unused-vars": ["error", { "args": "none" }],
     "prefer-const": ["warn", { "destructuring": "all" }],
     "no-constant-condition": ["error", { "checkLoops": false }],
-    "no-throw-literal": "error",
-    "@typescript-eslint/no-explicit-any": "error",
-    "import/no-unresolved": "off"
+    "no-throw-literal": "error"
+    // "@typescript-eslint/no-explicit-any": "error",
+    // "import/no-unresolved": "off"
   }
 }

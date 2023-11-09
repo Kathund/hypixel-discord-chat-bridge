@@ -1,7 +1,7 @@
 import { EndpointHandler } from './handlers/EndpointHandler';
-import { webMessage } from '../Logger';
 import { web } from '../../config.json';
 import express, { json } from 'express';
+import { webMessage } from '../Logger';
 
 export class WebManager {
   app: any;
@@ -10,9 +10,7 @@ export class WebManager {
   web: any;
   constructor(app: any) {
     this.app = app;
-
     this.port = web.port;
-
     this.endpointHandler = new EndpointHandler(this);
   }
 

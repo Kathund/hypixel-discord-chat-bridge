@@ -64,7 +64,7 @@ export const generateID = (length: any) => {
   let result = '';
   const characters = 'abcde0123456789',
     charactersLength = characters.length;
-  for (var i = 0; i < length; i++) {
+  for (let i = 0; i < length; i++) {
     result += characters.charAt(Math.floor(Math.random() * charactersLength));
   }
   return result;
@@ -94,7 +94,7 @@ export const toFixed = (num: any, fixed: any) => {
 };
 
 export const timeSince = (timeStamp: any) => {
-  var now = new Date(),
+  let now = new Date(),
     secondsPast = (now.getTime() - timeStamp) / 1000;
   secondsPast = Math.abs(secondsPast);
 

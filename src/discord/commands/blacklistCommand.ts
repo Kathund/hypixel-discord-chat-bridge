@@ -32,7 +32,7 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
     throw new HypixelDiscordChatBridgeError('You do not have permission to use this command', interaction.commandName);
   }
 
-  let arg = interaction.options.getSubcommand();
+  const arg = interaction.options.getSubcommand();
   const name = interaction.options.getString('name');
 
   bot.chat(`/ignore ${arg} ${name}`);

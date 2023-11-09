@@ -46,7 +46,7 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
           discord.channels.loggingChannel ? `<#${discord.channels.loggingChannel}>` : 'None'
         }\nDebugging Channel: ${
           discord.channels.debugChannel ? `<#${discord.channels.debugChannel}>` : 'None'
-        }\nCommand Role: <@&${discord.commands.commandRole}>\nMessage Mode: \`${
+        }\nCommand Roles: ${discord.commands.commandRoles.map((role) => `<@&${role}>`).join(' ')}\nMessage Mode: \`${
           discord.other.messageMode
         }\`\nFilter: \`${discord.other.filterMessages ? 'enabled' : 'disabled'}\`\nJoin Messages: \`${
           discord.other.joinMessage ? 'enabled' : 'disabled'
