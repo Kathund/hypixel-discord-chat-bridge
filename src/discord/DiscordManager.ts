@@ -24,15 +24,15 @@ export class DiscordManager extends CommunicationBridge {
 
     this.stateHandler = new StateHandler(this);
     this.messageHandler = new MessageHandler(this, null);
-    this.commandHandler = new CommandHandler(this);
+    this.commandHandler = new CommandHandler();
   }
 
   async connect() {
-    global.client = new Client({
+    client = new Client({
       intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent],
     });
 
-    this.client = global.client;
+    this.client = client;
 
     this.client.on('ready', () => this.stateHandler.onReady());
     this.client.on('messageCreate', (message: any) => this.messageHandler.onMessage(message));
@@ -41,14 +41,6 @@ export class DiscordManager extends CommunicationBridge {
       errorMessage(error);
     });
 
-    global.client.commands = new Collection();
-    const commandFiles = readdirSync('src/discord/commands').filter((file) => file.endsWith('.js'));
-
-    for (const file of commandFiles) {
-      const command = await import(`./commands/${file}`);
-      global.client.commands.set(command.name, command);
-    }
-
     const eventsPath = join(__dirname, 'events');
     const eventFiles = readdirSync(eventsPath).filter((file) => file.endsWith('.js'));
 
@@ -56,8 +48,8 @@ export class DiscordManager extends CommunicationBridge {
       const filePath = join(eventsPath, file);
       const event = await import(filePath);
       event.once
-        ? global.client.once(event.name, (...args: any) => event.execute(...args))
-        : global.client.on(event.name, (...args: any) => event.execute(...args));
+        ? client.once(event.name, (...args: any) => event.execute(...args))
+        : client.on(event.name, (...args: any) => event.execute(...args));
     }
 
     process.on('SIGINT', async () => {

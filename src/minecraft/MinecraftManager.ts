@@ -29,7 +29,7 @@ export class MinecraftManager extends CommunicationBridge {
   }
 
   connect() {
-    global.bot = this.createBotConnection();
+    bot = this.createBotConnection();
     this.bot = bot;
 
     this.errorHandler.registerEvents(this.bot);

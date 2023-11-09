@@ -1,29 +1,39 @@
-// eslint-disable-next-line import/extensions
-import { discord as discordConfig } from '../../config.json';
-// eslint-disable-next-line import/extensions
-import { Routes } from 'discord-api-types/v9';
-import { REST } from '@discordjs/rest';
+import { Collection, REST, Routes } from 'discord.js';
+import { SlashCommand } from '../types/discord';
+import { discord } from '../../config.json';
+import { discordMessage } from '../Logger';
 import { readdirSync } from 'fs';
 
 export class CommandHandler {
-  discord: any;
-  constructor(discord: any) {
-    this.discord = discord;
+  constructor() {
+    try {
+      (async () => {
+        client.commands = new Collection<string, SlashCommand>();
+        const commandFiles = readdirSync('./src/discord/commands');
+        const commands = [];
 
-    const commands = [];
-    const commandFiles = readdirSync('src/discord/commands').filter((file) => file.endsWith('.js'));
+        for (const file of commandFiles) {
+          const command = await import(`../discord/commands/${file}`);
+          commands.push(command.data.toJSON());
+          if (command.data.name) {
+            client.commands.set(command.data.name, command);
+          }
+        }
 
-    for (const file of commandFiles) {
-      const command = import(`./commands/${file}`);
-      commands.push(command);
+        const rest = new REST({ version: '10' }).setToken(discord.bot.token);
+        const clientID = Buffer.from(discord.bot.token.split('.')[0], 'base64').toString('ascii');
+
+        (async () => {
+          try {
+            await rest.put(Routes.applicationCommands(clientID), { body: commands });
+            discordMessage(`Successfully reloaded ${commands.length} application command(s).`);
+          } catch (error: any) {
+            console.log(error);
+          }
+        })();
+      })();
+    } catch (error: any) {
+      console.log(error);
     }
-
-    const rest = new REST({ version: '10' }).setToken(discordConfig.bot.token);
-
-    const clientID = Buffer.from(discordConfig.bot.token.split('.')[0], 'base64').toString('ascii');
-
-    rest
-      .put(Routes.applicationGuildCommands(clientID, discordConfig.bot.serverID), { body: commands })
-      .catch(console.error);
   }
 }

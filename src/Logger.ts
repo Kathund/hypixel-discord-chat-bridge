@@ -1,26 +1,26 @@
 import chalk from 'chalk';
 
-export const discordMessage = (message: any) => {
+export const discordMessage = (message: string) => {
   return console.log(chalk.bgMagenta.black(`[${getCurrentTime()}] Discord >`) + ' ' + chalk.magenta(message));
 };
 
-export const minecraftMessage = (message: any) => {
+export const minecraftMessage = (message: string) => {
   return console.log(chalk.bgGreenBright.black(`[${getCurrentTime()}] Minecraft >`) + ' ' + chalk.greenBright(message));
 };
 
-export const webMessage = (message: any) => {
+export const webMessage = (message: string) => {
   return console.log(chalk.bgCyan.black(`[${getCurrentTime()}] Web >`) + ' ' + chalk.cyan(message));
 };
 
-export const warnMessage = (message: any) => {
+export const warnMessage = (message: string) => {
   return console.log(chalk.bgYellow.black(`[${getCurrentTime()}] Warning >`) + ' ' + chalk.yellow(message));
 };
 
-export const errorMessage = (message: any) => {
+export const errorMessage = (message: string) => {
   return console.log(chalk.bgRedBright.black(`[${getCurrentTime()}] Error >`) + ' ' + chalk.redBright(message));
 };
 
-export const broadcastMessage = (message: any, location: any) => {
+export const broadcastMessage = (message: string, location: string) => {
   return console.log(chalk.inverse(`[${getCurrentTime()}] ${location} Broadcast >`) + ' ' + message);
 };
 

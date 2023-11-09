@@ -67,13 +67,15 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 
     const type = minecraftCommand ? 'minecraft' : 'discord';
 
-    const command = interaction.client.commands.find((command) => command.name === commandName); /*?? minecraftCommand*/
+    const command = interaction.client.commands.find(
+      (command) => command.data.name === commandName
+    ); /*?? minecraftCommand*/
     if (command === undefined) {
       throw new HypixelDiscordChatBridgeError(`Command ${commandName} not found.`, interaction.commandName);
     }
 
-    const description = `${command.description}\n\n${
-      command.options
+    const description = `${command.data.description}\n\n${
+      command.data.options
         ?.map(({ name, required, description }: any) => {
           const optionString = required ? `(${name})` : `[${name}]`;
           return `\`${optionString}\`: ${description}\n`;
@@ -83,7 +85,7 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
 
     const embed = new EmbedBuilder()
       .setColor(39423)
-      .setTitle(`**${type === 'discord' ? '/' : minecraft.bot.prefix}${command.name}**`)
+      .setTitle(`**${type === 'discord' ? '/' : minecraft.bot.prefix}${command.data.name}**`)
       .setDescription(description + '\n')
       .setFooter({
         text: 'by @duckysolucky | () = required, [] = optional',

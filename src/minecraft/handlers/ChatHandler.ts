@@ -208,9 +208,7 @@ export class ChatHandler extends EventHandler {
               iconURL: 'https://imgur.com/tgwQJTX.png',
             });
 
-          await global.client.channels.cache
-            .get(`${discordConfig.channels.loggingChannel}`)
-            .send({ embeds: [statsEmbed] });
+          await client.channels.cache.get(`${discordConfig.channels.loggingChannel}`).send({ embeds: [statsEmbed] });
         }
       }
     }
@@ -400,7 +398,7 @@ export class ChatHandler extends EventHandler {
     }
 
     if (this.isRepeatMessage(message)) {
-      return global.client.channels.cache.get(discordConfig.channels.guildChatChannel).send({
+      return client.channels.cache.get(discordConfig.channels.guildChatChannel).send({
         embeds: [
           {
             color: 15548997,
