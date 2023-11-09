@@ -38,7 +38,7 @@ export type playerToggle = {
 
 declare global {
   let bot: any;
-  let client: Client;
+  let client: any;
 }
 
 export type maxSkillsLevelsType = {
