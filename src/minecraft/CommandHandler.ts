@@ -18,7 +18,6 @@ export class CommandHandler {
     (async () => {
       const commandFiles = readdirSync('./src/minecraft/commands');
       for (const file of commandFiles) {
-        console.log(file);
         const command = new (await import(`./commands/${file}`)).default(minecraft);
         this.commands.set(command.name, command);
       }
