@@ -8,6 +8,7 @@ function updateCode() {
     return;
   }
 
+  // eslint-disable-next-line
   exec('git pull', (error, stdout, stderr) => {
     if (error) {
       console.error(`Git pull error: ${error}`);

@@ -13,7 +13,7 @@ export class StateHandler extends EventHandler {
     this.exactDelay = 0;
   }
 
-  registerEvents(bot: any) {
+  registerEvents() {
     this.bot = global.bot;
 
     this.bot.on('login', () => this.onLogin());

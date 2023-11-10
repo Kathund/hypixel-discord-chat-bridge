@@ -9,7 +9,7 @@ import { getUUID } from '../../contracts/API/PlayerDBAPI';
 import { getWeight } from '../../../API/stats/weight';
 import messages from '../../../messages.json';
 import { warnMessage } from '../../Logger';
-import { EmbedBuilder } from 'discord.js';
+import { EmbedBuilder, TextChannel } from 'discord.js';
 
 export class ChatHandler extends EventHandler {
   discord: any;
@@ -22,7 +22,7 @@ export class ChatHandler extends EventHandler {
     this.command = command;
   }
 
-  registerEvents(bot: any) {
+  registerEvents() {
     this.bot = global.bot;
     this.bot.on('message', (message: any) => this.onMessage(message));
   }
@@ -208,9 +208,9 @@ export class ChatHandler extends EventHandler {
               iconURL: 'https://imgur.com/tgwQJTX.png',
             });
 
-          await global.client.channels.cache
-            .get(`${discordConfig.channels.loggingChannel}`)
-            .send({ embeds: [statsEmbed] });
+          await (global.client.channels.cache.get(`${discordConfig.channels.loggingChannel}`) as TextChannel).send({
+            embeds: [statsEmbed],
+          });
         }
       }
     }
@@ -400,7 +400,7 @@ export class ChatHandler extends EventHandler {
     }
 
     if (this.isRepeatMessage(message)) {
-      return global.client.channels.cache.get(discordConfig.channels.guildChatChannel).send({
+      return (global.client.channels.cache.get(discordConfig.channels.guildChatChannel) as TextChannel).send({
         embeds: [
           {
             color: 15548997,

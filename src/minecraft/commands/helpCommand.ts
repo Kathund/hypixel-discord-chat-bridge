@@ -14,7 +14,7 @@ export default class HelpCommand extends minecraftCommand {
     this.options = [];
   }
 
-  onCommand(username: any, message: any) {
+  onCommand() {
     try {
       this.send(`/gc https://imgur.com/jUX06BC.png`);
     } catch (error) {

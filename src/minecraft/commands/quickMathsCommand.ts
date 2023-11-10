@@ -24,7 +24,7 @@ export default class QuickMathsCommand extends minecraftCommand {
     this.options = [];
   }
 
-  async onCommand(username: any, message: any) {
+  async onCommand(username: any) {
     try {
       const userUsername = username;
       const operands = [Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)];

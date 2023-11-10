@@ -35,7 +35,6 @@ export const renderLore = (text: any) => {
 
   const formats = new Set();
 
-  // @ts-ignore - this regex always matches so we don't need to check for null
   for (const part of text.match(/(§[0-9a-fk-or])*[^§]*/g)) {
     if (part.length === 0) continue;
 

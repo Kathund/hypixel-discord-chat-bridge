@@ -1,3 +1,5 @@
+import { Client } from 'discord.js';
+
 export type broadcast = {
   fullMessage?: any;
   chat?: any;
@@ -35,7 +37,9 @@ export type playerToggle = {
 };
 
 declare global {
+  // eslint-disable-next-line no-var
   var bot: any;
+  // eslint-disable-next-line no-var
   var client: Client;
 }
 

@@ -15,7 +15,7 @@ export default class FetchurCommand extends minecraftCommand {
     this.options = [];
   }
 
-  async onCommand(username: any, message: any) {
+  async onCommand() {
     try {
       const { text, description } = getFetchur();
 

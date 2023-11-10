@@ -32,7 +32,7 @@ export class CommunicationBridge {
     throw new Error('Communication bridge connection is not implemented yet!');
   }
 
-  onBroadcast(event: any) {
+  onBroadcast() {
     throw new Error('Communication bridge broadcast handling is not implemented yet!');
   }
 }

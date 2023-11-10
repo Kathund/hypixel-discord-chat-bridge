@@ -1,4 +1,5 @@
-const ChatHandler = require('../src/minecraft/handlers/ChatHandler.js');
+/* eslint-disable @typescript-eslint/no-var-requires */
+const { ChatHandler } = require('../src/minecraft/handlers/ChatHandler.js');
 const { describe, it, expect, beforeEach } = require('@jest/globals');
 
 describe('ChatHandler', () => {

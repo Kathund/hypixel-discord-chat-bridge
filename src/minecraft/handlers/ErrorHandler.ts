@@ -9,9 +9,8 @@ export class ErrorHandler extends EventHandler {
     this.minecraft = minecraft;
   }
 
-  registerEvents(bot: any) {
+  registerEvents() {
     this.bot = global.bot;
-
     this.bot.on('error', (error: any) => this.onError(error));
   }
 

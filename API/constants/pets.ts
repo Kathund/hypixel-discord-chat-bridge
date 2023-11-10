@@ -47,93 +47,99 @@ class Pet {
   rarity: any;
   level: any;
   extra: any;
-  // stats: any;
+  private _stats: any;
+  public get stats(): any {
+    return this._stats;
+  }
+  public set stats(value: any) {
+    this._stats = value;
+  }
   constructor(rarity: any, level: any, extra: any) {
     this.rarity = rarity;
     this.level = level;
     this.extra = extra;
   }
 
-  // lore(newStats = false) {
-  //   if (!newStats) {
-  //     newStats = this.stats as any;
-  //   }
-  //   const list = [];
-  //   for (const stat in newStats as any) {
-  //     switch (stat) {
-  //       case 'health':
-  //         list.push(`§7Health: ${formatStat((newStats as any)[stat])}`);
-  //         break;
-  //       case 'defense':
-  //         list.push(`§7Defense: ${formatStat((newStats as any)[stat])}`);
-  //         break;
-  //       case 'strength':
-  //         list.push(`§7Strength: ${formatStat((newStats as any)[stat])}`);
-  //         break;
-  //       case 'crit_chance':
-  //         list.push(`§7Crit Chance: ${formatStat((newStats as any)[stat])}%`);
-  //         break;
-  //       case 'crit_damage':
-  //         list.push(`§7Crit Damage: ${formatStat((newStats as any)[stat])}%`);
-  //         break;
-  //       case 'intelligence':
-  //         list.push(`§7Intelligence: ${formatStat((newStats as any)[stat])}`);
-  //         break;
-  //       case 'speed':
-  //         list.push(`§7Speed: ${formatStat((newStats as any)[stat])}`);
-  //         break;
-  //       case 'bonus_attack_speed':
-  //         list.push(`§7Bonus Attack Speed: ${formatStat((newStats as any)[stat])}%`);
-  //         break;
-  //       case 'sea_creature_chance':
-  //         list.push(`§7Sea Creature Chance: ${formatStat((newStats as any)[stat])}%`);
-  //         break;
-  //       case 'magic_find':
-  //         list.push(`§7Magic Find: ${formatStat((newStats as any)[stat])}`);
-  //         break;
-  //       case 'pet_luck':
-  //         list.push(`§7Pet Luck: ${formatStat((newStats as any)[stat])}`);
-  //         break;
-  //       case 'true_defense':
-  //         list.push(`§7True Defense: ${formatStat((newStats as any)[stat])}`);
-  //         break;
-  //       case 'ability_damage':
-  //         list.push(`§7Ability Damage: ${formatStat((newStats as any)[stat])}%`);
-  //         break;
-  //       case 'damage':
-  //         list.push(`§7Damage: ${formatStat((newStats as any)[stat])}`);
-  //         break;
-  //       case 'ferocity':
-  //         list.push(`§7Ferocity: ${formatStat((newStats as any)[stat])}`);
-  //         break;
-  //       case 'mining_speed':
-  //         list.push(`§7Mining Speed: ${formatStat((newStats as any)[stat])}`);
-  //         break;
-  //       case 'mining_fortune':
-  //         list.push(`§7Mining Fortune: ${formatStat((newStats as any)[stat])}`);
-  //         break;
-  //       case 'farming_fortune':
-  //         list.push(`§7Farming Fortune: ${formatStat((newStats as any)[stat])}`);
-  //         break;
-  //       case 'health_regen':
-  //         list.push(`§7Health Regen: ${formatStat((newStats as any)[stat])}`);
-  //         break;
-  //       case 'fishing_speed':
-  //         list.push(`§7Fishing Speed: ${formatStat((newStats as any)[stat])}`);
-  //         break;
-  //       case 'rift_time':
-  //         list.push(`§7Rift Time: §a${formatStat((newStats as any)[stat])}s`);
-  //         break;
-  //       case 'mana_regen':
-  //         list.push(`§7Mana Regen: §a${formatStat((newStats as any)[stat])}%`);
-  //         break;
-  //       default:
-  //         list.push(`§cUNKNOWN: ${stat}`);
-  //         break;
-  //     }
-  //   }
-  //   return list;
-  // }
+  lore(newStats = false) {
+    if (!newStats) {
+      newStats = this.stats as any;
+    }
+    const list = [];
+    for (const stat in newStats as any) {
+      switch (stat) {
+        case 'health':
+          list.push(`§7Health: ${formatStat((newStats as any)[stat])}`);
+          break;
+        case 'defense':
+          list.push(`§7Defense: ${formatStat((newStats as any)[stat])}`);
+          break;
+        case 'strength':
+          list.push(`§7Strength: ${formatStat((newStats as any)[stat])}`);
+          break;
+        case 'crit_chance':
+          list.push(`§7Crit Chance: ${formatStat((newStats as any)[stat])}%`);
+          break;
+        case 'crit_damage':
+          list.push(`§7Crit Damage: ${formatStat((newStats as any)[stat])}%`);
+          break;
+        case 'intelligence':
+          list.push(`§7Intelligence: ${formatStat((newStats as any)[stat])}`);
+          break;
+        case 'speed':
+          list.push(`§7Speed: ${formatStat((newStats as any)[stat])}`);
+          break;
+        case 'bonus_attack_speed':
+          list.push(`§7Bonus Attack Speed: ${formatStat((newStats as any)[stat])}%`);
+          break;
+        case 'sea_creature_chance':
+          list.push(`§7Sea Creature Chance: ${formatStat((newStats as any)[stat])}%`);
+          break;
+        case 'magic_find':
+          list.push(`§7Magic Find: ${formatStat((newStats as any)[stat])}`);
+          break;
+        case 'pet_luck':
+          list.push(`§7Pet Luck: ${formatStat((newStats as any)[stat])}`);
+          break;
+        case 'true_defense':
+          list.push(`§7True Defense: ${formatStat((newStats as any)[stat])}`);
+          break;
+        case 'ability_damage':
+          list.push(`§7Ability Damage: ${formatStat((newStats as any)[stat])}%`);
+          break;
+        case 'damage':
+          list.push(`§7Damage: ${formatStat((newStats as any)[stat])}`);
+          break;
+        case 'ferocity':
+          list.push(`§7Ferocity: ${formatStat((newStats as any)[stat])}`);
+          break;
+        case 'mining_speed':
+          list.push(`§7Mining Speed: ${formatStat((newStats as any)[stat])}`);
+          break;
+        case 'mining_fortune':
+          list.push(`§7Mining Fortune: ${formatStat((newStats as any)[stat])}`);
+          break;
+        case 'farming_fortune':
+          list.push(`§7Farming Fortune: ${formatStat((newStats as any)[stat])}`);
+          break;
+        case 'health_regen':
+          list.push(`§7Health Regen: ${formatStat((newStats as any)[stat])}`);
+          break;
+        case 'fishing_speed':
+          list.push(`§7Fishing Speed: ${formatStat((newStats as any)[stat])}`);
+          break;
+        case 'rift_time':
+          list.push(`§7Rift Time: §a${formatStat((newStats as any)[stat])}s`);
+          break;
+        case 'mana_regen':
+          list.push(`§7Mana Regen: §a${formatStat((newStats as any)[stat])}%`);
+          break;
+        default:
+          list.push(`§cUNKNOWN: ${stat}`);
+          break;
+      }
+    }
+    return list;
+  }
 }
 
 const rarities = [
@@ -2470,7 +2476,7 @@ class Monkey extends Pet {
 }
 
 class Montezuma extends Pet {
-  profile: {} | any;
+  profile: object | any;
   get stats() {
     const riftSouls =
       'objectives' in (this.profile ?? {})

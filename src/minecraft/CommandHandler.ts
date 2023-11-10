@@ -23,7 +23,7 @@ export class CommandHandler {
     })();
   }
 
-  handle(player: any, message: any) {
+  handle(player: string, message: any) {
     if (message.startsWith(this.prefix)) {
       if (minecraftConfig.commands.normal === false) {
         return;

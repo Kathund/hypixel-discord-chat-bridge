@@ -1,6 +1,6 @@
 export class EventHandler {
   minecraft: any;
-  registerEvents(bot: any) {
+  registerEvents() {
     throw new Error('Event Handler registerEvents is not implemented yet!');
   }
   send(message: any) {

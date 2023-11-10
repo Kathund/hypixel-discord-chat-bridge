@@ -16,7 +16,7 @@ export default class KittyCommand extends minecraftCommand {
     this.options = [];
   }
 
-  async onCommand(username: any, message: any) {
+  async onCommand() {
     try {
       const { data } = await axios.get(`https://api.thecatapi.com/v1/images/search`);
 

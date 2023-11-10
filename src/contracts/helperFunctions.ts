@@ -23,7 +23,7 @@ export const replaceAllRanks = (input: any) => {
   return input;
 };
 
-export const addNotation = (type: any, value: any) => {
+export const addNotation = (type: 'shortScale' | 'oneLetters' | 'none' | 'commas', value: any) => {
   let returnVal = value;
   let notList: any[] = [];
   if (type === 'shortScale') {
@@ -56,11 +56,11 @@ export const addNotation = (type: any, value: any) => {
   return returnVal;
 };
 
-export const numberWithCommas = (x: any) => {
+export const numberWithCommas = (x: string | number) => {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 };
 
-export const generateID = (length: any) => {
+export const generateID = (length: number) => {
   let result = '';
   const characters = 'abcde0123456789',
     charactersLength = characters.length;
@@ -70,7 +70,7 @@ export const generateID = (length: any) => {
   return result;
 };
 
-export const getRarityColor = (rarity: any) => {
+export const getRarityColor = (rarity: string) => {
   if (rarity.toLowerCase() == 'mythic') return 'd';
   if (rarity.toLowerCase() == 'legendary') return '6';
   if (rarity.toLowerCase() == 'epic') return '5';
@@ -80,7 +80,7 @@ export const getRarityColor = (rarity: any) => {
   else return 'f';
 };
 
-export const addCommas = (num: any) => {
+export const addCommas = (num: number) => {
   try {
     return num.toLocaleString();
   } catch (error) {
@@ -93,9 +93,9 @@ export const toFixed = (num: any, fixed: any) => {
   return num.toString().match(response)[0];
 };
 
-export const timeSince = (timeStamp: any) => {
-  let now = new Date(),
-    secondsPast = (now.getTime() - timeStamp) / 1000;
+export const timeSince = (timeStamp: number) => {
+  const now = new Date();
+  let secondsPast = (now.getTime() - timeStamp) / 1000;
   secondsPast = Math.abs(secondsPast);
 
   if (secondsPast < 60) {
@@ -119,7 +119,7 @@ export const timeSince = (timeStamp: any) => {
   }
 };
 
-export const writeAt = async (filePath: any, jsonPath: any, value: any) => {
+export const writeAt = async (filePath: string, jsonPath: string, value: any) => {
   sync(getDirName(filePath));
 
   try {
@@ -133,11 +133,11 @@ export const writeAt = async (filePath: any, jsonPath: any, value: any) => {
   }
 };
 
-export const capitalize = (str: any) => {
+export const capitalize = (str: string) => {
   if (!str) return str;
   const words = str.replace(/_/g, ' ').toLowerCase().split(' ');
 
-  const upperCased = words.map((word: any) => {
+  const upperCased = words.map((word: string) => {
     return word.charAt(0).toUpperCase() + word.substr(1);
   });
 
@@ -149,13 +149,13 @@ export const decodeData = async (buffer: any) => {
   return simplify(parsedNbt);
 };
 
-export const nth = (i: any) => {
+export const nth = (i: number) => {
   return i + ['st', 'nd', 'rd'][((((i + 90) % 100) - 10) % 10) - 1] || `${i}th`;
 };
 
 const units = new Set(['y', 'M', 'w', 'd', 'h', 'm', 's']);
 
-function parseDateMath(mathString: any, time: any) {
+function parseDateMath(mathString: string, time: any) {
   const strippedMathString = mathString.replace(/\s/g, '');
   const dateTime = time;
   let i = 0;
@@ -214,7 +214,7 @@ function parseDateMath(mathString: any, time: any) {
   return dateTime;
 }
 
-export const parseTimestamp = (text: any) => {
+export const parseTimestamp = (text: string) => {
   if (!text) return;
 
   if (typeof text !== 'string') {
@@ -256,7 +256,7 @@ export const parseTimestamp = (text: any) => {
   return dateMath ? dateMath.valueOf() : undefined;
 };
 
-export const formatUsername = (username: string, gamemode: 'ironman' | 'bingo' | 'island' | string | null) => {
+export const formatUsername = (username: string, gamemode: 'ironman' | 'bingo' | 'island' | null) => {
   if (gamemode === 'ironman') return `♲ ${username}`;
   if (gamemode === 'bingo') return `Ⓑ ${username}`;
   if (gamemode === 'island') return `	☀ ${username}`;
@@ -280,6 +280,6 @@ export const formatNumber = (number: number, decimals = 2) => {
   return `${isNegative ? '-' : ''}${shortNumber}${abbrev[abbrevIndex]}`;
 };
 
-export const replaceVariables = (template: any, variables: any) => {
-  return template.replace(/\{(\w+)\}/g, (match: any, name: any) => variables[name] ?? match);
+export const replaceVariables = (template: string, variables: any) => {
+  return template.replace(/\{(\w+)\}/g, (match: string, name: any) => variables[name] ?? match);
 };

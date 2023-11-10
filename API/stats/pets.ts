@@ -223,7 +223,7 @@ export const getPets = (profile: any) => {
     delete pet.uuid;
 
     // eslint-disable-next-line no-unused-vars
-    for (const [index, line] of lore.entries()) {
+    for (const [line] of lore.entries()) {
       pet.lore += '' + renderLore(line) + '\n';
     }
     pet.lore = pet.lore.split('\n');

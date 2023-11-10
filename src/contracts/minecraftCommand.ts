@@ -59,7 +59,7 @@ export class minecraftCommand {
     }, 500);
   }
 
-  onCommand(player: any, message: any) {
+  onCommand() {
     throw new Error('Command onCommand method is not implemented yet!');
   }
 }
