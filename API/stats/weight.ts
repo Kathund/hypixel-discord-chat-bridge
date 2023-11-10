@@ -3,19 +3,31 @@ import { getDungeons } from './dungeons';
 import { getSlayers } from './slayer';
 import { getSkills } from './skills';
 import LilyWeight from 'lilyweight';
+import { LilyDungeons, LilySkills, LilySlayer } from '../../src/types/global';
 
 export const getWeight = (profile: any) => {
-  const { skills_levels, skills_experience } = formatLilySkills(getSkills(profile));
-  const { catacombs_experience, catacombs, master_mode } = formatLilyDungeons(getDungeons(null, profile));
-  const { slayer_experience } = formatLilySlayer(getSlayers(profile));
+  const { skills_levels, skills_experience } = formatLilySkills(getSkills(profile)) as LilySkills;
+  const { catacombs_experience, catacombs, master_mode } = formatLilyDungeons(
+    getDungeons(null, profile)
+  ) as LilyDungeons;
+  const { slayer_experience } = formatLilySlayer(getSlayers(profile)) as LilySlayer;
 
   const lily = LilyWeight.getWeightRaw(
-    skills_levels as any,
-    skills_experience as any,
-    catacombs as any,
-    master_mode as any,
-    catacombs_experience as any,
-    slayer_experience as any
+    skills_levels as number[],
+    skills_experience as number[],
+    catacombs as {
+      '0': number;
+      '1': number;
+      '2': number;
+      '3': number;
+      '4': number;
+      '5': number;
+      '6': number;
+      '7': number;
+    },
+    master_mode as { '1': number; '2': number; '3': number; '4': number; '5': number; '6': number; '7': number },
+    catacombs_experience as number,
+    slayer_experience as number[]
   );
 
   const senither = calculateTotalSenitherWeight(profile);
@@ -263,7 +275,7 @@ export const getWeight = (profile: any) => {
   };
 };
 
-function formatLilySkills(skills: any) {
+function formatLilySkills(skills: any): LilySkills {
   //  enchanting, taming, alchemy, mining, farming, foraging, combat, fishing.
   const skillSort = ['enchanting', 'taming', 'alchemy', 'mining', 'farming', 'foraging', 'combat', 'fishing'];
   const whitelistedSkills = Object.keys(skills).filter(
@@ -279,7 +291,7 @@ function formatLilySkills(skills: any) {
   return { skills_levels, skills_experience };
 }
 
-function formatLilyDungeons(dungeons: any) {
+function formatLilyDungeons(dungeons: any): LilyDungeons {
   const catacombs_experience = dungeons.catacombs?.skill?.totalXp || 0;
   const catacombs = {};
   for (const floor of Object.keys(dungeons.catacombs?.floors || {})) {
@@ -295,7 +307,7 @@ function formatLilyDungeons(dungeons: any) {
   return { catacombs, master_mode, catacombs_experience };
 }
 
-function formatLilySlayer(slayer: any) {
+function formatLilySlayer(slayer: any): LilySlayer {
   const slayerSort = ['zombie', 'spider', 'wolf', 'enderman', 'blaze'];
   const slayer_experience = Object.keys(slayer)
     .sort((a, b) => slayerSort.indexOf(a) - slayerSort.indexOf(b))

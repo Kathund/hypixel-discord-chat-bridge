@@ -1,6 +1,8 @@
 // CREDIT: https://github.com/SkyCryptWebsite/SkyCrypt/ (Modified)
 
-export const symbols = {
+import { Symbols } from '../../src/types/global';
+
+export const symbols: Symbols = {
   health: {
     name: 'Health',
     nameLore: 'Health',

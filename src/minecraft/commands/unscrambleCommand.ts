@@ -27,7 +27,7 @@ export default class unscrambleCommand extends minecraftCommand {
     this.cooldown = 30 * 1000;
   }
 
-  async onCommand(username: any, message: any) {
+  async onCommand(username: string, message: string) {
     try {
       const userUsername = username;
       const length = this.getArgs(message)[0];
@@ -48,7 +48,7 @@ export default class unscrambleCommand extends minecraftCommand {
 
       let answered = false;
       cooldowns.set(this.name, Date.now());
-      const listener = (username: any, message: any) => {
+      const listener = (username: string, message: string) => {
         if (getWord(message) === answer) {
           this.send(
             `/gc ${userUsername} guessed it right! Time elapsed: ${(Date.now() - startTime).toLocaleString()}ms!`

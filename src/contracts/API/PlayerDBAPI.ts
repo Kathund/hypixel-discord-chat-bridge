@@ -24,7 +24,7 @@ export const getUUID = async (username: any) => {
     });
 
     return data.id;
-  } catch (error: any) {
+  } catch (error: Error) {
     if (error.response.data.errorMessage !== undefined) {
       throw error.response.data.errorMessage === `Couldn't find any profile with name ${username}`
         ? 'Invalid username.'
@@ -43,7 +43,7 @@ export const getUsername = async (uuid: any) => {
   try {
     const response = await axios.get(`https://playerdb.co/api/player/minecraft/${uuid}`);
     return response.data.data.player.username;
-  } catch (error: any) {
+  } catch (error: Error) {
     console.log(error);
   }
 };
@@ -65,7 +65,7 @@ export const resolveUsernameOrUUID = async (username: any) => {
       username: data.data.player.username,
       uuid: data.data.player.raw_id,
     };
-  } catch (error: any) {
+  } catch (error: Error) {
     console.log(error);
   }
 };

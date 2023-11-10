@@ -9,7 +9,16 @@
   }
 */
 
-const skins = [
+type PetSkin = {
+  id: string;
+  name: string;
+  texture: string;
+  release: number;
+};
+
+type PetSkins = Record<string, PetSkin>;
+
+const skins: PetSkin[] = [
   {
     id: 'PET_SKIN_ENDERMAN',
     name: 'Spooky',
@@ -419,12 +428,12 @@ const skins = [
     release: new Date('2022-06-10 18:00:00 GMT+1').getTime(),
   },
 ];
-
-const gen_pet_skins: any = {};
+const gen_pet_skins: PetSkins = {};
 
 skins.forEach((skin) => {
   if (skin.id.startsWith('PET_SKIN_')) {
     gen_pet_skins[skin.id] = {
+      id: skin.id,
       name: skin.name,
       texture: skin.texture,
       release: skin.release,

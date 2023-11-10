@@ -1,11 +1,18 @@
 //CREDIT: https://github.com/SkyCrypt/SkyCryptWebsite (Modified)
-import { xpTables } from './xp_tables';
+import { maxLevels, catacombs, normal, runecrafting, social } from './xp_tables';
+import { SkillCalcResult } from '../../src/types/global';
 
-export const calcSkill = (skill: any, experience: any) => {
+export const calcSkill = (skill: string, experience: number): SkillCalcResult => {
   let table = 'normal';
   if (skill === 'runecrafting') table = 'runecrafting';
   if (skill === 'social') table = 'social';
   if (skill === 'dungeoneering') table = 'catacombs';
+
+  let xpTable = normal;
+  if (table === 'dungeoneering') xpTable = catacombs;
+  else if (table === 'normal') xpTable = normal;
+  else if (table === 'social') xpTable = social;
+  else if (table === 'runecrafting') xpTable = runecrafting;
 
   if (experience <= 0) {
     return {
@@ -13,8 +20,9 @@ export const calcSkill = (skill: any, experience: any) => {
       xp: 0,
       level: 0,
       xpCurrent: 0,
-      xpForNext: (xpTables as any)[table][0],
+      xpForNext: xpTable[0],
       progress: 0,
+      levelWithProgress: 0,
     };
   }
   let xp = 0;
@@ -23,13 +31,13 @@ export const calcSkill = (skill: any, experience: any) => {
   let progress = 0;
   let maxLevel = 0;
 
-  if ((xpTables.max_levels as any)[skill]) maxLevel = (xpTables.max_levels as any)[skill];
+  if (maxLevels[skill]) maxLevel = maxLevels[skill];
 
   for (let i = 1; i <= maxLevel; i++) {
-    xp += (xpTables as any)[table][i - 1];
+    xp += xpTable[i - 1];
 
     if (xp > experience) {
-      xp -= (xpTables as any)[table][i - 1];
+      xp -= xpTable[i - 1];
     } else {
       if (i <= maxLevel) level = i;
     }
@@ -47,7 +55,7 @@ export const calcSkill = (skill: any, experience: any) => {
   const totalXp = experience;
 
   if (level < maxLevel) {
-    xpForNext = Math.ceil((xpTables as any)[table][level] || 200000000);
+    xpForNext = Math.ceil(xpTable[level] || 200000000);
   }
 
   progress = level >= maxLevel && skill !== 'dungeoneering' ? 0 : Math.max(0, Math.min(xpCurrent / xpForNext, 1));

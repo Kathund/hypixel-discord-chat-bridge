@@ -21,7 +21,7 @@ export default class CalculateCommand extends minecraftCommand {
     ];
   }
 
-  onCommand(username: any, message: any) {
+  onCommand(username: string, message: string) {
     try {
       const calculation = message.replace(/[^-()\d/*+.]/g, '');
       const answer = eval(calculation);

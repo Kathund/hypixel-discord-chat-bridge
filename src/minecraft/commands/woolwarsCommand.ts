@@ -21,7 +21,7 @@ export default class WoolwarsCommand extends minecraftCommand {
     ];
   }
 
-  async onCommand(username: any, message: any) {
+  async onCommand(username: string, message: string) {
     try {
       username = this.getArgs(message)[0] || username;
 
@@ -56,7 +56,7 @@ export default class WoolwarsCommand extends minecraftCommand {
   }
 }
 
-function getWoolWarsStar(exp: any) {
+function getWoolWarsStar(exp: number) {
   const minimalExp = [0, 1e3, 3e3, 6e3, 1e4, 15e3];
   const baseLevel = minimalExp.length;
   const baseExp = minimalExp[minimalExp.length - 1];

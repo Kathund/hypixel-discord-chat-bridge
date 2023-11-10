@@ -56,6 +56,7 @@ export type maxSkillsLevelsType = {
   runecrafting: number;
   social: number;
   dungeoneering: number;
+  [key: string]: number;
 };
 
 export type slayerXpType = {
@@ -67,11 +68,98 @@ export type slayerXpType = {
   vampire: number[];
 };
 
-export type xpTablesType = {
-  max_levels: maxSkillsLevelsType;
-  normal: number[];
-  social: number[];
-  runecrafting: number[];
-  catacombs: number[];
-  slayer: slayerXpType;
+export type LilySkills = {
+  skills_levels: number[];
+  skills_experience: number[];
+};
+
+export type LilyDungeons = {
+  catacombs: Record<string, number>;
+  master_mode: Record<string, number>;
+  catacombs_experience: number;
+};
+
+export type LilySlayer = {
+  slayer_experience: number[];
+};
+
+export type DungeonWeights = {
+  catacombs: number;
+  healer: number;
+  mage: number;
+  berserk: number;
+  archer: number;
+  tank: number;
+  [key: string]: number;
+};
+
+export type SlayerWeights = {
+  [key: string]: {
+    divider: number;
+    modifier: number;
+  };
+};
+
+export type SkillWeights = {
+  [key: string]: {
+    exponent: number;
+    divider: number;
+    maxLevel: number;
+  };
+};
+
+export type SlayerType = keyof SlayerWeights;
+
+export type SlayerWeightResult = {
+  weight: number;
+  weight_overflow: number;
+};
+
+export type SkillType = keyof SkillWeights;
+
+export type SkillWeightResult = {
+  weight: number;
+  weight_overflow: number;
+};
+
+export type DungeonType = keyof DungeonWeights;
+
+export type DungeonWeightResult = {
+  weight: number;
+  weight_overflow: number;
+};
+
+export type SenitherType = SlayerType | DungeonType | SkillType;
+
+export type SkillCalcResult = {
+  totalXp: number;
+  xp: number;
+  level: number;
+  xpCurrent: number;
+  xpForNext: number;
+  progress: number;
+  levelWithProgress: number;
+};
+
+export type symbolType = {
+  name: string;
+  nameLore: string;
+  nameShort: string;
+  nameTiny: string;
+  symbol: string;
+  suffix: string;
+  color: string;
+};
+
+export type Symbols = Record<string, symbolType>;
+
+export type Rarity = 'COMMON' | 'UNCOMMON' | 'RARE' | 'EPIC' | 'LEGENDARY' | 'MYTHIC';
+
+export type StatData = {
+  common?: any;
+  uncommon?: any;
+  rare?: any;
+  epic?: any;
+  legendary?: any;
+  mythic?: any;
 };

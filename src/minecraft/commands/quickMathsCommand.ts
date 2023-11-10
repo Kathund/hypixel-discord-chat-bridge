@@ -24,7 +24,7 @@ export default class QuickMathsCommand extends minecraftCommand {
     this.options = [];
   }
 
-  async onCommand(username: any) {
+  async onCommand(username: string) {
     try {
       const userUsername = username;
       const operands = [Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)];
@@ -41,7 +41,7 @@ export default class QuickMathsCommand extends minecraftCommand {
       const startTime = Date.now();
       let answered = false;
 
-      const listener = (username: any, message: any) => {
+      const listener = (username: string, message: string) => {
         if (getAnswer(message) !== answer.toString()) {
           return;
         }

@@ -1,13 +1,14 @@
 // CREDIT: https://github.com/SkyCryptWebsite/SkyCrypt/ (Modified)
+import { Rarity, StatData } from '../../src/types/global';
 import { floor, round } from './functions';
 import { symbols } from './symbols';
 
-const SYMBOLS: any = {};
+const SYMBOLS: Record<string, string> = {};
 for (const symbol in symbols) {
-  SYMBOLS[symbol] = (symbols as any)[symbol].symbol;
+  SYMBOLS[symbol] = symbols[symbol].symbol;
 }
 
-function formatStat(stat: any) {
+function formatStat(stat: number): string {
   const statFloored = Math.floor(stat);
   if (statFloored > 0) {
     return `§a+${statFloored}`;
@@ -16,7 +17,7 @@ function formatStat(stat: any) {
   }
 }
 
-function getValue(rarity: any, data: any) {
+function getValue(rarity: Rarity, data: StatData): number {
   const base = Object.values(data)[0];
   const common = data.common ?? base;
   const uncommon = data.uncommon ?? common;
@@ -26,17 +27,17 @@ function getValue(rarity: any, data: any) {
   const mythic = data.mythic ?? legendary;
 
   switch (rarity) {
-    case COMMON:
+    case 'COMMON':
       return common;
-    case UNCOMMON:
+    case 'UNCOMMON':
       return uncommon;
-    case RARE:
+    case 'RARE':
       return rare;
-    case EPIC:
+    case 'EPIC':
       return epic;
-    case LEGENDARY:
+    case 'LEGENDARY':
       return legendary;
-    case MYTHIC:
+    case 'MYTHIC':
       return mythic;
     default:
       throw new Error('Unknown rarity');
@@ -4304,7 +4305,6 @@ export const pet_value = {
   mythic: 6,
 };
 
-const COMMON = rarities.indexOf('common');
 const UNCOMMON = rarities.indexOf('uncommon');
 const RARE = rarities.indexOf('rare');
 const EPIC = rarities.indexOf('epic');

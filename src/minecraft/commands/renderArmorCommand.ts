@@ -24,7 +24,7 @@ export default class ArmorCommand extends minecraftCommand {
     ];
   }
 
-  async onCommand(username: any, message: any) {
+  async onCommand(username: string, message: string) {
     try {
       username = this.getArgs(message)[0] || username;
 

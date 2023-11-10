@@ -258,7 +258,7 @@ const words = [
   'window',
 ];
 
-export const getRandomWord = (length: any) => {
+export const getRandomWord = (length: number | undefined) => {
   if (length !== undefined) {
     const filteredWords = words.filter((word) => word.length == length);
 
@@ -273,7 +273,7 @@ export const getRandomWord = (length: any) => {
   }
 };
 
-export const scrambleWord = (word: any): any => {
+export const scrambleWord = (word: string): string => {
   const chars = word.split('');
 
   for (let i = chars.length - 1; i > 0; i--) {

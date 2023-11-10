@@ -28,7 +28,7 @@ export default class DuelsStatsCommand extends minecraftCommand {
     ];
   }
 
-  async onCommand(username: any, message: any) {
+  async onCommand(username: string, message: string) {
     try {
       const duelTypes = [
         'blitz',
@@ -91,14 +91,19 @@ export default class DuelsStatsCommand extends minecraftCommand {
           } Wins: ${wins} | CWS: ${winstreak} | BWS: ${bestWinstreak} | WLR: ${WLRatio}`
         );
       }
-    } catch (error: any) {
-      this.send(
-        `/gc ${error
-          .toString()
-          .replace('[hypixel-api-reborn] ', '')
-          .replace('For help join our Discord Server https://discord.gg/NSEBNMM', '')
-          .replace('Error:', '[ERROR]')}`
-      );
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        this.send(
+          `/gc ${error
+            .toString()
+            .replace('[hypixel-api-reborn] ', '')
+            .replace('For help join our Discord Server https://discord.gg/NSEBNMM', '')
+            .replace('Error:', '[ERROR]')}`
+        );
+      } else {
+        this.send('/gc Something went wrong');
+        console.log(error);
+      }
     }
   }
 }

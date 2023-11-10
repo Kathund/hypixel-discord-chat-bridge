@@ -15,7 +15,7 @@ export default class warpoutCommand extends minecraftCommand {
     this.options = [];
     this.isOnCooldown = false;
   }
-  async onCommand(username: any, message: any) {
+  async onCommand(username: string, message: string) {
     try {
       if (this.isOnCooldown) {
         return this.send(`/gc ${username} Command is on cooldown`);
@@ -32,7 +32,7 @@ export default class warpoutCommand extends minecraftCommand {
       await delay(250);
       this.send('/play skyblock');
 
-      const warpoutListener = async (message: any) => {
+      const warpoutListener = async (message: string) => {
         message = message.toString();
 
         if (message.includes("You cannot invite that player since they're not online.")) {

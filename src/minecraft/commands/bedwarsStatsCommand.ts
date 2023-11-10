@@ -23,7 +23,7 @@ export default class BedwarsCommand extends minecraftCommand {
     ];
   }
 
-  async onCommand(username: any, message: any) {
+  async onCommand(username: string, message: string) {
     try {
       const msg = this.getArgs(message).map((arg: { replaceAll: (arg0: string, arg1: string) => any }) =>
         arg.replaceAll('/', '')
@@ -57,14 +57,19 @@ export default class BedwarsCommand extends minecraftCommand {
       } else {
         this.send('/gc Invalid mode. Valid modes: overall, solo, doubles, threes, fours, 4v4');
       }
-    } catch (error: any) {
-      this.send(
-        `/gc ${error
-          .toString()
-          .replace('[hypixel-api-reborn] ', '')
-          .replace('For help join our Discord Server https://discord.gg/NSEBNMM', '')
-          .replace('Error:', '[ERROR]')}`
-      );
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        this.send(
+          `/gc ${error
+            .toString()
+            .replace('[hypixel-api-reborn] ', '')
+            .replace('For help join our Discord Server https://discord.gg/NSEBNMM', '')
+            .replace('Error:', '[ERROR]')}`
+        );
+      } else {
+        this.send('/gc Something went wrong');
+        console.log(error);
+      }
     }
   }
 }

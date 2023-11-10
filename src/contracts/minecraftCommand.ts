@@ -16,12 +16,12 @@ export class minecraftCommand {
     return args;
   }
 
-  send(message: any, n = 1) {
+  send(message: string, n = 1) {
     if (global.bot === undefined && global.bot._client.chat === undefined) {
       return;
     }
 
-    const listener = async (msg: any) => {
+    const listener = async (msg: string) => {
       if (
         msg.toString().includes('You are sending commands too fast! Please slow down.') &&
         !msg.toString().includes(':')
@@ -57,9 +57,5 @@ export class minecraftCommand {
     setTimeout(() => {
       global.bot.removeListener('message', listener);
     }, 500);
-  }
-
-  onCommand() {
-    throw new Error('Command onCommand method is not implemented yet!');
   }
 }

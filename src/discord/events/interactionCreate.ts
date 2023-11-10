@@ -17,7 +17,7 @@ export const execute = async (interaction: Interaction) => {
 
         discordMessage(`${interaction.user.username} - [${interaction.commandName}]`);
         await command.execute(interaction);
-      } catch (error: any) {
+      } catch (error: Error) {
         console.log(error);
 
         const errrorMessage =

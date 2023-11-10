@@ -28,12 +28,12 @@ export class CommandHandler {
             await rest.put(Routes.applicationCommands(clientID), { body: commands });
             await rest.put(Routes.applicationGuildCommands(clientID, discord.bot.serverID), { body: [] });
             discordMessage(`Successfully reloaded ${commands.length} application command(s).`);
-          } catch (error: any) {
+          } catch (error: Error) {
             console.log(error);
           }
         })();
       })();
-    } catch (error: any) {
+    } catch (error: Error) {
       console.log(error);
     }
   }

@@ -22,7 +22,7 @@ export default class GuildInformationCommand extends minecraftCommand {
     ];
   }
 
-  async onCommand(username: any, message: any) {
+  async onCommand(username: string, message: string) {
     try {
       const guildName = this.getArgs(message)
         .map((arg: any) => capitalize(arg))
@@ -35,14 +35,19 @@ export default class GuildInformationCommand extends minecraftCommand {
           guild.level
         } | Weekly GEXP: ${formatNumber(guild.totalWeeklyGexp)}`
       );
-    } catch (error: any) {
-      this.send(
-        `/gc ${error
-          .toString()
-          .replace('[hypixel-api-reborn] ', '')
-          .replace('For help join our Discord Server https://discord.gg/NSEBNMM', '')
-          .replace('Error:', '[ERROR]')}`
-      );
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        this.send(
+          `/gc ${error
+            .toString()
+            .replace('[hypixel-api-reborn] ', '')
+            .replace('For help join our Discord Server https://discord.gg/NSEBNMM', '')
+            .replace('Error:', '[ERROR]')}`
+        );
+      } else {
+        this.send('/gc Something went wrong');
+        console.log(error);
+      }
     }
   }
 }

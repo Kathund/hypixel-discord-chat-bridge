@@ -37,7 +37,7 @@ export class DiscordManager extends CommunicationBridge {
     this.client.on('ready', () => this.stateHandler.onReady());
     this.client.on('messageCreate', (message: any) => this.messageHandler.onMessage(message));
 
-    this.client.login(discordConfig.bot.token).catch((error: any) => {
+    this.client.login(discordConfig.bot.token).catch((error: Error) => {
       errorMessage(error);
     });
 

@@ -11,10 +11,10 @@ export class ErrorHandler extends EventHandler {
 
   registerEvents() {
     this.bot = global.bot;
-    this.bot.on('error', (error: any) => this.onError(error));
+    this.bot.on('error', (error: Error) => this.onError(error));
   }
 
-  onError(error: any) {
+  onError(error: Error) {
     if (this.isConnectionResetError(error)) return;
 
     if (this.isConnectionRefusedError(error)) {
@@ -24,11 +24,11 @@ export class ErrorHandler extends EventHandler {
     warnMessage(error);
   }
 
-  isConnectionResetError(error: any) {
+  isConnectionResetError(error: Error) {
     return error.code && error.code == 'ECONNRESET';
   }
 
-  isConnectionRefusedError(error: any) {
+  isConnectionRefusedError(error: Error) {
     return error.code && error.code == 'ECONNREFUSED';
   }
 }

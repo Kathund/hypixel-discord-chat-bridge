@@ -21,7 +21,7 @@ export default class SkywarsCommand extends minecraftCommand {
     ];
   }
 
-  async onCommand(username: any, message: any) {
+  async onCommand(username: string, message: string) {
     try {
       username = this.getArgs(message)[0] || username;
 
@@ -30,14 +30,19 @@ export default class SkywarsCommand extends minecraftCommand {
       const { level, KDRatio, WLRatio, winstreak } = player.stats?.skywars as SkyWars;
 
       this.send(`/gc [${level}✫] ${player.nickname} | KDR: ${KDRatio} | WLR: ${WLRatio} | WS: ${winstreak}`);
-    } catch (error: any) {
-      this.send(
-        `/gc ${error
-          .toString()
-          .replace('[hypixel-api-reborn] ', '')
-          .replace('For help join our Discord Server https://discord.gg/NSEBNMM', '')
-          .replace('Error:', '[ERROR]')}`
-      );
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        this.send(
+          `/gc ${error
+            .toString()
+            .replace('[hypixel-api-reborn] ', '')
+            .replace('For help join our Discord Server https://discord.gg/NSEBNMM', '')
+            .replace('Error:', '[ERROR]')}`
+        );
+      } else {
+        this.send('/gc Something went wrong');
+        console.log(error);
+      }
     }
   }
 }

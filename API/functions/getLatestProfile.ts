@@ -9,7 +9,7 @@ const cache = new Map();
 
 export const getLatestProfile = async (uuid: any, options = { museum: false }) => {
   if (!isUuid(uuid)) {
-    uuid = await getUUID(uuid).catch((error: any) => {
+    uuid = await getUUID(uuid).catch((error: Error) => {
       throw error;
     });
   }

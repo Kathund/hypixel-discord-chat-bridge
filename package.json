@@ -11,7 +11,7 @@
     "lint:ejs": "npx ejslint **/*.ejs",
     "prettier": "npx prettier --check .",
     "prettier:fix": "npx prettier --write .",
-    "nodemon": "nmpx nodemon index",
+    "nodemon": "npx nodemon index",
     "build": "npx tsc --build"
   },
   "repository": {

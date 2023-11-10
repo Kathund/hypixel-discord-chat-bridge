@@ -29,7 +29,7 @@ export default class SlayersCommand extends minecraftCommand {
     ];
   }
 
-  async onCommand(username: any, message: any) {
+  async onCommand(username: string, message: string) {
     try {
       const args = this.getArgs(message);
       const slayer = [

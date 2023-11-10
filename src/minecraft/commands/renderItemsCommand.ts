@@ -29,7 +29,7 @@ export default class RenderCommand extends minecraftCommand {
     ];
   }
 
-  async onCommand(username: any, message: any) {
+  async onCommand(username: string, message: string) {
     try {
       let itemNumber = 0;
       const arg = this.getArgs(message);

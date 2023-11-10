@@ -19,7 +19,7 @@
     "prefer-const": ["warn", { "destructuring": "all" }],
     "no-constant-condition": ["error", { "checkLoops": false }],
     "no-throw-literal": "error",
-    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-explicit-any": "error",
     "import/no-unresolved": "off"
   }
 }

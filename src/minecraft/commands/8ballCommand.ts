@@ -21,7 +21,7 @@ export default class EightBallCommand extends minecraftCommand {
     ];
   }
 
-  async onCommand(username: any, message: any) {
+  async onCommand(username: string, message: string) {
     try {
       if (this.getArgs(message).length === 0) {
         // eslint-disable-next-line no-throw-literal

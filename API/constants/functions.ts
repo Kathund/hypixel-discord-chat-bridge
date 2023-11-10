@@ -1,4 +1,4 @@
-export const titleCase = (str: any, replaceunderscore = false) => {
+export const titleCase = (str: string, replaceunderscore = false): string | null => {
   try {
     if (replaceunderscore) str = str.replace(/_/g, ' ');
     const splitStr = str.toLowerCase().split(' ');
@@ -12,44 +12,47 @@ export const titleCase = (str: any, replaceunderscore = false) => {
   }
 };
 
-export const capitalize = (str: any) => {
+export const capitalize = (str: string): string | null => {
   if (!str) return null;
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
 
-export const toFixed = (num: any, fixed: any) => {
+export const toFixed = (num: number, fixed: number): string => {
   const re = new RegExp('^-?\\d+(?:.\\d{0,' + (fixed || -1) + '})?');
-  return num.toString().match(re)[0];
+  const match = num.toString().match(re);
+  return match ? match[0] : '';
 };
 
-export const isFormatCode = (code: any) => {
+export const isFormatCode = (code: string): boolean => {
   return /[k-o]/.test(code);
 };
 
-export const isColorCode = (code: any) => {
+export const isColorCode = (code: string): boolean => {
   return /[0-9a-f]/.test(code);
 };
 
-export const renderLore = (text: any) => {
+export const renderLore = (text: string) => {
   let output = '';
 
   const formats = new Set();
+  const matches = text.match(/(§[0-9a-fk-or])*[^§]*/g);
+  if (matches) {
+    for (const part of matches) {
+      if (part.length === 0) continue;
 
-  for (const part of text.match(/(§[0-9a-fk-or])*[^§]*/g)) {
-    if (part.length === 0) continue;
+      output += '';
 
-    output += '';
+      if (formats.size > 0) {
+        output += `${Array.from(formats, (x) => '§' + x).join(' ')}`;
+      }
 
-    if (formats.size > 0) {
-      output += `${Array.from(formats, (x) => '§' + x).join(' ')}`;
+      output += `${part}`;
     }
-
-    output += `${part}`;
+    return output;
   }
-  return output;
 };
 
-export const formatNumber = (number: any, floor: any, rounding = 10) => {
+export const formatNumber = (number: number, floor: boolean, rounding: number): string => {
   if (number < 1000) {
     return String(Math.floor(number));
   } else if (number < 10000) {
@@ -84,19 +87,34 @@ export const formatNumber = (number: any, floor: any, rounding = 10) => {
   }
 };
 
-export const floor = (num: any, decimals = 0) => {
+export const abbreviateNumber = (number: number, rounding = 1): string => {
+  if (number < 1000) {
+    return number.toString();
+  } else if (number < 1000000) {
+    return Math.floor(number / 1000) + 'K';
+  } else if (number < 1000000000) {
+    return Math.floor(number / 1000000) + 'M';
+  } else {
+    return (
+      (Math.ceil((number / 1000 / 1000 / 1000) * rounding * 10) / (rounding * 10)).toFixed(rounding.toString().length) +
+      'B'
+    );
+  }
+};
+
+export const floor = (num: number, decimals: number): number => {
   return Math.floor(Math.pow(10, decimals) * num) / Math.pow(10, decimals);
 };
 
-export const round = (num: any, scale: any) => {
-  if (!('' + num).includes('e')) {
-    return +(Math.round((num + 'e+' + scale) as any) + 'e-' + scale);
+export const round = (num: number, scale: number): number => {
+  if (!num.toString().includes('e')) {
+    return +(Math.round((num + 'e+' + scale) as unknown as number) + 'e-' + scale);
   } else {
-    const arr = ('' + num).split('e');
+    const arr = num.toString().split('e');
     let sig = '';
     if (+arr[1] + scale > 0) {
       sig = '+';
     }
-    return +(Math.round((+arr[0] + 'e' + sig + (+arr[1] + scale)) as any) + 'e-' + scale);
+    return +(Math.round((+arr[0] + 'e' + sig + (+arr[1] + scale)) as unknown as number) + 'e-' + scale);
   }
 };

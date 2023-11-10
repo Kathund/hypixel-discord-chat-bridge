@@ -23,7 +23,7 @@ export default class BestiaryCommand extends minecraftCommand {
     ];
   }
 
-  async onCommand(username: any, message: any) {
+  async onCommand(username: string, message: string) {
     try {
       const args = this.getArgs(message);
 
