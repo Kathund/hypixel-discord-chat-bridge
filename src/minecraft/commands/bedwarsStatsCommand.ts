@@ -1,6 +1,6 @@
+import { capitalize, formatNumber } from '../../contracts/helperFunctions';
 import { minecraftCommand } from '../../contracts/minecraftCommand';
 import { hypixel } from '../../contracts/API/HypixelRebornAPI';
-import { capitalize } from '../../contracts/helperFunctions';
 import { Player, BedWars } from 'hypixel-api-reborn';
 
 export default class BedwarsCommand extends minecraftCommand {
@@ -42,7 +42,7 @@ export default class BedwarsCommand extends minecraftCommand {
         this.send(
           `/gc [${level}✫] ${
             player.nickname
-          } FK: ${finalKills.toLocaleString()} FKDR: ${finalKDRatio} W: ${wins} WLR: ${WLRatio} BB: ${broken} BLR: ${BLRatio} WS: ${winstreak}`
+          } FK: ${formatNumber(finalKills)} FKDR: ${finalKDRatio} W: ${formatNumber(wins)} WLR: ${WLRatio} BB: ${formatNumber(broken)} BLR: ${BLRatio} WS: ${winstreak}`
         );
       } else if (mode !== undefined) {
         const { level } = player.stats?.bedwars as BedWars;
@@ -52,7 +52,7 @@ export default class BedwarsCommand extends minecraftCommand {
         this.send(
           `/gc [${level}✫] ${player.nickname} ${capitalize(
             mode
-          )} FK: ${finalKills.toLocaleString()} FKDR: ${finalKDRatio} Wins: ${wins} WLR: ${WLRatio} BB: ${broken} BLR: ${BLRatio} WS: ${winstreak}`
+          )} FK: ${formatNumber(finalKills)} FKDR: ${finalKDRatio} Wins: ${formatNumber(wins)} WLR: ${WLRatio} BB: ${formatNumber(broken)} BLR: ${BLRatio} WS: ${winstreak}`
         );
       } else {
         this.send('/gc Invalid mode. Valid modes: overall, solo, doubles, threes, fours, 4v4');

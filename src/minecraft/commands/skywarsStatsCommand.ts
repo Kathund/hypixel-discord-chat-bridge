@@ -1,6 +1,8 @@
 import { minecraftCommand } from '../../contracts/minecraftCommand';
 import { hypixel } from '../../contracts/API/HypixelRebornAPI';
+import { formatNumber } from '../../contracts/helperFunctions';
 import { Player, SkyWars } from 'hypixel-api-reborn';
+
 export default class SkywarsCommand extends minecraftCommand {
   name: string;
   aliases: string[];
@@ -27,9 +29,13 @@ export default class SkywarsCommand extends minecraftCommand {
 
       const player = (await hypixel.getPlayer(username)) as Player;
 
-      const { level, KDRatio, WLRatio, winstreak } = player.stats?.skywars as SkyWars;
+      const { wins, kills, level, KDRatio, WLRatio, winstreak } = player.stats?.skywars as SkyWars;
 
-      this.send(`/gc [${level}✫] ${player.nickname} | KDR: ${KDRatio} | WLR: ${WLRatio} | WS: ${winstreak}`);
+      this.send(
+        `/gc [${level}✫] ${player.nickname} | Kills: ${formatNumber(kills)} KDR: ${KDRatio} | Wins: ${formatNumber(
+          wins
+        )} WLR: ${WLRatio} | WS: ${winstreak}`
+      );
     } catch (error: any) {
       this.send(
         `/gc ${error
