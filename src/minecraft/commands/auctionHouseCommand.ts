@@ -4,6 +4,7 @@ import { minecraft as minecraftConfig } from '../../../config.json';
 import { uploadImage } from '../../contracts/API/imgurAPI';
 import { getUUID } from '../../contracts/API/PlayerDBAPI';
 import { renderLore } from '../../contracts/renderItem';
+import { MinecraftManager } from '../MinecraftManager';
 import { getRank } from '../../../API/stats/rank';
 import axios from 'axios';
 
@@ -12,7 +13,7 @@ export default class AuctionHouseCommand extends minecraftCommand {
   aliases: string[];
   description: string;
   options: { name: string; description: string; required: boolean }[];
-  constructor(minecraft: any) {
+  constructor(minecraft: MinecraftManager) {
     super(minecraft);
 
     this.name = 'auction';

@@ -1,5 +1,5 @@
 import { broadcast, broadcastCleanEmbed, broadcastHeadedEmbed, playerToggle } from '../types/global';
-import { Client, AttachmentBuilder, GatewayIntentBits } from 'discord.js';
+import { Client, AttachmentBuilder, GatewayIntentBits, Message } from 'discord.js';
 import { CommunicationBridge } from '../contracts/CommunicationBridge';
 import { generateMessageImage } from '../contracts/messageToImage';
 import { replaceVariables } from '../contracts/helperFunctions';
@@ -13,10 +13,10 @@ import { readdirSync } from 'fs';
 
 export class DiscordManager extends CommunicationBridge {
   app: any;
-  stateHandler: any;
-  messageHandler: any;
-  commandHandler: any;
-  client: any;
+  stateHandler: StateHandler;
+  messageHandler: MessageHandler;
+  commandHandler: CommandHandler | undefined;
+  client: Client | undefined;
   constructor(app: any) {
     super();
 
@@ -31,14 +31,14 @@ export class DiscordManager extends CommunicationBridge {
       intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent],
     });
 
-    this.client = global.client;
+    this.client = global.client as Client;
     this.commandHandler = new CommandHandler();
 
     this.client.on('ready', () => this.stateHandler.onReady());
-    this.client.on('messageCreate', (message: any) => this.messageHandler.onMessage(message));
+    this.client.on('messageCreate', (message: Message) => this.messageHandler.onMessage(message));
 
     this.client.login(discordConfig.bot.token).catch((error: Error) => {
-      errorMessage(error);
+      errorMessage(error.message);
     });
 
     const eventsPath = join(__dirname, 'events');

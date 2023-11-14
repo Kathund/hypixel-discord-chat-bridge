@@ -1,6 +1,7 @@
 import { capitalize, formatNumber } from '../../contracts/helperFunctions';
 import { minecraftCommand } from '../../contracts/minecraftCommand';
 import { hypixel } from '../../contracts/API/HypixelRebornAPI';
+import { MinecraftManager } from '../MinecraftManager';
 import { Player, BedWars } from 'hypixel-api-reborn';
 
 export default class BedwarsCommand extends minecraftCommand {
@@ -8,7 +9,7 @@ export default class BedwarsCommand extends minecraftCommand {
   aliases: string[];
   description: string;
   options: { name: string; description: string; required: boolean }[];
-  constructor(minecraft: any) {
+  constructor(minecraft: MinecraftManager) {
     super(minecraft);
 
     this.name = 'bedwars';
@@ -25,7 +26,7 @@ export default class BedwarsCommand extends minecraftCommand {
 
   async onCommand(username: string, message: string) {
     try {
-      const msg = this.getArgs(message).map((arg: { replaceAll: (arg0: string, arg1: string) => any }) =>
+      const msg = this.getArgs(message).map((arg: { replaceAll: (arg0: string, arg1: string) => string }) =>
         arg.replaceAll('/', '')
       );
       const modes = ['solo', 'doubles', 'threes', 'fours', '4v4'];
@@ -40,9 +41,9 @@ export default class BedwarsCommand extends minecraftCommand {
         const { broken, BLRatio } = (player.stats?.bedwars as BedWars).beds;
 
         this.send(
-          `/gc [${level}✫] ${
-            player.nickname
-          } FK: ${formatNumber(finalKills)} FKDR: ${finalKDRatio} W: ${formatNumber(wins)} WLR: ${WLRatio} BB: ${formatNumber(broken)} BLR: ${BLRatio} WS: ${winstreak}`
+          `/gc [${level}✫] ${player.nickname} FK: ${formatNumber(finalKills)} FKDR: ${finalKDRatio} W: ${formatNumber(
+            wins
+          )} WLR: ${WLRatio} BB: ${formatNumber(broken)} BLR: ${BLRatio} WS: ${winstreak}`
         );
       } else if (mode !== undefined) {
         const { level } = player.stats?.bedwars as BedWars;
@@ -50,9 +51,11 @@ export default class BedwarsCommand extends minecraftCommand {
         const { broken, BLRatio } = (player.stats?.bedwars as BedWars as any)[mode].beds;
 
         this.send(
-          `/gc [${level}✫] ${player.nickname} ${capitalize(
-            mode
-          )} FK: ${formatNumber(finalKills)} FKDR: ${finalKDRatio} Wins: ${formatNumber(wins)} WLR: ${WLRatio} BB: ${formatNumber(broken)} BLR: ${BLRatio} WS: ${winstreak}`
+          `/gc [${level}✫] ${player.nickname} ${capitalize(mode)} FK: ${formatNumber(
+            finalKills
+          )} FKDR: ${finalKDRatio} Wins: ${formatNumber(wins)} WLR: ${WLRatio} BB: ${formatNumber(
+            broken
+          )} BLR: ${BLRatio} WS: ${winstreak}`
         );
       } else {
         this.send('/gc Invalid mode. Valid modes: overall, solo, doubles, threes, fours, 4v4');

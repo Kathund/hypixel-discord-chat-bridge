@@ -1,5 +1,6 @@
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 import { minecraftCommand } from '../../contracts/minecraftCommand';
+import { MinecraftManager } from '../MinecraftManager';
 
 export default class warpoutCommand extends minecraftCommand {
   name: string;
@@ -7,7 +8,7 @@ export default class warpoutCommand extends minecraftCommand {
   description: string;
   options: never[];
   isOnCooldown: boolean;
-  constructor(minecraft: any) {
+  constructor(minecraft: MinecraftManager) {
     super(minecraft);
     this.name = 'warpout';
     this.aliases = ['warp'];

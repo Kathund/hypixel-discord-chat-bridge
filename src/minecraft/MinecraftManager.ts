@@ -14,9 +14,9 @@ const filter = new Filter();
 
 export class MinecraftManager extends CommunicationBridge {
   app: any;
-  stateHandler: any;
-  errorHandler: any;
-  chatHandler: any;
+  stateHandler: StateHandler;
+  errorHandler: ErrorHandler;
+  chatHandler: ChatHandler;
   bot: any;
   constructor(app: any) {
     super();
@@ -32,9 +32,9 @@ export class MinecraftManager extends CommunicationBridge {
     global.bot = this.createBotConnection();
     this.bot = global.bot;
 
-    this.errorHandler.registerEvents(this.bot);
-    this.stateHandler.registerEvents(this.bot);
-    this.chatHandler.registerEvents(this.bot);
+    this.errorHandler.registerEvents();
+    this.stateHandler.registerEvents();
+    this.chatHandler.registerEvents();
 
     import('./other/eventNotifier');
     import('./other/skyblockNotifier.js');
@@ -76,9 +76,7 @@ export class MinecraftManager extends CommunicationBridge {
     }
 
     let successfullySent = false;
-    const messageListener = (receivedMessage: any) => {
-      receivedMessage = receivedMessage.toString();
-
+    const messageListener = (receivedMessage: string) => {
       if (
         receivedMessage.includes(message) &&
         (this.chatHandler.isGuildMessage(receivedMessage) || this.chatHandler.isOfficerMessage(receivedMessage))

@@ -8,7 +8,7 @@ import {
   SenitherType,
   SkillWeights,
   DungeonType,
-  SlayerType,
+  SlayerWeightType,
   SkillType,
 } from '../../src/types/global';
 import { calcSkill } from './skills';
@@ -96,7 +96,7 @@ function calculateSenitherWeight(
   level: number,
   experience: number
 ): SlayerWeightResult | DungeonWeightResult | SkillWeightResult | null {
-  const slayers: SlayerType[] = ['revenant', 'tarantula', 'sven', 'enderman'];
+  const slayers: SlayerWeightType[] = ['revenant', 'tarantula', 'sven', 'enderman'];
   const dungeons: DungeonType[] = ['catacombs', 'healer', 'mage', 'berserk', 'archer', 'tank'];
   const skills: SkillType[] = ['mining', 'foraging', 'enchanting', 'farming', 'combat', 'fishing', 'alchemy', 'taming'];
   if (slayers.includes(type)) {
@@ -158,7 +158,7 @@ function calculateSkillWeight(type: SkillType, level: number, experience: number
   };
 }
 
-function calculateSlayerWeight(type: SlayerType, experience: number): SlayerWeightResult {
+function calculateSlayerWeight(type: SlayerWeightType, experience: number): SlayerWeightResult {
   const slayerWeight = slayer_weights[type];
 
   if (experience <= 1000000) {

@@ -1,6 +1,7 @@
 import { formatNumber, formatUsername } from '../../contracts/helperFunctions';
 import { getLatestProfile } from '../../../API/functions/getLatestProfile';
 import { minecraftCommand } from '../../contracts/minecraftCommand';
+import { MinecraftManager } from '../MinecraftManager';
 import { getNetworth } from 'skyhelper-networth';
 
 export default class NetWorthCommand extends minecraftCommand {
@@ -8,7 +9,7 @@ export default class NetWorthCommand extends minecraftCommand {
   aliases: string[];
   description: string;
   options: { name: string; description: string; required: boolean }[];
-  constructor(minecraft: any) {
+  constructor(minecraft: MinecraftManager) {
     super(minecraft);
 
     this.name = 'networth';

@@ -28,7 +28,7 @@ export const getCurrentTime = () => {
   return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
 };
 
-export const configUpdateMessage = (message: any) => {
+export const configUpdateMessage = (message: string) => {
   const columns = process.stdout.columns;
   const warning = 'IMPORTANT!';
   const message2 = 'Please update your Configuration file!';

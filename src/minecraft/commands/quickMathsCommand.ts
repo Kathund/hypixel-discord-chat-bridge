@@ -1,8 +1,9 @@
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 import { minecraftCommand } from '../../contracts/minecraftCommand';
 import { minecraft as minecraftConfig } from '../../../config.json';
+import { MinecraftManager } from '../MinecraftManager';
 
-const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-const getAnswer = (message: any) => {
+const getAnswer = (message: string) => {
   if (message.includes(minecraftConfig.bot.messageFormat)) {
     return message.split(minecraftConfig.bot.messageFormat)[1].trim();
   }
@@ -15,7 +16,7 @@ export default class QuickMathsCommand extends minecraftCommand {
   aliases: string[];
   description: string;
   options: never[];
-  constructor(minecraft: any) {
+  constructor(minecraft: MinecraftManager) {
     super(minecraft);
 
     this.name = 'quickmaths';

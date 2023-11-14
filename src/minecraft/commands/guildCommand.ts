@@ -1,13 +1,14 @@
 import { capitalize, formatNumber } from '../../contracts/helperFunctions';
 import { minecraftCommand } from '../../contracts/minecraftCommand';
 import { hypixel } from '../../contracts/API/HypixelRebornAPI';
+import { MinecraftManager } from '../MinecraftManager';
 
 export default class GuildInformationCommand extends minecraftCommand {
   name: string;
   aliases: string[];
   description: string;
   options: { name: string; description: string; required: boolean }[];
-  constructor(minecraft: any) {
+  constructor(minecraft: MinecraftManager) {
     super(minecraft);
 
     this.name = 'guild';
@@ -25,7 +26,7 @@ export default class GuildInformationCommand extends minecraftCommand {
   async onCommand(username: string, message: string) {
     try {
       const guildName = this.getArgs(message)
-        .map((arg: any) => capitalize(arg))
+        .map((arg: string) => capitalize(arg))
         .join(' ');
 
       const guild = await hypixel.getGuild('name', guildName, {});

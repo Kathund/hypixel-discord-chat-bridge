@@ -1,15 +1,19 @@
 import { discord as discordConfig } from '../../../config.json';
 import { discordMessage, errorMessage } from '../../Logger';
+import { ClientUser, TextChannel } from 'discord.js';
+import { DiscordManager } from '../DiscordManager';
 
 export class StateHandler {
-  discord: any;
-  constructor(discord: any) {
+  discord: DiscordManager;
+  constructor(discord: DiscordManager) {
     this.discord = discord;
   }
 
   async onReady() {
-    discordMessage('Client ready, logged in as ' + this.discord.client.user.tag);
-    this.discord.client.user.setPresence({
+    discordMessage(
+      `Client ready, logged in as ${(global.client.user as ClientUser).tag} (${(global.client.user as ClientUser).id})`
+    );
+    (global.client.user as ClientUser).setPresence({
       activities: [{ name: `/help | by @duckysolucky` }],
     });
 
@@ -44,20 +48,16 @@ export class StateHandler {
     });
   }
 
-  async getChannel(type: any) {
-    if (typeof type !== 'string' || type === undefined) {
-      return errorMessage(`Channel type must be a string!`);
-    }
-
+  async getChannel(type: string) {
     switch (type.replace(/§[0-9a-fk-or]/g, '').trim()) {
       case 'Guild':
-        return this.discord.client.channels.cache.get(discordConfig.channels.guildChatChannel);
+        return global.client.channels.cache.get(discordConfig.channels.guildChatChannel) as TextChannel;
       case 'Officer':
-        return this.discord.client.channels.cache.get(discordConfig.channels.officerChannel);
+        return global.client.channels.cache.get(discordConfig.channels.officerChannel) as TextChannel;
       case 'Logger':
-        return this.discord.client.channels.cache.get(discordConfig.channels.loggingChannel);
+        return global.client.channels.cache.get(discordConfig.channels.loggingChannel) as TextChannel;
       default:
-        return this.discord.client.channels.cache.get(discordConfig.channels.debugChannel);
+        return global.client.channels.cache.get(discordConfig.channels.debugChannel) as TextChannel;
     }
   }
 }

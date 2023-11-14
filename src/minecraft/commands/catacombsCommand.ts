@@ -2,13 +2,15 @@ import { formatNumber, formatUsername } from '../../contracts/helperFunctions';
 import { getLatestProfile } from '../../../API/functions/getLatestProfile';
 import { minecraftCommand } from '../../contracts/minecraftCommand';
 import { getDungeons } from '../../../API/stats/dungeons';
+import { MinecraftManager } from '../MinecraftManager';
+import { DungeonStats } from '../../types/global';
 
 export default class CatacombsCommand extends minecraftCommand {
   name: string;
   aliases: string[];
   description: string;
   options: { name: string; description: string; required: boolean }[];
-  constructor(minecraft: any) {
+  constructor(minecraft: MinecraftManager) {
     super(minecraft);
 
     this.name = 'catacombs';
@@ -31,7 +33,7 @@ export default class CatacombsCommand extends minecraftCommand {
 
       username = formatUsername(username, data.profileData?.game_mode);
 
-      const dungeons = getDungeons(data.playerRes, data.profile);
+      const dungeons = getDungeons(data.playerRes, data.profile) as DungeonStats;
 
       if (dungeons == null) {
         // eslint-disable-next-line no-throw-literal
@@ -40,7 +42,7 @@ export default class CatacombsCommand extends minecraftCommand {
 
       const completions = Object.values(dungeons.catacombs)
         .flatMap((floors) => Object.values(floors || {}))
-        .reduce((total, floor) => total + ((floor as any).completions || 0), 0) as any;
+        .reduce((total, floor) => total + (floor.completions || 0), 0);
 
       const level = (dungeons.catacombs.skill.levelWithProgress || 0).toFixed(1);
       const classAvrg = (

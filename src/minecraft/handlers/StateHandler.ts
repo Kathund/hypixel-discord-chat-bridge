@@ -1,11 +1,11 @@
 import { minecraftMessage, warnMessage } from '../../Logger';
 import { EventHandler } from '../../contracts/EventHandler';
+import { MinecraftManager } from '../MinecraftManager';
 
 export class StateHandler extends EventHandler {
   loginAttempts: number;
   exactDelay: number;
-  bot: any;
-  constructor(minecraft: any) {
+  constructor(minecraft: MinecraftManager) {
     super();
 
     this.minecraft = minecraft;
@@ -14,21 +14,19 @@ export class StateHandler extends EventHandler {
   }
 
   registerEvents() {
-    this.bot = global.bot;
-
-    this.bot.on('login', () => this.onLogin());
-    this.bot.on('end', (msg: any) => this.onEnd(msg));
-    this.bot.on('kicked', (msg: any) => this.onKicked(msg));
+    global.bot.on('login', () => this.onLogin());
+    global.bot.on('end', (msg: string) => this.onEnd(msg));
+    global.bot.on('kicked', (msg: string) => this.onKicked(msg));
   }
 
   onLogin() {
-    minecraftMessage('Client ready, logged in as ' + this.bot.username);
+    minecraftMessage('Client ready, logged in as ' + global.bot.username);
 
     this.loginAttempts = 0;
     this.exactDelay = 0;
   }
 
-  onEnd(reason: any) {
+  onEnd(reason: string) {
     if (reason === 'restart') {
       return;
     }
@@ -39,7 +37,7 @@ export class StateHandler extends EventHandler {
     setTimeout(() => this.minecraft.connect(), loginDelay);
   }
 
-  onKicked(reason: any) {
+  onKicked(reason: string) {
     warnMessage(`Minecraft bot has been kicked from the server for "${reason}"`);
 
     this.loginAttempts++;

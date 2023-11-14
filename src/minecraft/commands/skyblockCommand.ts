@@ -1,8 +1,10 @@
+import { CalcSkillsResult, DungeonStats, TalismansOutput, WeightObject, skyblockSlayers } from '../../types/global';
 import { formatNumber, formatUsername } from '../../contracts/helperFunctions';
 import { getLatestProfile } from '../../../API/functions/getLatestProfile';
 import { minecraftCommand } from '../../contracts/minecraftCommand';
 import { getTalismans } from '../../../API/stats/talismans';
 import { getDungeons } from '../../../API/stats/dungeons';
+import { MinecraftManager } from '../MinecraftManager';
 import { getSlayers } from '../../../API/stats/slayer';
 import { getSkills } from '../../../API/stats/skills';
 import { getWeight } from '../../../API/stats/weight';
@@ -13,7 +15,7 @@ export default class SkyblockCommand extends minecraftCommand {
   aliases: string[];
   description: string;
   options: { name: string; description: string; required: boolean }[];
-  constructor(minecraft: any) {
+  constructor(minecraft: MinecraftManager) {
     super(minecraft);
 
     this.name = 'skyblock';
@@ -35,7 +37,15 @@ export default class SkyblockCommand extends minecraftCommand {
       const data = await getLatestProfile(username);
       username = formatUsername(username, data.profileData.game_mode);
 
-      const [skills, slayer, networth, weight, dungeons, talismans] = await Promise.all([
+      const [skills, slayer, networth, weight, dungeons, talismans]: [
+        CalcSkillsResult,
+        skyblockSlayers,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        any,
+        WeightObject,
+        DungeonStats | null,
+        TalismansOutput
+      ] = await Promise.all([
         getSkills(data.profile),
         getSlayers(data.profile),
         getNetworth(data.profile, data.profileData?.banking?.balance || 0, {
@@ -47,12 +57,16 @@ export default class SkyblockCommand extends minecraftCommand {
         getTalismans(data.profile),
       ]);
 
+      if (dungeons === null) {
+        throw new Error('Dungeons data not found.');
+      }
+
       const senitherWeight = Math.floor(weight?.senither?.total || 0).toLocaleString();
       const lilyWeight = Math.floor(weight?.lily?.total || 0).toLocaleString();
       const skillAverage = (
         Object.keys(skills)
           .filter((skill) => !['runecrafting', 'social'].includes(skill))
-          .map((skill) => (skills as any)[skill].level)
+          .map((skill) => skills[skill].level)
           .reduce((a, b) => a + b, 0) /
         (Object.keys(skills).length - 2)
       ).toFixed(1);
@@ -60,11 +74,11 @@ export default class SkyblockCommand extends minecraftCommand {
         .map((slayerData) => slayerData.xp)
         .reduce((a, b) => a + b, 0)
         .toLocaleString();
-      const catacombsLevel = (dungeons as any).catacombs.skill.level;
+      const catacombsLevel = dungeons.catacombs.skill.level;
       const classAverage =
-        Object.values((dungeons as any).classes)
-          .map((value) => (value as any).level)
-          .reduce((a, b) => a + b, 0) / Object.keys((dungeons as any).classes).length;
+        Object.values(dungeons.classes)
+          .map((value) => value.level)
+          .reduce((a, b) => a + b, 0) / Object.keys(dungeons.classes).length;
       const networthValue = formatNumber(networth.networth);
       const talismanCount = talismans?.total ?? 0;
       const recombobulatedCount = talismans?.recombed ?? 0;

@@ -1,6 +1,7 @@
+import { CalcSkillsResult } from '../../src/types/global';
 import { calcSkill } from '../constants/skills';
 
-export const getSkills = (profile: any) => {
+export const getSkills = (profile: any): CalcSkillsResult => {
   const skill_experience = {
     farming: profile?.experience_skill_farming || 0,
     mining: profile?.experience_skill_mining || 0,

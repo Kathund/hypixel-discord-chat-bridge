@@ -2,13 +2,14 @@ import { getLatestProfile } from '../../../API/functions/getLatestProfile';
 import { minecraftCommand } from '../../contracts/minecraftCommand';
 import { formatUsername } from '../../contracts/helperFunctions';
 import { getTalismans } from '../../../API/stats/talismans';
+import { MinecraftManager } from '../MinecraftManager';
 
 export default class AccessoriesCommand extends minecraftCommand {
   name: string;
   aliases: string[];
   description: string;
   options: { name: string; description: string; required: boolean }[];
-  constructor(minecraft: any) {
+  constructor(minecraft: MinecraftManager) {
     super(minecraft);
 
     this.name = 'accessories';

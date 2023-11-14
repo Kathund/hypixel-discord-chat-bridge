@@ -3,13 +3,14 @@ import { getLatestProfile } from '../../../API/functions/getLatestProfile';
 import { minecraftCommand } from '../../contracts/minecraftCommand';
 import { uploadImage } from '../../contracts/API/imgurAPI';
 import { renderLore } from '../../contracts/renderItem';
+import { MinecraftManager } from '../MinecraftManager';
 
 export default class RenderCommand extends minecraftCommand {
   name: string;
   aliases: string[];
   description: string;
   options: { name: string; description: string; required: boolean }[];
-  constructor(minecraft: any) {
+  constructor(minecraft: MinecraftManager) {
     super(minecraft);
 
     this.name = 'render';

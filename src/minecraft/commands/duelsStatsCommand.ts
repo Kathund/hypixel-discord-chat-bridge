@@ -1,6 +1,7 @@
 import { minecraftCommand } from '../../contracts/minecraftCommand';
 import { hypixel } from '../../contracts/API/HypixelRebornAPI';
 import { formatNumber } from '../../contracts/helperFunctions';
+import { MinecraftManager } from '../MinecraftManager';
 import { Duels, Player } from 'hypixel-api-reborn';
 
 export default class DuelsStatsCommand extends minecraftCommand {
@@ -8,7 +9,7 @@ export default class DuelsStatsCommand extends minecraftCommand {
   aliases: string[];
   description: string;
   options: { name: string; description: string; required: boolean }[];
-  constructor(minecraft: any) {
+  constructor(minecraft: MinecraftManager) {
     super(minecraft);
 
     this.name = 'duels';
@@ -80,7 +81,7 @@ export default class DuelsStatsCommand extends minecraftCommand {
       } else {
         const duelData = (player.stats?.duels as any)[duel]?.[Object.keys((player.stats?.duels as any)[duel])[0]];
         const division = duelData?.division ?? (player.stats?.duels as any)[duel]?.division ?? 'Unknown';
-        const wins = formatNumber(duelData?.wins ?? 0)
+        const wins = formatNumber(duelData?.wins ?? 0);
         const winstreak = duelData?.winstreak ?? 0;
         const bestWinstreak = duelData?.bestWinstreak ?? 0;
         const WLRatio = duelData?.WLRatio ?? 0;
@@ -88,7 +89,7 @@ export default class DuelsStatsCommand extends minecraftCommand {
         this.send(
           `/gc [${duel.toUpperCase() ?? 'Unknown'}] [${division}] ${
             username ?? 0
-          } Wins: ${(wins)} | CWS: ${winstreak} | BWS: ${bestWinstreak} | WLR: ${WLRatio}`
+          } Wins: ${wins} | CWS: ${winstreak} | BWS: ${bestWinstreak} | WLR: ${WLRatio}`
         );
       }
     } catch (error: unknown) {

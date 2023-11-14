@@ -2,14 +2,16 @@ import { formatUsername, formatNumber } from '../../contracts/helperFunctions';
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 import { getLatestProfile } from '../../../API/functions/getLatestProfile';
 import { minecraftCommand } from '../../contracts/minecraftCommand';
+import { MinecraftManager } from '../MinecraftManager';
 import { getWeight } from '../../../API/stats/weight';
+import { WeightObject } from '../../types/global';
 
 export default class StatsCommand extends minecraftCommand {
   name: string;
   aliases: string[];
   description: string;
   options: { name: string; description: string; required: boolean }[];
-  constructor(minecraft: any) {
+  constructor(minecraft: MinecraftManager) {
     super(minecraft);
 
     this.name = 'weight';
@@ -31,7 +33,7 @@ export default class StatsCommand extends minecraftCommand {
 
       username = formatUsername(data.profileData?.displayname || username, null);
 
-      const profile = getWeight(data.profile) as any;
+      const profile = getWeight(data.profile) as WeightObject;
 
       const lilyW = `Lily Weight: ${formatNumber(profile.lily.total)} | Skills: ${formatNumber(
         profile.lily.skills.total

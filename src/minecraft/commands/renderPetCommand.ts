@@ -3,6 +3,7 @@ import { getLatestProfile } from '../../../API/functions/getLatestProfile';
 import { minecraftCommand } from '../../contracts/minecraftCommand';
 import { uploadImage } from '../../contracts/API/imgurAPI';
 import { renderLore } from '../../contracts/renderItem';
+import { MinecraftManager } from '../MinecraftManager';
 import { getPets } from '../../../API/stats/pets';
 
 export default class PetCommand extends minecraftCommand {
@@ -10,7 +11,7 @@ export default class PetCommand extends minecraftCommand {
   aliases: string[];
   description: string;
   options: { name: string; description: string; required: boolean }[];
-  constructor(minecraft: any) {
+  constructor(minecraft: MinecraftManager) {
     super(minecraft);
 
     this.name = 'pet';
@@ -35,6 +36,7 @@ export default class PetCommand extends minecraftCommand {
 
       const profile = getPets(data.profile);
 
+      // TODO load the pet type into this
       const pet = profile.pets.find((pet: any) => pet.active === true);
 
       if (pet === undefined) {

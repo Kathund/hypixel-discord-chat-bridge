@@ -1,5 +1,6 @@
 import { minecraftCommand } from '../../contracts/minecraftCommand';
 import { uploadImage } from '../../contracts/API/imgurAPI';
+import { MinecraftManager } from '../MinecraftManager';
 import axios from 'axios';
 
 export default class KittyCommand extends minecraftCommand {
@@ -7,7 +8,7 @@ export default class KittyCommand extends minecraftCommand {
   aliases: string[];
   description: string;
   options: never[];
-  constructor(minecraft: any) {
+  constructor(minecraft: MinecraftManager) {
     super(minecraft);
 
     this.name = 'kitty';

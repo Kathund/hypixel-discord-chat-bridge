@@ -1,20 +1,19 @@
 import { EventHandler } from '../../contracts/EventHandler';
 import { errorMessage, warnMessage } from '../../Logger';
+import { MinecraftManager } from '../MinecraftManager';
 
 export class ErrorHandler extends EventHandler {
-  bot: any;
-  constructor(minecraft: any) {
+  constructor(minecraft: MinecraftManager) {
     super();
 
     this.minecraft = minecraft;
   }
 
   registerEvents() {
-    this.bot = global.bot;
-    this.bot.on('error', (error: Error) => this.onError(error));
+    global.bot.on('error', (error: any) => this.onError(error));
   }
 
-  onError(error: Error) {
+  onError(error: any) {
     if (this.isConnectionResetError(error)) return;
 
     if (this.isConnectionRefusedError(error)) {
@@ -24,11 +23,11 @@ export class ErrorHandler extends EventHandler {
     warnMessage(error);
   }
 
-  isConnectionResetError(error: Error) {
+  isConnectionResetError(error: any) {
     return error.code && error.code == 'ECONNRESET';
   }
 
-  isConnectionRefusedError(error: Error) {
+  isConnectionRefusedError(error: any) {
     return error.code && error.code == 'ECONNREFUSED';
   }
 }

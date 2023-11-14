@@ -1,13 +1,14 @@
 import { minecraftCommand } from '../../contracts/minecraftCommand';
 import { hypixel } from '../../contracts/API/HypixelRebornAPI';
 import { getUUID } from '../../contracts/API/PlayerDBAPI';
+import { MinecraftManager } from '../MinecraftManager';
 
 export default class GuildExperienceCommand extends minecraftCommand {
   name: string;
   aliases: string[];
   description: string;
   options: { name: string; description: string; required: boolean }[];
-  constructor(minecraft: any) {
+  constructor(minecraft: MinecraftManager) {
     super(minecraft);
 
     this.name = 'guildexp';

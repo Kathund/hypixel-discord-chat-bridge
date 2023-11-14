@@ -1,14 +1,15 @@
 import { minecraft as minecraftConfig } from '../../config.json';
+import { MinecraftManager } from './MinecraftManager';
 import { minecraftMessage } from '../Logger';
 import { Collection } from 'discord.js';
 import { readdirSync } from 'fs';
 import axios from 'axios';
 
 export class CommandHandler {
-  minecraft: any;
+  minecraft: MinecraftManager;
   prefix: string;
   commands: any;
-  constructor(minecraft: any) {
+  constructor(minecraft: MinecraftManager) {
     this.minecraft = minecraft;
 
     this.prefix = minecraftConfig.bot.prefix;
@@ -23,13 +24,13 @@ export class CommandHandler {
     })();
   }
 
-  handle(player: string, message: any) {
+  handle(player: string, message: string) {
     if (message.startsWith(this.prefix)) {
       if (minecraftConfig.commands.normal === false) {
         return;
       }
 
-      const args = message.slice(this.prefix.length).trim().split(/ +/);
+      const args = message.slice(this.prefix.length).trim().split(/ +/) as any;
       const commandName = args.shift().toLowerCase();
       const command =
         this.commands.get(commandName) ??

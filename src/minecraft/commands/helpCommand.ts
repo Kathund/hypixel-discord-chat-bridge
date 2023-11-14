@@ -1,11 +1,12 @@
 import { minecraftCommand } from '../../contracts/minecraftCommand';
+import { MinecraftManager } from '../MinecraftManager';
 
 export default class HelpCommand extends minecraftCommand {
   name: string;
   aliases: string[];
   description: string;
   options: never[];
-  constructor(minecraft: any) {
+  constructor(minecraft: MinecraftManager) {
     super(minecraft);
 
     this.name = 'help';

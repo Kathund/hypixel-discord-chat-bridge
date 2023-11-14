@@ -1,12 +1,13 @@
 import { minecraftCommand } from '../../contracts/minecraftCommand';
 import { formatNumber } from '../../contracts/helperFunctions';
+import { MinecraftManager } from '../MinecraftManager';
 
 export default class CalculateCommand extends minecraftCommand {
   name: string;
   aliases: string[];
   description: string;
   options: { name: string; description: string; required: boolean }[];
-  constructor(minecraft: any) {
+  constructor(minecraft: MinecraftManager) {
     super(minecraft);
 
     this.name = 'calculate';

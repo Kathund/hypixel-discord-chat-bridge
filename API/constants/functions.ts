@@ -1,4 +1,4 @@
-export const titleCase = (str: string, replaceunderscore = false): string | null => {
+export const titleCase = (str: string, replaceunderscore = false): string => {
   try {
     if (replaceunderscore) str = str.replace(/_/g, ' ');
     const splitStr = str.toLowerCase().split(' ');
@@ -8,7 +8,7 @@ export const titleCase = (str: string, replaceunderscore = false): string | null
     str = splitStr.join(' ');
     return str;
   } catch (err) {
-    return null;
+    return str;
   }
 };
 

@@ -1,7 +1,8 @@
+import { DungeonStats } from '../../src/types/global';
 import { titleCase } from '../constants/functions';
 import { calcSkill } from '../constants/skills';
 
-export const getDungeons = (player: any, profile: any) => {
+export const getDungeons = (player: any, profile: any): DungeonStats | null => {
   try {
     const dungeons = profile?.dungeons;
     const catacombs = dungeons?.dungeon_types.catacombs;
@@ -89,7 +90,7 @@ export const getDungeons = (player: any, profile: any) => {
   }
 };
 
-function getScoreName(score: any) {
+function getScoreName(score: number): 'S+' | 'S' | 'A' | 'B' | 'C' {
   if (score >= 300) return 'S+';
   if (score >= 270) return 'S';
   if (score >= 240) return 'A';

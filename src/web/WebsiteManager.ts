@@ -6,7 +6,7 @@ import { webMessage } from '../Logger';
 export class WebManager {
   app: any;
   port: number;
-  endpointHandler: any;
+  endpointHandler: EndpointHandler;
   web: any;
   constructor(app: any) {
     this.app = app;

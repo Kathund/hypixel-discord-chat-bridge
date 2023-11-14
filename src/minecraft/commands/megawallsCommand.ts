@@ -1,5 +1,6 @@
 import { minecraftCommand } from '../../contracts/minecraftCommand';
 import { hypixel } from '../../contracts/API/HypixelRebornAPI';
+import { MinecraftManager } from '../MinecraftManager';
 import { MegaWalls } from 'hypixel-api-reborn';
 
 export default class MegaWallsCommand extends minecraftCommand {
@@ -7,7 +8,7 @@ export default class MegaWallsCommand extends minecraftCommand {
   aliases: string[];
   description: string;
   options: { name: string; description: string; required: boolean }[];
-  constructor(minecraft: any) {
+  constructor(minecraft: MinecraftManager) {
     super(minecraft);
 
     this.name = 'megawalls';

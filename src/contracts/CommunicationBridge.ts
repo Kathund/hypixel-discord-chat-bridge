@@ -27,12 +27,4 @@ export class CommunicationBridge {
   broadcastHeadedEmbed(event: any) {
     return this.bridge.onBroadcastHeadedEmbed(event);
   }
-
-  connect() {
-    throw new Error('Communication bridge connection is not implemented yet!');
-  }
-
-  onBroadcast() {
-    throw new Error('Communication bridge broadcast handling is not implemented yet!');
-  }
 }

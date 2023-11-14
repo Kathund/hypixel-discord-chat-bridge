@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Client } from 'discord.js';
 
 export type broadcast = {
@@ -60,6 +61,7 @@ export type maxSkillsLevelsType = {
 };
 
 export type slayerXpType = {
+  [key: string]: number[];
   zombie: number[];
   spider: number[];
   wolf: number[];
@@ -108,7 +110,7 @@ export type SkillWeights = {
   };
 };
 
-export type SlayerType = keyof SlayerWeights;
+export type SlayerWeightType = keyof SlayerWeights;
 
 export type SlayerWeightResult = {
   weight: number;
@@ -129,7 +131,7 @@ export type DungeonWeightResult = {
   weight_overflow: number;
 };
 
-export type SenitherType = SlayerType | DungeonType | SkillType;
+export type SenitherType = SlayerWeightType | DungeonType | SkillType;
 
 export type SkillCalcResult = {
   totalXp: number;
@@ -139,6 +141,21 @@ export type SkillCalcResult = {
   xpForNext: number;
   progress: number;
   levelWithProgress: number;
+};
+
+type CalcSkillsResult = {
+  [key: string]: SkillCalcResult;
+  farming: SkillCalcResult;
+  mining: SkillCalcResult;
+  combat: SkillCalcResult;
+  foraging: SkillCalcResult;
+  fishing: SkillCalcResult;
+  enchanting: SkillCalcResult;
+  alchemy: SkillCalcResult;
+  carpentry: SkillCalcResult;
+  runecrafting: SkillCalcResult;
+  social: SkillCalcResult;
+  taming: SkillCalcResult;
 };
 
 export type symbolType = {
@@ -163,3 +180,254 @@ export type StatData = {
   legendary?: any;
   mythic?: any;
 };
+
+export type jacobsContest = {
+  time: number;
+  crops: string[];
+};
+
+export type WeightObject = {
+  senither: {
+    total: number;
+    weight: number;
+    weight_overflow: number;
+    skills: {
+      [key: string]: {
+        total: number;
+        weight: number;
+        weight_overflow: number;
+      };
+      farming: {
+        total: number;
+        weight: number;
+        weight_overflow: number;
+      };
+      mining: {
+        total: number;
+        weight: number;
+        weight_overflow: number;
+      };
+      combat: {
+        total: number;
+        weight: number;
+        weight_overflow: number;
+      };
+      foraging: {
+        total: number;
+        weight: number;
+        weight_overflow: number;
+      };
+      fishing: {
+        total: number;
+        weight: number;
+        weight_overflow: number;
+      };
+      enchanting: {
+        total: number;
+        weight: number;
+        weight_overflow: number;
+      };
+      alchemy: {
+        total: number;
+        weight: number;
+        weight_overflow: number;
+      };
+      taming: {
+        total: number;
+        weight: number;
+        weight_overflow: number;
+      };
+    };
+    slayer: {
+      total: number;
+      weight: number;
+      weight_overflow: number;
+      slayer: {
+        revenant: {
+          total: number;
+          weight: number;
+          weight_overflow: number;
+        };
+        tarantula: {
+          total: number;
+          weight: number;
+          weight_overflow: number;
+        };
+        sven: {
+          total: number;
+          weight: number;
+          weight_overflow: number;
+        };
+        enderman: {
+          total: number;
+          weight: number;
+          weight_overflow: number;
+        };
+      };
+    };
+    dungeons: {
+      total: number;
+      weight: number;
+      weight_overflow: number;
+      catacombs: {
+        total: number;
+        weight: number;
+        weight_overflow: number;
+      };
+      classes: {
+        healer: {
+          total: number;
+          weight: number;
+          weight_overflow: number;
+        };
+        mage: {
+          total: number;
+          weight: number;
+          weight_overflow: number;
+        };
+        berserk: {
+          total: number;
+          weight: number;
+          weight_overflow: number;
+        };
+        archer: {
+          total: number;
+          weight: number;
+          weight_overflow: number;
+        };
+        tank: {
+          total: number;
+          weight: number;
+          weight_overflow: number;
+        };
+      };
+    };
+  };
+  lily: {
+    total: number;
+    skills: {
+      total: number;
+      base: number;
+      overflow: number;
+    };
+    slayer: {
+      total: number;
+    };
+    catacombs: {
+      total: number;
+      completion: {
+        base: number;
+        master: number;
+      };
+      experience: number;
+    };
+  };
+};
+
+export type skyblockSlayer = {
+  xp: number;
+  totalKills: number;
+  level: number;
+  xpForNext: number;
+  progress: number;
+  kills: any;
+};
+
+export type skyblockSlayers = {
+  [key: string]: skyblockSlayer;
+  zombie: skyblockSlayer;
+  spider: skyblockSlayer;
+  wolf: skyblockSlayer;
+  enderman: skyblockSlayer;
+  blaze: skyblockSlayer;
+  vampire: skyblockSlayer;
+};
+
+export type DungeonStats = {
+  selected_class: 'Healer' | 'Mage' | 'Berserk' | 'Archer' | 'Tank' | string;
+  secrets_found: number;
+  classes: {
+    healer: SkillCalcResult;
+    mage: SkillCalcResult;
+    berserk: SkillCalcResult;
+    archer: SkillCalcResult;
+    tank: SkillCalcResult;
+  };
+  catacombs: {
+    skill: SkillCalcResult;
+    perks: {
+      catacombs_boss_luck: number;
+      catacombs_looting: number;
+      catacombs_intelligence: number;
+      catacombs_health: number;
+      catacombs_strength: number;
+      catacombs_crit_damage: number;
+      catacombs_defense: number;
+      permanent_speed: number;
+      permanent_intelligence: number;
+      permanent_health: number;
+      permanent_defense: number;
+      permanent_strength: number;
+      forbidden_blessing: number;
+      revive_stone: number;
+    };
+    HIGEHST_TIER_COMPLETED:
+      | 'F1'
+      | 'F2'
+      | 'F3'
+      | 'F4'
+      | 'F5'
+      | 'F6'
+      | 'F7'
+      | 'M1'
+      | 'M2'
+      | 'M3'
+      | 'M4'
+      | 'M5'
+      | 'M6'
+      | 'M7'
+      | null
+      | string;
+    floors: {
+      [key: string]: {
+        times_played: number;
+        completions: number;
+        best_score: {
+          score: number;
+          name: string;
+        };
+        fastest: number;
+        fastest_s: number;
+        fastest_s_plus: number;
+        mobs_killed: number;
+      };
+    };
+    MASTER_MODE_FLOORS: {
+      [key: string]: {
+        completions: number;
+        best_score: {
+          score: number;
+          name: string;
+        };
+        fastest: number;
+        fastest_s: number;
+        fastest_s_plus: number;
+        mobs_killed: number;
+      };
+    };
+  };
+};
+
+export type TalismansOutput = {
+  common: number;
+  uncommon: number;
+  rare: number;
+  epic: number;
+  legendary: number;
+  mythic: number;
+  special: number;
+  very: number;
+  recombed: number;
+  enriched: number;
+  total: number;
+} | null;

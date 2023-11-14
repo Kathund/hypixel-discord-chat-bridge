@@ -1,12 +1,13 @@
 import { minecraftCommand } from '../../contracts/minecraftCommand';
 import { getFetchur } from '../../../API/functions/getFetchur';
+import { MinecraftManager } from '../MinecraftManager';
 
 export default class FetchurCommand extends minecraftCommand {
   name: string;
   aliases: never[];
   description: string;
   options: never[];
-  constructor(minecraft: any) {
+  constructor(minecraft: MinecraftManager) {
     super(minecraft);
 
     this.name = 'fetchur';

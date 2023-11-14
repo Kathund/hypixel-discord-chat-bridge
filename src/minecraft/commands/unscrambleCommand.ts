@@ -1,7 +1,8 @@
 import { minecraftCommand } from '../../contracts/minecraftCommand';
 import { getRandomWord, scrambleWord } from '../constants/words';
+import { MinecraftManager } from '../MinecraftManager';
 
-const getWord = (message: any) => message.split(' ').pop();
+const getWord = (message: string) => message.split(' ').pop();
 
 const cooldowns = new Map();
 
@@ -11,7 +12,7 @@ export default class unscrambleCommand extends minecraftCommand {
   description: string;
   options: { name: string; description: string; required: boolean }[];
   cooldown: number;
-  constructor(minecraft: any) {
+  constructor(minecraft: MinecraftManager) {
     super(minecraft);
 
     this.name = 'unscramble';

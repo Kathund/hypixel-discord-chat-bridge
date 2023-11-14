@@ -1,6 +1,7 @@
 import { decodeData } from '../../src/contracts/helperFunctions';
+import { TalismansOutput } from '../../src/types/global';
 
-export const getTalismans = async (profile: any) => {
+export const getTalismans = async (profile: any): Promise<TalismansOutput> => {
   try {
     const output = {
       common: 0,

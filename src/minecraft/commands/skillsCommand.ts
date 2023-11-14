@@ -1,14 +1,16 @@
 import { getLatestProfile } from '../../../API/functions/getLatestProfile';
 import { minecraftCommand } from '../../contracts/minecraftCommand';
 import { formatUsername } from '../../contracts/helperFunctions';
+import { MinecraftManager } from '../MinecraftManager';
 import { getSkills } from '../../../API/stats/skills';
+import { CalcSkillsResult } from '../../types/global';
 
 export default class SkillsCommand extends minecraftCommand {
   name: string;
   aliases: string[];
   description: string;
   options: { name: string; description: string; required: boolean }[];
-  constructor(minecraft: any) {
+  constructor(minecraft: MinecraftManager) {
     super(minecraft);
 
     this.name = 'skills';
@@ -31,19 +33,19 @@ export default class SkillsCommand extends minecraftCommand {
 
       username = formatUsername(username, data.profileData.cute_name);
 
-      const profile = getSkills(data.profile);
+      const profile = getSkills(data.profile) as CalcSkillsResult;
 
       const skillAverage = (
         Object.keys(profile)
           .filter((skill) => !['runecrafting', 'social'].includes(skill))
-          .map((skill) => (profile as any)[skill].levelWithProgress || 0)
+          .map((skill) => profile[skill].levelWithProgress || 0)
           .reduce((a, b) => a + b, 0) /
         (Object.keys(profile).length - 2)
       ).toFixed(2);
 
       const skillsFormatted = Object.keys(profile)
         .map((skill) => {
-          const level = Math.floor((profile as any)[skill].levelWithProgress ?? 0);
+          const level = Math.floor(profile[skill].levelWithProgress ?? 0);
           const skillName = skill[0].toUpperCase() + skill[1];
           return `${level}${skillName}`;
         })

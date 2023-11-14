@@ -1,15 +1,17 @@
 import { formatNumber, formatUsername } from '../../contracts/helperFunctions';
 import { getLatestProfile } from '../../../API/functions/getLatestProfile';
 import { minecraftCommand } from '../../contracts/minecraftCommand';
+import { MinecraftManager } from '../MinecraftManager';
 import { getSlayers } from '../../../API/stats/slayer';
 import { capitalize } from 'lodash';
+import { skyblockSlayers } from '../../types/global';
 
 export default class SlayersCommand extends minecraftCommand {
   name: string;
   aliases: string[];
   description: string;
   options: { name: string; description: string; required: boolean }[];
-  constructor(minecraft: any) {
+  constructor(minecraft: MinecraftManager) {
     super(minecraft);
 
     this.name = 'slayer';
@@ -54,20 +56,18 @@ export default class SlayersCommand extends minecraftCommand {
 
       username = formatUsername(username, data.profileData.cute_name);
 
-      const profile = getSlayers(data.profile);
+      const profile = getSlayers(data.profile) as skyblockSlayers;
 
       if (slayerType) {
         this.send(
           `/gc ${username}'s ${capitalize(slayerType)} - ${
-            (profile as any)[slayerType].level
-          } Levels | Experience: ${formatNumber((profile as any)[slayerType].xp)}`
+            profile[slayerType].level
+          } Levels | Experience: ${formatNumber(profile[slayerType].xp)}`
         );
       } else {
         const slayer = Object.keys(profile).reduce(
           (acc, slayer) =>
-            `${acc} | ${capitalize(slayer)}: ${(profile as any)[slayer].level} (${formatNumber(
-              (profile as any)[slayer].xp
-            )})`,
+            `${acc} | ${capitalize(slayer)}: ${profile[slayer].level} (${formatNumber(profile[slayer].xp)})`,
           ''
         );
         this.send(`/gc ${username}'s Slayer: ${slayer.slice(3)}`);

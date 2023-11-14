@@ -1,4 +1,5 @@
 import { minecraftCommand } from '../../contracts/minecraftCommand';
+import { MinecraftManager } from '../MinecraftManager';
 import axios from 'axios';
 
 export default class EightBallCommand extends minecraftCommand {
@@ -6,7 +7,7 @@ export default class EightBallCommand extends minecraftCommand {
   aliases: string[];
   description: string;
   options: { name: string; description: string; required: boolean }[];
-  constructor(minecraft: any) {
+  constructor(minecraft: MinecraftManager) {
     super(minecraft);
 
     this.name = '8ball';

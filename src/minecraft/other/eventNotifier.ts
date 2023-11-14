@@ -3,6 +3,7 @@ import { getSkyblockCalendar } from '../../../API/functions/getCalendar';
 import { minecraftCommand } from '../../contracts/minecraftCommand';
 import { minecraft } from '../../../config.json';
 import axios from 'axios';
+import { jacobsContest } from '../../types/global';
 
 if (minecraft.skyblockEventsNotifications.enabled) {
   const { notifiers, customTime } = minecraft.skyblockEventsNotifications;
@@ -25,7 +26,7 @@ if (minecraft.skyblockEventsNotifications.enabled) {
 
         let extraInfo = '';
         if (event == 'JACOBS_CONTEST') {
-          const { data: jacobResponse } = await axios.get('https://dawjaw.net/jacobs');
+          const jacobResponse = (await (await axios.get('https://dawjaw.net/jacobs')).data) as jacobsContest[];
           const jacobCrops = jacobResponse.find(
             (crop: any) => crop.time >= Math.floor(eventData.events[0].start_timestamp / 1000)
           );
@@ -53,7 +54,7 @@ if (minecraft.skyblockEventsNotifications.enabled) {
   }, 60000);
 }
 
-function getCustomTime(events: any, value: any) {
+function getCustomTime(events: any, value: string) {
   if (events === undefined || value === undefined) {
     return false;
   }
