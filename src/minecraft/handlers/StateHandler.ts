@@ -5,6 +5,7 @@ import { MinecraftManager } from '../MinecraftManager';
 export class StateHandler extends EventHandler {
   loginAttempts: number;
   exactDelay: number;
+  minecraft: MinecraftManager;
   constructor(minecraft: MinecraftManager) {
     super();
 

@@ -1,5 +1,6 @@
 // Credits https://github.com/Altpapier/hypixel-discord-guild-bridge/blob/master/helper/loreRenderer.js
 import { registerFont, createCanvas } from 'canvas';
+import { RGBA_COLOR_TYPE } from '../types/global';
 registerFont('src/contracts/Fonts/2_Minecraft-Italic.otf', {
   family: 'MinecraftItalic',
 });
@@ -13,7 +14,7 @@ registerFont('src/contracts/Fonts/unifont.ttf', {
   family: 'MinecraftUnicode',
 });
 
-const RGBA_COLOR = {
+const RGBA_COLOR: RGBA_COLOR_TYPE = {
   0: 'rgba(0,0,0,1)',
   1: 'rgba(0,0,170,1)',
   2: 'rgba(0,170,0,1)',
@@ -32,7 +33,7 @@ const RGBA_COLOR = {
   f: 'rgba(255,255,255,1)',
 };
 
-async function getCanvasWidthAndHeight(lore: any) {
+async function getCanvasWidthAndHeight(lore: string[]) {
   const canvas = createCanvas(1, 1);
   const ctx = canvas.getContext('2d');
   ctx.font = '24px Minecraft';
@@ -49,7 +50,7 @@ async function getCanvasWidthAndHeight(lore: any) {
   return { height: lore.length * 24 + 15, width: highestWidth + 20 };
 }
 
-export const renderLore = async (itemName: any, lore: any) => {
+export const renderLore = async (itemName: string, lore: string[]) => {
   if (itemName) lore.unshift(itemName);
   const measurements = await getCanvasWidthAndHeight(lore);
   if (!measurements) return;
@@ -69,11 +70,11 @@ export const renderLore = async (itemName: any, lore: any) => {
   // TEXT
   for (const [index, item] of Object.entries(lore)) {
     let width = 10;
-    const splitItem = (item as any).split('§');
+    const splitItem = item.split('§');
     if (splitItem[0].length == 0) splitItem.shift();
 
     for (const toRenderItem of splitItem) {
-      ctx.fillStyle = (RGBA_COLOR as any)[toRenderItem[0]];
+      ctx.fillStyle = RGBA_COLOR[toRenderItem[0]];
 
       if (toRenderItem.startsWith('l')) {
         ctx.font = '24px MinecraftBold, MinecraftUnicode';
@@ -83,7 +84,7 @@ export const renderLore = async (itemName: any, lore: any) => {
         ctx.font = '24px Minecraft, MinecraftUnicode';
       }
 
-      ctx.fillText(toRenderItem.substring(1), width, (index as any) * 24 + 29);
+      ctx.fillText(toRenderItem.substring(1), width, Number(index) * 24 + 29);
       width += ctx.measureText(toRenderItem.substring(1)).width;
     }
   }

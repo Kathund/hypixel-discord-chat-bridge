@@ -1,5 +1,5 @@
 export class HypixelDiscordChatBridgeError extends Error {
-  source: any;
+  source: string;
   constructor(message: string, source: string) {
     super(message);
     this.name = 'HypixelDiscordChatBridgeError';

@@ -63,7 +63,7 @@ async function getCommands(interaction: ChatInputCommandInteraction) {
   const discordCommands = interaction.client.commands
     .map((command) => {
       const optionsString = command.data.options
-        ?.map(({ name, required }: { name: string; required: boolean }) => (required ? ` (${name})` : ` [${name}]`))
+        ?.map(({ name, required }: any) => (required ? ` (${name})` : ` [${name}]`))
         .join('');
       return `- \`${command.data.name}${optionsString ? optionsString : ''}\`\n`;
     })

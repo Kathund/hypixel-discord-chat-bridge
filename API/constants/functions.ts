@@ -12,8 +12,7 @@ export const titleCase = (str: string, replaceunderscore = false): string => {
   }
 };
 
-export const capitalize = (str: string): string | null => {
-  if (!str) return null;
+export const capitalize = (str: string): string => {
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
 

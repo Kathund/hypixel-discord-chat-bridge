@@ -1,4 +1,4 @@
-import { broadcast, broadcastCleanEmbed, broadcastHeadedEmbed, playerToggle } from '../types/global';
+import { broadcast, broadcastCleanEmbed, broadcastHeadedEmbed, playerToggle, variablesType } from '../types/global';
 import { Client, AttachmentBuilder, GatewayIntentBits, Message } from 'discord.js';
 import { CommunicationBridge } from '../contracts/CommunicationBridge';
 import { generateMessageImage } from '../contracts/messageToImage';
@@ -23,7 +23,7 @@ export class DiscordManager extends CommunicationBridge {
     this.app = app;
 
     this.stateHandler = new StateHandler(this);
-    this.messageHandler = new MessageHandler(this, null);
+    this.messageHandler = new MessageHandler(this, CommandHandler);
   }
 
   async connect() {
@@ -110,7 +110,7 @@ export class DiscordManager extends CommunicationBridge {
             {
               description: message,
               color: this.hexToDec(color),
-              timestamp: new Date(),
+              timestamp: new Date() as unknown as string,
               footer: {
                 text: guildRank,
               },
@@ -252,7 +252,7 @@ export class DiscordManager extends CommunicationBridge {
     }
   }
 
-  hexToDec(hex: any) {
+  hexToDec(hex: number | string) {
     if (hex === undefined) {
       return 1752220;
     }
@@ -278,7 +278,7 @@ export class DiscordManager extends CommunicationBridge {
       .join('');
   }
 
-  formatMessage(message: any, data: any) {
+  formatMessage(message: string, data: variablesType) {
     return replaceVariables(message, data);
   }
 }

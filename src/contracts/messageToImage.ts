@@ -2,6 +2,7 @@
 
 // eslint-disable-next-line import/no-unresolved
 import { registerFont, createCanvas, loadImage } from 'canvas';
+import { RGBA_COLOR_TYPE } from '../types/global';
 registerFont('src/contracts/Fonts/MinecraftRegular-Bmg3.ttf', {
   family: 'Minecraft',
 });
@@ -9,7 +10,7 @@ registerFont('src/contracts/Fonts/unifont.ttf', {
   family: 'MinecraftUnicode',
 });
 
-const RGBA_COLOR = {
+const RGBA_COLOR: RGBA_COLOR_TYPE = {
   0: 'rgba(0,0,0,1)',
   1: 'rgba(0,0,170,1)',
   2: 'rgba(0,170,0,1)',
@@ -28,12 +29,12 @@ const RGBA_COLOR = {
   f: 'rgba(255,255,255,1)',
 };
 
-function getHeight(message: any) {
+function getHeight(message: string) {
   const canvas = createCanvas(1, 1);
   const ctx = canvas.getContext('2d');
   const splitMessageSpace = message.split(' ');
   for (const [i, msg] of Object.entries(splitMessageSpace)) {
-    if (!(msg as any).startsWith('§')) splitMessageSpace[i] = `§r${msg}`;
+    if (!msg.startsWith('§')) splitMessageSpace[Number(i)] = `§r${msg}`;
   }
   const splitMessage = splitMessageSpace.join(' ').split(/§|\n/g);
   splitMessage.shift();
@@ -55,13 +56,13 @@ function getHeight(message: any) {
   return height + 10;
 }
 
-export const generateMessageImage = async (message: any, username: any) => {
+export const generateMessageImage = async (message: string, username: string | null) => {
   const canvasHeight = getHeight(message);
   const canvas = createCanvas(1000, canvasHeight);
   const ctx = canvas.getContext('2d');
   const splitMessageSpace = message.split(' ');
   for (const [i, msg] of Object.entries(splitMessageSpace)) {
-    if (!(msg as any).startsWith('§')) splitMessageSpace[i] = `§r${msg}`;
+    if (!msg.startsWith('§')) splitMessageSpace[Number(i)] = `§r${msg}`;
   }
   const splitMessage = splitMessageSpace.join(' ').split(/§|\n/g);
   splitMessage.shift();
@@ -73,7 +74,7 @@ export const generateMessageImage = async (message: any, username: any) => {
   let width = 5;
   let height = 35;
   for (const msg of splitMessage) {
-    const colorCode = (RGBA_COLOR as any)[msg.charAt(0)];
+    const colorCode = RGBA_COLOR[msg.charAt(0)];
     const currentMessage = msg.substring(1);
     if (width + ctx.measureText(currentMessage).width > 1000 || msg.charAt(0) === 'n') {
       width = 5;

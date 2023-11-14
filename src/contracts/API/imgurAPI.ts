@@ -5,7 +5,7 @@ const imgurClient = new ImgurClient({
   clientId: minecraft.API.imgurAPIkey,
 });
 
-export const uploadImage = async (image: any) => {
+export const uploadImage = async (image: string) => {
   const response = await imgurClient.upload({
     image: image,
     type: 'stream',

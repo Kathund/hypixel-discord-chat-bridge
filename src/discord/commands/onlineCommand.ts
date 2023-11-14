@@ -1,15 +1,16 @@
 import { ChatInputCommandInteraction, EmbedBuilder, SlashCommandBuilder } from 'discord.js';
+import { ChatMessage } from 'prismarine-chat';
 
 export const data = new SlashCommandBuilder().setName('online').setDescription('List of online members.');
 
 export const execute = async (interaction: ChatInputCommandInteraction) => {
-  const cachedMessages: any = [];
+  const cachedMessages: string[] = [];
   const messages = new Promise((resolve, reject) => {
-    const listener = (message: any) => {
-      message = message.toString();
+    const listener = (message: ChatMessage) => {
+      const rawMessage = message.toString();
 
-      cachedMessages.push(message);
-      if (message.startsWith('Offline Members')) {
+      cachedMessages.push(rawMessage);
+      if (rawMessage.startsWith('Offline Members')) {
         global.bot.removeListener('message', listener);
         resolve(cachedMessages);
       }
@@ -24,27 +25,27 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
     }, 5000);
   });
 
-  const message: any = await messages;
+  const message = (await messages) as string[];
 
-  const onlineMembers = message.find((m: any) => m.startsWith('Online Members: '));
-  const totalMembers = message.find((message: any) => message.startsWith('Total Members: '));
+  const onlineMembers = message.find((msg: string) => msg.startsWith('Online Members: '));
+  const totalMembers = message.find((msg: string) => msg.startsWith('Total Members: '));
 
   const onlineMembersList = message;
   const online = onlineMembersList
-    .flatMap((item: any, index: any) => {
+    .flatMap((item: string, index: number) => {
       if (item.includes('-- ') === false) return;
 
-      const nextLine = onlineMembersList[parseInt(index) + 1];
+      const nextLine = onlineMembersList[index + 1];
       if (nextLine.includes('●')) {
         const rank = item.replaceAll('--', '').trim();
         const players = nextLine
           .split('●')
-          .map((item: any) => item.trim())
-          .filter((item: any) => item);
+          .map((item: string) => item.trim())
+          .filter((item: string) => item);
 
         if (rank === undefined || players === undefined) return;
 
-        return `**${rank}**\n${players.map((item: any) => `\`${item}\``).join(', ')}`;
+        return `**${rank}**\n${players.map((item: string) => `\`${item}\``).join(', ')}`;
       }
     })
     .filter((item: any) => item);

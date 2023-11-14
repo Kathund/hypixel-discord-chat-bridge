@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const cache = new Map();
 
-export const getUUID = async (username: any) => {
+export const getUUID = async (username: string) => {
   try {
     if (cache.has(username)) {
       const data = cache.get(username);
@@ -24,7 +24,7 @@ export const getUUID = async (username: any) => {
     });
 
     return data.id;
-  } catch (error: Error) {
+  } catch (error: any) {
     if (error.response.data.errorMessage !== undefined) {
       throw error.response.data.errorMessage === `Couldn't find any profile with name ${username}`
         ? 'Invalid username.'
@@ -39,16 +39,16 @@ export const getUUID = async (username: any) => {
   }
 };
 
-export const getUsername = async (uuid: any) => {
+export const getUsername = async (uuid: string) => {
   try {
     const response = await axios.get(`https://playerdb.co/api/player/minecraft/${uuid}`);
     return response.data.data.player.username;
-  } catch (error: Error) {
+  } catch (error: any) {
     console.log(error);
   }
 };
 
-export const resolveUsernameOrUUID = async (username: any) => {
+export const resolveUsernameOrUUID = async (username: string) => {
   try {
     const { data } = await axios.get(`https://playerdb.co/api/player/minecraft/${username}`);
 
@@ -65,7 +65,7 @@ export const resolveUsernameOrUUID = async (username: any) => {
       username: data.data.player.username,
       uuid: data.data.player.raw_id,
     };
-  } catch (error: Error) {
+  } catch (error: any) {
     console.log(error);
   }
 };

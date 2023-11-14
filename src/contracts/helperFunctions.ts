@@ -5,10 +5,11 @@ import { promisify } from 'util';
 import { sync } from 'mkdirp';
 import { set } from 'lodash';
 import moment from 'moment';
+import { variablesType } from '../types/global';
 
 const parseNbt = promisify(parse);
 
-export const replaceAllRanks = (input: any) => {
+export const replaceAllRanks = (input: string) => {
   input = input.replaceAll('[OWNER] ', '');
   input = input.replaceAll('[ADMIN] ', '');
   input = input.replaceAll('[MCP] ', '');
@@ -23,9 +24,9 @@ export const replaceAllRanks = (input: any) => {
   return input;
 };
 
-export const addNotation = (type: 'shortScale' | 'oneLetters' | 'none' | 'commas', value: any) => {
+export const addNotation = (type: 'shortScale' | 'oneLetters' | 'none' | 'commas', value: number) => {
   let returnVal = value;
-  let notList: any[] = [];
+  let notList: string[] = [];
   if (type === 'shortScale') {
     notList = [' Thousand', ' Million', ' Billion', ' Trillion', ' Quadrillion', ' Quintillion'];
   }
@@ -38,19 +39,21 @@ export const addNotation = (type: 'shortScale' | 'oneLetters' | 'none' | 'commas
   if (type !== 'none' && type !== 'commas') {
     let notValue = notList[notList.length - 1];
     for (let u = notList.length; u >= 1; u--) {
-      notValue = notList.shift();
+      if (notList.length > 0) {
+        notValue = notList.shift()!;
+      }
       for (let o = 3; o >= 1; o--) {
         if (value >= checkNum) {
           returnVal = value / (checkNum / 100);
           returnVal = Math.floor(returnVal);
           returnVal = (returnVal / Math.pow(10, o)) * 10;
-          returnVal = +returnVal.toFixed(o - 1) + notValue;
+          returnVal = +returnVal.toFixed(o - 1) + +notValue;
         }
         checkNum *= 10;
       }
     }
   } else {
-    returnVal = numberWithCommas(value.toFixed(0));
+    returnVal = Number(numberWithCommas(Number(value.toFixed(0))));
   }
 
   return returnVal;
@@ -88,9 +91,10 @@ export const addCommas = (num: number) => {
   }
 };
 
-export const toFixed = (num: any, fixed: any) => {
+export const toFixed = (num: number, fixed: number) => {
   const response = new RegExp('^-?\\d+(?:.\\d{0,' + (fixed || -1) + '})?');
-  return num.toString().match(response)[0];
+  const match = num.toString().match(response);
+  return match ? parseFloat(match[0]) : 0;
 };
 
 export const timeSince = (timeStamp: number) => {
@@ -119,7 +123,7 @@ export const timeSince = (timeStamp: number) => {
   }
 };
 
-export const writeAt = async (filePath: string, jsonPath: string, value: any) => {
+export const writeAt = async (filePath: string, jsonPath: string, value: object) => {
   sync(getDirName(filePath));
 
   try {
@@ -144,7 +148,7 @@ export const capitalize = (str: string) => {
   return upperCased.join(' ');
 };
 
-export const decodeData = async (buffer: any) => {
+export const decodeData = async (buffer: Buffer) => {
   const parsedNbt = await parseNbt(buffer);
   return simplify(parsedNbt);
 };
@@ -155,6 +159,7 @@ export const nth = (i: number) => {
 
 const units = new Set(['y', 'M', 'w', 'd', 'h', 'm', 's']);
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function parseDateMath(mathString: string, time: any) {
   const strippedMathString = mathString.replace(/\s/g, '');
   const dateTime = time;
@@ -280,6 +285,6 @@ export const formatNumber = (number: number, decimals = 2) => {
   return `${isNegative ? '-' : ''}${shortNumber}${abbrev[abbrevIndex]}`;
 };
 
-export const replaceVariables = (template: string, variables: any) => {
-  return template.replace(/\{(\w+)\}/g, (match: string, name: any) => variables[name] ?? match);
+export const replaceVariables = (template: string, variables: variablesType) => {
+  return template.replace(/\{(\w+)\}/g, (match: string, name: string) => variables[name] ?? match);
 };

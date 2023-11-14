@@ -224,7 +224,7 @@ export const getPets = (profile: any) => {
 
     // eslint-disable-next-line no-unused-vars
     for (const [line] of lore.entries()) {
-      pet.lore += '' + renderLore(line) + '\n';
+      pet.lore += '' + renderLore(String(line)) + '\n';
     }
     pet.lore = pet.lore.split('\n');
 

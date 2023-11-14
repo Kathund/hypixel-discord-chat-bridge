@@ -17,6 +17,7 @@ export const execute = async (interaction: Interaction) => {
 
         discordMessage(`${interaction.user.username} - [${interaction.commandName}]`);
         await command.execute(interaction);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (error: any) {
         console.log(error);
 

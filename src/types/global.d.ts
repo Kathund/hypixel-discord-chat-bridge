@@ -179,6 +179,7 @@ export type StatData = {
   epic?: any;
   legendary?: any;
   mythic?: any;
+  comMONTEZUMA?: any;
 };
 
 export type jacobsContest = {
@@ -431,3 +432,65 @@ export type TalismansOutput = {
   enriched: number;
   total: number;
 } | null;
+
+export type RGBA_COLOR_TYPE = {
+  [key: string]: string;
+  [key: number]: string;
+  0: string;
+  1: string;
+  2: string;
+  3: string;
+  4: string;
+  5: string;
+  6: string;
+  7: string;
+  8: string;
+  9: string;
+  a: string;
+  b: string;
+  c: string;
+  d: string;
+  e: string;
+  f: string;
+};
+
+export type variablesType = {
+  [key: string]: string | undefined;
+  chatType?: string;
+  username?: string;
+  rank?: string;
+  guildRank?: string;
+  message?: string;
+  prefix?: string;
+  time?: string;
+  level?: string;
+};
+
+export type SenitherWeightResult = {
+  skills: {
+    farming: SkillWeightResult | null;
+    mining: SkillWeightResult | null;
+    combat: SkillWeightResult | null;
+    foraging: SkillWeightResult | null;
+    fishing: SkillWeightResult | null;
+    enchanting: SkillWeightResult | null;
+    alchemy: SkillWeightResult | null;
+    taming: SkillWeightResult | null;
+  };
+  slayer: {
+    revenant: SlayerWeightResult | null;
+    tarantula: SlayerWeightResult | null;
+    sven: SlayerWeightResult | null;
+    enderman: SlayerWeightResult | null;
+  };
+  dungeons: {
+    catacombs: DungeonWeightResult | null;
+    classes: {
+      healer: DungeonWeightResult | null;
+      mage: DungeonWeightResult | null;
+      berserk: DungeonWeightResult | null;
+      archer: DungeonWeightResult | null;
+      tank: DungeonWeightResult | null;
+    };
+  };
+};

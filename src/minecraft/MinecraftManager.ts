@@ -9,6 +9,7 @@ import { broadcastMessage } from '../Logger';
 import { broadcast } from '../types/global';
 import { createBot } from 'mineflayer';
 import Filter from 'bad-words';
+import { DiscordManager } from '../discord/DiscordManager';
 
 const filter = new Filter();
 
@@ -25,7 +26,7 @@ export class MinecraftManager extends CommunicationBridge {
 
     this.stateHandler = new StateHandler(this);
     this.errorHandler = new ErrorHandler(this);
-    this.chatHandler = new ChatHandler(this, new CommandHandler(this), null);
+    this.chatHandler = new ChatHandler(this, new CommandHandler(this), new DiscordManager(this));
   }
 
   connect() {

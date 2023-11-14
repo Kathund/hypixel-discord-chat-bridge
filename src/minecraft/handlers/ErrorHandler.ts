@@ -3,6 +3,7 @@ import { errorMessage, warnMessage } from '../../Logger';
 import { MinecraftManager } from '../MinecraftManager';
 
 export class ErrorHandler extends EventHandler {
+  minecraft: MinecraftManager;
   constructor(minecraft: MinecraftManager) {
     super();
 

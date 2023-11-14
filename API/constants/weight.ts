@@ -3,13 +3,14 @@ import {
   DungeonWeightResult,
   SlayerWeightResult,
   SkillWeightResult,
+  SlayerWeightType,
   DungeonWeights,
   SlayerWeights,
   SenitherType,
   SkillWeights,
   DungeonType,
-  SlayerWeightType,
   SkillType,
+  SenitherWeightResult,
 } from '../../src/types/global';
 import { calcSkill } from './skills';
 
@@ -188,7 +189,7 @@ function calculateSlayerWeight(type: SlayerWeightType, experience: number): Slay
   };
 }
 
-export const calculateTotalSenitherWeight = (profile: any) => {
+export const calculateTotalSenitherWeight = (profile: any): SenitherWeightResult => {
   const weight = {
     skills: {
       farming: calculateSenitherWeight(

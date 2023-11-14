@@ -1,14 +1,15 @@
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 import { minecraft as minecraftConfig } from '../../config.json';
+import { MinecraftManager } from '../minecraft/MinecraftManager';
 import { generateID } from './helperFunctions';
 
 export class minecraftCommand {
-  minecraft: any;
-  constructor(minecraft: any) {
+  minecraft: MinecraftManager;
+  constructor(minecraft: MinecraftManager) {
     this.minecraft = minecraft;
   }
 
-  getArgs(message: any) {
+  getArgs(message: string) {
     const args = message.split(' ');
 
     args.shift();

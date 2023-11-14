@@ -3,6 +3,8 @@ import { HypixelDiscordChatBridgeError } from '../../contracts/errorHandler';
 import { minecraft } from '../../../config.json';
 import { readdirSync } from 'fs';
 
+export type typeTest = { name: string; required: boolean };
+
 export const data = new SlashCommandBuilder()
   .setName('help')
   .setDescription('Shows help menu.')

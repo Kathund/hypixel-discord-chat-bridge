@@ -18,7 +18,8 @@ import { warnMessage } from '../../Logger';
 export class ChatHandler extends EventHandler {
   discord: DiscordManager;
   command: CommandHandler;
-  constructor(minecraft: MinecraftManager, command: CommandHandler, discord: DiscordManager | null) {
+  minecraft: MinecraftManager;
+  constructor(minecraft: MinecraftManager, command: CommandHandler, discord: DiscordManager) {
     super();
     this.minecraft = minecraft;
     this.discord = discord;
@@ -748,7 +749,7 @@ export class ChatHandler extends EventHandler {
       return;
     }
 
-    if (this.isDiscordMessage(match.groups.message) === false) {
+    if (match.groups && this.isDiscordMessage(match.groups.message) === false) {
       const { chatType, rank, username, guildRank = '[Member]', message } = match.groups;
       if (message.includes('replying to') && username === global.bot.username) {
         return;
@@ -766,7 +767,7 @@ export class ChatHandler extends EventHandler {
       });
     }
 
-    if (this.isCommand(match.groups.message)) {
+    if (match.groups && this.isCommand(match.groups.message)) {
       if (this.isDiscordMessage(match.groups.message) === true) {
         const { player, command } = this.getCommandData(match.groups.message);
 
@@ -783,19 +784,18 @@ export class ChatHandler extends EventHandler {
     return isDiscordMessage.test(message);
   }
 
-  isCommand(message: any) {
-    // TODO fix making it string and having errors
+  isCommand(message: string) {
     const regex = new RegExp(`^(?<prefix>[${minecraftConfig.bot.prefix}-])(?<command>\\S+)(?:\\s+(?<args>.+))?\\s*$`);
 
     if (regex.test(message) === false) {
       const getMessage = /^(?<username>(?!https?:\/\/)[^\s»:>]+)\s*[»:>]\s*(?<message>.*)/;
 
       const match = message.match(getMessage);
-      if (match === null || match.groups.message === undefined) {
+      if (match === null || match.groups?.message === undefined) {
         return false;
       }
 
-      return regex.test(match.groups.message);
+      return regex.test(match.groups?.message);
     }
 
     return regex.test(message);
@@ -809,7 +809,7 @@ export class ChatHandler extends EventHandler {
       return {};
     }
 
-    return match.groups;
+    return match.groups as any;
   }
 
   getRankColor(message: string) {

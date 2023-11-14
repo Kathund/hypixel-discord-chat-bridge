@@ -32,7 +32,7 @@ export default class unscrambleCommand extends minecraftCommand {
     try {
       const userUsername = username;
       const length = this.getArgs(message)[0];
-      const answer = getRandomWord(length);
+      const answer = getRandomWord(Number(length));
       const scrambledWord = scrambleWord(answer);
 
       const cooldownDuration = this.cooldown;

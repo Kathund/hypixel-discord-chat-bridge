@@ -1,4 +1,5 @@
 import { ChatInputCommandInteraction, EmbedBuilder, SlashCommandBuilder } from 'discord.js';
+import { ChatMessage } from 'prismarine-chat';
 
 export const data = new SlashCommandBuilder()
   .setName('guildtop')
@@ -10,13 +11,13 @@ export const data = new SlashCommandBuilder()
 export const execute = async (interaction: ChatInputCommandInteraction) => {
   const time = interaction.options.getString('time');
 
-  const cachedMessages: any = [];
+  const cachedMessages: string[] = [];
   const messages = new Promise((resolve, reject) => {
-    const listener = (message: any) => {
-      message = message.toString();
-      cachedMessages.push(message);
+    const listener = (message: ChatMessage) => {
+      const rawMessage = message.toString();
+      cachedMessages.push(rawMessage);
 
-      if (message.startsWith('10.') && message.endsWith('Guild Experience')) {
+      if (rawMessage.startsWith('10.') && rawMessage.endsWith('Guild Experience')) {
         global.bot.removeListener('message', listener);
         resolve(cachedMessages);
       }
@@ -31,11 +32,13 @@ export const execute = async (interaction: ChatInputCommandInteraction) => {
     }, 5000);
   });
 
-  const message: any = await messages;
+  const message = (await messages) as string[];
 
-  const trimmedMessages = message.map((message: any) => message.trim()).filter((message: any) => message.includes('.'));
+  const trimmedMessages = message
+    .map((message: string) => message.trim())
+    .filter((message: string) => message.includes('.'));
   const description = trimmedMessages
-    .map((message: any) => {
+    .map((message: string) => {
       const [position, , name, guildExperience] = message.split(' ');
 
       return `\`${position}\` **${name}** - \`${guildExperience}\` Guild Experience\n`;

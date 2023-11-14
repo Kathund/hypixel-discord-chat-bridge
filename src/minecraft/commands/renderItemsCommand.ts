@@ -38,12 +38,12 @@ export default class RenderCommand extends minecraftCommand {
         this.send('/gc Wrong Usage: !render [name] [slot] | !render [slot]');
       }
       if (!isNaN(Number(arg[0]))) {
-        itemNumber = arg[0];
+        itemNumber = Number(arg[0]);
         username = arg[1] || username;
       } else {
         username = arg[0];
         if (!isNaN(Number(arg[1]))) {
-          itemNumber = arg[1];
+          itemNumber = Number(arg[1]);
         } else {
           this.send('/gc Wrong Usage: !render [name] [slot] | !render [slot]');
           return;
