@@ -5,12 +5,12 @@ const imgurClient = new ImgurClient({
   clientId: minecraft.API.imgurAPIkey,
 });
 
-export const uploadImage = async (image: Buffer | undefined) => {
+export const uploadImage = async (image: string | Buffer | undefined) => {
   if (image === undefined) {
     // eslint-disable-next-line no-throw-literal
     throw 'An error occurred while uploading the image. Please try again later.';
   }
-  
+
   const response = await imgurClient.upload({
     image: image,
     type: 'stream',
