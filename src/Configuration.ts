@@ -1,9 +1,10 @@
-import { configUpdateMessage } from './Logger';
 import { readFileSync, writeFileSync } from 'fs';
+import { configUpdateMessage } from './Logger';
 
-const exampleConfig = JSON.parse(readFileSync('config.example.json') as unknown as any);
-const config = JSON.parse(readFileSync('config.json') as unknown as any);
+const exampleConfig = JSON.parse(readFileSync('config.example.json', 'utf-8'));
+const config = JSON.parse(readFileSync('config.json', 'utf-8'));
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function checkConfig(object: any, exampleObject: any) {
   for (const [key, value] of Object.entries(exampleObject)) {
     if (key === 'messageFormat' && object[key] && object[key].length <= 2) {

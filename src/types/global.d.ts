@@ -494,3 +494,127 @@ export type SenitherWeightResult = {
     };
   };
 };
+
+export type bestiaryBracketsType = {
+  1: number[];
+  2: number[];
+  3: number[];
+  4: number[];
+  5: number[];
+  6: number[];
+  7: number[];
+  [key: number]: number[];
+};
+
+export type bestiaryMobType = {
+  name: string;
+  cap: number;
+  texture: string;
+  mobs: string[];
+  bracket: number;
+};
+
+export type bestiaryType = {
+  dynamic: {
+    name: string;
+    texture: string;
+    mobs: bestiaryMobType[];
+  };
+  hub: {
+    name: string;
+    texture: string;
+    mobs: bestiaryMobType[];
+  };
+  farming_1: {
+    name: string;
+    texture: string;
+    mobs: bestiaryMobType[];
+  };
+  combat_1: {
+    name: string;
+    texture: string;
+    mobs: bestiaryMobType[];
+  };
+  combat_3: {
+    name: string;
+    texture: string;
+    mobs: bestiaryMobType[];
+  };
+  crimson_isle: {
+    name: string;
+    texture: string;
+    mobs: bestiaryMobType[];
+  };
+  mining_2: {
+    name: string;
+    texture: string;
+    mobs: bestiaryMobType[];
+  };
+  mining_3: {
+    name: string;
+    texture: string;
+    mobs: bestiaryMobType[];
+  };
+  crystal_hollows: {
+    name: string;
+    texture: string;
+    mobs: bestiaryMobType[];
+  };
+  foraging_1: {
+    name: string;
+    texture: string;
+    mobs: bestiaryMobType[];
+  };
+  spooky_festival: {
+    name: string;
+    texture: string;
+    mobs: bestiaryMobType[];
+  };
+  mythological_creatures: {
+    name: string;
+    texture: string;
+    mobs: bestiaryMobType[];
+  };
+  jerry: {
+    name: string;
+    texture: string;
+    mobs: bestiaryMobType[];
+  };
+  kuudra: {
+    name: string;
+    texture: string;
+    mobs: bestiaryMobType[];
+  };
+  fishing: {
+    fishing: {
+      name: string;
+      texture: string;
+      mobs: bestiaryMobType[];
+    };
+    lava: {
+      name: string;
+      texture: string;
+      mobs: bestiaryMobType[];
+    };
+    spooky_festival: {
+      name: string;
+      texture: string;
+      mobs: bestiaryMobType[];
+    };
+    fishing_festival: {
+      name: string;
+      texture: string;
+      mobs: bestiaryMobType[];
+    };
+    winter: {
+      name: string;
+      texture: string;
+      mobs: bestiaryMobType[];
+    };
+  };
+  catacombs: {
+    name: string;
+    texture: string;
+    mobs: bestiaryMobType[];
+  };
+};

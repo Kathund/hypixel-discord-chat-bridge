@@ -1,16 +1,18 @@
 import { BESTIARY_BRACKETS, BESTIARY } from '../constants/bestiary';
 
+// TODO Add a type to profile when its finished
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function formatBestiaryMobs(userProfile: any, mobs: any) {
   const output = [];
   for (const mob of mobs) {
-    const mobBracket = (BESTIARY_BRACKETS as any)[mob.bracket];
+    const mobBracket = BESTIARY_BRACKETS[mob.bracket];
 
-    const totalKills = mob.mobs.reduce((acc: any, cur: any) => {
+    const totalKills = mob.mobs.reduce((acc: number, cur: number) => {
       return acc + (userProfile.bestiary.kills[cur] ?? 0);
     }, 0);
 
     const maxKills = mob.cap;
-    const nextTierKills = mobBracket.find((tier: any) => totalKills < tier && tier <= maxKills);
+    const nextTierKills = mobBracket.find((tier: number) => totalKills < tier && tier <= maxKills);
     const tier = nextTierKills ? mobBracket.indexOf(nextTierKills) : mobBracket.indexOf(maxKills) + 1;
 
     output.push({
@@ -26,6 +28,8 @@ function formatBestiaryMobs(userProfile: any, mobs: any) {
   return output;
 }
 
+// TODO Add a type to profile when its finished
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const getBestiary = (userProfile: any) => {
   try {
     if (userProfile.bestiary?.kills === undefined) {
@@ -49,8 +53,8 @@ export const getBestiary = (userProfile: any) => {
 
           output[category][key].mobs = formatBestiaryMobs(userProfile, value.mobs);
 
-          tiersUnlocked += output[category][key].mobs.reduce((acc: any, cur: any) => acc + cur.tier, 0);
-          totalTiers += output[category][key].mobs.reduce((acc: any, cur: any) => acc + cur.maxTier, 0);
+          tiersUnlocked += output[category][key].mobs.reduce((acc: number, cur: any) => acc + cur.tier, 0);
+          totalTiers += output[category][key].mobs.reduce((acc: number, cur: any) => acc + cur.maxTier, 0);
           output[category][key].mobsUnlocked = output[category][key].mobs.length;
           output[category][key].mobsMaxed = output[category][key].mobs.filter(
             (mob: any) => mob.tier === mob.maxTier
@@ -61,8 +65,8 @@ export const getBestiary = (userProfile: any) => {
         output[category].mobsUnlocked = output[category].mobs.length;
         output[category].mobsMaxed = output[category].mobs.filter((mob: any) => mob.tier === mob.maxTier).length;
 
-        tiersUnlocked += output[category].mobs.reduce((acc: any, cur: any) => acc + cur.tier, 0);
-        totalTiers += output[category].mobs.reduce((acc: any, cur: any) => acc + cur.maxTier, 0);
+        tiersUnlocked += output[category].mobs.reduce((acc: number, cur: any) => acc + cur.tier, 0);
+        totalTiers += output[category].mobs.reduce((acc: number, cur: any) => acc + cur.maxTier, 0);
       }
     }
 

@@ -1,4 +1,6 @@
-export const BESTIARY = {
+import { bestiaryBracketsType, bestiaryType } from '../../src/types/global';
+
+export const BESTIARY: bestiaryType = {
   dynamic: {
     name: 'Private Island',
     texture: '/head/c9c8881e42915a9d29bb61a16fb26d059913204d265df5b439b3d792acd56',
@@ -2148,7 +2150,7 @@ export const BESTIARY = {
   },
 };
 
-export const BESTIARY_BRACKETS = {
+export const BESTIARY_BRACKETS: bestiaryBracketsType = {
   1: [
     20, 40, 60, 100, 200, 400, 800, 1400, 2000, 3000, 6000, 12000, 20000, 30000, 40000, 50000, 60000, 72000, 86000,
     100000, 200000, 400000, 600000, 800000, 1000000,

@@ -10,14 +10,14 @@ import { StateHandler } from './handlers/StateHandler';
 import { CommandHandler } from './CommandHandler';
 import { join } from 'node:path';
 import { readdirSync } from 'fs';
-
+import Application from '../Application';
 export class DiscordManager extends CommunicationBridge {
-  app: any;
+  app: typeof Application;
   stateHandler: StateHandler;
   messageHandler: MessageHandler;
   commandHandler: CommandHandler | undefined;
   client: Client | undefined;
-  constructor(app: any) {
+  constructor(app: typeof Application) {
     super();
 
     this.app = app;
@@ -47,9 +47,7 @@ export class DiscordManager extends CommunicationBridge {
     for (const file of eventFiles) {
       const filePath = join(eventsPath, file);
       const event = await import(filePath);
-      event.once
-        ? global.client.once(event.name, (...args: any) => event.execute(...args))
-        : global.client.on(event.name, (...args: any) => event.execute(...args));
+      event.once ? global.client.once(event.name, event.execute()) : global.client.on(event.name, event.execute());
     }
 
     process.on('SIGINT', async () => {
@@ -59,7 +57,7 @@ export class DiscordManager extends CommunicationBridge {
     });
   }
 
-  async getWebhook(discord: any, type: any) {
+  async getWebhook(discord: DiscordManager, type: string) {
     const channel = await this.stateHandler.getChannel(type);
     const webhooks = await channel.fetchWebhooks();
 
@@ -264,14 +262,14 @@ export class DiscordManager extends CommunicationBridge {
     return parseInt(hex.replace('#', ''), 16);
   }
 
-  cleanMessage(message: any) {
+  cleanMessage(message: string) {
     if (message === undefined) {
       return '';
     }
 
     return message
       .split('\n')
-      .map((part: any) => {
+      .map((part: string) => {
         part = part.trim();
         return part.length === 0 ? '' : part.replace(/@(everyone|here)/gi, '').trim() + ' ';
       })

@@ -6,9 +6,9 @@ import './Configuration';
 import './Updater';
 
 class Application {
-  discord: any;
-  minecraft: any;
-  web: any;
+  discord!: DiscordManager;
+  minecraft!: MinecraftManager;
+  web!: WebManager;
   async register() {
     this.discord = new DiscordManager(this);
     this.minecraft = new MinecraftManager(this);

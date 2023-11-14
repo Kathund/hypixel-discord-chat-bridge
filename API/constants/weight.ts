@@ -189,6 +189,8 @@ function calculateSlayerWeight(type: SlayerWeightType, experience: number): Slay
   };
 }
 
+// TODO Add a type to profile when its finished
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const calculateTotalSenitherWeight = (profile: any): SenitherWeightResult => {
   const weight = {
     skills: {
