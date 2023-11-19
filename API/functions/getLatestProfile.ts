@@ -52,12 +52,11 @@ export const getLatestProfile = async (uuid: any, options = { museum: false }) =
   }
 
   const output = {
+    uuid: uuid,
     last_save: Date.now(),
-    profiles: profileRes.profiles,
     profile: profile,
     profileData: profileData,
-    playerRes: playerRes.player,
-    uuid: uuid,
+    profiles: profileRes.profiles,
     ...(options.museum ? await getMuseum(profileData.profile_id, uuid) : {}),
   };
 

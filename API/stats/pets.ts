@@ -91,7 +91,7 @@ export const getPets = (profile: any) => {
     if (petData.type === 'all') {
       loreFirstRow.push('All Skills');
     } else {
-      loreFirstRow.push(capitalize(petData.type), ' ', petData.category ?? 'Pet');
+      loreFirstRow.push(capitalize(petData.type) as any, ' ', petData.category ?? 'Pet');
 
       if (petData.obtainsExp === 'feed') {
         loreFirstRow.push(', feed to gain XP');
@@ -224,7 +224,7 @@ export const getPets = (profile: any) => {
 
     // eslint-disable-next-line no-unused-vars
     for (const [line] of lore.entries()) {
-      pet.lore += '' + renderLore(String(line)) + '\n';
+      pet.lore += '' + renderLore(line) + '\n';
     }
     pet.lore = pet.lore.split('\n');
 

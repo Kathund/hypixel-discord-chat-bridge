@@ -21,7 +21,7 @@ export class ErrorHandler extends EventHandler {
       return errorMessage('Connection refused while attempting to login via the Minecraft client');
     }
 
-    warnMessage(error);
+    warnMessage(error.message);
   }
 
   isConnectionResetError(error: any) {

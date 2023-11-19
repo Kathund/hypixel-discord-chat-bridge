@@ -9,7 +9,7 @@ export const calcSkill = (skill: string, experience: number): SkillCalcResult =>
   if (skill === 'dungeoneering') table = 'catacombs';
 
   let xpTable = normal;
-  if (table === 'dungeoneering') xpTable = catacombs;
+  if (table === 'catacombs') xpTable = catacombs;
   else if (table === 'normal') xpTable = normal;
   else if (table === 'social') xpTable = social;
   else if (table === 'runecrafting') xpTable = runecrafting;

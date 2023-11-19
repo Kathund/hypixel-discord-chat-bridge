@@ -1,5 +1,5 @@
-import { formatUsername, formatNumber } from '../../contracts/helperFunctions';
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+import { formatUsername, formatNumber, writeAt } from '../../contracts/helperFunctions';
 import { getLatestProfile } from '../../../API/functions/getLatestProfile';
 import { minecraftCommand } from '../../contracts/minecraftCommand';
 import { MinecraftManager } from '../MinecraftManager';
@@ -30,6 +30,8 @@ export default class StatsCommand extends minecraftCommand {
     try {
       username = this.getArgs(message)[0] || username;
       const data = await getLatestProfile(username);
+      console.log(data);
+      await writeAt('a.json', 'catboydark', data);
 
       username = formatUsername(data.profileData?.displayname || username, null);
 

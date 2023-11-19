@@ -94,12 +94,13 @@ const skill_weights: SkillWeights = {
 
 function calculateSenitherWeight(
   type: SenitherType,
-  level: number,
+  level = null as any,
   experience: number
 ): SlayerWeightResult | DungeonWeightResult | SkillWeightResult | null {
   const slayers: SlayerWeightType[] = ['revenant', 'tarantula', 'sven', 'enderman'];
   const dungeons: DungeonType[] = ['catacombs', 'healer', 'mage', 'berserk', 'archer', 'tank'];
   const skills: SkillType[] = ['mining', 'foraging', 'enchanting', 'farming', 'combat', 'fishing', 'alchemy', 'taming'];
+  console.log(`calculateSenitherWeight Function: Type: ${type}, Level: ${level}, Experience: ${experience}`);
   if (slayers.includes(type)) {
     return calculateSlayerWeight(type, experience);
   } else if (dungeons.includes(type)) {
@@ -110,7 +111,8 @@ function calculateSenitherWeight(
   return null;
 }
 
-function calculateDungeonWeight(type: DungeonType, level: number, experience: number): DungeonWeightResult {
+function calculateDungeonWeight(type: DungeonType, level: any, experience: number): DungeonWeightResult {
+  console.log(`calculateDungeonWeight Function: Type: ${type}, Level: ${level}, Experience: ${experience}`);
   const percentageModifier = dungeon_weights[type];
 
   const base = Math.pow(level, 4.5) * percentageModifier;
@@ -131,7 +133,8 @@ function calculateDungeonWeight(type: DungeonType, level: number, experience: nu
   };
 }
 
-function calculateSkillWeight(type: SkillType, level: number, experience: number): SkillWeightResult {
+function calculateSkillWeight(type: SkillType, level: any, experience: number): SkillWeightResult {
+  console.log(`calculateSkillWeight Function: Type: ${type}, Level: ${level}, Experience: ${experience}`);
   const skillGroup = skill_weights[type];
   if (skillGroup.exponent == undefined || skillGroup.divider == undefined) {
     return {
@@ -276,5 +279,8 @@ export const calculateTotalSenitherWeight = (profile: any): SenitherWeightResult
       },
     },
   };
+  console.log(`--- --- --- CONSOLE LOG SPLITTER --- --- ---`);
+  console.log(JSON.stringify(weight, null, 2));
+  console.log(`--- --- --- CONSOLE LOG SPLITTER --- --- ---`);
   return weight;
 };

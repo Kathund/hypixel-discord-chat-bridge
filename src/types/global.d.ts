@@ -617,4 +617,5 @@ export type bestiaryType = {
     texture: string;
     mobs: bestiaryMobType[];
   };
+  comMONTEZUMA?: any;
 };
