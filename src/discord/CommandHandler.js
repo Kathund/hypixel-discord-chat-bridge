@@ -16,6 +16,10 @@ class CommandHandler {
       commands.push(command);
     }
 
+    if (config.tickets.enabled === false) {
+      commands = commands.filter((command) => !command.ticketCommand);
+    }
+
     if (config.verification.enabled === false) {
       commands = commands.filter((command) => !command.verificationCommand);
     }
