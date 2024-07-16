@@ -40,7 +40,12 @@ class DiscordManager extends CommunicationBridge {
 
     for (const file of commandFiles) {
       const command = require(`./commands/${file}`);
-      if (command.verificationCommand === true && config.verification.enabled === false) return;
+      if (
+        (command.verificationCommand === true && config.verification.enabled === false) ||
+        (command.giveawayCommand === true && config.giveaway.enabled === false)
+      ) {
+        return;
+      }
       client.commands.set(command.name, command);
     }
 
@@ -54,6 +59,8 @@ class DiscordManager extends CommunicationBridge {
         ? client.once(event.name, (...args) => event.execute(...args))
         : client.on(event.name, (...args) => event.execute(...args));
     }
+
+    if (config.giveaway.enabled) require("./other/giveaways.js");
 
     process.on("SIGINT", async () => {
       await this.stateHandler.onClose();
