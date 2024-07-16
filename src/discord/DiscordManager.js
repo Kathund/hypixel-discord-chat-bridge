@@ -40,13 +40,6 @@ class DiscordManager extends CommunicationBridge {
 
     for (const file of commandFiles) {
       const command = require(`./commands/${file}`);
-      if (
-        (command.verificationCommand === true && config.verification.enabled === false) ||
-        (command.giveawayCommand === true && config.giveaway.enabled === false) ||
-        (command.ticketCommand === true && config.tickets.enabled === false)
-      ) {
-        return;
-      }
       client.commands.set(command.name, command);
     }
 
