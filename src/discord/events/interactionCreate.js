@@ -48,7 +48,6 @@ module.exports = {
           throw new HypixelDiscordChatBridgeError("Bot doesn't seem to be connected to Hypixel. Please try again.");
         }
 
-        Logger.discordMessage(`${interaction.user.username} - [${interaction.commandName}]`);
         await command.execute(interaction);
       } else if (interaction.isButton()) {
         await interaction.deferReply({ ephemeral: true }).catch(() => {});
