@@ -21,16 +21,7 @@ class StateHandler {
       return Logger.errorMessage(`Channel "Guild" not found!`);
     }
     if (config.giveaway.enabled) require("../other/giveaways.js");
-
-    channel.send({
-      embeds: [
-        {
-          author: { name: `Chat Bridge is Online` },
-          color: 2067276,
-        },
-      ],
-    });
-
+    if (config.verification.autoUpdater) require("../other/updateUsers.js");
     if (config.tickets.enabled === true) {
       const supportChannel = this.discord.client.channels.cache.get(config.tickets.supportChannel);
       if (!supportChannel) {
@@ -58,12 +49,17 @@ class StateHandler {
             ),
           ],
         });
-      } else {
-        return;
       }
     }
 
-    if (config.verification.autoUpdater) require("../other/updateUsers.js");
+    channel.send({
+      embeds: [
+        {
+          author: { name: `Chat Bridge is Online` },
+          color: 2067276,
+        },
+      ],
+    });
   }
 
   async onClose() {
