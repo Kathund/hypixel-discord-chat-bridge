@@ -20,6 +20,7 @@ class StateHandler {
     if (channel === undefined) {
       return Logger.errorMessage(`Channel "Guild" not found!`);
     }
+    if (config.giveaway.enabled) require("../other/giveaways.js");
 
     channel.send({
       embeds: [
