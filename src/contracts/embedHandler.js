@@ -61,7 +61,7 @@ class SuccessEmbed extends Embed {
   /**
    * Constructs a new SuccessEmbed instance.
    * @param {string} description - The description of the success.
-   * @param {string} footer - The footer of the success.
+   * @param {object} footer - The footer of the success.
    */
   constructor(description, footer) {
     super();

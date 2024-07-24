@@ -28,6 +28,10 @@ module.exports = {
 
         Logger.discordMessage(`${interaction.user.username} - [${interaction.commandName}]`);
 
+        if (command.channelsCommand === true && config.statsChannels.enabled === false) {
+          throw new HypixelDiscordChatBridgeError("Verification is disabled.");
+        }
+
         if (command.verificationCommand === true && config.verification.enabled === false) {
           throw new HypixelDiscordChatBridgeError("Verification is disabled.");
         }

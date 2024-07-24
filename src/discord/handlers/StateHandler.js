@@ -21,6 +21,7 @@ class StateHandler {
       return Logger.errorMessage(`Channel "Guild" not found!`);
     }
     if (config.giveaway.enabled) require("../other/giveaways.js");
+    if (config.statsChannels.enabled) require("../other/statsChannels.js");
     if (config.verification.autoUpdater) require("../other/updateUsers.js");
     if (config.tickets.enabled === true) {
       const supportChannel = this.discord.client.channels.cache.get(config.tickets.supportChannel);

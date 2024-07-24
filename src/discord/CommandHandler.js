@@ -27,6 +27,10 @@ class CommandHandler {
     if (config.giveaway.enabled === false) {
       commands = commands.filter((command) => !command.giveawayCommand);
     }
+    
+    if (config.statsChannels.enabled === false) {
+      commands = commands.filter((command) => !command.channelsCommand);
+    }
 
     const rest = new REST({ version: "10" }).setToken(config.discord.bot.token);
 
