@@ -5,7 +5,7 @@ const config = require("../../../config.json");
 
 module.exports = {
   name: "force-update-channels",
-  description: "Unmutes the given user.",
+  description: "Update the stats Channels",
   moderatorOnly: true,
   channelsCommand: true,
 
@@ -31,10 +31,11 @@ module.exports = {
       );
     });
 
+    if (hidden) return
     const embed = new SuccessEmbed("The channels have been updated successfully.", {
       text: `by @kathund. | /help [command] for more information`,
       iconURL: "https://i.imgur.com/uUuZx2E.png",
     });
-    if (hidden !== false) await interaction.followUp({ embeds: [embed] });
+      await interaction.followUp({ embeds: [embed] });
   },
 };
