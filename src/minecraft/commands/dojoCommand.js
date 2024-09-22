@@ -20,7 +20,7 @@ class DojoCommand extends minecraftCommand {
     ];
   }
 
-  async onCommand(username, message) {
+  async onCommand(username, message, officer) {
     try {
       // CREDITS: by @Kathund (https://github.com/Kathund)
       username = this.getArgs(message)[0] || username;
@@ -35,7 +35,7 @@ class DojoCommand extends minecraftCommand {
       }
 
       this.send(
-        `/gc ${username}'s Belt: ${profile.dojo.belt} | Best Force: ${formatNumber(
+        `${username}'s Belt: ${profile.dojo.belt} | Best Force: ${formatNumber(
           profile.dojo.force.points,
         )} | Best Stamina: ${formatNumber(profile.dojo.stamina.points)} | Best Mastery: ${formatNumber(
           profile.dojo.mastery.points,
@@ -47,7 +47,7 @@ class DojoCommand extends minecraftCommand {
       );
     } catch (error) {
       errorMessage(error);
-      this.send(`/gc [ERROR] ${error}`);
+      this.send(`/gc [ERROR] ${error}`, officer);
     }
   }
 }

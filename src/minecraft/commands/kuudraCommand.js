@@ -20,7 +20,7 @@ class KuudraCommand extends minecraftCommand {
     ];
   }
 
-  async onCommand(username, message) {
+  async onCommand(username, message, officer) {
     try {
       // CREDITS: by @Kathund (https://github.com/Kathund)
       username = this.getArgs(message)[0] || username;
@@ -35,15 +35,16 @@ class KuudraCommand extends minecraftCommand {
       }
 
       this.send(
-        `/gc ${username}'s Basic: ${formatNumber(profile.kuudra.basic)} | Hot: ${formatNumber(
+        `${username}'s Basic: ${formatNumber(profile.kuudra.basic)} | Hot: ${formatNumber(
           profile.kuudra.hot,
         )} | Burning: ${formatNumber(profile.kuudra.burning)} | Fiery: ${formatNumber(
           profile.kuudra.fiery,
         )} | Infernal: ${formatNumber(profile.kuudra.infernal)}`,
+        officer,
       );
     } catch (error) {
       errorMessage(error);
-      this.send(`/gc [ERROR] ${error}`);
+      this.send(`[ERROR] ${error}`, officer);
     }
   }
 }

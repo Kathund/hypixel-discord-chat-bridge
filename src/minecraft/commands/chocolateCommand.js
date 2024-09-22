@@ -19,7 +19,7 @@ class ChocolateCommand extends minecraftCommand {
     ];
   }
 
-  async onCommand(username, message) {
+  async onCommand(username, message, officer) {
     try {
       username = this.getArgs(message)[0] || username;
 
@@ -35,10 +35,18 @@ class ChocolateCommand extends minecraftCommand {
       }
 
       this.send(
-        `/gc ${username}'s Chocolate Factory: ${chocolateFactory.level} | Chocolate: ${addNotation("oneLetters", chocolateFactory.chocolate.current)} | Total Chocolate: ${addNotation("oneLetters", chocolateFactory.chocolate.total)} | Employees: Bro: ${chocolateFactory.employees.bro} | Cousin: ${chocolateFactory.employees.cousin} | Sis: ${chocolateFactory.employees.sis} | Father: ${chocolateFactory.employees.father} | Grandma: ${chocolateFactory.employees.grandma}`,
+        `${username}'s Chocolate Factory: ${chocolateFactory.level} | Chocolate: ${addNotation(
+          "oneLetters",
+          chocolateFactory.chocolate.current,
+        )} | Total Chocolate: ${addNotation("oneLetters", chocolateFactory.chocolate.total)} | Employees: Bro: ${
+          chocolateFactory.employees.bro
+        } | Cousin: ${chocolateFactory.employees.cousin} | Sis: ${chocolateFactory.employees.sis} | Father: ${
+          chocolateFactory.employees.father
+        } | Grandma: ${chocolateFactory.employees.grandma}`,
+        officer,
       );
     } catch (error) {
-      this.send(`/gc [ERROR] ${error}`);
+      this.send(`[ERROR] ${error}`, officer);
     }
   }
 }

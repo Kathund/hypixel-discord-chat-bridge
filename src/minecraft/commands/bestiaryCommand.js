@@ -4,7 +4,7 @@ const minecraftCommand = require("../../contracts/minecraftCommand.js");
 const { getBestiary } = require("../../../API/stats/bestiary.js");
 const { errorMessage } = require("../../Logger.js");
 
-class EightBallCommand extends minecraftCommand {
+class BestiaryCommand extends minecraftCommand {
   constructor(minecraft) {
     super(minecraft);
 
@@ -20,7 +20,7 @@ class EightBallCommand extends minecraftCommand {
     ];
   }
 
-  async onCommand(username, message) {
+  async onCommand(username, message, officer) {
     try {
       const args = this.getArgs(message);
 
@@ -34,7 +34,7 @@ class EightBallCommand extends minecraftCommand {
 
       const bestiary = getBestiary(data.profile);
       if (bestiary === null) {
-        return this.send(`/gc This player has not yet joined SkyBlock since the bestiary update.`);
+        return this.send("This player has not yet joined SkyBlock since the bestiary update.", officer);
       }
 
       if (mob) {
@@ -42,9 +42,10 @@ class EightBallCommand extends minecraftCommand {
 
         if (mobData) {
           this.send(
-            `/gc ${username}'s ${mobData.name} Bestiary: ${mobData.kills} / ${mobData.nextTierKills} (${
+            `${username}'s ${mobData.name} Bestiary: ${mobData.kills} / ${mobData.nextTierKills} (${
               mobData.nextTierKills - mobData.kills
-            }) `,
+            })`,
+            officer,
           );
 
           await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -52,7 +53,8 @@ class EightBallCommand extends minecraftCommand {
       }
 
       this.send(
-        `/gc ${username}'s Bestiary Milestone: ${bestiary.milestone} / ${bestiary.maxMilestone} | Unlocked Tiers: ${bestiary.tiersUnlocked} / ${bestiary.totalTiers}`,
+        `${username}'s Bestiary Milestone: ${bestiary.milestone} / ${bestiary.maxMilestone} | Unlocked Tiers: ${bestiary.tiersUnlocked} / ${bestiary.totalTiers}`,
+        officer,
       );
 
       if (playerUsername === username) {
@@ -67,11 +69,11 @@ class EightBallCommand extends minecraftCommand {
 
         await new Promise((resolve) => setTimeout(resolve, 1000));
 
-        this.send(`/gc Closest to level up: ${topFiveMobs.join(", ")}`);
+        this.send(`Closest to level up: ${topFiveMobs.join(", ")}`, officer);
       }
     } catch (error) {
       errorMessage(error);
-      this.send(`/gc [ERROR] ${error}`);
+      this.send(`[ERROR] ${error}`, officer);
     }
   }
 
@@ -92,4 +94,4 @@ class EightBallCommand extends minecraftCommand {
   }
 }
 
-module.exports = EightBallCommand;
+module.exports = BestiaryCommand;
