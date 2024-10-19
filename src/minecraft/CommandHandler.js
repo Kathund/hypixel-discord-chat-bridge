@@ -34,7 +34,7 @@ class CommandHandler {
         return;
       }
 
-      Logger.minecraftMessage(`${player} - [${command.name}] ${message}`);
+      minecraftMessage(`${player} - [${command.name}] ${message}`);
       command.onCommand(player, message, officer);
     } else if (message.startsWith("-") && message.startsWith("- ") === false) {
       if (config.minecraft.commands.soopy === false || message.at(1) === "-") {
