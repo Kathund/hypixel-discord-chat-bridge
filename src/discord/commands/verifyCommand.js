@@ -9,6 +9,7 @@ module.exports = {
   name: "verify",
   description: "Connect your Discord account to Minecraft",
   verificationCommand: true,
+  requiresBot: true,
   options: [
     {
       name: "name",
