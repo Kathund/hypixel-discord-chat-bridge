@@ -70,6 +70,9 @@ module.exports = {
       if (!interaction.member.roles.cache.has(config.verification.verifiedRole)) {
         await interaction.member.roles.add(config.verification.verifiedRole, "Updated Roles");
       }
+      if (interaction.member.roles.cache.has(config.verification.unverifiedRole)) {
+        await interaction.member.roles.remove(config.verification.unverifiedRole, "Updated Roles");
+      }
 
       const [hypixelGuild, player] = await Promise.all([
         hypixelRebornAPI.getGuild("player", bot.username),
