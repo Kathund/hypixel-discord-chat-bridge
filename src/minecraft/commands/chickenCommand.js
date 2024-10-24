@@ -26,7 +26,7 @@ class ChickenCommand extends minecraftCommand {
       }
 
       imgurUrl = data.url;
-      this.send("/gc Funny Chicken: Check Discord Bridge for image.", officer);
+      this.send("Funny Chicken: Check Discord Bridge for image.", officer);
     } catch (error) {
       this.send(`[ERROR] ${error ?? "Something went wrong.."}`, officer);
     }

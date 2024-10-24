@@ -26,7 +26,7 @@ class RabbitCommand extends minecraftCommand {
       }
 
       imgurUrl = data.url;
-      this.send("/gc Funny rabbit: Check Discord Bridge for image.", officer);
+      this.send("Funny rabbit: Check Discord Bridge for image.", officer);
     } catch (error) {
       this.send(`[ERROR] ${error ?? "Something went wrong.."}`, officer);
     }

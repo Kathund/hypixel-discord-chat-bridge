@@ -47,7 +47,7 @@ class DojoCommand extends minecraftCommand {
       );
     } catch (error) {
       errorMessage(error);
-      this.send(`/gc [ERROR] ${error}`, officer);
+      this.send(`[ERROR] ${error}`, officer);
     }
   }
 }

@@ -26,7 +26,7 @@ class DinosaurCommand extends minecraftCommand {
       }
 
       imgurUrl = data.url;
-      this.send("/gc Funny dino: Check Discord Bridge for image.", officer);
+      this.send("Funny dino: Check Discord Bridge for image.", officer);
     } catch (error) {
       this.send(`[ERROR] ${error}`, officer);
     }

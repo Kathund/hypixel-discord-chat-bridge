@@ -33,7 +33,7 @@ class PlayerCommand extends minecraftCommand {
     } catch (error) {
       console.log(error);
 
-      this.send(`/gc [ERROR] ${error}`);
+      this.send(`[ERROR] ${error}`);
     }
   }
 }

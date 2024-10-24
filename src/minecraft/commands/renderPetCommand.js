@@ -48,7 +48,7 @@ class RenderCommand extends minecraftCommand {
       const upload = await uploadImage(renderedItem);
 
       imgurUrl = upload.data.link ?? "Something went Wrong..";
-      return this.send(`/gc ${username}'s Active Pet: Check Discord Bridge for image.`, officer);
+      return this.send(`${username}'s Active Pet: Check Discord Bridge for image.`, officer);
     } catch (error) {
       errorMessage(error);
       this.send(`[ERROR] ${error}`, officer);

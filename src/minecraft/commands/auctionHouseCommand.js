@@ -92,7 +92,7 @@ class AuctionHouseCommand extends minecraftCommand {
       }
 
       imgurUrl = string;
-      this.send(`/gc $${username}'s Active Auctions: Check Discord Bridge for image.`, officer);
+      this.send(`${username}'s Active Auctions: Check Discord Bridge for image.`, officer);
     } catch (error) {
       errorMessage(error);
       this.send(`[ERROR] ${error}`, officer);
