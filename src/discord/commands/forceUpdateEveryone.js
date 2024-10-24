@@ -49,7 +49,7 @@ module.exports = {
           continue;
         }
 
-        await updateRolesCommand.execute(interaction, user.user, true).catch(() => {
+        await updateRolesCommand.execute(interaction, user.user, false, true).catch(() => {
           description.push(`- <@${id}>`);
         });
 

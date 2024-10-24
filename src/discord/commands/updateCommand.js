@@ -12,7 +12,7 @@ module.exports = {
   requiresBot: true,
   description: "Update your current roles",
 
-  execute: async (interaction, user = undefined, unverify = false) => {
+  execute: async (interaction, user = undefined, unverify = false, doNotRespond = false) => {
     try {
       const linkedData = readFileSync("data/linked.json");
       if (!linkedData) {
@@ -20,6 +20,8 @@ module.exports = {
           "The linked data file does not exist. Please contact an administrator.",
         );
       }
+
+      if (interaction === undefined || interaction === null) interaction = {};
 
       const linked = JSON.parse(linkedData);
       if (!linked) {
