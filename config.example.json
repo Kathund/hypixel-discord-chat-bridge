@@ -119,7 +119,8 @@
         "name": "IN_GAME_RANK_NAME",
         "roles": ["DISCORD_ROLE_ID"]
       }
-    ]
+    ],
+    "levelRoles": [{ "type": "bedwarsStar", "requirement": 200, "roleId": "DISCORD_ROLE_ID" }]
   },
   "other": {
     "autoUpdater": true,
