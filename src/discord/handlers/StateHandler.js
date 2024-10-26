@@ -14,14 +14,15 @@ class StateHandler {
 
     global.guild = await client.guilds.fetch(config.discord.bot.serverID);
     Logger.discordMessage("Guild ready, successfully fetched " + guild.name);
-    
+
     const channel = await this.getChannel("Guild");
     if (channel === undefined) {
       return Logger.errorMessage(`Channel "Guild" not found!`);
     }
-    
+
     if (config.statsChannels.enabled) require("../other/statsChannels.js");
     if (config.verification.autoUpdater) require("../other/updateUsers.js");
+    require("../other/boar.js");
 
     channel.send({
       embeds: [
