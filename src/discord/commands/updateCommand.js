@@ -46,7 +46,7 @@ module.exports = {
 
       const roles = [
         config.verification.guildMemberRole,
-        ...config.verification.ranks.map((r) => r.role),
+        ...config.verification.ranks.flatMap((r) => r.roles),
         ...config.verification.levelRoles.map((r) => r.roleId),
       ];
       const giveRoles = [];
@@ -110,8 +110,10 @@ module.exports = {
               }
             }
 
-            giveRoles.push(rank.role);
-            await interaction.member.roles.add(rank.role, "Updated Roles");
+            for (const role of rank.roles) {
+              giveRoles.push(role);
+              await interaction.member.roles.add(role, "Updated Roles");
+            }
           }
         }
       } else {
@@ -333,64 +335,66 @@ module.exports = {
         }
       }
 
-      interaction.member.setNickname(
-        replaceVariables(config.verification.name, {
-          ...stats,
-          rank: player.rank,
-          username: player.nickname,
-          guildRank: hypixelGuild.members.find((m) => m.uuid === uuid)?.rank ?? "",
+      await interaction.member
+        .setNickname(
+          replaceVariables(config.verification.name, {
+            ...stats,
+            rank: player.rank,
+            username: player.nickname,
+            guildRank: hypixelGuild.members.find((m) => m.uuid === uuid)?.rank ?? "",
 
-          duelsTitle: player.stats?.duels?.division || "",
+            duelsTitle: player.stats?.duels?.division || "",
 
-          skyblockPurseFormatted: formatNumber(stats.skyblockPurse),
-          skyblockBankFormatted: formatNumber(stats.skyblockBank),
+            skyblockPurseFormatted: formatNumber(stats.skyblockPurse),
+            skyblockBankFormatted: formatNumber(stats.skyblockBank),
 
-          skyblockSkillsFarmingXpFormated: formatNumber(stats.skyblockSkillsFarmingXp),
-          skyblockSkillsMiningXpFormated: formatNumber(stats.skyblockSkillsMiningXp),
-          skyblockSkillsCombatXpFormated: formatNumber(stats.skyblockSkillsCombatXp),
-          skyblockSkillsForagingXpFormated: formatNumber(stats.skyblockSkillsForagingXp),
-          skyblockSkillsFishingXpFormated: formatNumber(stats.skyblockSkillsFishingXp),
-          skyblockSkillsEnchantingXpFormated: formatNumber(stats.skyblockSkillsEnchantingXp),
-          skyblockSkillsAlchemyXpFormated: formatNumber(stats.skyblockSkillsAlchemyXp),
-          skyblockSkillsCarpentryXpFormated: formatNumber(stats.skyblockSkillsCarpentryXp),
-          skyblockSkillsRunecraftingXpFormated: formatNumber(stats.skyblockSkillsRunecraftingXp),
-          skyblockSkillsSocialXpFormated: formatNumber(stats.skyblockSkillsSocialXp),
-          skyblockSkillsTamingXpFormated: formatNumber(stats.skyblockSkillsTamingXp),
+            skyblockSkillsFarmingXpFormated: formatNumber(stats.skyblockSkillsFarmingXp),
+            skyblockSkillsMiningXpFormated: formatNumber(stats.skyblockSkillsMiningXp),
+            skyblockSkillsCombatXpFormated: formatNumber(stats.skyblockSkillsCombatXp),
+            skyblockSkillsForagingXpFormated: formatNumber(stats.skyblockSkillsForagingXp),
+            skyblockSkillsFishingXpFormated: formatNumber(stats.skyblockSkillsFishingXp),
+            skyblockSkillsEnchantingXpFormated: formatNumber(stats.skyblockSkillsEnchantingXp),
+            skyblockSkillsAlchemyXpFormated: formatNumber(stats.skyblockSkillsAlchemyXp),
+            skyblockSkillsCarpentryXpFormated: formatNumber(stats.skyblockSkillsCarpentryXp),
+            skyblockSkillsRunecraftingXpFormated: formatNumber(stats.skyblockSkillsRunecraftingXp),
+            skyblockSkillsSocialXpFormated: formatNumber(stats.skyblockSkillsSocialXp),
+            skyblockSkillsTamingXpFormated: formatNumber(stats.skyblockSkillsTamingXp),
 
-          skyblockSlayerZombieXpFormatted: formatNumber(stats.skyblockSlayerZombieXp),
-          skyblockSlayerSpiderXpFormatted: formatNumber(stats.skyblockSlayerSpiderXp),
-          skyblockSlayerWolfXpFormatted: formatNumber(stats.skyblockSlayerWolfXp),
-          skyblockSlayerEndermanXpFormatted: formatNumber(stats.skyblockSlayerEndermanXp),
-          skyblockSlayerBlazeXpFormatted: formatNumber(stats.skyblockSlayerBlazeXp),
-          skyblockSlayerVampireXpFormatted: formatNumber(stats.skyblockSlayerVampireXp),
+            skyblockSlayerZombieXpFormatted: formatNumber(stats.skyblockSlayerZombieXp),
+            skyblockSlayerSpiderXpFormatted: formatNumber(stats.skyblockSlayerSpiderXp),
+            skyblockSlayerWolfXpFormatted: formatNumber(stats.skyblockSlayerWolfXp),
+            skyblockSlayerEndermanXpFormatted: formatNumber(stats.skyblockSlayerEndermanXp),
+            skyblockSlayerBlazeXpFormatted: formatNumber(stats.skyblockSlayerBlazeXp),
+            skyblockSlayerVampireXpFormatted: formatNumber(stats.skyblockSlayerVampireXp),
 
-          skyblockDungeonsXpFormatted: formatNumber(stats.skyblockDungeonsXp),
+            skyblockDungeonsXpFormatted: formatNumber(stats.skyblockDungeonsXp),
 
-          skyblockDungeonsClassHealerXpFormatted: formatNumber(stats.skyblockDungeonsClassHealerXp),
-          skyblockDungeonsClassMageXpFormatted: formatNumber(stats.skyblockDungeonsClassMageXp),
-          skyblockDungeonsClassBerserkXpFormatted: formatNumber(stats.skyblockDungeonsClassBerserkXp),
-          skyblockDungeonsClassArcherXpFormatted: formatNumber(stats.skyblockDungeonsClassArcherXp),
-          skyblockDungeonsClassTankXpFormatted: formatNumber(stats.skyblockDungeonsClassTankXp),
+            skyblockDungeonsClassHealerXpFormatted: formatNumber(stats.skyblockDungeonsClassHealerXp),
+            skyblockDungeonsClassMageXpFormatted: formatNumber(stats.skyblockDungeonsClassMageXp),
+            skyblockDungeonsClassBerserkXpFormatted: formatNumber(stats.skyblockDungeonsClassBerserkXp),
+            skyblockDungeonsClassArcherXpFormatted: formatNumber(stats.skyblockDungeonsClassArcherXp),
+            skyblockDungeonsClassTankXpFormatted: formatNumber(stats.skyblockDungeonsClassTankXp),
 
-          skyblockNetworthFormatted: formatNumber(stats.skyblockNetworth),
-          skyblockNetworthNetworthUnsoulboundFormatted: formatNumber(stats.skyblockNetworthNetworthUnsoulbound),
+            skyblockNetworthFormatted: formatNumber(stats.skyblockNetworth),
+            skyblockNetworthNetworthUnsoulboundFormatted: formatNumber(stats.skyblockNetworthNetworthUnsoulbound),
 
-          skyblockJacobPersonalBestNetherWartFormatted: formatNumber(stats.skyblockJacobPersonalBestNetherWart),
-          skyblockJacobPersonalBestCocoBeansFormatted: formatNumber(stats.skyblockJacobPersonalBestCocoBeans),
-          skyblockJacobPersonalBestMushroomFormatted: formatNumber(stats.skyblockJacobPersonalBestMushroom),
-          skyblockJacobPersonalBestWheatFormatted: formatNumber(stats.skyblockJacobPersonalBestWheat),
-          skyblockJacobPersonalBestPotatoFormatted: formatNumber(stats.skyblockJacobPersonalBestPotato),
-          skyblockJacobPersonalBestPumpkinFormatted: formatNumber(stats.skyblockJacobPersonalBestPumpkin),
-          skyblockJacobPersonalBestCarrotFormatted: formatNumber(stats.skyblockJacobPersonalBestCarrot),
-          skyblockJacobPersonalBestCactusFormatted: formatNumber(stats.skyblockJacobPersonalBestCactus),
-          skyblockJacobPersonalBestMelonFormatted: formatNumber(stats.skyblockJacobPersonalBestMelon),
-          skyblockJacobPersonalBestSugarCaneFormatted: formatNumber(stats.skyblockJacobPersonalBestSugarCane),
-        }),
-        "Updated Roles",
-      );
+            skyblockJacobPersonalBestNetherWartFormatted: formatNumber(stats.skyblockJacobPersonalBestNetherWart),
+            skyblockJacobPersonalBestCocoBeansFormatted: formatNumber(stats.skyblockJacobPersonalBestCocoBeans),
+            skyblockJacobPersonalBestMushroomFormatted: formatNumber(stats.skyblockJacobPersonalBestMushroom),
+            skyblockJacobPersonalBestWheatFormatted: formatNumber(stats.skyblockJacobPersonalBestWheat),
+            skyblockJacobPersonalBestPotatoFormatted: formatNumber(stats.skyblockJacobPersonalBestPotato),
+            skyblockJacobPersonalBestPumpkinFormatted: formatNumber(stats.skyblockJacobPersonalBestPumpkin),
+            skyblockJacobPersonalBestCarrotFormatted: formatNumber(stats.skyblockJacobPersonalBestCarrot),
+            skyblockJacobPersonalBestCactusFormatted: formatNumber(stats.skyblockJacobPersonalBestCactus),
+            skyblockJacobPersonalBestMelonFormatted: formatNumber(stats.skyblockJacobPersonalBestMelon),
+            skyblockJacobPersonalBestSugarCaneFormatted: formatNumber(stats.skyblockJacobPersonalBestSugarCane),
+          }),
+          "Updated Roles",
+        )
+        .catch();
 
       for (const role of roles) {
-        if (giveRoles.includes(role)) return;
+        if (giveRoles.includes(role)) continue;
         if (interaction.member.roles.cache.has(role)) await interaction.member.roles.remove(role, "Updated Roles");
       }
 
