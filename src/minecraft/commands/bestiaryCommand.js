@@ -20,7 +20,7 @@ class BestiaryCommand extends minecraftCommand {
     ];
   }
 
-  async onCommand(username, message, officer) {
+  async onCommand(username, message) {
     try {
       const args = this.getArgs(message);
 
@@ -34,7 +34,7 @@ class BestiaryCommand extends minecraftCommand {
 
       const bestiary = getBestiary(data.profile);
       if (bestiary === null) {
-        return this.send("This player has not yet joined SkyBlock since the bestiary update.", officer);
+        return this.send("This player has not yet joined SkyBlock since the bestiary update.");
       }
 
       if (mob) {
@@ -45,7 +45,6 @@ class BestiaryCommand extends minecraftCommand {
             `${username}'s ${mobData.name} Bestiary: ${mobData.kills} / ${mobData.nextTierKills} (${
               mobData.nextTierKills - mobData.kills
             })`,
-            officer,
           );
 
           await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -54,7 +53,6 @@ class BestiaryCommand extends minecraftCommand {
 
       this.send(
         `${username}'s Bestiary Milestone: ${bestiary.milestone} / ${bestiary.maxMilestone} | Unlocked Tiers: ${bestiary.tiersUnlocked} / ${bestiary.totalTiers}`,
-        officer,
       );
 
       if (playerUsername === username) {
@@ -69,11 +67,11 @@ class BestiaryCommand extends minecraftCommand {
 
         await new Promise((resolve) => setTimeout(resolve, 1000));
 
-        this.send(`Closest to level up: ${topFiveMobs.join(", ")}`, officer);
+        this.send(`Closest to level up: ${topFiveMobs.join(", ")}`);
       }
     } catch (error) {
-      errorMessage(error);
-      this.send(`[ERROR] ${error}`, officer);
+      console.log(error);
+      this.send(`[ERROR] ${error}`);
     }
   }
 

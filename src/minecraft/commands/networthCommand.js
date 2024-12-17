@@ -20,7 +20,7 @@ class NetWorthCommand extends minecraftCommand {
     ];
   }
 
-  async onCommand(username, message, officer) {
+  async onCommand(username, message) {
     try {
       username = this.getArgs(message)[0] || username;
 
@@ -36,7 +36,7 @@ class NetWorthCommand extends minecraftCommand {
       });
 
       if (profile.noInventory === true) {
-        return this.send(`${username} has an Inventory API off!`, officer);
+        return this.send(`${username} has an Inventory API off!`);
       }
 
       const networth = formatNumber(profile.networth);
@@ -47,11 +47,10 @@ class NetWorthCommand extends minecraftCommand {
 
       this.send(
         `${username}'s Networth is ${networth} | Unsoulbound Networth: ${unsoulboundNetworth} | Purse: ${purse} | Bank: ${bank} | Museum: ${museum}`,
-        officer,
       );
     } catch (error) {
-      errorMessage(error);
-      this.send(`[ERROR] ${error}`, officer);
+      console.log(error);
+      this.send(`[ERROR] ${error}`);
     }
   }
 }
