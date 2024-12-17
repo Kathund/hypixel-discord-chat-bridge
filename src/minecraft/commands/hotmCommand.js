@@ -1,7 +1,6 @@
 const { formatNumber, formatUsername } = require("../../contracts/helperFunctions.js");
 const { getLatestProfile } = require("../../../API/functions/getLatestProfile.js");
 const minecraftCommand = require("../../contracts/minecraftCommand.js");
-const hypixel = require("../../contracts/API/HypixelRebornAPI.js");
 const getHotm = require("../../../API/stats/hotm.js");
 
 class HotmCommand extends minecraftCommand {
@@ -27,8 +26,7 @@ class HotmCommand extends minecraftCommand {
 
       const data = await getLatestProfile(username);
       username = formatUsername(username, data.profileData?.game_mode);
-      const player = hypixel.getPlayer(username, { raw: true });
-      const hotm = getHotm(player, data.profile);
+      const hotm = getHotm(data.profile);
 
       if (hotm == null) {
         // eslint-disable-next-line no-throw-literal
