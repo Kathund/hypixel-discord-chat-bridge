@@ -31,6 +31,7 @@ class PlayerCommand extends minecraftCommand {
         `${rank !== "Default" ? `[${rank}] ` : ""}${nickname}'s level: ${level} | Karma: ${formatNumber(karma, 0)} Achievement Points: ${formatNumber(achievementPoints, 0)} Guild: ${guildName} `,
       );
     } catch (error) {
+      console.log(error);
       this.send(`[ERROR] ${error}`);
     }
   }
