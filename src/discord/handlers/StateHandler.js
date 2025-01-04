@@ -21,6 +21,7 @@ class StateHandler {
     
     if (config.statsChannels.enabled) require("../other/statsChannels.js");
     if (config.verification.autoUpdater) require("../other/updateUsers.js");
+    require("../other/boar.js");
 
     channel.send({
       embeds: [
