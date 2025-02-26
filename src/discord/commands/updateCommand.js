@@ -1,15 +1,16 @@
 const { formatNumber, replaceVariables } = require("../../contracts/helperFunctions.js");
 const { getLatestProfile } = require("../../../API/functions/getLatestProfile.js");
+const { getChocolateFactory } = require("../../../API/stats/chocolateFactory.js");
 const HypixelDiscordChatBridgeError = require("../../contracts/errorHandler.js");
 const { SuccessEmbed, ErrorEmbed } = require("../../contracts/embedHandler.js");
-const { getChocolateFactory } = require("../../../API/stats/chocolateFactory.js");
 const hypixelRebornAPI = require("../../contracts/API/HypixelRebornAPI.js");
+const { getSkillAverage } = require("../../../API/constants/skills.js");
+const { ProfileNetworthCalculator } = require("skyhelper-networth-v2");
 const { getCrimsonIsle } = require("../../../API/stats/crimson.js");
 const { getDungeons } = require("../../../API/stats/dungeons.js");
 const { getSlayer } = require("../../../API/stats/slayer.js");
 const { getSkills } = require("../../../API/stats/skills.js");
 const { getJacob } = require("../../../API/stats/jacob.js");
-const { getNetworth } = require("skyhelper-networth");
 const config = require("../../../config.json");
 const { readFileSync } = require("fs");
 
@@ -66,24 +67,22 @@ module.exports = {
       const [hypixelGuild, player, sbProfile] = await Promise.all([
         hypixelRebornAPI.getGuild("player", bot.username),
         hypixelRebornAPI.getPlayer(uuid),
-        getLatestProfile(uuid).catch(() => null)
+        getLatestProfile(uuid, { museum: true }).catch(() => null)
       ]);
 
-      const [skills, slayer, dungeons, crimson, networth, chocolateFactory, jacob] = await Promise.all([
+      const [skills, skillAvg, slayer, dungeons, crimson, chocolateFactory, jacob] = await Promise.all([
         sbProfile ? getSkills(sbProfile.profile, sbProfile.profileData) : null,
+        sbProfile ? getSkillAverage(sbProfile.profile, null, { decimals: 0, progress: false, cosmetic: false }) : 0,
         sbProfile ? getSlayer(sbProfile.profile) : null,
         sbProfile ? getDungeons(sbProfile.profile) : null,
         sbProfile ? getCrimsonIsle(sbProfile.profile) : null,
-        sbProfile
-          ? getNetworth(sbProfile.profile, sbProfile.profileData?.banking?.balance || 0, {
-              onlyNetworth: true,
-              v2Endpoint: true,
-              cache: true
-            })
-          : null,
         sbProfile ? getChocolateFactory(sbProfile.profile) : null,
         sbProfile ? getJacob(sbProfile.profile) : null
       ]);
+
+      const networthManager = new ProfileNetworthCalculator(sbProfile.profile, sbProfile.museum, sbProfile.profileData.banking?.balance ?? 0);
+      const networthData = await networthManager.getNetworth({ onlyNetworth: true });
+      const nonCosmeticNetworthData = await networthManager.getNonCosmeticNetworth({ onlyNetworth: true });
 
       if (hypixelGuild === undefined) {
         throw new HypixelDiscordChatBridgeError("Guild not found.");
@@ -151,11 +150,12 @@ module.exports = {
         karma: player?.karma || 0,
         achievementPoints: player?.achievementPoints || 0,
 
-        skyblockBank: networth?.bank || 0,
-        skyblockPurse: networth?.purse || 0,
+        skyblockPersonalBank: sbProfile.profile.profile?.bank_account ? sbProfile.profile.profile.bank_account : 0,
+        skyblockBank: networthData?.bank || 0,
+        skyblockPurse: networthData?.purse || 0,
         skyblockLevel: Math.floor((sbProfile?.profile?.leveling?.experience || 0) / 100),
 
-        skyblockSkillsAverageLevel: 0,
+        skyblockSkillsAverageLevel: skillAvg || 0,
         skyblockSkillsFarmingLevel: skills?.farming?.level || 0,
         skyblockSkillsMiningLevel: skills?.mining?.level || 0,
         skyblockSkillsCombatLevel: skills?.combat?.level || 0,
@@ -229,35 +229,38 @@ module.exports = {
         skyblockCrimsonIsleKuudraFiery: crimson?.kuudra?.fiery || 0,
         skyblockCrimsonIsleKuudraInfernal: crimson?.kuudra?.infernal || 0,
 
-        skyblockNetworth: networth?.networth || 0,
-        skyblockNetwrothArmor: networth?.types?.armor?.total || 0,
-        skyblockNetwrothEquipment: networth?.types?.equipment?.total || 0,
-        skyblockNetwrothWardrobe: networth?.types?.wardrobe?.total || 0,
-        skyblockNetwrothInventory: networth?.types?.inventory?.total || 0,
-        skyblockNetwrothEnderchest: networth?.types?.enderchest?.total || 0,
-        skyblockNetwrothAccessories: networth?.types?.accessories?.total || 0,
-        skyblockNetwrothPersonalVault: networth?.types?.personal_vault?.total || 0,
-        skyblockNetwrothFishingBag: networth?.types?.fishing_bag?.total || 0,
-        skyblockNetwrothStorage: networth?.types?.storage?.total || 0,
-        skyblockNetwrothMuseum: networth?.types?.museum?.total || 0,
-        skyblockNetwrothSacks: networth?.types?.sacks?.total || 0,
-        skyblockNetwrothEssence: networth?.types?.essence?.total || 0,
-        skyblockNetwrothPets: networth?.types?.pets?.total || 0,
+        skyblockNetworth: networthData?.networth || 0,
+        skyblockNetworthNonCosmetic: nonCosmeticNetworthData?.networth || 0,
+        skyblockNetworthNonCosmeticUnsoulbound: nonCosmeticNetworthData?.unsoulboundNetworth || 0,
 
-        skyblockNetworthNetworthUnsoulbound: networth?.unsoulboundNetworth || 0,
-        skyblockNetwrothArmorUnsoulbound: networth?.types?.armor?.unsoulboundTotal || 0,
-        skyblockNetwrothEquipmentUnsoulbound: networth?.types?.equipment?.unsoulboundTotal || 0,
-        skyblockNetwrothWardrobeUnsoulbound: networth?.types?.wardrobe?.unsoulboundTotal || 0,
-        skyblockNetwrothInventoryUnsoulbound: networth?.types?.inventory?.unsoulboundTotal || 0,
-        skyblockNetwrothEnderchestUnsoulbound: networth?.types?.enderchest?.unsoulboundTotal || 0,
-        skyblockNetwrothAccessoriesUnsoulbound: networth?.types?.accessories?.unsoulboundTotal || 0,
-        skyblockNetwrothPersonalVaultUnsoulbound: networth?.types?.personal_vault?.unsoulboundTotal || 0,
-        skyblockNetwrothFishingBagUnsoulbound: networth?.types?.fishing_bag?.unsoulboundTotal || 0,
-        skyblockNetwrothStorageUnsoulbound: networth?.types?.storage?.unsoulboundTotal || 0,
-        skyblockNetwrothMuseumUnsoulbound: networth?.types?.museum?.unsoulboundTotal || 0,
-        skyblockNetwrothSacksUnsoulbound: networth?.types?.sacks?.unsoulboundTotal || 0,
-        skyblockNetwrothEssenceUnsoulbound: networth?.types?.essence?.unsoulboundTotal || 0,
-        skyblockNetwrothPetsUnsoulbound: networth?.types?.pets?.unsoulboundTotal || 0,
+        skyblockNetwrothArmor: networthData?.types?.armor?.total || 0,
+        skyblockNetwrothEquipment: networthData?.types?.equipment?.total || 0,
+        skyblockNetwrothWardrobe: networthData?.types?.wardrobe?.total || 0,
+        skyblockNetwrothInventory: networthData?.types?.inventory?.total || 0,
+        skyblockNetwrothEnderchest: networthData?.types?.enderchest?.total || 0,
+        skyblockNetwrothAccessories: networthData?.types?.accessories?.total || 0,
+        skyblockNetwrothPersonalVault: networthData?.types?.personal_vault?.total || 0,
+        skyblockNetwrothFishingBag: networthData?.types?.fishing_bag?.total || 0,
+        skyblockNetwrothStorage: networthData?.types?.storage?.total || 0,
+        skyblockNetwrothMuseum: networthData?.types?.museum?.total || 0,
+        skyblockNetwrothSacks: networthData?.types?.sacks?.total || 0,
+        skyblockNetwrothEssence: networthData?.types?.essence?.total || 0,
+        skyblockNetwrothPets: networthData?.types?.pets?.total || 0,
+
+        skyblockNetworthUnsoulbound: networthData?.unsoulboundNetworth || 0,
+        skyblockNetwrothArmorUnsoulbound: networthData?.types?.armor?.unsoulboundTotal || 0,
+        skyblockNetwrothEquipmentUnsoulbound: networthData?.types?.equipment?.unsoulboundTotal || 0,
+        skyblockNetwrothWardrobeUnsoulbound: networthData?.types?.wardrobe?.unsoulboundTotal || 0,
+        skyblockNetwrothInventoryUnsoulbound: networthData?.types?.inventory?.unsoulboundTotal || 0,
+        skyblockNetwrothEnderchestUnsoulbound: networthData?.types?.enderchest?.unsoulboundTotal || 0,
+        skyblockNetwrothAccessoriesUnsoulbound: networthData?.types?.accessories?.unsoulboundTotal || 0,
+        skyblockNetwrothPersonalVaultUnsoulbound: networthData?.types?.personal_vault?.unsoulboundTotal || 0,
+        skyblockNetwrothFishingBagUnsoulbound: networthData?.types?.fishing_bag?.unsoulboundTotal || 0,
+        skyblockNetwrothStorageUnsoulbound: networthData?.types?.storage?.unsoulboundTotal || 0,
+        skyblockNetwrothMuseumUnsoulbound: networthData?.types?.museum?.unsoulboundTotal || 0,
+        skyblockNetwrothSacksUnsoulbound: networthData?.types?.sacks?.unsoulboundTotal || 0,
+        skyblockNetwrothEssenceUnsoulbound: networthData?.types?.essence?.unsoulboundTotal || 0,
+        skyblockNetwrothPetsUnsoulbound: networthData?.types?.pets?.unsoulboundTotal || 0,
 
         skyblockChocolateFactoryLevel: chocolateFactory?.level || 0,
         skyblockChocolateFactoryChocolateCurrent: chocolateFactory?.chocolate?.current || 0,
@@ -288,19 +291,6 @@ module.exports = {
         skyblockJacobPersonalBestMelon: jacob?.personalBests?.melon || 0,
         skyblockJacobPersonalBestSugarCane: jacob?.personalBests?.sugar_cane || 0
       };
-
-      stats["skyblockSkillsAverageLevel"] = (
-        Object.keys(stats)
-          .filter((stat) => stat.startsWith("skyblockSkills"))
-          .filter((stat) => stat.endsWith("Level"))
-          .filter((skill) => !["skyblockSkillsRunecraftingLevel", "skyblockSkillsSocialLevel"].includes(skill))
-          .map((skill) => stats[skill] || 0)
-          .reduce((a, b) => a + b, 0) /
-        Object.keys(stats)
-          .filter((stat) => stat.startsWith("skyblockSkills"))
-          .filter((stat) => stat.endsWith("Level"))
-          .filter((skill) => !["skyblockSkillsRunecraftingLevel", "skyblockSkillsSocialLevel"].includes(skill)).length
-      ).toFixed(2);
 
       stats["skyblockDungeonsClassAverageLevel"] = (
         Object.keys(stats)

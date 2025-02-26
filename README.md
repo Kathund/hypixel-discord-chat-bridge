@@ -560,6 +560,8 @@ supported.
 <details>
 <summary>General</summary>
 
+`{skyblockPersonalBank}` - Player's SkyBlock Personal Bank
+
 `{skyblockBank}` - Player's SkyBlock Bank
 
 `{skyblockPurse}` - Player's SkyBlock Purse
@@ -727,6 +729,8 @@ supported.
 **NOTE:** Every key here has an Unsoulbound one also. Eg `{skyblockNetworthUnsoulbound}` and `{skyblockNetwrothArmorUnsoulbound}`
 
 `{skyblockNetworth}` - Player's SkyBlock Networth
+
+`{skyblockNetworthNonCosmetic}` - Player's Skyblock Networth Non Cosmetics
 
 `{skyblockNetwrothArmor}` - Player's SkyBlock Netwroth in Armor
 
