@@ -5,20 +5,15 @@ const { formatError } = require("../../contracts/helperFunctions.js");
 const updateRolesCommand = require("./updateCommand.js");
 const { writeFileSync, readFileSync } = require("fs");
 const config = require("../../../config.json");
+const { MessageFlags, SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
-  name: "verify",
-  description: "Connect your Discord account to Minecraft",
+  data: new SlashCommandBuilder()
+    .setName("verify")
+    .setDescription("Connect your Discord account to Minecraft")
+    .addStringOption((option) => option.setName("username").setDescription("Minecraft Username").setRequired(true)),
   verificationCommand: true,
   requiresBot: true,
-  options: [
-    {
-      name: "username",
-      description: "Minecraft Username",
-      type: 3,
-      required: true
-    }
-  ],
 
   execute: async (interaction, extra = {}) => {
     try {
@@ -61,7 +56,7 @@ module.exports = {
           iconURL: "https://i.imgur.com/uUuZx2E.png"
         });
 
-      await interaction.editReply({ embeds: [embed], ephemeral: true });
+      await interaction.editReply({ embeds: [embed], flags: MessageFlags.Ephemeral });
 
       await updateRolesCommand.execute(interaction);
     } catch (error) {
@@ -74,7 +69,7 @@ module.exports = {
         iconURL: "https://i.imgur.com/uUuZx2E.png"
       });
 
-      await interaction.editReply({ embeds: [errorEmbed], ephemeral: true });
+      await interaction.editReply({ embeds: [errorEmbed], flags: MessageFlags.Ephemeral });
       if (error.includes("Please follow the instructions below.")) {
         const verificationTutorialEmbed = new Embed()
           .setAuthor({ name: "Link with Hypixel Social Media" })
@@ -87,7 +82,7 @@ module.exports = {
             iconURL: "https://i.imgur.com/uUuZx2E.png"
           });
 
-        await interaction.followUp({ embeds: [verificationTutorialEmbed], ephemeral: true });
+        await interaction.followUp({ embeds: [verificationTutorialEmbed], flags: MessageFlags.Ephemeral });
       }
     }
   }

@@ -5,27 +5,17 @@ const { formatError } = require("../../contracts/helperFunctions.js");
 const updateRolesCommand = require("./updateCommand.js");
 const { writeFileSync, readFileSync } = require("fs");
 const config = require("../../../config.json");
+const { MessageFlags, SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
-  name: "force-verify",
-  description: "Connect Discord account to a Minecraft",
+  data: new SlashCommandBuilder()
+    .setName("force-verify")
+    .setDescription("Connect Discord account to a Minecraft")
+    .addUserOption((option) => option.setName("user").setDescription("Discord Username").setRequired(true))
+    .addStringOption((option) => option.setName("username").setDescription("Minecraft Username").setRequired(true)),
   moderatorOnly: true,
   verificationCommand: true,
   requiresBot: true,
-  options: [
-    {
-      name: "user",
-      description: "Discord user",
-      type: 6,
-      required: true
-    },
-    {
-      name: "username",
-      description: "Minecraft Username",
-      type: 3,
-      required: true
-    }
-  ],
 
   execute: async (interaction) => {
     try {
@@ -58,7 +48,7 @@ module.exports = {
         iconURL: "https://i.imgur.com/uUuZx2E.png"
       });
 
-      await interaction.editReply({ embeds: [embed], ephemeral: true });
+      await interaction.editReply({ embeds: [embed], flags: MessageFlags.Ephemeral });
 
       await updateRolesCommand.execute(interaction, { discordId });
     } catch (error) {
@@ -71,7 +61,7 @@ module.exports = {
         iconURL: "https://i.imgur.com/uUuZx2E.png"
       });
 
-      await interaction.editReply({ embeds: [errorEmbed], ephemeral: true });
+      await interaction.editReply({ embeds: [errorEmbed], flags: MessageFlags.Ephemeral });
       if (error.includes("Please follow the instructions below.")) {
         const verificationTutorialEmbed = new Embed()
           .setAuthor({ name: "Link with Hypixel Social Media" })
@@ -84,7 +74,7 @@ module.exports = {
             iconURL: "https://i.imgur.com/uUuZx2E.png"
           });
 
-        await interaction.followUp({ embeds: [verificationTutorialEmbed], ephemeral: true });
+        await interaction.followUp({ embeds: [verificationTutorialEmbed], flags: MessageFlags.Ephemeral });
       }
     }
   }
