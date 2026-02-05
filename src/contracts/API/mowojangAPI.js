@@ -1,5 +1,4 @@
-// @ts-ignore
-const { get } = require("axios");
+import axios from "axios";
 
 const uuidCache = new Map();
 const usernameCache = new Map();
@@ -9,7 +8,7 @@ const usernameCache = new Map();
  * @param {string} username
  * @returns {Promise<string>}
  */
-async function getUUID(username) {
+export async function getUUID(username) {
   try {
     if (uuidCache.has(username)) {
       const data = uuidCache.get(username);
@@ -19,7 +18,7 @@ async function getUUID(username) {
       }
     }
 
-    const { data } = await get(`https://mowojang.matdoes.dev/${username}`);
+    const { data } = await axios.get(`https://mowojang.matdoes.dev/${username}`);
 
     if (data.errorMessage || data.id === undefined) {
       throw data.errorMessage ?? "Invalid username.";
@@ -44,7 +43,7 @@ async function getUUID(username) {
  * @param {string} uuid
  * @returns {Promise<string>}
  */
-async function getUsername(uuid) {
+export async function getUsername(uuid) {
   try {
     if (usernameCache.has(uuid)) {
       const data = usernameCache.get(uuid);
@@ -54,7 +53,7 @@ async function getUsername(uuid) {
       }
     }
 
-    const { data } = await get(`https://mowojang.matdoes.dev/${uuid}`);
+    const { data } = await axios.get(`https://mowojang.matdoes.dev/${uuid}`);
     if (data.errorMessage || data.name === undefined) {
       throw data.errorMessage ?? "Invalid UUID.";
     }
@@ -80,9 +79,9 @@ async function getUsername(uuid) {
  * @param {string} username
  * @returns {Promise<{ username: string, uuid: string }>}
  */
-async function resolveUsernameOrUUID(username) {
+export async function resolveUsernameOrUUID(username) {
   try {
-    const { data } = await get(`https://mowojang.matdoes.dev/${username}`);
+    const { data } = await axios.get(`https://mowojang.matdoes.dev/${username}`);
 
     return {
       username: data.name,
@@ -95,5 +94,3 @@ async function resolveUsernameOrUUID(username) {
     throw error;
   }
 }
-
-module.exports = { getUUID, getUsername, resolveUsernameOrUUID };

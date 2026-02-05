@@ -10,4 +10,4 @@ class HypixelDiscordChatBridgeError extends Error {
   }
 }
 
-module.exports = HypixelDiscordChatBridgeError;
+export default HypixelDiscordChatBridgeError;

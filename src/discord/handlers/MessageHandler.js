@@ -1,5 +1,5 @@
-const config = require("../../../config.json");
-const { unemojify } = require("node-emoji");
+import config from "../../../config.json" with { type: "json" };
+import { unemojify } from "node-emoji";
 
 class MessageHandler {
   constructor(discord, command) {
@@ -184,4 +184,4 @@ class MessageHandler {
   }
 }
 
-module.exports = MessageHandler;
+export default MessageHandler;

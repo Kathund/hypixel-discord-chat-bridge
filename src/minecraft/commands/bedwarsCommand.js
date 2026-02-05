@@ -1,8 +1,8 @@
-const { formatNumber, formatError, titleCase } = require("../../contracts/helperFunctions.js");
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
-const hypixel = require("../../contracts/API/HypixelRebornAPI.js");
+import { formatNumber, formatError, titleCase } from "../../contracts/helperFunctions.js";
+import MinecraftCommand from "../../contracts/MinecraftCommand.js";
+import HypixelAPI from "../../contracts/API/HypixelAPI.js";
 
-class BedwarsCommand extends minecraftCommand {
+class BedwarsCommand extends MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */
   constructor(minecraft) {
     super(minecraft);
@@ -32,7 +32,7 @@ class BedwarsCommand extends minecraftCommand {
       const mode = modes.includes(msg[0]) ? msg[0] : "overall";
       player = modes.includes(msg[0]) ? (msg[1] ? msg[1] : player) : msg[0] || player;
 
-      const hypixelPlayer = await hypixel.getPlayer(player);
+      const hypixelPlayer = await HypixelAPI.getPlayer(player);
       if (hypixelPlayer === undefined) {
         return this.send(`Couldn't find player ${player}.`);
       }
@@ -72,4 +72,4 @@ class BedwarsCommand extends minecraftCommand {
   }
 }
 
-module.exports = BedwarsCommand;
+export default BedwarsCommand;

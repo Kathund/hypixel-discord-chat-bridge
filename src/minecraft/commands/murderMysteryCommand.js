@@ -1,8 +1,8 @@
-const { formatNumber, formatError } = require("../../contracts/helperFunctions.js");
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
-const hypixel = require("../../contracts/API/HypixelRebornAPI.js");
+import { formatNumber, formatError } from "../../contracts/helperFunctions.js";
+import MinecraftCommand from "../../contracts/MinecraftCommand.js";
+import HypixelAPI from "../../contracts/API/HypixelAPI.js";
 
-class MurderMysteryCommand extends minecraftCommand {
+class MurderMysteryCommand extends MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */
   constructor(minecraft) {
     super(minecraft);
@@ -27,7 +27,7 @@ class MurderMysteryCommand extends minecraftCommand {
     try {
       // CREDITS: by @Kathund (https://github.com/Kathund)
       player = this.getArgs(message)[0] || player;
-      const hypixelPlayer = await hypixel.getPlayer(player);
+      const hypixelPlayer = await HypixelAPI.getPlayer(player);
       if (hypixelPlayer === undefined) {
         return this.send(`Couldn't find player ${player}.`);
       }
@@ -47,4 +47,4 @@ class MurderMysteryCommand extends minecraftCommand {
   }
 }
 
-module.exports = MurderMysteryCommand;
+export default MurderMysteryCommand;

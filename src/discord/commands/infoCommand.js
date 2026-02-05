@@ -1,9 +1,11 @@
-const HypixelDiscordChatBridgeError = require("../../contracts/errorHandler.js");
-const { replaceVariables } = require("../../contracts/helperFunctions.js");
-const { Embed } = require("../../contracts/embedHandler.js");
-const config = require("../../../config.json");
-const fs = require("fs");
-const { SlashCommandBuilder } = require("discord.js");
+import HypixelDiscordChatBridgeError from "../../contracts/errorHandler.js";
+import { replaceVariables } from "../../contracts/helperFunctions.js";
+import DiscordCommand from "../../contracts/DiscordCommand.js";
+import { Embed } from "../../contracts/embedHandler.js";
+import { SlashCommandBuilder } from "discord.js";
+import packageJSON from "../../../package.json" with { type: "json" };
+import config from "../../../config.json" with { type: "json" };
+import { readdirSync } from "fs";
 
 function formatOptions(name, required) {
   return replaceVariables(required ? ` ({${name}})` : ` [{${name}}]`, { username: "u" })
@@ -11,7 +13,7 @@ function formatOptions(name, required) {
     .replaceAll("}", "");
 }
 
-function getCommands(commands) {
+export async function getCommands(commands) {
   const discordCommands = commands
     .map(({ data }) => {
       const { name, options } = data.toJSON();
@@ -20,25 +22,28 @@ function getCommands(commands) {
     })
     .join("");
 
-  const minecraftCommands = fs
-    .readdirSync("./src/minecraft/commands")
-    .filter((file) => file.endsWith(".js"))
-    .map((file) => {
-      const command = new (require(`../../minecraft/commands/${file}`))();
-      const optionsString = command.options?.map(({ name, required }) => formatOptions(name, required)).join("");
+  const minecraftCommandsFiles = readdirSync("./src/minecraft/commands").filter((file) => file.endsWith(".js"));
+  const minecraftCommands = [];
+  for (const file of minecraftCommandsFiles) {
+    const command = new (await import(`../../minecraft/commands/${file}`)).default();
+    const optionsString = command.options?.map(({ name, required }) => formatOptions(name, required)).join("");
 
-      return `- \`${command.name}${optionsString}\`\n`;
-    })
-    .join("");
+    minecraftCommands.push(`- \`${command.name}${optionsString}\`\n`);
+  }
 
-  return { discordCommands, minecraftCommands };
+  return { discordCommands, minecraftCommands: minecraftCommands.join("") };
 }
 
-module.exports = {
-  data: new SlashCommandBuilder().setName("info").setDescription("Shows information about the bot."),
-  requiresBot: true,
-  getCommands,
-  execute: async (interaction) => {
+class InfoCommand extends DiscordCommand {
+  /** @param {import("../discord/DiscordManager.js").default} discord */
+  constructor(discord) {
+    super(discord);
+    this.data = new SlashCommandBuilder().setName("info").setDescription("Shows information about the bot.");
+    this.requiresBot = true;
+  }
+
+  /** @param {import("discord.js").ChatInputCommandInteraction} interaction */
+  async onCommand(interaction) {
     try {
       if (bot === undefined || bot._client.chat === undefined) {
         throw new HypixelDiscordChatBridgeError("Bot doesn't seem to be connected to Hypixel. Please try again.");
@@ -64,7 +69,7 @@ module.exports = {
             config.minecraft.skyblockEventsNotifications.enabled ? "enabled" : "disabled"
           }\`\nAuto Accept: \`${config.minecraft.guildRequirements.autoAccept ? "enabled" : "disabled"}\`\nUptime: Online since <t:${Math.floor(
             (Date.now() - client.uptime) / 1000
-          )}:R>\nVersion: \`${require("../../../package.json").version}\`\n`,
+          )}:R>\nVersion: \`${packageJSON.version}\`\n`,
           inline: true
         },
         {
@@ -86,4 +91,6 @@ module.exports = {
       console.error(e);
     }
   }
-};
+}
+
+export default InfoCommand;

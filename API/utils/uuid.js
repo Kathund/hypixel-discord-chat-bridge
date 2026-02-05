@@ -4,7 +4,7 @@
  * @param {string} uuid
  * @returns {boolean}
  */
-function isUuid(uuid) {
+export function isUuid(uuid) {
   if (uuid === undefined || uuid === null || typeof uuid !== "string") {
     return false;
   }
@@ -14,7 +14,3 @@ function isUuid(uuid) {
     /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(uuid)
   );
 }
-
-module.exports = {
-  isUuid
-};

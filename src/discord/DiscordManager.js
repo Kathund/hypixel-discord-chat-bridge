@@ -1,13 +1,13 @@
-const { Client, AttachmentBuilder, GatewayIntentBits, Events } = require("discord.js");
-const CommunicationBridge = require("../contracts/CommunicationBridge.js");
-const { replaceVariables } = require("../contracts/helperFunctions.js");
-const messageToImage = require("../contracts/messageToImage.js");
-const MessageHandler = require("./handlers/MessageHandler.js");
-const StateHandler = require("./handlers/StateHandler.js");
-const CommandHandler = require("./CommandHandler.js");
-const config = require("../../config.json");
-const fs = require("fs");
-const { ErrorEmbed } = require("../contracts/embedHandler.js");
+import { Client, AttachmentBuilder, GatewayIntentBits, Events } from "discord.js";
+import CommunicationBridge from "../contracts/CommunicationBridge.js";
+import { replaceVariables } from "../contracts/helperFunctions.js";
+import messageToImage from "../contracts/messageToImage.js";
+import MessageHandler from "./handlers/MessageHandler.js";
+import { ErrorEmbed } from "../contracts/embedHandler.js";
+import StateHandler from "./handlers/StateHandler.js";
+import CommandHandler from "./CommandHandler.js";
+import config from "../../config.json" with { type: "json" };
+import { readdirSync } from "fs";
 
 class DiscordManager extends CommunicationBridge {
   constructor(app) {
@@ -20,13 +20,13 @@ class DiscordManager extends CommunicationBridge {
     this.commandHandler = new CommandHandler(this);
   }
 
-  connect() {
+  async connect() {
     global.client = new Client({
       intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMembers]
     });
 
     this.client = client;
-    this.commandHandler.loadCommands();
+    await this.commandHandler.loadCommands();
 
     this.client.on(Events.ClientReady, () => this.stateHandler.onReady());
     this.client.on(Events.MessageCreate, (message) => this.messageHandler.onMessage(message));
@@ -35,10 +35,10 @@ class DiscordManager extends CommunicationBridge {
       console.error(error);
     });
 
-    const eventFiles = fs.readdirSync("src/discord/events").filter((file) => file.endsWith(".js"));
+    const eventFiles = readdirSync("src/discord/events").filter((file) => file.endsWith(".js"));
     for (const file of eventFiles) {
-      const event = require(`./events/${file}`);
-      event.once ? client.once(event.name, (...args) => event.execute(...args)) : client.on(event.name, (...args) => event.execute(...args));
+      const event = new (await import(`./events/${file}`)).default(this.discord);
+      event.once ? client.once(event.event, (...args) => event.onEvent(...args)) : client.on(event.event, (...args) => event.onEvent(...args));
     }
 
     process.on("SIGINT", async () => {
@@ -305,4 +305,4 @@ class DiscordManager extends CommunicationBridge {
   }
 }
 
-module.exports = DiscordManager;
+export default DiscordManager;

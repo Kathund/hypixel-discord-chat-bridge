@@ -1,5 +1,5 @@
-const { removeExpiredInactivity } = require("../commands/inactivityCommand.js");
-const config = require("../../../config.json");
-const cron = require("node-cron");
+import { removeExpiredInactivity } from "../commands/inactivityCommand.js";
+import config from "../../../config.json" with { type: "json" };
+import cron from "node-cron";
 
 if (config.verification.inactivity.enabled) cron.schedule(`*/2 * * * *`, () => removeExpiredInactivity());

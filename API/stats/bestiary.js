@@ -1,4 +1,4 @@
-const { getBestiaryConstants } = require("../constants/bestiary.js");
+import { getBestiaryConstants } from "../constants/bestiary.js";
 
 /**
  * @typedef {import('../constants/bestiary.types').BestiaryConstant} BestiaryConstants
@@ -50,7 +50,7 @@ function formatMobs(bestiary, categoryMobs) {
  * @param {import("../../types/profiles.js").Member} profile
  * @returns {Bestiary | null}
  */
-function getBestiary(profile) {
+export function getBestiary(profile) {
   if (!BESTIARY_CONSTANTS) {
     return null;
   }
@@ -89,7 +89,3 @@ function getBestiary(profile) {
     return null;
   }
 }
-
-module.exports = {
-  getBestiary
-};

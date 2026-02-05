@@ -263,7 +263,7 @@ const words = [
  * @param {number} length
  * @returns {string}
  */
-function getRandomWord(length) {
+export function getRandomWord(length) {
   if (length !== undefined) {
     const filteredWords = words.filter((word) => word.length == length);
 
@@ -282,7 +282,7 @@ function getRandomWord(length) {
  * @param {string} word
  * @returns {string}
  */
-function scrambleWord(word) {
+export function scrambleWord(word) {
   const chars = word.split("");
 
   for (let i = chars.length - 1; i > 0; i--) {
@@ -292,5 +292,3 @@ function scrambleWord(word) {
 
   return word === chars.join("") ? scrambleWord(word) : chars.join("");
 }
-
-module.exports = { getRandomWord, scrambleWord };

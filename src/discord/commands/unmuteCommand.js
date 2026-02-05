@@ -1,15 +1,21 @@
-const { SlashCommandBuilder } = require("discord.js");
-const { SuccessEmbed } = require("../../contracts/embedHandler.js");
+import { SuccessEmbed } from "../../contracts/embedHandler.js";
+import DiscordCommand from "../../contracts/DiscordCommand.js";
+import { SlashCommandBuilder } from "discord.js";
 
-module.exports = {
-  data: new SlashCommandBuilder()
-    .setName("unmute")
-    .setDescription("Unmute the given user.")
-    .addStringOption((option) => option.setName("username").setDescription("Minecraft Username").setRequired(true)),
-  moderatorOnly: true,
-  requiresBot: true,
+class UnmuteCommand extends DiscordCommand {
+  /** @param {import("../discord/DiscordManager.js").default} discord */
+  constructor(discord) {
+    super(discord);
+    this.data = new SlashCommandBuilder()
+      .setName("unmute")
+      .setDescription("Unmute the given user.")
+      .addStringOption((option) => option.setName("username").setDescription("Minecraft Username").setRequired(true));
+    this.moderatorOnly = true;
+    this.requiresBot = true;
+  }
 
-  execute: async (interaction) => {
+  /** @param {import("discord.js").ChatInputCommandInteraction} interaction */
+  async onCommand(interaction) {
     const name = interaction.options.getString("username");
     bot.chat(`/g unmute ${name}`);
 
@@ -17,4 +23,6 @@ module.exports = {
 
     await interaction.followUp({ embeds: [embed] });
   }
-};
+}
+
+export default UnmuteCommand;

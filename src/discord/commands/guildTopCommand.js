@@ -1,25 +1,31 @@
-const HypixelDiscordChatBridgeError = require("../../contracts/errorHandler.js");
-const { Embed } = require("../../contracts/embedHandler.js");
-const { SlashCommandBuilder } = require("discord.js");
+import HypixelDiscordChatBridgeError from "../../contracts/errorHandler.js";
+import DiscordCommand from "../../contracts/DiscordCommand.js";
+import { Embed } from "../../contracts/embedHandler.js";
+import { SlashCommandBuilder } from "discord.js";
 
-module.exports = {
-  data: new SlashCommandBuilder()
-    .setName("guildtop")
-    .setDescription("Top 10 members with the most guild experience.")
-    .addStringOption((option) =>
-      option
-        .setName("time")
-        .setDescription("Days ago")
-        .addChoices(
-          ...Array.from({ length: 14 }, (_, index) => ({
-            name: `${index + 1} Day ago`,
-            value: (index + 1).toString()
-          }))
-        )
-    ),
-  requiresBot: true,
+class GuildTopCommand extends DiscordCommand {
+  /** @param {import("../discord/DiscordManager.js").default} discord */
+  constructor(discord) {
+    super(discord);
+    this.data = new SlashCommandBuilder()
+      .setName("guildtop")
+      .setDescription("Top 10 members with the most guild experience.")
+      .addStringOption((option) =>
+        option
+          .setName("time")
+          .setDescription("Days ago")
+          .addChoices(
+            ...Array.from({ length: 14 }, (_, index) => ({
+              name: `${index + 1} Day ago`,
+              value: (index + 1).toString()
+            }))
+          )
+      );
+    this.requiresBot = true;
+  }
 
-  execute: async (interaction) => {
+  /** @param {import("discord.js").ChatInputCommandInteraction} interaction */
+  async onCommand(interaction) {
     const time = interaction.options.getString("time");
 
     const cachedMessages = [];
@@ -64,4 +70,6 @@ module.exports = {
 
     return await interaction.followUp({ embeds: [embed] });
   }
-};
+}
+
+export default GuildTopCommand;

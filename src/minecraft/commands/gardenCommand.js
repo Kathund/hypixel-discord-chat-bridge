@@ -1,8 +1,8 @@
-const { getLatestProfile } = require("../../../API/functions/getLatestProfile.js");
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
-const { getGarden } = require("../../../API/stats/garden.js");
+import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
+import MinecraftCommand from "../../contracts/MinecraftCommand.js";
+import { getGarden } from "../../../API/stats/garden.js";
 
-class GardenCommand extends minecraftCommand {
+class GardenCommand extends MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */
   constructor(minecraft) {
     super(minecraft);
@@ -49,4 +49,4 @@ class GardenCommand extends minecraftCommand {
   }
 }
 
-module.exports = GardenCommand;
+export default GardenCommand;

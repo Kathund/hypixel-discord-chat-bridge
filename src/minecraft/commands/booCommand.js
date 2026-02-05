@@ -1,7 +1,7 @@
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
-const { delay } = require("../../contracts/helperFunctions.js");
+import MinecraftCommand from "../../contracts/MinecraftCommand.js";
+import { delay } from "../../contracts/helperFunctions.js";
 
-class BooCommand extends minecraftCommand {
+class BooCommand extends MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */
   constructor(minecraft) {
     super(minecraft);
@@ -55,4 +55,4 @@ class BooCommand extends minecraftCommand {
   }
 }
 
-module.exports = BooCommand;
+export default BooCommand;

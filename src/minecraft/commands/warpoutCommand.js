@@ -1,6 +1,7 @@
-const { delay } = require("../../contracts/helperFunctions.js");
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
-class warpoutCommand extends minecraftCommand {
+import { delay } from "../../contracts/helperFunctions.js";
+import MinecraftCommand from "../../contracts/MinecraftCommand.js";
+
+class WarpoutCommand extends MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */
   constructor(minecraft) {
     super(minecraft);
@@ -121,4 +122,4 @@ class warpoutCommand extends minecraftCommand {
   }
 }
 
-module.exports = warpoutCommand;
+export default WarpoutCommand;

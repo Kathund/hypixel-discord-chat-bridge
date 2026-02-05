@@ -1,9 +1,9 @@
-const { getLatestProfile } = require("../../../API/functions/getLatestProfile.js");
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
-const { formatNumber } = require("../../contracts/helperFunctions.js");
-const { getDojo } = require("../../../API/stats/crimson.js");
+import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
+import MinecraftCommand from "../../contracts/MinecraftCommand.js";
+import { formatNumber } from "../../contracts/helperFunctions.js";
+import { getDojo } from "../../../API/stats/crimson.js";
 
-class DojoCommand extends minecraftCommand {
+class DojoCommand extends MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */
   constructor(minecraft) {
     super(minecraft);
@@ -53,4 +53,4 @@ class DojoCommand extends minecraftCommand {
   }
 }
 
-module.exports = DojoCommand;
+export default DojoCommand;

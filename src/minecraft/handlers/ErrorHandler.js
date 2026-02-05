@@ -1,8 +1,6 @@
-const eventHandler = require("../../contracts/EventHandler.js");
-// eslint-disable-next-line
-const Logger = require("../.././Logger.js");
+import EventHandler from "../../contracts/EventHandler.js";
 
-class StateHandler extends eventHandler {
+class StateHandler extends EventHandler {
   /** @param {import("minecraft-protocol").Client} minecraft */
   constructor(minecraft) {
     super();
@@ -35,4 +33,4 @@ class StateHandler extends eventHandler {
   }
 }
 
-module.exports = StateHandler;
+export default StateHandler;

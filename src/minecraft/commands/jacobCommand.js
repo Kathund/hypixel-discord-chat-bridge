@@ -1,9 +1,9 @@
-const { formatNumber, delay, titleCase } = require("../../contracts/helperFunctions.js");
-const { getLatestProfile } = require("../../../API/functions/getLatestProfile.js");
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
-const { getJacob } = require("../../../API/stats/jacob.js");
+import { formatNumber, delay, titleCase } from "../../contracts/helperFunctions.js";
+import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
+import MinecraftCommand from "../../contracts/MinecraftCommand.js";
+import { getJacob } from "../../../API/stats/jacob.js";
 
-class JacobCommand extends minecraftCommand {
+class JacobCommand extends MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */
   constructor(minecraft) {
     super(minecraft);
@@ -45,4 +45,4 @@ class JacobCommand extends minecraftCommand {
   }
 }
 
-module.exports = JacobCommand;
+export default JacobCommand;

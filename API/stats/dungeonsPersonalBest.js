@@ -3,7 +3,7 @@
  * @param {import("../../types/profiles").Member} profile
  * @returns {import("./dungeonsPersonalBest.types").PersonalBest | null}
  */
-function getPersonalBest(profile) {
+export function getPersonalBest(profile) {
   try {
     const catacombs = profile?.dungeons?.dungeon_types.catacombs ?? {};
     const masterCatacombs = profile?.dungeons?.dungeon_types.master_catacombs ?? {};
@@ -43,5 +43,3 @@ function getPersonalBest(profile) {
     return null;
   }
 }
-
-module.exports = { getPersonalBest };

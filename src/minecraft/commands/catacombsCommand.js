@@ -1,9 +1,9 @@
-const { getLatestProfile } = require("../../../API/functions/getLatestProfile.js");
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
-const { formatNumber } = require("../../contracts/helperFunctions.js");
-const { getDungeons } = require("../../../API/stats/dungeons.js");
+import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
+import MinecraftCommand from "../../contracts/MinecraftCommand.js";
+import { formatNumber } from "../../contracts/helperFunctions.js";
+import { getDungeons } from "../../../API/stats/dungeons.js";
 
-class CatacombsCommand extends minecraftCommand {
+class CatacombsCommand extends MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */
   constructor(minecraft) {
     super(minecraft);
@@ -52,4 +52,4 @@ class CatacombsCommand extends minecraftCommand {
   }
 }
 
-module.exports = CatacombsCommand;
+export default CatacombsCommand;

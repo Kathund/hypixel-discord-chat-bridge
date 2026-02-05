@@ -1,7 +1,7 @@
-const { Collection } = require("discord.js");
-const config = require("../../config.json");
-const axios = require("axios");
-const fs = require("fs");
+import { Collection } from "discord.js";
+import config from "../../config.json" with { type: "json" };
+import { readdirSync } from "fs";
+import axios from "axios";
 
 class CommandHandler {
   /** @param {import("minecraft-protocol").Client} minecraft */
@@ -10,13 +10,16 @@ class CommandHandler {
 
     this.prefix = config.minecraft.bot.prefix;
     this.commands = new Collection();
+  }
 
-    const commandFiles = fs.readdirSync("./src/minecraft/commands").filter((file) => file.endsWith(".js"));
+  async loadCommands() {
+    this.commands = new Collection();
+    const commandFiles = readdirSync("./src/minecraft/commands").filter((file) => file.endsWith(".js"));
     for (const file of commandFiles) {
-      const command = new (require(`./commands/${file}`))(minecraft);
-
+      const command = new (await import(`./commands/${file}`)).default(this.minecraft);
       this.commands.set(command.name, command);
     }
+    console.minecraft(`Successfully loaded ${this.commands.size} command(s).`);
   }
 
   handle(player, message, officer) {
@@ -69,4 +72,4 @@ class CommandHandler {
   }
 }
 
-module.exports = CommandHandler;
+export default CommandHandler;

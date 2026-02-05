@@ -1,5 +1,5 @@
 /** @type {Record<string, number>} */
-const MAGICAL_POWER = {
+export const MAGICAL_POWER = {
   common: 3,
   uncommon: 5,
   rare: 8,
@@ -8,8 +8,4 @@ const MAGICAL_POWER = {
   mythic: 22,
   special: 3,
   very: 5
-};
-
-module.exports = {
-  MAGICAL_POWER
 };

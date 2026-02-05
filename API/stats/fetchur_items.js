@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   0: {
     name: "Red Wool",
     quantity: 50,

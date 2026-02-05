@@ -1,13 +1,14 @@
-const { getLatestProfile } = require("../../../API/functions/getLatestProfile.js");
-const HypixelDiscordChatBridgeError = require("../../contracts/errorHandler.js");
-const hypixel = require("../../contracts/API/HypixelRebornAPI.js");
-const { getUUID } = require("../../contracts/API/mowojangAPI.js");
-const { Embed } = require("../../contracts/embedHandler.js");
-const config = require("../../../config.json");
-const { SlashCommandBuilder } = require("discord.js");
+import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
+import HypixelDiscordChatBridgeError from "../../contracts/errorHandler.js";
+import DiscordCommand from "../../contracts/DiscordCommand.js";
+import HypixelAPI from "../../contracts/API/HypixelAPI.js";
+import { getUUID } from "../../contracts/API/mowojangAPI.js";
+import { Embed } from "../../contracts/embedHandler.js";
+import { SlashCommandBuilder } from "discord.js";
+import config from "../../../config.json" with { type: "json" };
 
-async function checkRequirements(uuid) {
-  const [player, profile] = await Promise.all([hypixel.getPlayer(uuid), getLatestProfile(uuid)]);
+export async function checkRequirements(uuid) {
+  const [player, profile] = await Promise.all([HypixelAPI.getPlayer(uuid), getLatestProfile(uuid)]);
   let meetRequirements = false;
 
   const skyblockLevel = (profile.profile?.leveling?.experience || 0) / 100 ?? 0;
@@ -62,7 +63,7 @@ async function checkRequirements(uuid) {
   };
 }
 
-function generateEmbed(data) {
+export function generateEmbed(data) {
   return new Embed()
     .setColor(data.meetRequirements ? 2067276 : 15548997)
     .setTitle(`${data.nickname} **${data.meetRequirements ? "has" : "hasn't"}** got the requirements to join the Guild!`)
@@ -110,19 +111,24 @@ function generateEmbed(data) {
     });
 }
 
-module.exports = {
-  data: new SlashCommandBuilder()
-    .setName("requirements")
-    .setDescription("Check a user's requirements to join the guild")
-    .addStringOption((option) => option.setName("username").setDescription("Minecraft Username")),
-  checkRequirements,
-  generateEmbed,
+class RequirementsCommand extends DiscordCommand {
+  /** @param {import("../discord/DiscordManager.js").default} discord */
+  constructor(discord) {
+    super(discord);
+    this.data = new SlashCommandBuilder()
+      .setName("requirements")
+      .setDescription("Check a user's requirements to join the guild")
+      .addStringOption((option) => option.setName("username").setDescription("Minecraft Username"));
+  }
 
-  execute: async (interaction) => {
+  /** @param {import("discord.js").ChatInputCommandInteraction} interaction */
+  async onCommand(interaction) {
     const name = interaction.options.getString("username") || interaction?.member?.nickname || null;
     if (name === null) throw new HypixelDiscordChatBridgeError("Please input a username");
     const playerInfo = await checkRequirements(await getUUID(name));
     const embed = generateEmbed(playerInfo);
     await interaction.followUp({ embeds: [embed] });
   }
-};
+}
+
+export default RequirementsCommand;

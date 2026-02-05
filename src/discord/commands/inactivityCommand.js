@@ -1,12 +1,13 @@
-const HypixelDiscordChatBridgeError = require("../../contracts/errorHandler.js");
-const { Embed, SuccessEmbed } = require("../../contracts/embedHandler.js");
-const { getUsername } = require("../../contracts/API/mowojangAPI.js");
-const { writeFileSync, readFileSync } = require("fs");
-const config = require("../../../config.json");
-const ms = require("ms");
-const { SlashCommandBuilder } = require("discord.js");
+import HypixelDiscordChatBridgeError from "../../contracts/errorHandler.js";
+import { Embed, SuccessEmbed } from "../../contracts/embedHandler.js";
+import { getUsername } from "../../contracts/API/mowojangAPI.js";
+import DiscordCommand from "../../contracts/DiscordCommand.js";
+import { SlashCommandBuilder } from "discord.js";
+import { writeFileSync, readFileSync } from "fs";
+import config from "../../../config.json" with { type: "json" };
+import ms from "ms";
 
-function removeExpiredInactivity() {
+export function removeExpiredInactivity() {
   const inactivityData = readFileSync("data/inactivity.json");
   if (!inactivityData) {
     throw new Error("The inactivity data file does not exist. Please contact an administrator.");
@@ -25,19 +26,23 @@ function removeExpiredInactivity() {
   writeFileSync("data/inactivity.json", JSON.stringify(inactivity, null, 2));
 }
 
-module.exports = {
-  data: new SlashCommandBuilder()
-    .setName("inactivity")
-    .setDescription("Send an inactivity notice to the guild staff")
-    .addStringOption((option) => option.setName("time").setDescription("The time you are inactive for (e.g. 1d, 72h, 2w)").setRequired(true))
-    .addStringOption((option) => option.setName("reason").setDescription("The reason you are going away")),
-  inactivityCommand: true,
-  guildOnly: true,
-  linkedOnly: true,
-  verifiedOnly: true,
-  removeExpiredInactivity,
+class InactivityCommand extends DiscordCommand {
+  /** @param {import("../discord/DiscordManager.js").default} discord */
+  constructor(discord) {
+    super(discord);
+    this.data = new SlashCommandBuilder()
+      .setName("inactivity")
+      .setDescription("Send an inactivity notice to the guild staff")
+      .addStringOption((option) => option.setName("time").setDescription("The time you are inactive for (e.g. 1d, 72h, 2w)").setRequired(true))
+      .addStringOption((option) => option.setName("reason").setDescription("The reason you are going away"));
+    this.inactivityCommand = true;
+    this.guildOnly = true;
+    this.linkedOnly = true;
+    this.verifiedOnly = true;
+  }
 
-  execute: async (interaction) => {
+  /** @param {import("discord.js").ChatInputCommandInteraction} interaction */
+  async onCommand(interaction) {
     const linkedData = readFileSync("data/linked.json");
     if (!linkedData) {
       throw new HypixelDiscordChatBridgeError("The linke data file does not exist. Please contact an administrator.");
@@ -115,4 +120,6 @@ module.exports = {
     });
     await interaction.followUp({ embeds: [inactivityResponse] });
   }
-};
+}
+
+export default InactivityCommand;

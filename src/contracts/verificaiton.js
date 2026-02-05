@@ -1,8 +1,12 @@
-const HypixelDiscordChatBridgeError = require("./errorHandler.js");
-const config = require("../../config.json");
-const { readFileSync } = require("fs");
+import HypixelDiscordChatBridgeError from "./errorHandler.js";
+import { readFileSync } from "fs";
+import config from "../../config.json" with { type: "json" };
 
-function isGuildMember(interaction) {
+/**
+ * @param {import("discord.js").ChatInputCommandInteraction} interaction
+ * @returns {boolean}
+ */
+export function isGuildMember(interaction) {
   const user = interaction.member;
   const userRoles = user.roles.cache.map((role) => role.id);
 
@@ -16,7 +20,11 @@ function isGuildMember(interaction) {
   return true;
 }
 
-function isVerifiedMember(interaction) {
+/**
+ * @param {import("discord.js").ChatInputCommandInteraction} interaction
+ * @returns {boolean}
+ */
+export function isVerifiedMember(interaction) {
   const user = interaction.member;
   const userRoles = user.roles.cache.map((role) => role.id);
 
@@ -30,7 +38,11 @@ function isVerifiedMember(interaction) {
   return true;
 }
 
-function isLinkedMember(interaction) {
+/**
+ * @param {import("discord.js").ChatInputCommandInteraction} interaction
+ * @returns {boolean}
+ */
+export function isLinkedMember(interaction) {
   const linkedData = readFileSync("data/linked.json");
   if (!linkedData) {
     throw new HypixelDiscordChatBridgeError("The linked data file does not exist. Please contact an administrator.");
@@ -48,9 +60,3 @@ function isLinkedMember(interaction) {
 
   return true;
 }
-
-module.exports = {
-  isGuildMember,
-  isVerifiedMember,
-  isLinkedMember
-};

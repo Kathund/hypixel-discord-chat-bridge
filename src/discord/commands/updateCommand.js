@@ -1,21 +1,22 @@
-const { formatNumber, replaceVariables } = require("../../contracts/helperFunctions.js");
-const { getLatestProfile } = require("../../../API/functions/getLatestProfile.js");
-const HypixelDiscordChatBridgeError = require("../../contracts/errorHandler.js");
-const { SuccessEmbed, ErrorEmbed } = require("../../contracts/embedHandler.js");
-const { getChocolateFactory } = require("../../../API/stats/chocolateFactory.js");
-const hypixelRebornAPI = require("../../contracts/API/HypixelRebornAPI.js");
-const { getCrimsonIsle, getKuudra } = require("../../../API/stats/crimson.js");
-const { getSkillAverage } = require("../../../API/constants/skills.js");
-const { ProfileNetworthCalculator } = require("skyhelper-networth");
-const { getDungeons } = require("../../../API/stats/dungeons.js");
-const { getEssence } = require("../../../API/stats/essence.js");
-const { getSlayer } = require("../../../API/stats/slayer.js");
-const { getSkills } = require("../../../API/stats/skills.js");
-const { getJacob } = require("../../../API/stats/jacob.js");
-const config = require("../../../config.json");
-const fs = require("fs");
-const { getUsername } = require("../../contracts/API/mowojangAPI.js");
-const { MessageFlags, SlashCommandBuilder } = require("discord.js");
+import { formatNumber, replaceVariables } from "../../contracts/helperFunctions.js";
+import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
+import HypixelDiscordChatBridgeError from "../../contracts/errorHandler.js";
+import { SuccessEmbed, ErrorEmbed } from "../../contracts/embedHandler.js";
+import { getChocolateFactory } from "../../../API/stats/chocolateFactory.js";
+import { getCrimsonIsle, getKuudra } from "../../../API/stats/crimson.js";
+import { getSkillAverage } from "../../../API/constants/skills.js";
+import { getUsername } from "../../contracts/API/mowojangAPI.js";
+import { MessageFlags, SlashCommandBuilder } from "discord.js";
+import DiscordCommand from "../../contracts/DiscordCommand.js";
+import { ProfileNetworthCalculator } from "skyhelper-networth";
+import { getDungeons } from "../../../API/stats/dungeons.js";
+import { getEssence } from "../../../API/stats/essence.js";
+import HypixelAPI from "../../contracts/API/HypixelAPI.js";
+import { getSlayer } from "../../../API/stats/slayer.js";
+import { getSkills } from "../../../API/stats/skills.js";
+import { getJacob } from "../../../API/stats/jacob.js";
+import config from "../../../config.json" with { type: "json" };
+import { readFileSync } from "fs";
 
 function getNetworthCalculator(profile, museum, bank) {
   try {
@@ -27,7 +28,7 @@ function getNetworthCalculator(profile, museum, bank) {
   }
 }
 
-async function updateRoles({ discordId, uuid }) {
+export async function updateRoles({ discordId, uuid }) {
   const member = await guild.members.fetch(discordId);
   if (!member) {
     return;
@@ -56,8 +57,8 @@ async function updateRoles({ discordId, uuid }) {
   }
 
   const [hypixelGuild, player, skyblock] = await Promise.all([
-    hypixelRebornAPI.getGuild("player", bot.username, { noCaching: true, noCacheCheck: true }),
-    hypixelRebornAPI.getPlayer(uuid),
+    HypixelAPI.getGuild("player", bot.username, { noCaching: true, noCacheCheck: true }),
+    HypixelAPI.getPlayer(uuid),
     getLatestProfile(uuid, { museum: true }).catch(() => ({ profile: null, profileData: null }))
   ]);
 
@@ -330,13 +331,20 @@ async function updateRoles({ discordId, uuid }) {
   }
 }
 
-module.exports = {
-  data: new SlashCommandBuilder().setName("update").setDescription("Update your current roles"),
-  verificationCommand: true,
+class UpdateCommand extends DiscordCommand {
+  /** @param {import("../discord/DiscordManager.js").default} discord */
+  constructor(discord) {
+    super(discord);
+    this.data = new SlashCommandBuilder().setName("update").setDescription("Update your current roles");
+  }
 
-  execute: async (interaction, extra = { discordId: null, hidden: false }) => {
+  /**
+   * @param {import("discord.js").ChatInputCommandInteraction} interaction
+   * @param {{discordId: string | null, hidden: boolean}} [extra={discordId: null, hidden: false}]
+   */
+  async onCommand(interaction, extra = { discordId: null, hidden: false }) {
     try {
-      const linkedData = fs.readFileSync("data/linked.json");
+      const linkedData = readFileSync("data/linked.json");
       if (!linkedData) {
         throw new HypixelDiscordChatBridgeError("The linked data file does not exist. Please contact an administrator.");
       }
@@ -375,7 +383,7 @@ module.exports = {
         await interaction.editReply({ embeds: [errorEmbed], flags: MessageFlags.Ephemeral });
       }
     }
-  },
+  }
+}
 
-  updateRoles
-};
+export default UpdateCommand;

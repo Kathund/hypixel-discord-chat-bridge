@@ -1,11 +1,17 @@
-const { SlashCommandBuilder } = require("discord.js");
-const { Embed } = require("../../contracts/embedHandler.js");
+import DiscordCommand from "../../contracts/DiscordCommand.js";
+import { Embed } from "../../contracts/embedHandler.js";
+import { SlashCommandBuilder } from "discord.js";
 
-module.exports = {
-  data: new SlashCommandBuilder().setName("online").setDescription("List of online members."),
-  requiresBot: true,
+class OnlineCommand extends DiscordCommand {
+  /** @param {import("../discord/DiscordManager.js").default} discord */
+  constructor(discord) {
+    super(discord);
+    this.data = new SlashCommandBuilder().setName("online").setDescription("List of online members.");
+    this.requiresBot = true;
+  }
 
-  execute: async (interaction) => {
+  /** @param {import("discord.js").ChatInputCommandInteraction} interaction */
+  async onCommand(interaction) {
     const cachedMessages = [];
     const messages = new Promise((resolve, reject) => {
       const listener = (message) => {
@@ -57,4 +63,6 @@ module.exports = {
 
     return await interaction.followUp({ embeds: [embed] });
   }
-};
+}
+
+export default OnlineCommand;

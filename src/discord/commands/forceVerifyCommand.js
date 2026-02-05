@@ -1,23 +1,29 @@
-const { Embed, ErrorEmbed, SuccessEmbed } = require("../../contracts/embedHandler.js");
-const HypixelDiscordChatBridgeError = require("../../contracts/errorHandler.js");
-const hypixelRebornAPI = require("../../contracts/API/HypixelRebornAPI.js");
-const { formatError } = require("../../contracts/helperFunctions.js");
-const updateRolesCommand = require("./updateCommand.js");
-const { writeFileSync, readFileSync } = require("fs");
-const config = require("../../../config.json");
-const { MessageFlags, SlashCommandBuilder } = require("discord.js");
+import { Embed, ErrorEmbed, SuccessEmbed } from "../../contracts/embedHandler.js";
+import HypixelDiscordChatBridgeError from "../../contracts/errorHandler.js";
+import { formatError } from "../../contracts/helperFunctions.js";
+import DiscordCommand from "../../contracts/DiscordCommand.js";
+import { MessageFlags, SlashCommandBuilder } from "discord.js";
+import HypixelAPI from "../../contracts/API/HypixelAPI.js";
+import config from "../../../config.json" with { type: "json" };
+import { writeFileSync, readFileSync } from "fs";
+import UpdateCommand from "./updateCommand.js";
 
-module.exports = {
-  data: new SlashCommandBuilder()
-    .setName("force-verify")
-    .setDescription("Connect Discord account to a Minecraft")
-    .addUserOption((option) => option.setName("user").setDescription("Discord Username").setRequired(true))
-    .addStringOption((option) => option.setName("username").setDescription("Minecraft Username").setRequired(true)),
-  moderatorOnly: true,
-  verificationCommand: true,
-  requiresBot: true,
+class ForceVerifyCommand extends DiscordCommand {
+  /** @param {import("../discord/DiscordManager.js").default} discord */
+  constructor(discord) {
+    super(discord);
+    this.data = new SlashCommandBuilder()
+      .setName("force-verify")
+      .setDescription("Connect Discord account to a Minecraft")
+      .addUserOption((option) => option.setName("user").setDescription("Discord Username").setRequired(true))
+      .addStringOption((option) => option.setName("username").setDescription("Minecraft Username").setRequired(true));
+    this.moderatorOnly = true;
+    this.verificationCommand = true;
+    this.requiresBot = true;
+  }
 
-  execute: async (interaction) => {
+  /** @param {import("discord.js").ChatInputCommandInteraction} interaction */
+  async onCommand(interaction) {
     try {
       const linkedData = readFileSync("data/linked.json");
       if (!linkedData) {
@@ -37,7 +43,7 @@ module.exports = {
       const user = interaction.options.getUser("user");
       const username = interaction.options.getString("username");
 
-      const { nickname, uuid } = await hypixelRebornAPI.getPlayer(username);
+      const { nickname, uuid } = await HypixelAPI.getPlayer(username);
       const discordId = user.id;
 
       linked[uuid] = discordId;
@@ -50,7 +56,8 @@ module.exports = {
 
       await interaction.editReply({ embeds: [embed], flags: MessageFlags.Ephemeral });
 
-      await updateRolesCommand.execute(interaction, { discordId });
+      const updateCommand = new UpdateCommand();
+      await updateCommand.onCommand(interaction, { discordId });
     } catch (error) {
       console.error(error);
       // eslint-disable-next-line no-ex-assign
@@ -78,4 +85,6 @@ module.exports = {
       }
     }
   }
-};
+}
+
+export default ForceVerifyCommand;

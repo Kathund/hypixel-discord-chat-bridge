@@ -1,5 +1,5 @@
 // Import WebSocket module
-const WebSocket = require("ws");
+import WebSocket from "ws";
 
 // Create a new WebSocket connection
 const ws = new WebSocket("ws://localhost:1439/message");

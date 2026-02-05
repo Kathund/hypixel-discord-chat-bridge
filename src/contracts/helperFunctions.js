@@ -1,11 +1,11 @@
-const moment = require("moment");
+import moment from "moment";
 
 /**
  * Replaces all ranks in a string with an empty string
  * @param {string} input
  * @returns {string}
  */
-function replaceAllRanks(input) {
+export function replaceAllRanks(input) {
   input = input.replaceAll("[ዞ] ", "");
   input = input.replaceAll("[MINISTER] ", "");
   input = input.replaceAll("[MCP] ", "");
@@ -27,7 +27,7 @@ function replaceAllRanks(input) {
  * @param {number} length
  * @returns {string}
  */
-function generateID(length) {
+export function generateID(length) {
   let result = "";
   const characters = "abcde0123456789",
     charactersLength = characters.length;
@@ -44,7 +44,7 @@ function generateID(length) {
  * @param {number} startTime
  * @returns {string}
  */
-function timeSince(endTime, startTime = new Date().getTime()) {
+export function timeSince(endTime, startTime = new Date().getTime()) {
   return moment.duration(endTime - startTime).humanize();
 }
 
@@ -53,7 +53,7 @@ function timeSince(endTime, startTime = new Date().getTime()) {
  * @param {number} i
  * @returns {string}
  */
-function nth(i) {
+export function nth(i) {
   return i + ["st", "nd", "rd"][((((i + 90) % 100) - 10) % 10) - 1] || `${i}th`;
 }
 
@@ -65,7 +65,7 @@ const units = new Set(["y", "M", "w", "d", "h", "m", "s"]);
  * @param {moment.Moment} time
  * @returns
  */
-function parseDateMath(mathString, time) {
+export function parseDateMath(mathString, time) {
   const strippedMathString = mathString.replace(/\s/g, "");
   const dateTime = time;
   let i = 0;
@@ -132,7 +132,7 @@ function parseDateMath(mathString, time) {
  * @param {string} text
  * @returns {number | moment.Moment | undefined}
  */
-function parseTimestamp(text) {
+export function parseTimestamp(text) {
   if (!text) return;
 
   if (typeof text !== "string") {
@@ -181,7 +181,7 @@ function parseTimestamp(text) {
  * @param {string} gamemode
  * @returns {string}
  */
-function formatUsername(username, gamemode) {
+export function formatUsername(username, gamemode) {
   if (gamemode === "ironman") return `♲ ${username}`;
   if (gamemode === "bingo") return `Ⓑ ${username}`;
   if (gamemode === "island") return `	☀ ${username}`;
@@ -195,7 +195,7 @@ function formatUsername(username, gamemode) {
  * @param {number} decimals
  * @returns
  */
-function formatNumber(number, decimals = 2) {
+export function formatNumber(number, decimals = 2) {
   if (number === undefined || number === 0) return 0;
 
   const isNegative = number < 0;
@@ -219,7 +219,7 @@ function formatNumber(number, decimals = 2) {
  * @param {object} variables
  * @returns
  */
-function replaceVariables(template, variables) {
+export function replaceVariables(template, variables) {
   // @ts-ignore
   return template.replace(/\{(\w+)\}/g, (match, name) => variables[name] ?? match);
 }
@@ -230,7 +230,7 @@ function replaceVariables(template, variables) {
  * @param {number} amount
  * @returns {string[]}
  */
-function splitMessage(message, amount) {
+export function splitMessage(message, amount) {
   const messages = [];
   for (let i = 0; i < message.length; i += amount) {
     messages.push(message.slice(i, i + amount));
@@ -244,7 +244,7 @@ function splitMessage(message, amount) {
  * @param {Error | unknown} error
  * @returns {string}
  */
-function formatError(error) {
+export function formatError(error) {
   return error.toString().replace("[hypixel-api-reborn] ", "").replace("For help join our Discord Server https://discord.gg/NSEBNMM", "").replace("Error:", "[ERROR]");
 }
 
@@ -253,7 +253,7 @@ function formatError(error) {
  * @param {number} ms
  * @returns {Promise<void>}
  */
-async function delay(ms) {
+export async function delay(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
@@ -262,7 +262,7 @@ async function delay(ms) {
  * @param {string} str
  * @returns {string}
  */
-function titleCase(str) {
+export function titleCase(str) {
   if (!str) return "";
 
   if (typeof str !== "string") {
@@ -276,18 +276,3 @@ function titleCase(str) {
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
 }
-
-module.exports = {
-  replaceAllRanks,
-  generateID,
-  timeSince,
-  nth,
-  parseTimestamp,
-  formatUsername,
-  formatNumber,
-  replaceVariables,
-  splitMessage,
-  formatError,
-  delay,
-  titleCase
-};

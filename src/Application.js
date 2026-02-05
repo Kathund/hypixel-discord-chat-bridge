@@ -1,13 +1,10 @@
-const MinecraftManager = require("./minecraft/MinecraftManager.js");
-const { existsSync, mkdirSync, writeFileSync } = require("fs");
-const DiscordManager = require("./discord/DiscordManager.js");
-const webManager = require("./web/WebsiteManager.js");
+import MinecraftManager from "./minecraft/MinecraftManager.js";
+import { existsSync, mkdirSync, writeFileSync } from "fs";
+import DiscordManager from "./discord/DiscordManager.js";
+import WebManager from "./web/WebManager.js";
 
 class Application {
   constructor() {
-    require("./Configuration.js");
-    require("./Updater.js");
-    require("./Logger.js");
     if (!existsSync("./data/")) mkdirSync("./data/", { recursive: true });
     if (!existsSync("./data/linked.json")) writeFileSync("./data/linked.json", JSON.stringify({}));
     if (!existsSync("./data/inactivity.json")) writeFileSync("./data/inactivity.json", JSON.stringify({}));
@@ -16,17 +13,17 @@ class Application {
   async register() {
     this.discord = new DiscordManager(this);
     this.minecraft = new MinecraftManager(this);
-    this.web = new webManager(this);
+    this.web = new WebManager(this);
 
     this.discord.setBridge(this.minecraft);
     this.minecraft.setBridge(this.discord);
   }
 
   async connect() {
-    this.discord.connect();
+    await this.discord.connect();
     this.minecraft.connect();
-    this.web.connect();
+    await this.web.connect();
   }
 }
 
-module.exports = new Application();
+export default Application;

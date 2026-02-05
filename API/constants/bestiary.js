@@ -1,5 +1,4 @@
-// @ts-ignore
-const { get } = require("axios");
+import axios from "axios";
 
 /**
  * @typedef {import('./bestiary.types').BestiaryConstant} BestiaryConstants
@@ -31,12 +30,12 @@ const cache = {};
 /**
  * @returns {Promise<BestiaryConstants | null>}
  * */
-async function getBestiaryConstants() {
+export async function getBestiaryConstants() {
   if (cache.lastUpdated && cache.lastUpdated + 1000 * 60 * 60 * 12 > Date.now()) {
     return cache.data ?? null;
   }
 
-  const response = await get("https://raw.githubusercontent.com/NotEnoughUpdates/NotEnoughUpdates-REPO/refs/heads/master/constants/bestiary.json");
+  const response = await axios.get("https://raw.githubusercontent.com/NotEnoughUpdates/NotEnoughUpdates-REPO/refs/heads/master/constants/bestiary.json");
   const bestiary = response?.data;
   if (!bestiary) {
     return null;
@@ -73,7 +72,3 @@ async function getBestiaryConstants() {
 
   return output;
 }
-
-module.exports = {
-  getBestiaryConstants
-};

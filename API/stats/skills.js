@@ -1,4 +1,4 @@
-const { getSkillLevelCaps, getSocialSkillExperience, getLevelByXp } = require("../constants/skills.js");
+import { getSkillLevelCaps, getSocialSkillExperience, getLevelByXp } from "../constants/skills.js";
 
 /**
  * Returns the skill levels for a player's profile data.
@@ -6,7 +6,7 @@ const { getSkillLevelCaps, getSocialSkillExperience, getLevelByXp } = require(".
  * @param {import("../../types/profiles.js").Profile} profileData
  * @returns {import("./skills.types.js").Skills | null}
  */
-function getSkills(profile, profileData) {
+export function getSkills(profile, profileData) {
   if (profile.player_data?.experience === undefined) {
     return null;
   }
@@ -31,7 +31,3 @@ function getSkills(profile, profileData) {
 
   return skills;
 }
-
-module.exports = {
-  getSkills
-};

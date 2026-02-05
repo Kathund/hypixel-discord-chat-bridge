@@ -1,4 +1,4 @@
-const config = require("../../../config.json");
+import config from "../../../config.json" with { type: "json" };
 // const { ImgurClient } = require("imgur");
 
 // const imgurClient = new ImgurClient({
@@ -9,7 +9,7 @@ const config = require("../../../config.json");
  * Uploads image to Discord channel
  * @param {Buffer<ArrayBufferLike>} image
  */
-async function uploadImage(image) {
+export async function uploadImage(image) {
   // const response = await imgurClient.upload({
   //  image: image
   // });
@@ -30,5 +30,3 @@ async function uploadImage(image) {
     console.log(error);
   }
 }
-
-module.exports = { uploadImage };

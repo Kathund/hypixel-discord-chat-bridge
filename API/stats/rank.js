@@ -26,7 +26,7 @@ const colorToCode = {
  * @param {import("../../types/player").Player} player
  * @returns {string}
  */
-function getRank(player) {
+export function getRank(player) {
   const rank = getPlayerRank(player.rank, player.packageRank, player.newPackageRank, player.monthlyPackageRank);
   const plusColor = `§${colorToCode[player.rankPlusColor || "RED"]}`;
   const plusPlusColor = `§${colorToCode[player.monthlyRankColor || "GOLD"]}`;
@@ -62,5 +62,3 @@ function generateFormattedRank(rank, plusColor, plusPlusColor, prefix) {
 
   return ranks[rank] || "§7";
 }
-
-module.exports = { getRank };

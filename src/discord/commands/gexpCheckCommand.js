@@ -1,20 +1,26 @@
-const HypixelDiscordChatBridgeError = require("../../contracts/errorHandler.js");
-const hypixelRebornAPI = require("../../contracts/API/HypixelRebornAPI.js");
-const { Embed, SuccessEmbed } = require("../../contracts/embedHandler.js");
-const { getUsername } = require("../../contracts/API/mowojangAPI.js");
-const { writeFileSync, readFileSync } = require("fs");
-const { SlashCommandBuilder } = require("discord.js");
+import HypixelDiscordChatBridgeError from "../../contracts/errorHandler.js";
+import { Embed, SuccessEmbed } from "../../contracts/embedHandler.js";
+import { getUsername } from "../../contracts/API/mowojangAPI.js";
+import DiscordCommand from "../../contracts/DiscordCommand.js";
+import HypixelAPI from "../../contracts/API/HypixelAPI.js";
+import { writeFileSync, readFileSync } from "fs";
+import { SlashCommandBuilder } from "discord.js";
 
-module.exports = {
-  data: new SlashCommandBuilder()
-    .setName("gexpcheck")
-    .setDescription("Shows everyone under an set amount of gexp")
-    .addNumberOption((option) => option.setName("amount").setDescription("Members below this GEXP number").setRequired(true).setMinValue(1)),
-  inactivityCommand: true,
-  moderatorOnly: true,
-  requiresBot: true,
+class GexpCheckCommand extends DiscordCommand {
+  /** @param {import("../discord/DiscordManager.js").default} discord */
+  constructor(discord) {
+    super(discord);
+    this.data = new SlashCommandBuilder()
+      .setName("gexpcheck")
+      .setDescription("Shows everyone under an set amount of gexp")
+      .addNumberOption((option) => option.setName("amount").setDescription("Members below this GEXP number").setRequired(true).setMinValue(1));
+    this.inactivityCommand = true;
+    this.moderatorOnly = true;
+    this.requiresBot = true;
+  }
 
-  execute: async (interaction) => {
+  /** @param {import("discord.js").ChatInputCommandInteraction} interaction */
+  async onCommand(interaction) {
     const amount = interaction.options.getInteger("amount");
     const linkedData = readFileSync("data/linked.json");
     if (!linkedData) {
@@ -40,7 +46,7 @@ module.exports = {
     let skippedString = "";
     let inactiveString = "";
     let membersAboveGexpString = "";
-    const { members } = await hypixelRebornAPI.getGuild("player", bot.username);
+    const { members } = await HypixelAPI.getGuild("player", bot.username);
     const sorted = members.sort((a, b) => b.weeklyExperience - a.weeklyExperience);
     for (const member of sorted) {
       const position = members.indexOf(member) + 1;
@@ -88,4 +94,6 @@ module.exports = {
 
     await interaction.editReply({ embeds: [finalEmbed], files: ["data/guildExperience.txt", "data/guildExperienceSkipped.txt"] });
   }
-};
+}
+
+export default GexpCheckCommand;

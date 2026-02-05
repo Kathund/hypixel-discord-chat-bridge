@@ -1,10 +1,10 @@
-const { getLatestProfile } = require("../../../API/functions/getLatestProfile.js");
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
-const { uploadImage } = require("../../contracts/API/imgurAPI.js");
-const { renderLore } = require("../../contracts/renderItem.js");
-const { decodeData } = require("../../../API/utils/nbt.js");
+import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
+import MinecraftCommand from "../../contracts/MinecraftCommand.js";
+import { uploadImage } from "../../contracts/API/imgurAPI.js";
+import { renderLore } from "../../contracts/renderItem.js";
+import { decodeData } from "../../../API/utils/nbt.js";
 
-class RenderCommand extends minecraftCommand {
+class RenderCommand extends MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */
   constructor(minecraft) {
     super(minecraft);
@@ -76,4 +76,4 @@ class RenderCommand extends minecraftCommand {
   }
 }
 
-module.exports = RenderCommand;
+export default RenderCommand;

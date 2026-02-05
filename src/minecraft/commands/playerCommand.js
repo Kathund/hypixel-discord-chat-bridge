@@ -1,8 +1,8 @@
-const { formatNumber, formatError } = require("../../contracts/helperFunctions.js");
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
-const hypixel = require("../../contracts/API/HypixelRebornAPI.js");
+import { formatNumber, formatError } from "../../contracts/helperFunctions.js";
+import MinecraftCommand from "../../contracts/MinecraftCommand.js";
+import HypixelAPI from "../../contracts/API/HypixelAPI.js";
 
-class PlayerCommand extends minecraftCommand {
+class PlayerCommand extends MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */
   constructor(minecraft) {
     super(minecraft);
@@ -27,7 +27,7 @@ class PlayerCommand extends minecraftCommand {
     try {
       // CREDITS: by @Kathund (https://github.com/Kathund)
       player = this.getArgs(message)[0] || player;
-      const { achievementPoints, nickname, rank, karma, level, guild } = await hypixel.getPlayer(player, {
+      const { achievementPoints, nickname, rank, karma, level, guild } = await HypixelAPI.getPlayer(player, {
         guild: true
       });
 
@@ -43,4 +43,4 @@ class PlayerCommand extends minecraftCommand {
   }
 }
 
-module.exports = PlayerCommand;
+export default PlayerCommand;

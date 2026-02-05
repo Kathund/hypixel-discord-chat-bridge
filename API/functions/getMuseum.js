@@ -1,7 +1,6 @@
 /* eslint-disable no-throw-literal */
-const config = require("../../config.json");
-// @ts-ignore
-const { get } = require("axios");
+import config from "../../config.json" with { type: "json" };
+import axios from "axios";
 
 const cache = new Map();
 
@@ -11,7 +10,7 @@ const cache = new Map();
  * @param {string} uuid
  * @returns {Promise<object>}
  */
-async function getMuseum(profileID, uuid) {
+export async function getMuseum(profileID, uuid) {
   if (cache.has(profileID)) {
     const data = cache.get(profileID);
 
@@ -20,7 +19,7 @@ async function getMuseum(profileID, uuid) {
     }
   }
 
-  const { data } = await get(`https://api.hypixel.net/v2/skyblock/museum?key=${config.minecraft.API.hypixelAPIkey}&profile=${profileID}`);
+  const { data } = await axios.get(`https://api.hypixel.net/v2/skyblock/museum?key=${config.minecraft.API.hypixelAPIkey}&profile=${profileID}`);
   if (data === undefined || data.success === false) {
     throw "Request to Hypixel API failed. Please try again!";
   }
@@ -46,5 +45,3 @@ async function getMuseum(profileID, uuid) {
     museumData: data.members ? data.members : null
   };
 }
-
-module.exports = { getMuseum };

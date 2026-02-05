@@ -1,12 +1,16 @@
-const CommunicationBridge = require("../contracts/CommunicationBridge.js");
-const { replaceVariables } = require("../contracts/helperFunctions.js");
-const StateHandler = require("./handlers/StateHandler.js");
-const ErrorHandler = require("./handlers/ErrorHandler.js");
-const ChatHandler = require("./handlers/ChatHandler.js");
-const CommandHandler = require("./CommandHandler.js");
-const config = require("../../config.json");
-const mineflayer = require("mineflayer");
-const Filter = require("bad-words");
+import CommunicationBridge from "../contracts/CommunicationBridge.js";
+import { replaceVariables } from "../contracts/helperFunctions.js";
+import StateHandler from "./handlers/StateHandler.js";
+import ErrorHandler from "./handlers/ErrorHandler.js";
+import ChatHandler from "./handlers/ChatHandler.js";
+import CommandHandler from "./CommandHandler.js";
+import { createBot } from "mineflayer";
+import config from "../../config.json" with { type: "json" };
+import Filter from "bad-words";
+
+import "./other/alphaPlayerCountTracker.js"
+import "./other/skyblockNotifier.js"
+import "./other/eventNotifier.js"
 
 const filter = new Filter();
 const fileredWords = config.discord.other.filterWords ?? "";
@@ -20,7 +24,8 @@ class MinecraftManager extends CommunicationBridge {
 
     this.stateHandler = new StateHandler(this);
     this.errorHandler = new ErrorHandler(this);
-    this.chatHandler = new ChatHandler(this, new CommandHandler(this));
+    this.chatHandler = new ChatHandler(this);
+    this.commandHandler = new CommandHandler(this)
   }
 
   connect() {
@@ -30,17 +35,15 @@ class MinecraftManager extends CommunicationBridge {
     this.errorHandler.registerEvents(this.bot);
     this.stateHandler.registerEvents(this.bot);
     this.chatHandler.registerEvents(this.bot);
+    this.commandHandler.loadCommands();
 
     this.bot.on("login", () => {
       console.log("Minecraft bot is ready!");
-      require("./other/eventNotifier.js");
-      require("./other/skyblockNotifier.js");
-      require("./other/alphaPlayerCountTracker.js");
     });
   }
 
   createBotConnection() {
-    return mineflayer.createBot({
+    return createBot({
       host: "mc.hypixel.net",
       port: 25565,
       auth: "microsoft",
@@ -110,4 +113,4 @@ class MinecraftManager extends CommunicationBridge {
   }
 }
 
-module.exports = MinecraftManager;
+export default MinecraftManager;

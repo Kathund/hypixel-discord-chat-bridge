@@ -1,33 +1,39 @@
-const HypixelDiscordChatBridgeError = require("../../contracts/errorHandler.js");
-const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-const { SuccessEmbed } = require("../../contracts/embedHandler.js");
-const { SlashCommandBuilder } = require("discord.js");
+import HypixelDiscordChatBridgeError from "../../contracts/errorHandler.js";
+import { SuccessEmbed } from "../../contracts/embedHandler.js";
+import DiscordCommand from "../../contracts/DiscordCommand.js";
+import { delay } from "../../contracts/helperFunctions.js";
+import { SlashCommandBuilder } from "discord.js";
 
-module.exports = {
-  data: new SlashCommandBuilder()
-    .setName("blacklist")
-    .setDescription("Ignore add or remove the given user.")
-    .addStringOption((option) =>
-      option
-        .setName("arg")
-        .setDescription("Add or Remove")
-        .addChoices(
-          {
-            name: "Add",
-            value: "add"
-          },
-          {
-            name: "Remove",
-            value: "remove"
-          }
-        )
-        .setRequired(true)
-    )
-    .addStringOption((option) => option.setName("username").setDescription("Minecraft Username").setRequired(true)),
-  moderatorOnly: true,
-  requiresBot: true,
+class BlacklistCommand extends DiscordCommand {
+  /** @param {import("../discord/DiscordManager.js").default} discord */
+  constructor(discord) {
+    super(discord);
+    this.data = new SlashCommandBuilder()
+      .setName("blacklist")
+      .setDescription("Ignore add or remove the given user.")
+      .addStringOption((option) =>
+        option
+          .setName("arg")
+          .setDescription("Add or Remove")
+          .addChoices(
+            {
+              name: "Add",
+              value: "add"
+            },
+            {
+              name: "Remove",
+              value: "remove"
+            }
+          )
+          .setRequired(true)
+      )
+      .addStringOption((option) => option.setName("username").setDescription("Minecraft Username").setRequired(true));
+    this.moderatorOnly = true;
+    this.requiresBot = true;
+  }
 
-  execute: async (interaction) => {
+  /** @param {import("discord.js").ChatInputCommandInteraction} interaction */
+  async onCommand(interaction) {
     const name = interaction.options.getString("username");
     const arg = interaction.options.getString("arg").toLowerCase();
 
@@ -49,4 +55,6 @@ module.exports = {
       embeds: [embed]
     });
   }
-};
+}
+
+export default BlacklistCommand;

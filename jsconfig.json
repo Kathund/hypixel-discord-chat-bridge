@@ -4,8 +4,8 @@
     "allowJs": true,
     "resolveJsonModule": true,
     "moduleResolution": "node",
-    "target": "es2023",
-    "module": "commonjs",
+    "target": "ES2023",
+    "module": "ES2023",
     "strict": true
   },
   "include": ["API/**/*", "types/**/*.d.ts", "src/minecraft/commands/*"],

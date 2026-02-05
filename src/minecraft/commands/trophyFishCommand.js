@@ -1,9 +1,9 @@
-const { getLatestProfile } = require("../../../API/functions/getLatestProfile.js");
-const { formatNumber } = require("../../contracts/helperFunctions.js");
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
-const { getTrophyFish } = require("../../../API/stats/crimson.js");
+import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
+import { formatNumber } from "../../contracts/helperFunctions.js";
+import MinecraftCommand from "../../contracts/MinecraftCommand.js";
+import { getTrophyFish } from "../../../API/stats/crimson.js";
 
-class TrophyFishCommand extends minecraftCommand {
+class TrophyFishCommand extends MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */
   constructor(minecraft) {
     super(minecraft);
@@ -51,4 +51,4 @@ class TrophyFishCommand extends minecraftCommand {
   }
 }
 
-module.exports = TrophyFishCommand;
+export default TrophyFishCommand;

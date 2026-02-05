@@ -1,16 +1,15 @@
-// @ts-nocheck
-const nbt = require("prismarine-nbt");
-const util = require("util");
-const parseNbt = util.promisify(nbt.parse);
+import { parse, simplify } from "prismarine-nbt";
+import { promisify } from "util";
+const parseNbt = promisify(parse);
 
 /**
  * Decodes a buffer containing NBT data
  * @param {Buffer} buffer
  * @returns {Promise<Object>}
  */
-async function decodeData(buffer) {
+export async function decodeData(buffer) {
   const parsedNbt = await parseNbt(buffer);
-  return nbt.simplify(parsedNbt);
+  return simplify(parsedNbt);
 }
 
 /**
@@ -18,17 +17,12 @@ async function decodeData(buffer) {
  * @param {string} arraybuf
  * @returns {Promise<Array>}
  */
-async function decodeArrayBuffer(arraybuf) {
+export async function decodeArrayBuffer(arraybuf) {
   const buf = Buffer.from(arraybuf);
 
   let data = await parseNbt(buf);
-  data = nbt.simplify(data);
+  data = simplify(data);
 
   const items = data.i;
   return items;
 }
-
-module.exports = {
-  decodeData,
-  decodeArrayBuffer
-};

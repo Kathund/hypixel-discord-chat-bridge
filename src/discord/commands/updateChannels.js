@@ -1,17 +1,26 @@
-const hypixelRebornAPI = require("../../contracts/API/HypixelRebornAPI.js");
-const { replaceVariables } = require("../../contracts/helperFunctions.js");
-const { SuccessEmbed } = require("../../contracts/embedHandler.js");
-const config = require("../../../config.json");
-const { SlashCommandBuilder } = require("discord.js");
+import { replaceVariables } from "../../contracts/helperFunctions.js";
+import { SuccessEmbed } from "../../contracts/embedHandler.js";
+import DiscordCommand from "../../contracts/DiscordCommand.js";
+import HypixelAPI from "../../contracts/API/HypixelAPI.js";
+import { SlashCommandBuilder } from "discord.js";
+import config from "../../../config.json" with { type: "json" };
 
-module.exports = {
-  data: new SlashCommandBuilder().setName("update-channels").setDescription("Update the stats Channels"),
-  channelsCommand: true,
-  moderatorOnly: true,
-  requiresBot: true,
+class Command extends DiscordCommand {
+  /** @param {import("../discord/DiscordManager.js").default} discord */
+  constructor(discord) {
+    super(discord);
+    this.data = new SlashCommandBuilder().setName("update-channels").setDescription("Update the stats Channels");
+    this.channelsCommand = true;
+    this.moderatorOnly = true;
+    this.requiresBot = true;
+  }
 
-  execute: async (interaction, extra = {}) => {
-    const hypixelGuild = await hypixelRebornAPI.getGuild("player", bot.username);
+  /**
+   * @param {import("discord.js").ChatInputCommandInteraction} interaction
+   * @param {{hidden: boolean}} [extra={hidden: false}]
+   */
+  async onCommand(interaction, extra = {}) {
+    const hypixelGuild = await HypixelAPI.getGuild("player", bot.username);
     const [channels, roles] = await Promise.all([guild.channels.fetch(), guild.roles.fetch()]);
 
     const stats = {
@@ -41,4 +50,6 @@ module.exports = {
       await interaction.followUp({ embeds: [embed] });
     }
   }
-};
+}
+
+export default Command;

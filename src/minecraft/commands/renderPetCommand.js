@@ -1,8 +1,8 @@
-const { getLatestProfile } = require("../../../API/functions/getLatestProfile.js");
-const { titleCase } = require("../../contracts/helperFunctions.js");
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
+import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
+import { titleCase } from "../../contracts/helperFunctions.js";
+import MinecraftCommand from "../../contracts/MinecraftCommand.js";
 
-class RenderCommand extends minecraftCommand {
+class PetCommand extends MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */
   constructor(minecraft) {
     super(minecraft);
@@ -48,4 +48,4 @@ class RenderCommand extends minecraftCommand {
   }
 }
 
-module.exports = RenderCommand;
+export default PetCommand;

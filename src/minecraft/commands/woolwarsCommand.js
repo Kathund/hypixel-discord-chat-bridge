@@ -1,8 +1,8 @@
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
-const { formatNumber } = require("../../contracts/helperFunctions.js");
-const hypixel = require("../../contracts/API/HypixelRebornAPI.js");
+import MinecraftCommand from "../../contracts/MinecraftCommand.js";
+import { formatNumber } from "../../contracts/helperFunctions.js";
+import HypixelAPI from "../../contracts/API/HypixelAPI.js";
 
-class WoolwarsCommand extends minecraftCommand {
+class WoolwarsCommand extends MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */
   constructor(minecraft) {
     super(minecraft);
@@ -27,7 +27,7 @@ class WoolwarsCommand extends minecraftCommand {
     try {
       player = this.getArgs(message)[0] || player;
 
-      const hypixelPlayer = await hypixel.getPlayer(player);
+      const hypixelPlayer = await HypixelAPI.getPlayer(player);
       if (hypixelPlayer.stats?.woolwars === undefined) {
         return this.send(`${player} has never played WoolWars.`);
       }
@@ -48,4 +48,4 @@ class WoolwarsCommand extends minecraftCommand {
   }
 }
 
-module.exports = WoolwarsCommand;
+export default WoolwarsCommand;

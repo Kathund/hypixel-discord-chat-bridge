@@ -1,17 +1,22 @@
-const HypixelDiscordChatBridgeError = require("../../contracts/errorHandler.js");
-const { Embed } = require("../../contracts/embedHandler.js");
-const { getCommands } = require("./infoCommand.js");
-const config = require("../../../config.json");
-const fs = require("fs");
-const { SlashCommandBuilder } = require("discord.js");
+import HypixelDiscordChatBridgeError from "../../contracts/errorHandler.js";
+import DiscordCommand from "../../contracts/DiscordCommand.js";
+import { Embed } from "../../contracts/embedHandler.js";
+import { SlashCommandBuilder } from "discord.js";
+import { getCommands } from "./infoCommand.js";
+import config from "../../../config.json" with { type: "json" };
 
-module.exports = {
-  data: new SlashCommandBuilder()
-    .setName("help")
-    .setDescription("Shows the help menu.")
-    .addStringOption((option) => option.setName("command").setDescription("Bot information about a specific command")),
+class HelpCommand extends DiscordCommand {
+  /** @param {import("../discord/DiscordManager.js").default} discord */
+  constructor(discord) {
+    super(discord);
+    this.data = new SlashCommandBuilder()
+      .setName("help")
+      .setDescription("Shows the help menu.")
+      .addStringOption((option) => option.setName("command").setDescription("Bot information about a specific command"));
+  }
 
-  execute: async (interaction) => {
+  /** @param {import("discord.js").ChatInputCommandInteraction} interaction */
+  async onCommand(interaction) {
     try {
       const commandName = interaction.options.getString("command") || undefined;
       const { discordCommands, minecraftCommands } = getCommands(interaction.client.commands);
@@ -40,11 +45,13 @@ module.exports = {
 
         await interaction.followUp({ embeds: [helpMenu] });
       } else {
-        const minecraftCommand = fs
-          .readdirSync("./src/minecraft/commands")
-          .filter((file) => file.endsWith(".js"))
-          .map((file) => new (require(`../../minecraft/commands/${file}`))())
-          .find((command) => command.name === commandName || command.aliases.includes(commandName));
+        // TODO: i brokie :3 - kat
+        // TODO: @DuckySoLucky Please fix :3
+        // const minecraftCommand = readdirSync("./src/minecraft/commands")
+        //  .filter((file) => file.endsWith(".js"))
+        //  .map((file) => new (require(`../../minecraft/commands/${file}`))())
+        //  .find((command) => command.name === commandName || command.aliases.includes(commandName));
+        const minecraftCommand = undefined;
 
         const type = minecraftCommand ? "minecraft" : "discord";
 
@@ -84,4 +91,6 @@ module.exports = {
       console.error(error);
     }
   }
-};
+}
+
+export default HelpCommand;

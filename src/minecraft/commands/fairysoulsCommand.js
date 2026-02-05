@@ -1,7 +1,7 @@
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
-const { getLatestProfile } = require("../../../API/functions/getLatestProfile.js");
+import MinecraftCommand from "../../contracts/MinecraftCommand.js";
+import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
 
-class FairySoulsCommand extends minecraftCommand {
+class FairySoulsCommand extends MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */
   constructor(minecraft) {
     super(minecraft);
@@ -38,4 +38,4 @@ class FairySoulsCommand extends minecraftCommand {
   }
 }
 
-module.exports = FairySoulsCommand;
+export default FairySoulsCommand;

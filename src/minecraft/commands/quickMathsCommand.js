@@ -1,26 +1,26 @@
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
-const { delay } = require("../../contracts/helperFunctions.js");
-const config = require("../../../config.json");
+import MinecraftCommand from "../../contracts/MinecraftCommand.js";
+import { delay } from "../../contracts/helperFunctions.js";
+import config from "../../../config.json" with { type: "json" };
 
 /**
  * Returns the answer
  * @param {string} message
  * @returns {string}
  */
-const getAnswer = (message) => {
+function getAnswer(message) {
   if (message.includes(config.minecraft.bot.messageFormat)) {
     return message.split(config.minecraft.bot.messageFormat)[1].trim();
   }
 
   return message.split(": ")[1];
-};
+}
 
 /**
  * Returns the username
  * @param {string} message
  * @returns {string | null}
  */
-const getUsername = (message) => {
+function getUsername(message) {
   const match = message.match(/^(?:(?:\[(?<rank>[^\]]+)\] )?(?:(?<username>\w+)(?: \[(?<guildRank>[^\]]+)\])?: )?)?(?<message>.+)$/);
 
   if (!match?.groups) {
@@ -28,9 +28,9 @@ const getUsername = (message) => {
   }
 
   return match.groups.username;
-};
+}
 
-class QuickMathsCommand extends minecraftCommand {
+class QuickMathsCommand extends MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */
   constructor(minecraft) {
     super(minecraft);
@@ -93,4 +93,4 @@ class QuickMathsCommand extends minecraftCommand {
   }
 }
 
-module.exports = QuickMathsCommand;
+export default QuickMathsCommand;

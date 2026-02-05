@@ -5,7 +5,7 @@
  * @param {import("../../types/profiles").Member} profile
  * @returns {import("./jacob.types").Jacob | null}
  */
-function getJacob(profile) {
+export function getJacob(profile) {
   try {
     if (profile?.jacobs_contest === undefined) {
       return null;
@@ -38,7 +38,3 @@ function getJacob(profile) {
     return null;
   }
 }
-
-module.exports = {
-  getJacob
-};

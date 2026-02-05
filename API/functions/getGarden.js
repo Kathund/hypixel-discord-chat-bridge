@@ -1,7 +1,6 @@
 /* eslint-disable no-throw-literal */
-const config = require("../../config.json");
-// @ts-ignore
-const { get } = require("axios");
+import axios from "axios";
+import config from "../../config.json" with { type: "json" };
 
 const cache = new Map();
 
@@ -10,7 +9,7 @@ const cache = new Map();
  * @param {string} profileID
  * @returns {Promise<{ garden: import("../../types/garden").Garden}>}
  */
-async function getGarden(profileID) {
+export async function getGarden(profileID) {
   if (cache.has(profileID)) {
     const data = cache.get(profileID);
 
@@ -19,7 +18,7 @@ async function getGarden(profileID) {
     }
   }
 
-  const { data } = await get(`https://api.hypixel.net/v2/skyblock/garden?key=${config.minecraft.API.hypixelAPIkey}&profile=${profileID}`);
+  const { data } = await axios.get(`https://api.hypixel.net/v2/skyblock/garden?key=${config.minecraft.API.hypixelAPIkey}&profile=${profileID}`);
 
   if (data === undefined || data.success === false) {
     throw "Request to Hypixel API failed. Please try again!";
@@ -37,5 +36,3 @@ async function getGarden(profileID) {
 
   return { garden: gardenData };
 }
-
-module.exports = { getGarden };

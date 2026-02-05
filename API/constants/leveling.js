@@ -1,4 +1,4 @@
-const skillTables = {
+export const skillTables = {
   default: {
     1: 50,
     2: 125,
@@ -311,7 +311,7 @@ const skillTables = {
   }
 };
 
-const cropTables = {
+export const cropTables = {
   WHEAT: {
     1: 30,
     2: 50,
@@ -803,9 +803,4 @@ const cropTables = {
     8: 2000,
     9: 4000
   }
-};
-
-module.exports = {
-  skillTables,
-  cropTables
 };

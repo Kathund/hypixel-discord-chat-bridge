@@ -1,8 +1,8 @@
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
-const hypixel = require("../../contracts/API/HypixelRebornAPI.js");
-const { formatNumber, formatError, titleCase } = require("../../contracts/helperFunctions.js");
+import { formatNumber, formatError, titleCase } from "../../contracts/helperFunctions.js";
+import MinecraftCommand from "../../contracts/MinecraftCommand.js";
+import HypixelAPI from "../../contracts/API/HypixelAPI.js";
 
-class GuildInformationCommand extends minecraftCommand {
+class GuildCommand extends MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */
   constructor(minecraft) {
     super(minecraft);
@@ -29,7 +29,7 @@ class GuildInformationCommand extends minecraftCommand {
         .map((arg) => titleCase(arg))
         .join(" ");
 
-      const guild = await hypixel.getGuild("name", guildName, { noCaching: false });
+      const guild = await HypixelAPI.getGuild("name", guildName, { noCaching: false });
       if (!guild) {
         return this.send(`Guild ${guildName} not found.`);
       }
@@ -43,4 +43,4 @@ class GuildInformationCommand extends minecraftCommand {
   }
 }
 
-module.exports = GuildInformationCommand;
+export default GuildCommand;

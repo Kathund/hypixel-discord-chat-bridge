@@ -1,9 +1,14 @@
+import "./src/Configuration.js";
+import "./src/Updater.js";
+import "./src/Logger.js";
+
 /* eslint-disable no-console */
 process.on("uncaughtException", (error) => console.log(error));
-const app = require("./src/Application.js");
+import Application from "./src/Application.js";
 
 ("use strict");
 
+const app = new Application();
 app
   .register()
   .then(() => {

@@ -1,9 +1,9 @@
-const { getLatestProfile } = require("../../../API/functions/getLatestProfile.js");
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
-const { formatNumber } = require("../../contracts/helperFunctions.js");
-const { getHotm } = require("../../../API/stats/hotm.js");
+import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
+import MinecraftCommand from "../../contracts/MinecraftCommand.js";
+import { formatNumber } from "../../contracts/helperFunctions.js";
+import { getHotm } from "../../../API/stats/hotm.js";
 
-class HotmCommand extends minecraftCommand {
+class HotmCommand extends MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */
   constructor(minecraft) {
     super(minecraft);
@@ -48,4 +48,4 @@ class HotmCommand extends minecraftCommand {
   }
 }
 
-module.exports = HotmCommand;
+export default HotmCommand;

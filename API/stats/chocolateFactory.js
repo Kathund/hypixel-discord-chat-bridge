@@ -4,7 +4,7 @@
  * @param {import("../../types/profiles").Member} profile
  * @returns {import("./chocolateFactory.types").ChocolateFactory | null}
  */
-function getChocolateFactory(profile) {
+export function getChocolateFactory(profile) {
   try {
     if (!profile.events?.easter) {
       return null;
@@ -32,7 +32,3 @@ function getChocolateFactory(profile) {
     return null;
   }
 }
-
-module.exports = {
-  getChocolateFactory
-};

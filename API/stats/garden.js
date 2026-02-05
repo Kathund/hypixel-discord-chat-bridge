@@ -1,11 +1,11 @@
-const { getLevelByXp } = require("../constants/skills.js");
+import { getLevelByXp } from "../constants/skills.js";
 
 /**
  * Returns the garden stats of the user.
  * @param {import("../../types/garden.js").Garden} garden
  * @returns {import("./garden.types").Garden | null}
  */
-function getGarden(garden) {
+export function getGarden(garden) {
   try {
     if (!garden) {
       return null;
@@ -31,7 +31,3 @@ function getGarden(garden) {
     return null;
   }
 }
-
-module.exports = {
-  getGarden
-};

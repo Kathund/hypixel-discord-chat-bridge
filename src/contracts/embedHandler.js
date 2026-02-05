@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require("discord.js");
+import { EmbedBuilder } from "discord.js";
 
 /**
  * Constructs a new instance of the class.
@@ -6,7 +6,7 @@ const { EmbedBuilder } = require("discord.js");
  * @param {string} title - The title of the embed.
  * @param {string} description - The description of the embed.
  */
-class Embed extends EmbedBuilder {
+export class Embed extends EmbedBuilder {
   constructor() {
     super();
 
@@ -22,7 +22,7 @@ class Embed extends EmbedBuilder {
  * ErrorEmbed class for success messages.
  * @extends {Embed}
  */
-class ErrorEmbed extends Embed {
+export class ErrorEmbed extends Embed {
   /**
    * Constructs a new ErrorEmbed instance.
    * @param {string} description - The description of the error.
@@ -45,7 +45,7 @@ class ErrorEmbed extends Embed {
  * SuccessEmbed class for success messages.
  * @extends {Embed}
  */
-class SuccessEmbed extends Embed {
+export class SuccessEmbed extends Embed {
   /**
    * Constructs a new SuccessEmbed instance.
    * @param {string} description - The description of the success.
@@ -63,9 +63,3 @@ class SuccessEmbed extends Embed {
     this.setDescription(description);
   }
 }
-
-module.exports = {
-  Embed,
-  ErrorEmbed,
-  SuccessEmbed
-};

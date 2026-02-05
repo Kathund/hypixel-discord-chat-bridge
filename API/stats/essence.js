@@ -3,7 +3,7 @@
  * @param {import("../../types/profiles").Member} profile
  * @returns {import("./essence.types").Essence | null}
  */
-function getEssence(profile) {
+export function getEssence(profile) {
   try {
     return {
       diamond: profile.currencies?.essence?.DIAMOND?.current || 0,
@@ -20,7 +20,3 @@ function getEssence(profile) {
     return null;
   }
 }
-
-module.exports = {
-  getEssence
-};

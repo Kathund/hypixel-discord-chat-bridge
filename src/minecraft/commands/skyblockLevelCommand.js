@@ -1,7 +1,7 @@
-const { getLatestProfile } = require("../../../API/functions/getLatestProfile.js");
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
+import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
+import MinecraftCommand from "../../contracts/MinecraftCommand.js";
 
-class CatacombsCommand extends minecraftCommand {
+class SkyBlockLevelCommand extends MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */
   constructor(minecraft) {
     super(minecraft);
@@ -39,4 +39,4 @@ class CatacombsCommand extends minecraftCommand {
   }
 }
 
-module.exports = CatacombsCommand;
+export default SkyBlockLevelCommand;

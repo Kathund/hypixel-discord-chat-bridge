@@ -1,9 +1,9 @@
-const { getLatestProfile } = require("../../../API/functions/getLatestProfile.js");
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
-const { formatNumber } = require("../../contracts/helperFunctions.js");
-const { getKuudra } = require("../../../API/stats/crimson.js");
+import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
+import MinecraftCommand from "../../contracts/MinecraftCommand.js";
+import { formatNumber } from "../../contracts/helperFunctions.js";
+import { getKuudra } from "../../../API/stats/crimson.js";
 
-class KuudraCommand extends minecraftCommand {
+class KuudraCommand extends MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */
   constructor(minecraft) {
     super(minecraft);
@@ -49,4 +49,4 @@ class KuudraCommand extends minecraftCommand {
   }
 }
 
-module.exports = KuudraCommand;
+export default KuudraCommand;

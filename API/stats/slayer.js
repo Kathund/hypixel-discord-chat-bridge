@@ -1,4 +1,4 @@
-const xp_tables = require("../constants/xp_tables.js");
+import { slayer as slayerTable } from "../constants/xp_tables.js";
 
 /**
  * Get slayer level of a player.
@@ -14,7 +14,7 @@ function getSlayerLevel(profile, slayer) {
       xp: 0,
       level: 0,
       // @ts-ignore
-      xpForNext: xp_tables.slayer[slayer][0],
+      xpForNext: slayerTable[slayer][0],
       progress: 0,
       totalKills: 0,
       kills: {}
@@ -27,16 +27,16 @@ function getSlayerLevel(profile, slayer) {
   const maxLevel = 9;
 
   // @ts-ignore
-  for (let i = 0; i < xp_tables.slayer[slayer].length; i++) {
+  for (let i = 0; i < slayerTable[slayer].length; i++) {
     // @ts-ignore
-    if (xp_tables.slayer[slayer][i] <= experience) {
+    if (slayerTable[slayer][i] <= experience) {
       level = i + 1;
     }
   }
 
   if (level < maxLevel) {
     // @ts-ignore
-    xpForNext = Math.ceil(xp_tables.slayer[slayer][level]);
+    xpForNext = Math.ceil(slayerTable[slayer][level]);
   }
 
   progress = level >= maxLevel ? 0 : Math.max(0, Math.min(experience / xpForNext, 1));
@@ -69,8 +69,7 @@ function getSlayerLevel(profile, slayer) {
  * @param {import("../../types/profiles.js").Member} profile
  * @returns {import("./slayer.types.js").Slayer | null}
  */
-
-function getSlayer(profile) {
+export function getSlayer(profile) {
   try {
     return {
       zombie: getSlayerLevel(profile, "zombie"),
@@ -84,7 +83,3 @@ function getSlayer(profile) {
     return null;
   }
 }
-
-module.exports = {
-  getSlayer
-};

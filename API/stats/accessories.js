@@ -1,5 +1,5 @@
-const { MAGICAL_POWER } = require("../constants/accessories.js");
-const { decodeData } = require("../utils/nbt.js");
+import { MAGICAL_POWER } from "../constants/accessories.js";
+import { decodeData } from "../utils/nbt.js";
 
 /**
  * Returns the amount of magical power an accessory provides.
@@ -46,8 +46,7 @@ function getRarity(lore) {
  * @param {import("../../types/profiles.js").Member} profile
  * @returns {Promise<import("./accessories.types").Accessories | null>}
  */
-
-async function getAccessories(profile) {
+export async function getAccessories(profile) {
   try {
     /** @type {import("./accessories.types").Accessories}*/
     const output = {
@@ -94,7 +93,3 @@ async function getAccessories(profile) {
     return null;
   }
 }
-
-module.exports = {
-  getAccessories
-};

@@ -1,16 +1,19 @@
-const { isLinkedMember, isGuildMember, isVerifiedMember } = require("../../contracts/verificaiton.js");
-const HypixelDiscordChatBridgeError = require("../../contracts/errorHandler.js");
-const { ErrorEmbed, SuccessEmbed } = require("../../contracts/embedHandler.js");
-// eslint-disable-next-line no-unused-vars
-const { CommandInteraction, MessageFlags, Events } = require("discord.js");
-const config = require("../../../config.json");
+import { isLinkedMember, isGuildMember, isVerifiedMember } from "../../contracts/verificaiton.js";
+import HypixelDiscordChatBridgeError from "../../contracts/errorHandler.js";
+import { ErrorEmbed, SuccessEmbed } from "../../contracts/embedHandler.js";
+import DiscordEvent from "../../contracts/DiscordEvent.js";
+import { MessageFlags, Events } from "discord.js";
+import config from "../../../config.json" with { type: "json" };
 
-module.exports = {
-  name: Events.InteractionCreate,
-  /**
-   * @param {CommandInteraction} interaction
-   */
-  async execute(interaction) {
+class InteractionCreateEvent extends DiscordEvent {
+  /** @param {import("../DiscordManager.js").default} discord */
+  constructor(discord) {
+    super(discord);
+    this.event = Events.InteractionCreate;
+  }
+
+  /** @param {import("discord.js").BaseInteraction} interaction */
+  async onEvent(interaction) {
     try {
       if (interaction.isChatInputCommand()) {
         const memberRoles = interaction.member.roles.cache.map((role) => role.id);
@@ -92,9 +95,9 @@ module.exports = {
       }
     }
   }
-};
+}
 
-function isBotOnline() {
+export function isBotOnline() {
   if (bot === undefined || bot._client.chat === undefined) {
     return false;
   }
@@ -102,7 +105,7 @@ function isBotOnline() {
   return true;
 }
 
-function isModerator(interaction) {
+export function isModerator(interaction) {
   const user = interaction.member;
   const userRoles = user.roles.cache.map((role) => role.id);
 
@@ -112,3 +115,5 @@ function isModerator(interaction) {
 
   return true;
 }
+
+export default InteractionCreateEvent;

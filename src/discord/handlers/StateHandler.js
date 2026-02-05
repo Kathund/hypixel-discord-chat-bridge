@@ -1,4 +1,8 @@
-const config = require("../../../config.json");
+import config from "../../../config.json" with { type: "json" };
+
+import "../other/removeExpiredInactivity.js";
+import "../other/statsChannels.js";
+import "../other/updateUsers.js";
 
 class StateHandler {
   constructor(discord) {
@@ -18,10 +22,6 @@ class StateHandler {
     if (channel === undefined) {
       return console.error(`Channel "Guild" not found!`);
     }
-
-    if (config.verification.inactivity.enabled) require("../other/removeExpiredInactivity.js");
-    if (config.verification.autoRoleUpdater.enabled) require("../other/updateUsers.js");
-    if (config.statsChannels.enabled) require("../other/statsChannels.js");
 
     channel.send({
       embeds: [
@@ -68,4 +68,4 @@ class StateHandler {
   }
 }
 
-module.exports = StateHandler;
+export default StateHandler;

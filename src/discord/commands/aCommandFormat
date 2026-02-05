@@ -1,8 +1,19 @@
-module.exports = {
-  data: new SlashCommandBuilder()
-    .setName("NAME")
-    .setDescription("DESCRIPTION")
-    .addStringOption((option) => option.setName("OPTION_NAME").setDescription("OPTION_DESCRIPTION")),
+import DiscordCommand from "../../contracts/DiscordCommand.js";
 
-  execute: async (interaction) => {},
-};
+class Command extends DiscordCommand {
+  /** @param {import("../discord/DiscordManager.js").default} discord */
+  constructor(discord) {
+    super(discord);
+    this.data = new SlashCommandBuilder()
+      .setName("NAME")
+      .setDescription("DESCRIPTION")
+      .addStringOption((option) => option.setName("OPTION_NAME").setDescription("OPTION_DESCRIPTION"));
+  }
+
+  /** @param {import("discord.js").ChatInputCommandInteraction} interaction */
+  async onCommand(interaction) {
+    await interaction.followUp({ content: "DuckySoRatty" });
+  }
+}
+
+export default Command;

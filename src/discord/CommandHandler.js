@@ -1,6 +1,6 @@
-const { REST, Routes, Collection } = require("discord.js");
-const config = require("../../config.json");
-const fs = require("fs");
+import { REST, Routes, Collection } from "discord.js";
+import config from "../../config.json" with { type: "json" };
+import { readdirSync } from "fs";
 
 class CommandHandler {
   constructor(discord) {
@@ -10,10 +10,10 @@ class CommandHandler {
   async loadCommands() {
     const commands = [];
     this.discord.client.commands = new Collection();
-    const commandFiles = fs.readdirSync("src/discord/commands").filter((file) => file.endsWith(".js"));
+    const commandFiles = readdirSync("src/discord/commands").filter((file) => file.endsWith(".js"));
 
     for (const file of commandFiles) {
-      const command = require(`./commands/${file}`);
+      const command = new (await import(`./commands/${file}`)).default(this.discord);
       if (command.inactivityCommand === true && config.verification.inactivity.enabled == false) {
         continue;
       }
@@ -38,4 +38,4 @@ class CommandHandler {
   }
 }
 
-module.exports = CommandHandler;
+export default CommandHandler;

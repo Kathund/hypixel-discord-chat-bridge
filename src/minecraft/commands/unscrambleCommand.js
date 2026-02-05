@@ -1,5 +1,5 @@
-const { getRandomWord, scrambleWord } = require("../constants/words.js");
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
+import { getRandomWord, scrambleWord } from "../constants/words.js";
+import MinecraftCommand from "../../contracts/MinecraftCommand.js";
 
 /**
  * Returns the word
@@ -25,7 +25,7 @@ const getUsername = (message) => {
 
 const cooldowns = new Map();
 
-class unscrambleCommand extends minecraftCommand {
+class UnscrambleCommand extends MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */
   constructor(minecraft) {
     super(minecraft);
@@ -99,4 +99,4 @@ class unscrambleCommand extends minecraftCommand {
   }
 }
 
-module.exports = unscrambleCommand;
+export default UnscrambleCommand;

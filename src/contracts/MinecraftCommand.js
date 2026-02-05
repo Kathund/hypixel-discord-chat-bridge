@@ -1,7 +1,7 @@
-const { splitMessage, delay, generateID } = require("./helperFunctions.js");
-const config = require("../../config.json");
+import { splitMessage, delay, generateID } from "./helperFunctions.js";
+import config from "../../config.json" with { type: "json" };
 
-class minecraftCommand {
+class MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */
   constructor(minecraft) {
     this.minecraft = minecraft;
@@ -128,4 +128,4 @@ class minecraftCommand {
   }
 }
 
-module.exports = minecraftCommand;
+export default MinecraftCommand;

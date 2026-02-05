@@ -1,10 +1,16 @@
-const { SlashCommandBuilder } = require("discord.js");
-const { Embed } = require("../../contracts/embedHandler.js");
+import { SlashCommandBuilder } from "discord.js";
+import { Embed } from "../../contracts/embedHandler.js";
+import DiscordCommand from "../../contracts/DiscordCommand.js";
 
-module.exports = {
-  data: new SlashCommandBuilder().setName("ping").setDescription("Show the latency of the bot."),
+class PingCommand extends DiscordCommand {
+  /** @param {import("../discord/DiscordManager.js").default} discord */
+  constructor(discord) {
+    super(discord);
+    this.data = new SlashCommandBuilder().setName("ping").setDescription("Show the latency of the bot.");
+  }
 
-  execute: async (interaction) => {
+  /** @param {import("discord.js").ChatInputCommandInteraction} interaction */
+  async onCommand(interaction) {
     const clientLatency = Date.now() - interaction.createdTimestamp;
     const apiLatency = interaction.client.ws.ping;
 
@@ -12,4 +18,6 @@ module.exports = {
 
     await interaction.followUp({ embeds: [embed] });
   }
-};
+}
+
+export default PingCommand;

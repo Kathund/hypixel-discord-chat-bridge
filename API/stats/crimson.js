@@ -1,12 +1,12 @@
 // CREDITS: by @Kathund (https://github.com/Kathund)
-const { titleCase } = require("../../src/contracts/helperFunctions.js");
+import { titleCase } from "../../src/contracts/helperFunctions.js";
 
 /**
  * Returns the Crimson Isle stats of a player.
  * @param {import("../../types/profiles.js").Member} profile
  * @returns {import("./crimson.types").CrimsonIsle | null}
  */
-function getCrimsonIsle(profile) {
+export function getCrimsonIsle(profile) {
   try {
     const crimsonIsle = profile.nether_island_player_data;
     if (crimsonIsle === undefined) {
@@ -31,7 +31,7 @@ function getCrimsonIsle(profile) {
  * @param {import("../../types/profiles.js").Member} profile
  * @returns {import("./crimson.types").Dojo | null}
  */
-function getDojo(profile) {
+export function getDojo(profile) {
   try {
     const crimsonIsle = profile.nether_island_player_data;
     if (crimsonIsle === undefined) {
@@ -127,7 +127,7 @@ function getBelt(points) {
  * @param {import("../../types/profiles.js").Member} profile
  * @returns {import("./crimson.types").Kuudra | null}
  */
-function getKuudra(profile) {
+export function getKuudra(profile) {
   try {
     const crimsonIsle = profile.nether_island_player_data;
     if (!crimsonIsle) {
@@ -163,7 +163,7 @@ function getTrophyFishRank(rewards) {
  * @param {import("../../types/profiles.js").Member} profile
  * @returns {import("./crimson.types").TrophyFishing | null}
  */
-function getTrophyFish(profile) {
+export function getTrophyFish(profile) {
   try {
     const trophyFish = profile?.trophy_fish;
     if (trophyFish === undefined) {
@@ -186,10 +186,3 @@ function getTrophyFish(profile) {
     return null;
   }
 }
-
-module.exports = {
-  getCrimsonIsle,
-  getTrophyFish,
-  getKuudra,
-  getDojo
-};

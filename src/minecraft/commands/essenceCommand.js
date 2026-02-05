@@ -1,9 +1,9 @@
-const { getLatestProfile } = require("../../../API/functions/getLatestProfile.js");
-const { formatNumber, titleCase } = require("../../contracts/helperFunctions.js");
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
-const { getEssence } = require("../../../API/stats/essence.js");
+import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
+import { formatNumber, titleCase } from "../../contracts/helperFunctions.js";
+import MinecraftCommand from "../../contracts/MinecraftCommand.js";
+import { getEssence } from "../../../API/stats/essence.js";
 
-class EssenceCommand extends minecraftCommand {
+class EssenceCommand extends MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */
   constructor(minecraft) {
     super(minecraft);
@@ -50,4 +50,4 @@ class EssenceCommand extends minecraftCommand {
   }
 }
 
-module.exports = EssenceCommand;
+export default EssenceCommand;

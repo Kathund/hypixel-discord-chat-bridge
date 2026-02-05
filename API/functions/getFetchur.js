@@ -1,6 +1,6 @@
-const items = require("../constants/fetchur_items.js");
+import items from "../constants/fetchur_items.js";
 
-function getFetchur() {
+export function getFetchur() {
   const today = new Date();
   today.setHours(today.getHours() - 6);
   const day = today.getDate();
@@ -8,5 +8,3 @@ function getFetchur() {
   const item = day <= 12 ? items[day] : items[day % 12];
   return item;
 }
-
-module.exports = { getFetchur };

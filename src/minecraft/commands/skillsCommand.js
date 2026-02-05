@@ -1,10 +1,10 @@
-const { getLatestProfile } = require("../../../API/functions/getLatestProfile.js");
-const { formatNumber, titleCase } = require("../../contracts/helperFunctions.js");
-const { getSkillAverage } = require("../../../API/constants/skills.js");
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
-const { getSkills } = require("../../../API/stats/skills.js");
+import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
+import { formatNumber, titleCase } from "../../contracts/helperFunctions.js";
+import { getSkillAverage } from "../../../API/constants/skills.js";
+import MinecraftCommand from "../../contracts/MinecraftCommand.js";
+import { getSkills } from "../../../API/stats/skills.js";
 
-class SkillsCommand extends minecraftCommand {
+class SkillsCommand extends MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */
   constructor(minecraft) {
     super(minecraft);
@@ -50,4 +50,4 @@ class SkillsCommand extends minecraftCommand {
   }
 }
 
-module.exports = SkillsCommand;
+export default SkillsCommand;

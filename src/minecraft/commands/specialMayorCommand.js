@@ -1,4 +1,4 @@
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
+import MinecraftCommand from "../../contracts/MinecraftCommand.js";
 
 /*
 Derpy = 368 mod 24 = 8
@@ -51,7 +51,7 @@ function getSpecialMayor(skyblockYear) {
   return specialMayor;
 }
 
-class SpecialMayorCommand extends minecraftCommand {
+class SpecialMayorCommand extends MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */
   constructor(minecraft) {
     super(minecraft);
@@ -83,4 +83,4 @@ class SpecialMayorCommand extends minecraftCommand {
   }
 }
 
-module.exports = SpecialMayorCommand;
+export default SpecialMayorCommand;

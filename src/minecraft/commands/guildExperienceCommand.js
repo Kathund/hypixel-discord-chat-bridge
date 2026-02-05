@@ -1,9 +1,9 @@
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
-const { formatError } = require("../../contracts/helperFunctions.js");
-const hypixel = require("../../contracts/API/HypixelRebornAPI.js");
-const { getUUID } = require("../../contracts/API/mowojangAPI.js");
+import MinecraftCommand from "../../contracts/MinecraftCommand.js";
+import { formatError } from "../../contracts/helperFunctions.js";
+import { getUUID } from "../../contracts/API/mowojangAPI.js";
+import HypixelAPI from "../../contracts/API/HypixelAPI.js";
 
-class GuildExperienceCommand extends minecraftCommand {
+class GuildExperienceCommand extends MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */
   constructor(minecraft) {
     super(minecraft);
@@ -28,7 +28,7 @@ class GuildExperienceCommand extends minecraftCommand {
     player = this.getArgs(message)[0] || player;
 
     try {
-      const [uuid, guild] = await Promise.all([getUUID(player), hypixel.getGuild("player", player, { noCaching: false })]);
+      const [uuid, guild] = await Promise.all([getUUID(player), HypixelAPI.getGuild("player", player, { noCaching: false })]);
 
       /** @type {import('hypixel-api-reborn').Guild['members']} */
       const guildMembers = guild.members;
@@ -46,4 +46,4 @@ class GuildExperienceCommand extends minecraftCommand {
   }
 }
 
-module.exports = GuildExperienceCommand;
+export default GuildExperienceCommand;

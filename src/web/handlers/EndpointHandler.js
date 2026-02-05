@@ -19,4 +19,4 @@ class EndpointHandler {
   }
 }
 
-module.exports = EndpointHandler;
+export default EndpointHandler;

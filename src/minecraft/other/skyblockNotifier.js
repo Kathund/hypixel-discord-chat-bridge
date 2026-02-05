@@ -1,7 +1,8 @@
-const config = require("../../../config.json");
-const cheerio = require("cheerio");
-const Rss = require("rss-parser");
-const axios = require("axios");
+import config from "../../../config.json" with { type: "json" };
+import { load } from "cheerio";
+import Rss from "rss-parser";
+import axios from "axios";
+
 const parser = new Rss();
 
 if (config.minecraft.hypixelUpdates.enabled === true) {
@@ -69,14 +70,14 @@ async function checkForHypixelUpdates(firstTime = false) {
         continue;
       }
 
-      if (bot !== undefined && bot._client.chat !== undefined && firstTime === false) {
+      if (firstTime === false && bot !== undefined && bot._client.chat !== undefined) {
         const response = await axios.get(link, {
           headers: {
             "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:89.0) Gecko/20100101 Firefox/89.0"
           }
         });
 
-        const $ = cheerio.load(response.data);
+        const $ = load(response.data);
         const time = parseInt($("time.u-dt").eq(0).attr("data-time"));
         if (time + 43200 < Math.floor(Date.now() / 1000)) {
           continue;

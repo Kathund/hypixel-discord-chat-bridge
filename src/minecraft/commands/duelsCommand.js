@@ -1,8 +1,8 @@
-const { formatNumber, formatError } = require("../../contracts/helperFunctions.js");
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
-const hypixel = require("../../contracts/API/HypixelRebornAPI.js");
+import { formatNumber, formatError } from "../../contracts/helperFunctions.js";
+import MinecraftCommand from "../../contracts/MinecraftCommand.js";
+import HypixelAPI from "../../contracts/API/HypixelAPI.js";
 
-class DuelsStatsCommand extends minecraftCommand {
+class DuelsCommand extends MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */
   constructor(minecraft) {
     super(minecraft);
@@ -51,7 +51,7 @@ class DuelsStatsCommand extends minecraftCommand {
         }
       }
 
-      const hypixelPlayer = await hypixel.getPlayer(player);
+      const hypixelPlayer = await HypixelAPI.getPlayer(player);
       if (!hypixelPlayer) {
         throw "Player not found.";
       }
@@ -87,4 +87,4 @@ class DuelsStatsCommand extends minecraftCommand {
   }
 }
 
-module.exports = DuelsStatsCommand;
+export default DuelsCommand;

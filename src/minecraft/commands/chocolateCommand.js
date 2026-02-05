@@ -1,9 +1,9 @@
-const { getLatestProfile } = require("../../../API/functions/getLatestProfile.js");
-const { getChocolateFactory } = require("../../../API/stats/chocolateFactory.js");
-const { formatNumber, titleCase } = require("../../contracts/helperFunctions.js");
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
+import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
+import { getChocolateFactory } from "../../../API/stats/chocolateFactory.js";
+import { formatNumber, titleCase } from "../../contracts/helperFunctions.js";
+import MinecraftCommand from "../../contracts/MinecraftCommand.js";
 
-class ChocolateCommand extends minecraftCommand {
+class ChocolateCommand extends MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */
   constructor(minecraft) {
     super(minecraft);
@@ -50,4 +50,4 @@ class ChocolateCommand extends minecraftCommand {
   }
 }
 
-module.exports = ChocolateCommand;
+export default ChocolateCommand;

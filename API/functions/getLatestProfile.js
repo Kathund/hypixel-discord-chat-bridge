@@ -1,12 +1,11 @@
 /* eslint-disable no-throw-literal */
-const { getUUID, getUsername } = require("../../src/contracts/API/mowojangAPI.js");
-const { formatUsername } = require("../../src/contracts/helperFunctions.js");
-const { getMuseum } = require("./getMuseum.js");
-const { getGarden } = require("./getGarden.js");
-const { isUuid } = require("../utils/uuid.js");
-const config = require("../../config.json");
-// @ts-ignore
-const { get } = require("axios");
+import { getUUID, getUsername } from "../../src/contracts/API/mowojangAPI.js";
+import { formatUsername } from "../../src/contracts/helperFunctions.js";
+import { getMuseum } from "./getMuseum.js";
+import { getGarden } from "./getGarden.js";
+import { isUuid } from "../utils/uuid.js";
+import config from "../../config.json" with { type: "json" };
+import axios from "axios";
 
 const cache = new Map();
 
@@ -29,7 +28,7 @@ const cache = new Map();
  * garden?: import("../../types/garden.js").Garden
  * }>}
  */
-async function getLatestProfile(uuid, options = { museum: false, garden: false }) {
+export async function getLatestProfile(uuid, options = { museum: false, garden: false }) {
   if (!isUuid(uuid)) {
     uuid = await getUUID(uuid).catch((error) => {
       throw error;
@@ -46,7 +45,7 @@ async function getLatestProfile(uuid, options = { museum: false, garden: false }
 
   const [username, { data: profileRes }] = await Promise.all([
     getUsername(uuid),
-    get(`https://api.hypixel.net/v2/skyblock/profiles?key=${config.minecraft.API.hypixelAPIkey}&uuid=${uuid}`)
+    axios.get(`https://api.hypixel.net/v2/skyblock/profiles?key=${config.minecraft.API.hypixelAPIkey}&uuid=${uuid}`)
   ]).catch((error) => {
     throw error?.response?.data?.cause ?? "Request to Hypixel API failed. Please try again!";
   });
@@ -87,5 +86,3 @@ async function getLatestProfile(uuid, options = { museum: false, garden: false }
 
   return output;
 }
-
-module.exports = { getLatestProfile };

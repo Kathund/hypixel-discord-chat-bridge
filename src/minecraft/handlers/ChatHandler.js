@@ -1,22 +1,20 @@
-const { checkRequirements, generateEmbed } = require("../../discord/commands/requirementsCommand.js");
-const { replaceAllRanks, replaceVariables } = require("../../contracts/helperFunctions.js");
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
-const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-const hypixel = require("../../contracts/API/HypixelRebornAPI.js");
-const { getUUID } = require("../../contracts/API/mowojangAPI.js");
-const eventHandler = require("../../contracts/EventHandler.js");
-const { isUuid } = require("../../../API/utils/uuid.js");
-const messages = require("../../../messages.json");
-const config = require("../../../config.json");
-const { readFileSync } = require("fs");
-const updateCommand = require("../../discord/commands/updateCommand.js");
+import { checkRequirements, generateEmbed } from "../../discord/commands/requirementsCommand.js";
+import { replaceAllRanks, replaceVariables, delay } from "../../contracts/helperFunctions.js";
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from "discord.js";
+import { updateRoles } from "../../discord/commands/updateCommand.js";
+import { getUUID } from "../../contracts/API/mowojangAPI.js";
+import eventHandler from "../../contracts/EventHandler.js";
+import HypixelAPI from "../../contracts/API/HypixelAPI.js";
+import { isUuid } from "../../../API/utils/uuid.js";
+import messages from "../../../messages.json"  with { type: "json" };
+import config from "../../../config.json" with { type: "json" };
+import { readFileSync } from "fs";
 
-class StateHandler extends eventHandler {
-  constructor(minecraft, command, discord) {
+class ChatHandler extends eventHandler {
+  /** @param {import("../MinecraftManager.js").default} minecraft */
+  constructor(minecraft) {
     super();
     this.minecraft = minecraft;
-    this.discord = discord;
-    this.command = command;
   }
 
   registerEvents(bot) {
@@ -58,7 +56,7 @@ class StateHandler extends eventHandler {
           }
         }
 
-        const members = await hypixel.getGuild("player", bot.username).then(async (guild) => guild.members.map((member) => member.uuid));
+        const members = await HypixelAPI.getGuild("player", bot.username).then(async (guild) => guild.members.map((member) => member.uuid));
         if ((config.minecraft.fragBot.whitelist && whitelisted.includes(username)) || members.includes(uuid)) {
           bot.chat(`/party accept ${username}`);
           await delay(Math.floor(Math.random() * (6900 - 4200 + 1)) + 4200);
@@ -572,11 +570,11 @@ class StateHandler extends eventHandler {
     }
 
     /*if (this.isPartyMessage(message)) {
-      this.minecraft.broadcastCleanEmbed({ 
-        message: `${message}`, 
-        color: 15548997, 
-        channel: 'Guild' 
-      })  
+      this.minecraft.broadcastCleanEmbed({
+        message: `${message}`,
+        color: 15548997,
+        channel: 'Guild'
+      })
     }*/
 
     const regex =
@@ -613,10 +611,10 @@ class StateHandler extends eventHandler {
       if (this.isDiscordMessage(match.groups.message) === true) {
         const { player, command } = this.getCommandData(match.groups.message);
 
-        return this.command.handle(player, command, officer);
+        return this.minecraft.commandHandler.handle(player, command, officer);
       }
 
-      return this.command.handle(match.groups.username, match.groups.message, officer);
+      return this.minecraft.commandHandler.handle(match.groups.username, match.groups.message, officer);
     }
   }
 
@@ -918,7 +916,7 @@ class StateHandler extends eventHandler {
       }
 
       const discordId = linked[uuid];
-      updateCommand.updateRoles({ discordId, uuid });
+      updateRoles({ discordId, uuid });
 
       console.log(`Updated roles for ${uuid}`);
     } catch {
@@ -927,4 +925,4 @@ class StateHandler extends eventHandler {
   }
 }
 
-module.exports = StateHandler;
+export default ChatHandler;

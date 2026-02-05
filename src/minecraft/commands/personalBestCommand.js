@@ -1,9 +1,9 @@
-const { getLatestProfile } = require("../../../API/functions/getLatestProfile.js");
-const { getPersonalBest } = require("../../../API/stats/dungeonsPersonalBest.js");
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
-const prettyms = require("pretty-ms");
+import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
+import { getPersonalBest } from "../../../API/stats/dungeonsPersonalBest.js";
+import MinecraftCommand from "../../contracts/MinecraftCommand.js";
+import prettyms from "pretty-ms";
 
-class PersonalBestCommand extends minecraftCommand {
+class PersonalBestCommand extends MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */
   constructor(minecraft) {
     super(minecraft);
@@ -73,4 +73,4 @@ class PersonalBestCommand extends minecraftCommand {
   }
 }
 
-module.exports = PersonalBestCommand;
+export default PersonalBestCommand;

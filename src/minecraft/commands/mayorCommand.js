@@ -1,9 +1,8 @@
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
-const { delay } = require("../../contracts/helperFunctions.js");
-// @ts-ignore
-const { get } = require("axios");
+import MinecraftCommand from "../../contracts/MinecraftCommand.js";
+import { delay } from "../../contracts/helperFunctions.js";
+import axios from "axios";
 
-class MayorCommand extends minecraftCommand {
+class MayorCommand extends MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */
   constructor(minecraft) {
     super(minecraft);
@@ -21,7 +20,7 @@ class MayorCommand extends minecraftCommand {
   async onCommand(player, message) {
     try {
       // CREDITS: by @Kathund (https://github.com/Kathund)
-      const response = await get(`https://api.hypixel.net/v2/resources/skyblock/election`);
+      const response = await axios.get(`https://api.hypixel.net/v2/resources/skyblock/election`);
       if (response === undefined || response.data === undefined || response.data.success === false) {
         throw "Request to Hypixel API failed. Please try again!";
       }
@@ -54,4 +53,4 @@ class MayorCommand extends minecraftCommand {
   }
 }
 
-module.exports = MayorCommand;
+export default MayorCommand;

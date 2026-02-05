@@ -1,15 +1,22 @@
-const HypixelDiscordChatBridgeError = require("../../contracts/errorHandler.js");
-const { SuccessEmbed, ErrorEmbed } = require("../../contracts/embedHandler.js");
-const { getUsername } = require("../../contracts/API/mowojangAPI.js");
-const { writeFileSync, readFileSync } = require("fs");
-const { MessageFlags, SlashCommandBuilder } = require("discord.js");
+import HypixelDiscordChatBridgeError from "../../contracts/errorHandler.js";
+import { SuccessEmbed, ErrorEmbed } from "../../contracts/embedHandler.js";
+import { getUsername } from "../../contracts/API/mowojangAPI.js";
+import { MessageFlags, SlashCommandBuilder } from "discord.js";
+import DiscordCommand from "../../contracts/DiscordCommand.js";
+import { writeFileSync, readFileSync } from "fs";
+import UpdateCommand from "./updateCommand.js";
 
-module.exports = {
-  data: new SlashCommandBuilder().setName("unverify").setDescription("Remove your linked Minecraft account"),
-  requiresBot: true,
-  verificationCommand: true,
+class UnverifyCommand extends DiscordCommand {
+  /** @param {import("../discord/DiscordManager.js").default} discord */
+  constructor(discord) {
+    super(discord);
+    this.data = new SlashCommandBuilder().setName("unverify").setDescription("Remove your linked Minecraft account");
+    this.requiresBot = true;
+    this.verificationCommand = true;
+  }
 
-  execute: async (interaction) => {
+  /** @param {import("discord.js").ChatInputCommandInteraction} interaction */
+  async onCommand(interaction) {
     try {
       const linkedData = readFileSync("data/linked.json");
       if (!linkedData) {
@@ -34,12 +41,7 @@ module.exports = {
         iconURL: "https://i.imgur.com/uUuZx2E.png"
       });
       await interaction.followUp({ embeds: [updateRole] });
-      const updateRolesCommand = require("./updateCommand.js");
-      if (updateRolesCommand === undefined) {
-        throw new HypixelDiscordChatBridgeError("The update command does not exist. Please contact an administrator.");
-      }
-
-      await updateRolesCommand.execute(interaction, undefined, true);
+      await new UpdateCommand().onCommand(interaction, { hidden: true });
     } catch (error) {
       const errorEmbed = new ErrorEmbed(`\`\`\`${error}\`\`\``).setFooter({
         text: `by @.kathund | /help [command] for more information`,
@@ -49,4 +51,6 @@ module.exports = {
       await interaction.editReply({ embeds: [errorEmbed], flags: MessageFlags.Ephemeral });
     }
   }
-};
+}
+
+export default UnverifyCommand;

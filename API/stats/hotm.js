@@ -1,14 +1,14 @@
 // CREDITS: by @Kathund (https://github.com/Kathund)
-const CONSTANTS = require("../constants/mining.js");
-const { getLevelByXp } = require("../constants/skills.js");
-const moment = require("moment");
+import { hotm, forge as forgeTable } from "../constants/mining.js";
+import { getLevelByXp } from "../constants/skills.js";
+import moment from "moment";
 
 /**
  * Returns the player's HotM stats.
  * @param {import("../../types/profiles.js").Member} profile
  * @returns {import("./hotm.types").HotM | null}
  */
-function getHotm(profile) {
+export function getHotm(profile) {
   try {
     if (!profile?.mining_core) {
       return null;
@@ -34,7 +34,7 @@ function getHotm(profile) {
       },
       level: getLevelByXp(profile.mining_core.experience, { type: "hotm" }),
       // @ts-ignore
-      ability: CONSTANTS.hotm.perks[profile.mining_core.selected_pickaxe_ability]?.name ?? "None"
+      ability: hotm.perks[profile.mining_core.selected_pickaxe_ability]?.name ?? "None"
     };
   } catch (error) {
     console.error(error);
@@ -47,7 +47,7 @@ function getHotm(profile) {
  * @param {import("../../types/profiles.js").Member} profile
  * @returns {import("./hotm.types").Forge | null}
  */
-function getForge(profile) {
+export function getForge(profile) {
   const forgeItems = [];
   if (!profile.forge?.forge_processes?.forge_1) {
     return null;
@@ -65,17 +65,17 @@ function getForge(profile) {
       timeFinishedText: ""
     };
 
-    if (item.id in CONSTANTS.forge.items) {
+    if (item.id in forgeTable.items) {
       // @ts-ignore
-      let forgeTime = CONSTANTS.forge.items[item.id].duration;
+      let forgeTime = forgeTable.items[item.id].duration;
       const quickForge = profile.mining_core?.nodes?.forge_time;
       if (quickForge != null) {
         // @ts-ignore
-        forgeTime *= CONSTANTS.forge.quickForgeMultiplier[quickForge];
+        forgeTime *= forgeTable.quickForgeMultiplier[quickForge];
       }
 
       // @ts-ignore
-      forgeItem.name = CONSTANTS.forge.items[item.id].name;
+      forgeItem.name = forgeTable.items[item.id].name;
 
       const timeFinished = item.startTime + forgeTime;
       forgeItem.timeStarted = item.startTime;
@@ -88,8 +88,3 @@ function getForge(profile) {
 
   return forgeItems;
 }
-
-module.exports = {
-  getHotm,
-  getForge
-};

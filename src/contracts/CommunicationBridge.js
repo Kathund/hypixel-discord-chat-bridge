@@ -36,4 +36,4 @@ class CommunicationBridge {
   }
 }
 
-module.exports = CommunicationBridge;
+export default CommunicationBridge;

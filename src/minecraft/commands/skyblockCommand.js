@@ -1,14 +1,14 @@
-const { getLatestProfile } = require("../../../API/functions/getLatestProfile.js");
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
-const { getAccessories } = require("../../../API/stats/accessories.js");
-const { getSkillAverage } = require("../../../API/constants/skills.js");
-const { formatNumber } = require("../../contracts/helperFunctions.js");
-const { ProfileNetworthCalculator } = require("skyhelper-networth");
-const { getDungeons } = require("../../../API/stats/dungeons.js");
-const { getSlayer } = require("../../../API/stats/slayer.js");
-const { getHotm } = require("../../../API/stats/hotm.js");
+import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
+import MinecraftCommand from "../../contracts/MinecraftCommand.js";
+import { getAccessories } from "../../../API/stats/accessories.js";
+import { getSkillAverage } from "../../../API/constants/skills.js";
+import { formatNumber } from "../../contracts/helperFunctions.js";
+import { ProfileNetworthCalculator } from "skyhelper-networth";
+import { getDungeons } from "../../../API/stats/dungeons.js";
+import { getSlayer } from "../../../API/stats/slayer.js";
+import { getHotm } from "../../../API/stats/hotm.js";
 
-class SkyblockCommand extends minecraftCommand {
+class SkyblockCommand extends MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */
   constructor(minecraft) {
     super(minecraft);
@@ -68,4 +68,4 @@ class SkyblockCommand extends minecraftCommand {
   }
 }
 
-module.exports = SkyblockCommand;
+export default SkyblockCommand;

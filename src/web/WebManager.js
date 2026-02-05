@@ -1,8 +1,8 @@
-const config = require("../../config.json");
-const WebSocket = require("ws");
-const http = require("http");
+import config from "../../config.json" with { type: "json" };
+import { createServer } from "http";
+import WebSocket from "ws";
 
-class WebServer {
+class WebManager {
   constructor(bot) {
     this.bot = bot;
     this.port = config.web.port;
@@ -12,7 +12,7 @@ class WebServer {
   async connect() {
     if (config.web.enabled === false) return;
 
-    const server = http.createServer();
+    const server = createServer();
     const wss = new WebSocket.Server({ noServer: true });
 
     wss.on("connection", (ws) => {
@@ -66,4 +66,4 @@ class WebServer {
   }
 }
 
-module.exports = WebServer;
+export default WebManager;

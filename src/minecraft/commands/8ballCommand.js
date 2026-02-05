@@ -1,8 +1,7 @@
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
-// @ts-ignore
-const { get } = require("axios");
+import MinecraftCommand from "../../contracts/MinecraftCommand.js";
+import axios from "axios";
 
-class EightBallCommand extends minecraftCommand {
+class EightBallCommand extends MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */
   constructor(minecraft) {
     super(minecraft);
@@ -29,7 +28,7 @@ class EightBallCommand extends minecraftCommand {
         throw "You must provide a question.";
       }
 
-      const response = await get(`https://www.eightballapi.com/api`);
+      const response = await axios.get(`https://www.eightballapi.com/api`);
       if (response?.data === undefined) {
         return this.send("Wouldn't you like to know weather boy.");
       }
@@ -41,4 +40,4 @@ class EightBallCommand extends minecraftCommand {
   }
 }
 
-module.exports = EightBallCommand;
+export default EightBallCommand;

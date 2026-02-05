@@ -1,25 +1,13 @@
 class DiscordCommand {
+  /** @param {import("../discord/DiscordManager.js").default} discord */
   constructor(discord) {
     this.discord = discord;
   }
 
-  getArgs(message) {
-    const args = message.content.split(" ");
-
-    args.shift();
-
-    return args;
-  }
-
-  sendMinecraftMessage(message) {
-    if (this.discord.app.minecraft.bot.player !== undefined) {
-      this.discord.app.minecraft.bot.chat(message);
-    }
-  }
-
-  onCommand(message) {
+  /** @param {import("discord.js").ChatInputCommandInteraction} interaction */
+  onCommand(interaction) {
     throw new Error("Command onCommand method is not implemented yet!");
   }
 }
 
-module.exports = DiscordCommand;
+export default DiscordCommand;

@@ -1,8 +1,8 @@
-const { getLatestProfile } = require("../../../API/functions/getLatestProfile.js");
-const minecraftCommand = require("../../contracts/minecraftCommand.js");
-const getHotm = require("../../../API/stats/hotm.js");
+import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
+import MinecraftCommand from "../../contracts/MinecraftCommand.js";
+import { getForge } from "../../../API/stats/hotm.js";
 
-class ForgeCommand extends minecraftCommand {
+class ForgeCommand extends MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */
   constructor(minecraft) {
     super(minecraft);
@@ -30,7 +30,7 @@ class ForgeCommand extends minecraftCommand {
 
       const { username, profile, profileData } = await getLatestProfile(player);
 
-      const forge = getHotm.getForge(profile);
+      const forge = getForge(profile);
       if (forge == null) {
         throw `${username} has never gone to Dwarven Mines on ${profileData.cute_name}.`;
       }
@@ -47,4 +47,4 @@ class ForgeCommand extends minecraftCommand {
   }
 }
 
-module.exports = ForgeCommand;
+export default ForgeCommand;

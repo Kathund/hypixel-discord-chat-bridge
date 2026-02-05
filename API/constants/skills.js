@@ -1,13 +1,13 @@
-const { cropTables, skillTables } = require("./leveling.js");
+import { cropTables, skillTables } from "./leveling.js";
 
 /**
  * Gets the xp table for the given type.
  * @param {string} [type='default'] The skill table type. Defaults to the "default" table for skills.
  * @returns {number[]} xp table
  */
-function getXpTable(type = "default") {
+export function getXpTable(type = "default") {
   // @ts-ignore
-  return cropTables[type] ?? skillTables[type] ?? skillTables.default;
+  return cropTables[type] ?? skillTables[type] ?? skillTables;
 }
 
 /**
@@ -18,7 +18,7 @@ function getXpTable(type = "default") {
  * @param {number} [extra.cap] Override for the highest level the player can reach.
  * @returns {import("../stats/skills.types.js").Level} The level information.
  */
-function getLevelByXp(xp, extra = {}) {
+export function getLevelByXp(xp, extra = {}) {
   const xpTable = getXpTable(extra.type);
 
   if (typeof xp !== "number" || isNaN(xp)) {
@@ -112,7 +112,7 @@ function getLevelByXp(xp, extra = {}) {
  * }} [options={}]
  * @returns {string} The average skill level.
  */
-function getSkillAverage(profileData, hypixelPlayer, options = { decimals: 2, progress: false, cosmetic: false }) {
+export function getSkillAverage(profileData, hypixelPlayer, options = { decimals: 2, progress: false, cosmetic: false }) {
   const skillLevelCaps = getSkillLevelCaps(profileData, hypixelPlayer);
 
   let totalLevel = 0;
@@ -146,7 +146,7 @@ function getSkillAverage(profileData, hypixelPlayer, options = { decimals: 2, pr
  *  runecrafting: number;
  * }} An object containing the skill level caps for farming, taming, and runecrafting.
  */
-function getSkillLevelCaps(profileData, hypixelPlayer) {
+export function getSkillLevelCaps(profileData, hypixelPlayer) {
   return {
     farming: 50 + (profileData.jacobs_contest?.perks?.farming_level_cap || 0),
     taming: 50 + (profileData.pets_data?.pet_care?.pet_types_sacrificed?.length || 0),
@@ -160,7 +160,7 @@ function getSkillLevelCaps(profileData, hypixelPlayer) {
  * @param {number} level The target level.
  * @returns {number} The total experience required.
  */
-function getSkillExperience(skill, level) {
+export function getSkillExperience(skill, level) {
   const skillTable = getXpTable(skill);
 
   // @ts-ignore
@@ -172,17 +172,8 @@ function getSkillExperience(skill, level) {
  * @param {import("../../types/profiles.js").Profile} profile The profile object containing skill data.
  * @returns {number} The total social skill experience.
  */
-function getSocialSkillExperience(profile) {
+export function getSocialSkillExperience(profile) {
   return Object.keys(profile.members).reduce((acc, member) => {
     return acc + (profile.members[member]?.player_data?.experience?.SKILL_SOCIAL || 0);
   }, 0);
 }
-
-module.exports = {
-  getSkillAverage,
-  getLevelByXp,
-  getXpTable,
-  getSkillLevelCaps,
-  getSkillExperience,
-  getSocialSkillExperience
-};

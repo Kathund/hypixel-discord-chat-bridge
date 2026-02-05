@@ -23,6 +23,7 @@
     "bridge"
   ],
   "author": "DuckySoLucky",
+  "type": "module",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/DuckySoLucky/hypixel-discord-chat-bridge/issues"
