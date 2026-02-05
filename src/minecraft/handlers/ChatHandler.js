@@ -6,7 +6,7 @@ import { getUUID } from "../../contracts/API/mowojangAPI.js";
 import eventHandler from "../../contracts/EventHandler.js";
 import HypixelAPI from "../../contracts/API/HypixelAPI.js";
 import { isUuid } from "../../../API/utils/uuid.js";
-import messages from "../../../messages.json"  with { type: "json" };
+import messages from "../../../messages.json" with { type: "json" };
 import config from "../../../config.json" with { type: "json" };
 import { readFileSync } from "fs";
 

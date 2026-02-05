@@ -8,9 +8,9 @@ import { createBot } from "mineflayer";
 import config from "../../config.json" with { type: "json" };
 import Filter from "bad-words";
 
-import "./other/alphaPlayerCountTracker.js"
-import "./other/skyblockNotifier.js"
-import "./other/eventNotifier.js"
+import "./other/alphaPlayerCountTracker.js";
+import "./other/skyblockNotifier.js";
+import "./other/eventNotifier.js";
 
 const filter = new Filter();
 const fileredWords = config.discord.other.filterWords ?? "";
@@ -25,7 +25,7 @@ class MinecraftManager extends CommunicationBridge {
     this.stateHandler = new StateHandler(this);
     this.errorHandler = new ErrorHandler(this);
     this.chatHandler = new ChatHandler(this);
-    this.commandHandler = new CommandHandler(this)
+    this.commandHandler = new CommandHandler(this);
   }
 
   connect() {
