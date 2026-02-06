@@ -1,5 +1,6 @@
 // Credits https://github.com/Altpapier/hypixel-discord-guild-bridge/blob/master/helper/loreRenderer.js
-import { registerFont, createCanvas } from "canvas";
+import { createCanvas, registerFont } from "canvas";
+
 registerFont("src/contracts/Fonts/2_Minecraft-Italic.otf", {
   family: "MinecraftItalic"
 });
@@ -35,9 +36,9 @@ const RGBA_COLOR = {
 /**
  * Get the width and height of the canvas
  * @param {string[]} lore
- * @returns {Promise<{height: number, width: number} | undefined>}
+ * @returns {{height: number, width: number} | undefined}
  */
-async function getCanvasWidthAndHeight(lore) {
+function getCanvasWidthAndHeight(lore) {
   const canvas = createCanvas(1, 1);
   const ctx = canvas.getContext("2d");
   ctx.font = "24px Minecraft";
@@ -60,9 +61,9 @@ async function getCanvasWidthAndHeight(lore) {
  * @param {string[]} lore
  * @returns
  */
-export async function renderLore(itemName, lore) {
+export function renderLore(itemName, lore) {
   if (itemName) lore.unshift(itemName);
-  const measurements = await getCanvasWidthAndHeight(lore);
+  const measurements = getCanvasWidthAndHeight(lore);
   if (!measurements) return null;
   const canvas = createCanvas(measurements.width, measurements.height);
   const ctx = canvas.getContext("2d");
@@ -81,7 +82,7 @@ export async function renderLore(itemName, lore) {
   for (const [index, item] of Object.entries(lore)) {
     let width = 10;
     const splitItem = item.split("§");
-    if (splitItem[0].length == 0) splitItem.shift();
+    if (splitItem[0].length === 0) splitItem.shift();
 
     for (const toRenderItem of splitItem) {
       // @ts-ignore

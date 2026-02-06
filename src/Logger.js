@@ -1,7 +1,7 @@
-/* eslint-disable no-console */
-import { createLogger, format, transports } from "winston";
-import config from "../config.json" with { type: "json" };
 import chalk from "chalk";
+import config from "../config.json" with { type: "json" };
+import { createLogger, format, transports } from "winston";
+import { getCurrentTime } from "./contracts/helperFunctions.js";
 
 const customLevels = { discord: 0, minecraft: 1, web: 2, warn: 3, error: 4, broadcast: 5, max: 6 };
 const discordTransport = new transports.File({ level: "discord", filename: "./logs/discord.log" });
@@ -130,21 +130,7 @@ function broadcastMessage(message, location) {
   return console.log(chalk.inverse(`[${getCurrentTime()}] ${location} Broadcast >`) + " " + message);
 }
 
-export function getCurrentTime() {
-  return new Date().toLocaleString("en-US", {
-    year: "numeric",
-    month: "numeric",
-    day: "numeric",
-    hour: "numeric",
-    minute: "numeric",
-    second: "numeric",
-    hour12: false,
-    timeZoneName: "short",
-    timeZone: "UTC"
-  });
-}
-
-export async function configUpdateMessage(message) {
+export function configUpdateMessage(message) {
   const columns = process.stdout.columns;
   const warning = "IMPORTANT!";
   const message2 = "Please update your Configuration file!";
@@ -161,7 +147,7 @@ export async function configUpdateMessage(message) {
   );
 }
 
-export async function updateMessage() {
+export function updateMessage() {
   const columns = process.stdout.columns;
   const warning = "IMPORTANT!";
   const message2 = "Bot has been updated, please restart the bot to apply changes!";

@@ -5,6 +5,7 @@ class DiscordCommand {
   }
 
   /** @param {import("discord.js").ChatInputCommandInteraction} interaction */
+  // eslint-disable-next-line no-unused-vars
   onCommand(interaction) {
     throw new Error("Command onCommand method is not implemented yet!");
   }

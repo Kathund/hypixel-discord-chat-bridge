@@ -1,7 +1,7 @@
-import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
 import MinecraftCommand from "../../contracts/MinecraftCommand.js";
 import { formatNumber } from "../../contracts/helperFunctions.js";
 import { getDungeons } from "../../../API/stats/dungeons.js";
+import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
 
 class CatacombsCommand extends MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */
@@ -33,7 +33,7 @@ class CatacombsCommand extends MinecraftCommand {
 
       const dungeons = getDungeons(profile);
       if (dungeons === null) {
-        throw `${username} has never played dungeons on ${profileData.cute_name}.`;
+        throw new Error(`${username} has never played dungeons on ${profileData.cute_name}.`);
       }
 
       const classes = Object.entries(dungeons.classes)

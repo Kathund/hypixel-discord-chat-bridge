@@ -1,7 +1,7 @@
-import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
-import { formatNumber, titleCase } from "../../contracts/helperFunctions.js";
-import { getSkillAverage } from "../../../API/constants/skills.js";
 import MinecraftCommand from "../../contracts/MinecraftCommand.js";
+import { formatNumber, titleCase } from "../../contracts/helperFunctions.js";
+import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
+import { getSkillAverage } from "../../../API/constants/skills.js";
 import { getSkills } from "../../../API/stats/skills.js";
 
 class SkillsCommand extends MinecraftCommand {

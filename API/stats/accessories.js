@@ -34,11 +34,11 @@ function getMagicalPower(rarity, id) {
  * @returns {string}
  */
 function getRarity(lore) {
-  let last_index = lore[lore.length - 1];
-  last_index = last_index.replace(/\u00A7[0-9A-FK-OR]/gi, "").toLowerCase();
-  if (last_index.startsWith("a ")) last_index = last_index.substring(2);
-  last_index = last_index.substring(0, last_index.indexOf(" "));
-  return last_index;
+  let lastIndex = lore[lore.length - 1];
+  lastIndex = lastIndex.replace(/\u00A7[0-9A-FK-OR]/gi, "").toLowerCase();
+  if (lastIndex.startsWith("a ")) lastIndex = lastIndex.substring(2);
+  lastIndex = lastIndex.substring(0, lastIndex.indexOf(" "));
+  return lastIndex;
 }
 
 /**

@@ -1,28 +1,29 @@
-import { formatNumber, replaceVariables } from "../../contracts/helperFunctions.js";
-import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
+import DiscordCommand from "../../contracts/DiscordCommand.js";
+import HypixelAPI from "../../contracts/API/HypixelAPI.js";
 import HypixelDiscordChatBridgeError from "../../contracts/errorHandler.js";
-import { SuccessEmbed, ErrorEmbed } from "../../contracts/embedHandler.js";
+import config from "../../../config.json" with { type: "json" };
+import { ErrorEmbed, SuccessEmbed } from "../../contracts/embedHandler.js";
+import { MessageFlags, SlashCommandBuilder } from "discord.js";
+import { ProfileNetworthCalculator } from "skyhelper-networth";
+import { formatNumber, replaceVariables } from "../../contracts/helperFunctions.js";
 import { getChocolateFactory } from "../../../API/stats/chocolateFactory.js";
 import { getCrimsonIsle, getKuudra } from "../../../API/stats/crimson.js";
-import { getSkillAverage } from "../../../API/constants/skills.js";
-import { getUsername } from "../../contracts/API/mowojangAPI.js";
-import { MessageFlags, SlashCommandBuilder } from "discord.js";
-import DiscordCommand from "../../contracts/DiscordCommand.js";
-import { ProfileNetworthCalculator } from "skyhelper-networth";
 import { getDungeons } from "../../../API/stats/dungeons.js";
 import { getEssence } from "../../../API/stats/essence.js";
-import HypixelAPI from "../../contracts/API/HypixelAPI.js";
-import { getSlayer } from "../../../API/stats/slayer.js";
-import { getSkills } from "../../../API/stats/skills.js";
 import { getJacob } from "../../../API/stats/jacob.js";
-import config from "../../../config.json" with { type: "json" };
-import { readFileSync } from "fs";
+import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
+import { getSkillAverage } from "../../../API/constants/skills.js";
+import { getSkills } from "../../../API/stats/skills.js";
+import { getSlayer } from "../../../API/stats/slayer.js";
+import { getUsername } from "../../contracts/API/mowojangAPI.js";
+import { readFileSync } from "node:fs";
 
 function getNetworthCalculator(profile, museum, bank) {
   try {
     return new ProfileNetworthCalculator(profile, museum, bank);
   } catch {
     return {
+      // eslint-disable-next-line require-await
       getNetworth: async () => ({})
     };
   }
@@ -104,11 +105,9 @@ export async function updateRoles({ discordId, uuid }) {
 
       // console.log(`Added ${(await guild.roles.fetch(guildRank.roleId)).name}`);
     }
-  } else {
-    if (verificationRoles.guildMember.enabled) {
-      await member.roles.remove(verificationRoles.guildMember.roleId, "Updated Roles");
-      // console.log("Removed guild member role");
-    }
+  } else if (verificationRoles.guildMember.enabled) {
+    await member.roles.remove(verificationRoles.guildMember.roleId, "Updated Roles");
+    // console.log("Removed guild member role");
   }
 
   const stats = {

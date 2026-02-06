@@ -25,7 +25,7 @@ class EightBallCommand extends MinecraftCommand {
   async onCommand(player, message) {
     try {
       if (this.getArgs(message).length === 0) {
-        throw "You must provide a question.";
+        throw new Error("You must provide a question.");
       }
 
       const response = await axios.get(`https://www.eightballapi.com/api`);

@@ -1,6 +1,6 @@
-import { formatNumber, formatError, titleCase } from "../../contracts/helperFunctions.js";
-import MinecraftCommand from "../../contracts/MinecraftCommand.js";
 import HypixelAPI from "../../contracts/API/HypixelAPI.js";
+import MinecraftCommand from "../../contracts/MinecraftCommand.js";
+import { formatError, formatNumber, titleCase } from "../../contracts/helperFunctions.js";
 
 class GuildCommand extends MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */

@@ -1,7 +1,7 @@
-import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
-import { getChocolateFactory } from "../../../API/stats/chocolateFactory.js";
-import { formatNumber, titleCase } from "../../contracts/helperFunctions.js";
 import MinecraftCommand from "../../contracts/MinecraftCommand.js";
+import { formatNumber, titleCase } from "../../contracts/helperFunctions.js";
+import { getChocolateFactory } from "../../../API/stats/chocolateFactory.js";
+import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
 
 class ChocolateCommand extends MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */
@@ -31,8 +31,8 @@ class ChocolateCommand extends MinecraftCommand {
       const { username, profile, profileData } = await getLatestProfile(player);
 
       const chocolateFactory = getChocolateFactory(profile);
-      if (chocolateFactory == null) {
-        throw `${username} has never interacted with the Chocolate Factory on ${profileData.cute_name}.`;
+      if (chocolateFactory === null) {
+        throw new Error(`${username} has never interacted with the Chocolate Factory on ${profileData.cute_name}.`);
       }
 
       const employes = Object.entries(chocolateFactory.employees)

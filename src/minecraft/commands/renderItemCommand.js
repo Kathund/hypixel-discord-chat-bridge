@@ -1,8 +1,8 @@
-import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
 import MinecraftCommand from "../../contracts/MinecraftCommand.js";
-import { uploadImage } from "../../contracts/API/imgurAPI.js";
-import { renderLore } from "../../contracts/renderItem.js";
 import { decodeData } from "../../../API/utils/nbt.js";
+import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
+import { renderLore } from "../../contracts/renderItem.js";
+import { uploadImage } from "../../contracts/API/imgurAPI.js";
 
 class RenderCommand extends MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */
@@ -52,7 +52,7 @@ class RenderCommand extends MinecraftCommand {
 
       const { profile, username } = await getLatestProfile(player);
       if (profile.inventory?.inv_contents?.data === undefined) {
-        throw `${username} has Inventory API off.`;
+        throw new Error(`${username} has Inventory API off.`);
       }
 
       const inventoryData = (await decodeData(Buffer.from(profile.inventory?.inv_contents?.data, "base64"))).i;

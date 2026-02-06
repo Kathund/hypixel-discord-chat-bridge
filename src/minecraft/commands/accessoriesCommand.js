@@ -1,7 +1,7 @@
-import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
 import MinecraftCommand from "../../contracts/MinecraftCommand.js";
-import { getAccessories } from "../../../API/stats/accessories.js";
 import { formatNumber } from "../../contracts/helperFunctions.js";
+import { getAccessories } from "../../../API/stats/accessories.js";
+import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
 
 class AccessoriesCommand extends MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */
@@ -31,13 +31,13 @@ class AccessoriesCommand extends MinecraftCommand {
 
       const { profile, username } = await getLatestProfile(player);
 
-      if (profile.inventory?.bag_contents?.talisman_bag?.data == undefined && profile.inventory?.inv_contents?.data == null) {
-        throw `${username} has Talisman API off.`;
+      if (profile.inventory?.bag_contents?.talisman_bag?.data === undefined && profile.inventory?.inv_contents?.data === null) {
+        throw new Error(`${username} has Talisman API off.`);
       }
 
       const talismans = await getAccessories(profile);
       if (!talismans) {
-        throw `Couldn't parse ${username}'s talismans.`;
+        throw new Error(`Couldn't parse ${username}'s talismans.`);
       }
 
       const formattedRarities = Object.entries(talismans.rarities)

@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 export const max_levels = {
   farming: 60,
   mining: 60,

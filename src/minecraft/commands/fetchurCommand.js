@@ -16,7 +16,8 @@ class FetchurCommand extends MinecraftCommand {
    * @param {string} player
    * @param {string} message
    * */
-  async onCommand(player, message) {
+  // eslint-disable-next-line no-unused-vars
+  onCommand(player, message) {
     try {
       const { text, description } = getFetchur();
 

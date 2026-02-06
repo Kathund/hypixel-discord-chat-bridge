@@ -31,6 +31,7 @@ export async function getGarden(profileID) {
 
   cache.set(profileID, {
     data: gardenData,
+    // eslint-disable-next-line camelcase
     last_save: Date.now()
   });
 

@@ -1,5 +1,5 @@
-import { formatNumber } from "../../contracts/helperFunctions.js";
 import MinecraftCommand from "../../contracts/MinecraftCommand.js";
+import { formatNumber } from "../../contracts/helperFunctions.js";
 
 class CalculateCommand extends MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */

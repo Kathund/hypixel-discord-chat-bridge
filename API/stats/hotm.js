@@ -1,7 +1,7 @@
 // CREDITS: by @Kathund (https://github.com/Kathund)
-import { hotm, forge as forgeTable } from "../constants/mining.js";
-import { getLevelByXp } from "../constants/skills.js";
 import moment from "moment";
+import { forge as forgeTable, hotm } from "../constants/mining.js";
+import { getLevelByXp } from "../constants/skills.js";
 
 /**
  * Returns the player's HotM stats.
@@ -69,7 +69,7 @@ export function getForge(profile) {
       // @ts-ignore
       let forgeTime = forgeTable.items[item.id].duration;
       const quickForge = profile.mining_core?.nodes?.forge_time;
-      if (quickForge != null) {
+      if (quickForge !== null) {
         // @ts-ignore
         forgeTime *= forgeTable.quickForgeMultiplier[quickForge];
       }

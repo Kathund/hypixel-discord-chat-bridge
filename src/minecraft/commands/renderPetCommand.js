@@ -1,6 +1,6 @@
+import MinecraftCommand from "../../contracts/MinecraftCommand.js";
 import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
 import { titleCase } from "../../contracts/helperFunctions.js";
-import MinecraftCommand from "../../contracts/MinecraftCommand.js";
 
 class PetCommand extends MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */

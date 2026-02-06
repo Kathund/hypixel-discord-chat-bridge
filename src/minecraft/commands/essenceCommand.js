@@ -1,7 +1,7 @@
-import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
-import { formatNumber, titleCase } from "../../contracts/helperFunctions.js";
 import MinecraftCommand from "../../contracts/MinecraftCommand.js";
+import { formatNumber, titleCase } from "../../contracts/helperFunctions.js";
 import { getEssence } from "../../../API/stats/essence.js";
+import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
 
 class EssenceCommand extends MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */
@@ -33,8 +33,8 @@ class EssenceCommand extends MinecraftCommand {
       const { username, profile, profileData } = await getLatestProfile(player);
 
       const essence = getEssence(profile);
-      if (essence == null) {
-        throw `${username} has never unlocked essence on ${profileData.cute_name}.`;
+      if (essence === null) {
+        throw new Error(`${username} has never unlocked essence on ${profileData.cute_name}.`);
       }
 
       const essenceString = Object.entries(essence)

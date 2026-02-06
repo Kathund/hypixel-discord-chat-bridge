@@ -1,7 +1,7 @@
-import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
 import MinecraftCommand from "../../contracts/MinecraftCommand.js";
-import { formatNumber } from "../../contracts/helperFunctions.js";
 import { ProfileNetworthCalculator } from "skyhelper-networth";
+import { formatNumber } from "../../contracts/helperFunctions.js";
+import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
 
 class NetWorthCommand extends MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */

@@ -1,6 +1,6 @@
-import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
 import MinecraftCommand from "../../contracts/MinecraftCommand.js";
 import { getForge } from "../../../API/stats/hotm.js";
+import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
 
 class ForgeCommand extends MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */
@@ -31,12 +31,12 @@ class ForgeCommand extends MinecraftCommand {
       const { username, profile, profileData } = await getLatestProfile(player);
 
       const forge = getForge(profile);
-      if (forge == null) {
-        throw `${username} has never gone to Dwarven Mines on ${profileData.cute_name}.`;
+      if (forge === null) {
+        throw new Error(`${username} has never gone to Dwarven Mines on ${profileData.cute_name}.`);
       }
 
-      if (forge.length === 0 || forge == null) {
-        throw `${username} has no items in their forge.`;
+      if (forge.length === 0 || forge === null) {
+        throw new Error(`${username} has no items in their forge.`);
       }
 
       const forgeItems = forge.map((item) => `${item.slot}: ${item.name} ${item.timeFinishedText}`);

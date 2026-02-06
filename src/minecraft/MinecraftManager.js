@@ -1,16 +1,16 @@
-import CommunicationBridge from "../contracts/CommunicationBridge.js";
-import { replaceVariables } from "../contracts/helperFunctions.js";
-import StateHandler from "./handlers/StateHandler.js";
-import ErrorHandler from "./handlers/ErrorHandler.js";
 import ChatHandler from "./handlers/ChatHandler.js";
 import CommandHandler from "./CommandHandler.js";
-import { createBot } from "mineflayer";
-import config from "../../config.json" with { type: "json" };
+import CommunicationBridge from "../contracts/CommunicationBridge.js";
+import ErrorHandler from "./handlers/ErrorHandler.js";
 import Filter from "bad-words";
+import StateHandler from "./handlers/StateHandler.js";
+import config from "../../config.json" with { type: "json" };
+import { createBot } from "mineflayer";
+import { replaceVariables } from "../contracts/helperFunctions.js";
 
 import "./other/alphaPlayerCountTracker.js";
-import "./other/skyblockNotifier.js";
 import "./other/eventNotifier.js";
+import "./other/skyblockNotifier.js";
 
 const filter = new Filter();
 const fileredWords = config.discord.other.filterWords ?? "";
@@ -54,7 +54,7 @@ class MinecraftManager extends CommunicationBridge {
     });
   }
 
-  async onBroadcast({ channel, username, message, replyingTo, discord }) {
+  onBroadcast({ channel, username, message, replyingTo, discord }) {
     console.broadcast(`${username}: ${message}`, "Minecraft");
     if (this.bot.player === undefined) {
       return;
@@ -68,7 +68,7 @@ class MinecraftManager extends CommunicationBridge {
       try {
         message = filter.clean(message);
         username = filter.clean(username);
-      } catch (error) {
+      } catch {
         // Do nothing
       }
     }
@@ -76,7 +76,7 @@ class MinecraftManager extends CommunicationBridge {
     if (config.discord.other.stripEmojisFromUsernames) {
       try {
         username = username.replace(/:[\w\-_]+:/g, "");
-      } catch (error) {
+      } catch {
         // Do nothing
       }
     }

@@ -1,7 +1,7 @@
-import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
-import { getPersonalBest } from "../../../API/stats/dungeonsPersonalBest.js";
 import MinecraftCommand from "../../contracts/MinecraftCommand.js";
 import prettyms from "pretty-ms";
+import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
+import { getPersonalBest } from "../../../API/stats/dungeonsPersonalBest.js";
 
 class PersonalBestCommand extends MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */

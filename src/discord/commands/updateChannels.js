@@ -1,9 +1,9 @@
-import { replaceVariables } from "../../contracts/helperFunctions.js";
-import { SuccessEmbed } from "../../contracts/embedHandler.js";
 import DiscordCommand from "../../contracts/DiscordCommand.js";
 import HypixelAPI from "../../contracts/API/HypixelAPI.js";
-import { SlashCommandBuilder } from "discord.js";
 import config from "../../../config.json" with { type: "json" };
+import { SlashCommandBuilder } from "discord.js";
+import { SuccessEmbed } from "../../contracts/embedHandler.js";
+import { replaceVariables } from "../../contracts/helperFunctions.js";
 
 class Command extends DiscordCommand {
   /** @param {import("../discord/DiscordManager.js").default} discord */

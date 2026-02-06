@@ -1,10 +1,10 @@
-import HypixelDiscordChatBridgeError from "../../contracts/errorHandler.js";
-import { Embed, SuccessEmbed } from "../../contracts/embedHandler.js";
-import { getUsername } from "../../contracts/API/mowojangAPI.js";
 import DiscordCommand from "../../contracts/DiscordCommand.js";
 import HypixelAPI from "../../contracts/API/HypixelAPI.js";
-import { writeFileSync, readFileSync } from "fs";
+import HypixelDiscordChatBridgeError from "../../contracts/errorHandler.js";
+import { Embed, SuccessEmbed } from "../../contracts/embedHandler.js";
 import { SlashCommandBuilder } from "discord.js";
+import { getUsername } from "../../contracts/API/mowojangAPI.js";
+import { readFileSync, writeFileSync } from "node:fs";
 
 class GexpCheckCommand extends DiscordCommand {
   /** @param {import("../discord/DiscordManager.js").default} discord */

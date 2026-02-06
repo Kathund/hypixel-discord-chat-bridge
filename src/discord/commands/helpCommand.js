@@ -1,9 +1,9 @@
-import HypixelDiscordChatBridgeError from "../../contracts/errorHandler.js";
 import DiscordCommand from "../../contracts/DiscordCommand.js";
+import HypixelDiscordChatBridgeError from "../../contracts/errorHandler.js";
+import config from "../../../config.json" with { type: "json" };
 import { Embed } from "../../contracts/embedHandler.js";
 import { SlashCommandBuilder } from "discord.js";
 import { getCommands } from "./infoCommand.js";
-import config from "../../../config.json" with { type: "json" };
 
 class HelpCommand extends DiscordCommand {
   /** @param {import("../discord/DiscordManager.js").default} discord */

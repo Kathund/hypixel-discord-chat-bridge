@@ -1,6 +1,6 @@
+import DiscordCommand from "../../contracts/DiscordCommand.js";
 import { MessageFlags, SlashCommandBuilder } from "discord.js";
 import { SuccessEmbed } from "../../contracts/embedHandler.js";
-import DiscordCommand from "../../contracts/DiscordCommand.js";
 
 class ExecuteCommand extends DiscordCommand {
   /** @param {import("../discord/DiscordManager.js").default} discord */

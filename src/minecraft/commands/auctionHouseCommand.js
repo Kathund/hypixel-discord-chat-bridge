@@ -1,11 +1,11 @@
-import { timeSince, formatNumber } from "../../contracts/helperFunctions.js";
 import MinecraftCommand from "../../contracts/MinecraftCommand.js";
-import { uploadImage } from "../../contracts/API/imgurAPI.js";
+import axios from "axios";
+import config from "../../../config.json" with { type: "json" };
+import { formatNumber, timeSince } from "../../contracts/helperFunctions.js";
+import { getRank } from "../../../API/stats/rank.js";
 import { getUUID } from "../../contracts/API/mowojangAPI.js";
 import { renderLore } from "../../contracts/renderItem.js";
-import { getRank } from "../../../API/stats/rank.js";
-import config from "../../../config.json" with { type: "json" };
-import axios from "axios";
+import { uploadImage } from "../../contracts/API/imgurAPI.js";
 
 class AuctionHouseCommand extends MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */

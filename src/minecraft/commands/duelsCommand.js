@@ -1,6 +1,6 @@
-import { formatNumber, formatError } from "../../contracts/helperFunctions.js";
-import MinecraftCommand from "../../contracts/MinecraftCommand.js";
 import HypixelAPI from "../../contracts/API/HypixelAPI.js";
+import MinecraftCommand from "../../contracts/MinecraftCommand.js";
+import { formatError, formatNumber } from "../../contracts/helperFunctions.js";
 
 class DuelsCommand extends MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */
@@ -53,11 +53,11 @@ class DuelsCommand extends MinecraftCommand {
 
       const hypixelPlayer = await HypixelAPI.getPlayer(player);
       if (!hypixelPlayer) {
-        throw "Player not found.";
+        throw new Error("Player not found.");
       }
 
-      if (hypixelPlayer.stats == null || hypixelPlayer.stats.duels == null) {
-        throw `${hypixelPlayer.nickname} has never played duels.`;
+      if (hypixelPlayer.stats === null || hypixelPlayer.stats.duels === null) {
+        throw new Error(`${hypixelPlayer.nickname} has never played duels.`);
       }
 
       if (!duel) {

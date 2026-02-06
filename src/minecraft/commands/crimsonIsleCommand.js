@@ -1,7 +1,7 @@
-import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
 import MinecraftCommand from "../../contracts/MinecraftCommand.js";
 import { formatNumber } from "../../contracts/helperFunctions.js";
 import { getCrimsonIsle } from "../../../API/stats/crimson.js";
+import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
 
 class CrimsonIsleCommand extends MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */
@@ -33,8 +33,8 @@ class CrimsonIsleCommand extends MinecraftCommand {
       const { username, profile, profileData } = await getLatestProfile(player);
 
       const crimsonData = getCrimsonIsle(profile);
-      if (crimsonData == null) {
-        throw `${username} has never gone to Crimson Isle on ${profileData.profileData.cute_name}.`;
+      if (crimsonData === null) {
+        throw new Error(`${username} has never gone to Crimson Isle on ${profileData.profileData.cute_name}.`);
       }
 
       this.send(

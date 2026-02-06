@@ -1,7 +1,7 @@
+import HypixelAPI from "../../contracts/API/HypixelAPI.js";
 import MinecraftCommand from "../../contracts/MinecraftCommand.js";
 import { formatError } from "../../contracts/helperFunctions.js";
 import { getUUID } from "../../contracts/API/mowojangAPI.js";
-import HypixelAPI from "../../contracts/API/HypixelAPI.js";
 
 class GuildExperienceCommand extends MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */
@@ -33,10 +33,10 @@ class GuildExperienceCommand extends MinecraftCommand {
       /** @type {import('hypixel-api-reborn').Guild['members']} */
       const guildMembers = guild.members;
 
-      const member = guildMembers.find((member) => member.uuid == uuid);
+      const member = guildMembers.find((member) => member.uuid === uuid);
 
       if (member === undefined) {
-        throw "Player is not in the Guild.";
+        throw new Error("Player is not in the Guild.");
       }
 
       this.send(`${player}'s Weekly Guild Experience: ${member.weeklyExperience.toLocaleString()}.`);

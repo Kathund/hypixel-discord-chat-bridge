@@ -1,8 +1,8 @@
-import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
 import MinecraftCommand from "../../contracts/MinecraftCommand.js";
-import { uploadImage } from "../../contracts/API/imgurAPI.js";
-import { renderLore } from "../../contracts/renderItem.js";
 import { decodeData } from "../../../API/utils/nbt.js";
+import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
+import { renderLore } from "../../contracts/renderItem.js";
+import { uploadImage } from "../../contracts/API/imgurAPI.js";
 
 class ArmorCommand extends MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */
@@ -52,7 +52,7 @@ class ArmorCommand extends MinecraftCommand {
         const Name = piece?.tag?.display?.Name;
         const Lore = piece?.tag?.display?.Lore;
 
-        const renderedItem = await renderLore(Name, Lore);
+        const renderedItem = renderLore(Name, Lore);
         if (renderedItem === null) {
           this.send("An error occured while rendering the item.");
           continue;

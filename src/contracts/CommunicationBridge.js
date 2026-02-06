@@ -31,6 +31,7 @@ class CommunicationBridge {
     throw new Error("Communication bridge connection is not implemented yet!");
   }
 
+  // eslint-disable-next-line no-unused-vars
   onBroadcast(event) {
     throw new Error("Communication bridge broadcast handling is not implemented yet!");
   }

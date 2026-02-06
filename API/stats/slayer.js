@@ -23,7 +23,6 @@ function getSlayerLevel(profile, slayer) {
 
   let level = 0;
   let xpForNext = 0;
-  let progress = 0;
   const maxLevel = 9;
 
   // @ts-ignore
@@ -39,7 +38,7 @@ function getSlayerLevel(profile, slayer) {
     xpForNext = Math.ceil(slayerTable[slayer][level]);
   }
 
-  progress = level >= maxLevel ? 0 : Math.max(0, Math.min(experience / xpForNext, 1));
+  const progress = level >= maxLevel ? 0 : Math.max(0, Math.min(experience / xpForNext, 1));
 
   /** @type {Record<string, number>} */
   const kills = {};
@@ -79,7 +78,7 @@ export function getSlayer(profile) {
       blaze: getSlayerLevel(profile, "blaze"),
       vampire: getSlayerLevel(profile, "vampire")
     };
-  } catch (error) {
+  } catch {
     return null;
   }
 }

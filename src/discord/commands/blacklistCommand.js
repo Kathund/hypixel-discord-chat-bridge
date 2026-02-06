@@ -1,8 +1,8 @@
-import HypixelDiscordChatBridgeError from "../../contracts/errorHandler.js";
-import { SuccessEmbed } from "../../contracts/embedHandler.js";
 import DiscordCommand from "../../contracts/DiscordCommand.js";
-import { delay } from "../../contracts/helperFunctions.js";
+import HypixelDiscordChatBridgeError from "../../contracts/errorHandler.js";
 import { SlashCommandBuilder } from "discord.js";
+import { SuccessEmbed } from "../../contracts/embedHandler.js";
+import { delay } from "../../contracts/helperFunctions.js";
 
 class BlacklistCommand extends DiscordCommand {
   /** @param {import("../discord/DiscordManager.js").default} discord */
@@ -39,9 +39,9 @@ class BlacklistCommand extends DiscordCommand {
 
     bot.chat("/lobby megawalls");
     await delay(250);
-    if (arg == "add") {
+    if (arg === "add") {
       bot.chat(`/ignore add ${name}`);
-    } else if (arg == "remove") {
+    } else if (arg === "remove") {
       bot.chat(`/ignore remove ${name}`);
     } else {
       throw new HypixelDiscordChatBridgeError("Invalid Usage: `/ignore [add/remove] [name]`.");
@@ -49,7 +49,7 @@ class BlacklistCommand extends DiscordCommand {
     await delay(250);
     bot.chat("/limbo");
 
-    const embed = new SuccessEmbed(`Successfully ${arg == "add" ? "added" : "removed"} \`${name}\` ${arg == "add" ? "to" : "from"} the blacklist.`);
+    const embed = new SuccessEmbed(`Successfully ${arg === "add" ? "added" : "removed"} \`${name}\` ${arg === "add" ? "to" : "from"} the blacklist.`);
 
     await interaction.followUp({
       embeds: [embed]

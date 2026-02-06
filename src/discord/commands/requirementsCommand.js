@@ -1,17 +1,17 @@
-import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
-import HypixelDiscordChatBridgeError from "../../contracts/errorHandler.js";
 import DiscordCommand from "../../contracts/DiscordCommand.js";
 import HypixelAPI from "../../contracts/API/HypixelAPI.js";
-import { getUUID } from "../../contracts/API/mowojangAPI.js";
+import HypixelDiscordChatBridgeError from "../../contracts/errorHandler.js";
+import config from "../../../config.json" with { type: "json" };
 import { Embed } from "../../contracts/embedHandler.js";
 import { SlashCommandBuilder } from "discord.js";
-import config from "../../../config.json" with { type: "json" };
+import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
+import { getUUID } from "../../contracts/API/mowojangAPI.js";
 
 export async function checkRequirements(uuid) {
   const [player, profile] = await Promise.all([HypixelAPI.getPlayer(uuid), getLatestProfile(uuid)]);
   let meetRequirements = false;
 
-  const skyblockLevel = (profile.profile?.leveling?.experience || 0) / 100 ?? 0;
+  const skyblockLevel = (profile.profile?.leveling?.experience || 0) / 100 || 0;
 
   const bwLevel = player.stats.bedwars.level;
   const bwFKDR = player.stats.bedwars.finalKDRatio;

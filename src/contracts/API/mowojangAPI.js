@@ -25,6 +25,7 @@ export async function getUUID(username) {
     }
 
     uuidCache.set(username, {
+      // eslint-disable-next-line camelcase
       last_save: Date.now(),
       id: data.id
     });
@@ -32,7 +33,7 @@ export async function getUUID(username) {
     return data.id;
   } catch (error) {
     // @ts-ignore
-    if (error.response.data === "Not found") throw "Invalid username.";
+    if (error.response.data === "Not found") throw new Error("Invalid username.");
     console.error(error);
     throw error;
   }
@@ -59,6 +60,7 @@ export async function getUsername(uuid) {
     }
 
     const cache = {
+      // eslint-disable-next-line camelcase
       last_save: Date.now(),
       username: data.name
     };
@@ -69,7 +71,7 @@ export async function getUsername(uuid) {
   } catch (error) {
     console.error(error);
     // @ts-ignore
-    if (error.response?.data === "Not found") throw "Invalid UUID.";
+    if (error.response?.data === "Not found") throw new Error("Invalid UUID.");
     throw error;
   }
 }
@@ -89,7 +91,7 @@ export async function resolveUsernameOrUUID(username) {
     };
   } catch (error) {
     // @ts-ignore
-    if (error.response.data === "Not found") throw "Invalid Username Or UUID.";
+    if (error.response.data === "Not found") throw new Error("Invalid Username Or UUID.");
     console.error(error);
     throw error;
   }

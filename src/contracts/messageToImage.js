@@ -1,6 +1,7 @@
 // Credits https://github.com/Altpapier/hypixel-discord-guild-bridge/blob/master/helper/messageToImage.js
 
-import { registerFont, createCanvas, loadImage } from "canvas";
+import { createCanvas, loadImage, registerFont } from "canvas";
+
 registerFont("src/contracts/Fonts/MinecraftRegular-Bmg3.ttf", {
   family: "Minecraft"
 });
@@ -49,7 +50,7 @@ function getHeight(message) {
     }
     width += ctx.measureText(currentMessage).width;
   }
-  if (width == 5) height -= 40;
+  if (width === 5) height -= 40;
 
   return height + 10;
 }

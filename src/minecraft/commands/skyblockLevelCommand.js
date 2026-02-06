@@ -1,5 +1,5 @@
-import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
 import MinecraftCommand from "../../contracts/MinecraftCommand.js";
+import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
 
 class SkyBlockLevelCommand extends MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */

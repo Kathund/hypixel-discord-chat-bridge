@@ -1,6 +1,6 @@
-import config from "../../config.json" with { type: "json" };
-import { createServer } from "http";
 import WebSocket from "ws";
+import config from "../../config.json" with { type: "json" };
+import { createServer } from "node:http";
 
 class WebManager {
   constructor(bot) {
@@ -9,7 +9,7 @@ class WebManager {
     this.start = Date.now();
   }
 
-  async connect() {
+  connect() {
     if (config.web.enabled === false) return;
 
     const server = createServer();

@@ -13,8 +13,9 @@ export function getPersonalBest(profile) {
       .map((floor) => parseInt(floor));
 
     /** @type {Partial<import("./dungeonsPersonalBest.types").PersonalBestFloor>} */
-    const floors = {},
-      master = {};
+    const floors = {};
+    const master = {};
+    /* eslint-disable camelcase */
     for (let i = 0; i <= Math.max(...availableFloors); i++) {
       // @ts-ignore
       floors[`floor_${i}`] = {
@@ -31,6 +32,7 @@ export function getPersonalBest(profile) {
         fastest_s_plus: masterCatacombs.fastest_time_s_plus?.[i] || null
       };
     }
+    /* eslint-enable camelcase */
 
     return {
       // @ts-ignore

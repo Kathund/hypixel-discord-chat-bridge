@@ -29,9 +29,9 @@ export function replaceAllRanks(input) {
  */
 export function generateID(length) {
   let result = "";
-  const characters = "abcde0123456789",
-    charactersLength = characters.length;
-  for (var i = 0; i < length; i++) {
+  const characters = "abcde0123456789";
+  const charactersLength = characters.length;
+  for (let i = 0; i < length; i++) {
     result += characters.charAt(Math.floor(Math.random() * charactersLength));
   }
 
@@ -146,7 +146,7 @@ export function parseTimestamp(text) {
   }
 
   let time;
-  let mathString = "";
+  let mathString;
   let index;
   let parseString;
 
@@ -253,7 +253,7 @@ export function formatError(error) {
  * @param {number} ms
  * @returns {Promise<void>}
  */
-export async function delay(ms) {
+export function delay(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
@@ -275,4 +275,49 @@ export function titleCase(str) {
     .split(" ")
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
+}
+
+/**
+ * Returns the current time (UTC time) formated in en-US
+ * @returns {string}
+ */
+export function getCurrentTime() {
+  return new Date().toLocaleString("en-US", {
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+    hour12: false,
+    timeZoneName: "short",
+    timeZone: "UTC"
+  });
+}
+
+/**
+ * Returns the current Skyblock year
+ * @param {number} time
+ * @returns {number}
+ */
+export function timeToSkyblockYear(time) {
+  const hourMs = 50000;
+  const dayMs = 24 * hourMs;
+  const monthMs = 31 * dayMs;
+  const yearMs = 21 * monthMs;
+  const yearZero = 1560275700000;
+
+  return Math.floor((time - yearZero) / yearMs) + 1;
+}
+
+/**
+ * Checks if the minecraft bot is online
+ * @returns {boolean}
+ */
+export function isBotOnline() {
+  if (bot === undefined || bot._client.chat === undefined) {
+    return false;
+  }
+
+  return true;
 }

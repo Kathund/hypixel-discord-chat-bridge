@@ -27,11 +27,11 @@ class BooCommand extends MinecraftCommand {
     try {
       const args = this.getArgs(message);
       if (args.length === 0) {
-        throw "You must provide a user to boo!";
+        throw new Error("You must provide a user to boo!");
       }
 
       if (new Date().getMonth() !== 9) {
-        throw "You can only do this during Halloween!";
+        throw new Error("You can only do this during Halloween!");
       }
 
       if (this.isOnCooldown) {

@@ -1,6 +1,6 @@
-import { REST, Routes, Collection } from "discord.js";
 import config from "../../config.json" with { type: "json" };
-import { readdirSync } from "fs";
+import { Collection, REST, Routes } from "discord.js";
+import { readdirSync } from "node:fs";
 
 class CommandHandler {
   constructor(discord) {
@@ -14,7 +14,7 @@ class CommandHandler {
 
     for (const file of commandFiles) {
       const command = new (await import(`./commands/${file}`)).default(this.discord);
-      if (command.inactivityCommand === true && config.verification.inactivity.enabled == false) {
+      if (command.inactivityCommand === true && config.verification.inactivity.enabled === false) {
         continue;
       }
 

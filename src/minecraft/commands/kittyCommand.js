@@ -1,6 +1,6 @@
 import MinecraftCommand from "../../contracts/MinecraftCommand.js";
-import { uploadImage } from "../../contracts/API/imgurAPI.js";
 import axios from "axios";
+import { uploadImage } from "../../contracts/API/imgurAPI.js";
 
 class KittyCommand extends MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */
@@ -17,15 +17,16 @@ class KittyCommand extends MinecraftCommand {
    * @param {string} player
    * @param {string} message
    * */
+  // eslint-disable-next-line no-unused-vars
   async onCommand(player, message) {
     try {
       const { data } = await axios.get(`https://api.thecatapi.com/v1/images/search`);
       if (data === undefined) {
-        throw "An error occured while fetching the image. Please try again later.";
+        throw new Error("An error occured while fetching the image. Please try again later.");
       }
 
       if (data[0].url === undefined) {
-        throw "An error occured while fetching the image. Please try again later.";
+        throw new Error("An error occured while fetching the image. Please try again later.");
       }
 
       const buffer = await axios.get(data[0].url, { responseType: "arraybuffer" });

@@ -265,16 +265,15 @@ const words = [
  */
 export function getRandomWord(length) {
   if (length !== undefined) {
-    const filteredWords = words.filter((word) => word.length == length);
+    const filteredWords = words.filter((word) => word.length === length);
 
     if (filteredWords.length === 0) {
-      throw `No words found with ${length} characters.`;
+      throw new Error(`No words found with ${length} characters.`);
     }
 
     return filteredWords[Math.floor(Math.random() * filteredWords.length)];
-  } else {
-    return words[Math.floor(Math.random() * words.length)];
   }
+  return words[Math.floor(Math.random() * words.length)];
 }
 
 /**

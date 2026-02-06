@@ -1,6 +1,6 @@
-import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
-import { formatNumber, titleCase } from "../../contracts/helperFunctions.js";
 import MinecraftCommand from "../../contracts/MinecraftCommand.js";
+import { formatNumber, titleCase } from "../../contracts/helperFunctions.js";
+import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
 import { getSlayer } from "../../../API/stats/slayer.js";
 
 class SlayersCommand extends MinecraftCommand {

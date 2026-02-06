@@ -1,5 +1,5 @@
-import HypixelDiscordChatBridgeError from "../../contracts/errorHandler.js";
 import DiscordCommand from "../../contracts/DiscordCommand.js";
+import HypixelDiscordChatBridgeError from "../../contracts/errorHandler.js";
 import { Embed } from "../../contracts/embedHandler.js";
 import { SlashCommandBuilder } from "discord.js";
 
@@ -29,7 +29,7 @@ class GuildTopCommand extends DiscordCommand {
     const time = interaction.options.getString("time");
 
     const cachedMessages = [];
-    const messages = new Promise((resolve, reject) => {
+    const messages = new Promise((resolve) => {
       const listener = (message) => {
         message = message.toString();
         cachedMessages.push(message);

@@ -1,11 +1,6 @@
 import MinecraftProtocol from "minecraft-protocol";
 import config from "../../../config.json" with { type: "json" };
 
-if (config.minecraft.hypixelUpdates.enabled === true && config.minecraft.hypixelUpdates.alphaPlayerCountTracker === true) {
-  setInterval(checkAlphaPlayerCount, 15 * 60000); // 15 minute
-  checkAlphaPlayerCount();
-}
-
 let lastPlayerCount = 0;
 let lastMessageTime = 0;
 const MESSAGE_COOLDOWN = 60 * 60 * 1000; // 1 hour
@@ -32,4 +27,9 @@ async function checkAlphaPlayerCount() {
   } catch (error) {
     console.error("Error checking Alpha Hypixel player count:", error);
   }
+}
+
+if (config.minecraft.hypixelUpdates.enabled === true && config.minecraft.hypixelUpdates.alphaPlayerCountTracker === true) {
+  setInterval(checkAlphaPlayerCount, 15 * 60000); // 15 minute
+  checkAlphaPlayerCount();
 }

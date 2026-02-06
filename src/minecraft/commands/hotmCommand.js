@@ -1,7 +1,7 @@
-import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
 import MinecraftCommand from "../../contracts/MinecraftCommand.js";
 import { formatNumber } from "../../contracts/helperFunctions.js";
 import { getHotm } from "../../../API/stats/hotm.js";
+import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
 
 class HotmCommand extends MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */
@@ -33,8 +33,8 @@ class HotmCommand extends MinecraftCommand {
       const { username, profile, profileData } = await getLatestProfile(player);
 
       const hotm = getHotm(profile);
-      if (hotm == null) {
-        throw `${username} has never gone to Dwarven Mines on ${profileData.cute_name}.`;
+      if (hotm === null) {
+        throw new Error(`${username} has never gone to Dwarven Mines on ${profileData.cute_name}.`);
       }
 
       this.send(

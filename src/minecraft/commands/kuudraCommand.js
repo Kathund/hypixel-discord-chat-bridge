@@ -1,7 +1,7 @@
-import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
 import MinecraftCommand from "../../contracts/MinecraftCommand.js";
 import { formatNumber } from "../../contracts/helperFunctions.js";
 import { getKuudra } from "../../../API/stats/crimson.js";
+import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
 
 class KuudraCommand extends MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */
@@ -33,8 +33,8 @@ class KuudraCommand extends MinecraftCommand {
       const { username, profile, profileData } = await getLatestProfile(player);
 
       const kuudraData = getKuudra(profile);
-      if (kuudraData == null) {
-        throw `${username} has never gone to Crimson Isle on ${profileData.cute_name}.`;
+      if (kuudraData === null) {
+        throw new Error(`${username} has never gone to Crimson Isle on ${profileData.cute_name}.`);
       }
 
       this.send(

@@ -1,5 +1,5 @@
-import { splitMessage, delay, generateID } from "./helperFunctions.js";
 import config from "../../config.json" with { type: "json" };
+import { delay, generateID, splitMessage } from "./helperFunctions.js";
 
 class MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */
@@ -50,10 +50,10 @@ class MinecraftCommand {
     }
 
     try {
-      const sendMessage = async () => {
+      const sendMessage = () => {
         return /** @type {Promise<void>} */ (
           new Promise((resolve, reject) => {
-            const listener = async (/** @type {{ toString: () => any; }} */ msg) => {
+            const listener = (/** @type {{ toString: () => any; }} */ msg) => {
               const msgStr = msg.toString();
 
               if (msgStr.includes("You are sending commands too fast!") && !msgStr.includes(":")) {
@@ -123,6 +123,7 @@ class MinecraftCommand {
    * @param {string} player
    * @param {string} message
    */
+  // eslint-disable-next-line no-unused-vars
   onCommand(player, message) {
     throw new Error("Command onCommand method is not implemented yet!");
   }

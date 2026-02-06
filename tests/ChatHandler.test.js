@@ -1,5 +1,5 @@
 import ChatHandler from "../src/minecraft/handlers/ChatHandler.js";
-import { describe, it, expect, beforeEach } from "@jest/globals";
+import { beforeEach, describe, expect, it } from "@jest/globals";
 
 describe("ChatHandler", () => {
   describe("uncoloredRegex", () => {

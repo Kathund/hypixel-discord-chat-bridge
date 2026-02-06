@@ -1,11 +1,11 @@
-import HypixelDiscordChatBridgeError from "../../contracts/errorHandler.js";
-import { replaceVariables } from "../../contracts/helperFunctions.js";
 import DiscordCommand from "../../contracts/DiscordCommand.js";
+import HypixelDiscordChatBridgeError from "../../contracts/errorHandler.js";
+import config from "../../../config.json" with { type: "json" };
+import packageJSON from "../../../package.json" with { type: "json" };
 import { Embed } from "../../contracts/embedHandler.js";
 import { SlashCommandBuilder } from "discord.js";
-import packageJSON from "../../../package.json" with { type: "json" };
-import config from "../../../config.json" with { type: "json" };
-import { readdirSync } from "fs";
+import { readdirSync } from "node:fs";
+import { replaceVariables } from "../../contracts/helperFunctions.js";
 
 function formatOptions(name, required) {
   return replaceVariables(required ? ` ({${name}})` : ` [{${name}}]`, { username: "u" })

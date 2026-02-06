@@ -1,6 +1,6 @@
 import DiscordCommand from "../../contracts/DiscordCommand.js";
-import { SuccessEmbed } from "../../contracts/embedHandler.js";
 import { SlashCommandBuilder } from "discord.js";
+import { SuccessEmbed } from "../../contracts/embedHandler.js";
 
 class DemoteCommand extends DiscordCommand {
   /** @param {import("../discord/DiscordManager.js").default} discord */

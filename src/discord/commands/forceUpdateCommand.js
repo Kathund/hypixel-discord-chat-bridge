@@ -1,8 +1,8 @@
-import HypixelDiscordChatBridgeError from "../../contracts/errorHandler.js";
 import DiscordCommand from "../../contracts/DiscordCommand.js";
-import { SlashCommandBuilder } from "discord.js";
+import HypixelDiscordChatBridgeError from "../../contracts/errorHandler.js";
 import UpdateCommand from "./updateCommand.js";
-import { readFileSync } from "fs";
+import { SlashCommandBuilder } from "discord.js";
+import { readFileSync } from "node:fs";
 
 class ForceUpdateCommand extends DiscordCommand {
   /** @param {import("../discord/DiscordManager.js").default} discord */

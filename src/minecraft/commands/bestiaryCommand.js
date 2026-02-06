@@ -1,7 +1,7 @@
-import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
 import MinecraftCommand from "../../contracts/MinecraftCommand.js";
 import { formatNumber } from "../../contracts/helperFunctions.js";
 import { getBestiary } from "../../../API/stats/bestiary.js";
+import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
 
 class BestiaryCommand extends MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */

@@ -1,4 +1,5 @@
 import MinecraftCommand from "../../contracts/MinecraftCommand.js";
+import { timeToSkyblockYear } from "../../contracts/helperFunctions.js";
 
 /*
 Derpy = 368 mod 24 = 8
@@ -7,42 +8,22 @@ Scorpius = 384 mod 24 = 0
 https://hypixel-skyblock.fandom.com/wiki/Mayor_Election#Special_Candidates_Election_Cycle
 */
 
-const hourMs = 50000;
-const dayMs = 24 * hourMs;
-const monthLength = 31;
-const yearLength = 12;
-
-const monthMs = monthLength * dayMs;
-const yearMs = yearLength * monthMs;
-
-const yearZero = 1560275700000;
-
 const currentSkyblockYear = timeToSkyblockYear(Date.now());
 
-var yearsUntilSpecial = 0;
-var diffSkyblockYear = currentSkyblockYear;
-var specialMayor = "";
-
-/**
- * Returns the current Skyblock year
- * @param {number} time
- * @returns {number}
- */
-function timeToSkyblockYear(time) {
-  return Math.floor((time - yearZero) / yearMs) + 1;
-}
+let yearsUntilSpecial = 0;
+let diffSkyblockYear = currentSkyblockYear;
+let specialMayor = "";
 
 /**
  * Returns the special mayor for the given year
- * @param {number} skyblockYear
  * @returns {string}
  */
-function getSpecialMayor(skyblockYear) {
-  if (diffSkyblockYear % 24 == 8) {
+function getSpecialMayor() {
+  if (diffSkyblockYear % 24 === 8) {
     specialMayor = "Derpy";
-  } else if (diffSkyblockYear % 24 == 16) {
+  } else if (diffSkyblockYear % 24 === 16) {
     specialMayor = "Jerry";
-  } else if (diffSkyblockYear % 24 == 0) {
+  } else if (diffSkyblockYear % 24 === 0) {
     specialMayor = "Scorpius";
   } else {
     specialMayor = "Error!";
@@ -62,16 +43,21 @@ class SpecialMayorCommand extends MinecraftCommand {
     this.options = [];
   }
 
-  async onCommand() {
+  /**
+   * @param {string} player
+   * @param {string} message
+   * */
+  // eslint-disable-next-line no-unused-vars
+  onCommand(player, message) {
     try {
-      if (currentSkyblockYear % 8 == 0) {
-        specialMayor = getSpecialMayor(currentSkyblockYear);
+      if (currentSkyblockYear % 8 === 0) {
+        specialMayor = getSpecialMayor();
         this.send(`Special Mayor this year! It is speculated to be ${specialMayor}.`);
       } else {
-        while (diffSkyblockYear % 8 != 0) {
+        while (diffSkyblockYear % 8 !== 0) {
           yearsUntilSpecial += 1;
           diffSkyblockYear += 1;
-          specialMayor = getSpecialMayor(diffSkyblockYear);
+          specialMayor = getSpecialMayor();
         }
 
         this.send(`Not Special Mayor, ${yearsUntilSpecial} years until the next one! It is speculated to be ${specialMayor}.`);

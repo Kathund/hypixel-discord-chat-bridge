@@ -1,6 +1,6 @@
 import MinecraftCommand from "../../contracts/MinecraftCommand.js";
-import { delay } from "../../contracts/helperFunctions.js";
 import axios from "axios";
+import { delay } from "../../contracts/helperFunctions.js";
 
 class MayorCommand extends MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */
@@ -17,12 +17,13 @@ class MayorCommand extends MinecraftCommand {
    * @param {string} player
    * @param {string} message
    * */
+  // eslint-disable-next-line no-unused-vars
   async onCommand(player, message) {
     try {
       // CREDITS: by @Kathund (https://github.com/Kathund)
       const response = await axios.get(`https://api.hypixel.net/v2/resources/skyblock/election`);
       if (response === undefined || response.data === undefined || response.data.success === false) {
-        throw "Request to Hypixel API failed. Please try again!";
+        throw new Error("Request to Hypixel API failed. Please try again!");
       }
 
       /** @type {import("../../../types/election.js").Mayor} */

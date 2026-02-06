@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 // CREDITS: https://github.com/slothpixel/core (Modified)
 // @ts-nocheck
 import { nth, parseTimestamp } from "../../src/contracts/helperFunctions.js";

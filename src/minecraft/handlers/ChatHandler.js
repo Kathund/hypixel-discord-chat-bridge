@@ -1,14 +1,14 @@
-import { checkRequirements, generateEmbed } from "../../discord/commands/requirementsCommand.js";
-import { replaceAllRanks, replaceVariables, delay } from "../../contracts/helperFunctions.js";
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from "discord.js";
-import { updateRoles } from "../../discord/commands/updateCommand.js";
-import { getUUID } from "../../contracts/API/mowojangAPI.js";
-import eventHandler from "../../contracts/EventHandler.js";
 import HypixelAPI from "../../contracts/API/HypixelAPI.js";
-import { isUuid } from "../../../API/utils/uuid.js";
-import messages from "../../../messages.json" with { type: "json" };
 import config from "../../../config.json" with { type: "json" };
-import { readFileSync } from "fs";
+import eventHandler from "../../contracts/EventHandler.js";
+import messages from "../../../messages.json" with { type: "json" };
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from "discord.js";
+import { checkRequirements, generateEmbed } from "../../discord/commands/requirementsCommand.js";
+import { delay, replaceAllRanks, replaceVariables } from "../../contracts/helperFunctions.js";
+import { getUUID } from "../../contracts/API/mowojangAPI.js";
+import { isUuid } from "../../../API/utils/uuid.js";
+import { readFileSync } from "node:fs";
+import { updateRoles } from "../../discord/commands/updateCommand.js";
 
 class ChatHandler extends eventHandler {
   /** @param {import("../MinecraftManager.js").default} minecraft */
@@ -56,7 +56,7 @@ class ChatHandler extends eventHandler {
           }
         }
 
-        const members = await HypixelAPI.getGuild("player", bot.username).then(async (guild) => guild.members.map((member) => member.uuid));
+        const members = await HypixelAPI.getGuild("player", bot.username).then((guild) => guild.members.map((member) => member.uuid));
         if ((config.minecraft.fragBot.whitelist && whitelisted.includes(username)) || members.includes(uuid)) {
           bot.chat(`/party accept ${username}`);
           await delay(Math.floor(Math.random() * (6900 - 4200 + 1)) + 4200);
@@ -753,7 +753,7 @@ class ChatHandler extends eventHandler {
   }
 
   isRepeatMessage(message) {
-    return message == "You cannot say the same message twice!";
+    return message === "You cannot say the same message twice!";
   }
 
   isNoPermission(message) {

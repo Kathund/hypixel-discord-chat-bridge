@@ -1,5 +1,5 @@
-import { getRandomWord, scrambleWord } from "../constants/words.js";
 import MinecraftCommand from "../../contracts/MinecraftCommand.js";
+import { getRandomWord, scrambleWord } from "../constants/words.js";
 
 /**
  * Returns the word
@@ -47,7 +47,7 @@ class UnscrambleCommand extends MinecraftCommand {
    * @param {string} player
    * @param {string} message
    * */
-  async onCommand(player, message) {
+  onCommand(player, message) {
     try {
       const length = this.getArgs(message)[0];
       const answer = getRandomWord(length);
@@ -67,6 +67,7 @@ class UnscrambleCommand extends MinecraftCommand {
 
       let answered = false;
       cooldowns.set(this.name, Date.now());
+      const startTime = Date.now();
       /**
        * Listener for chat event
        * @param {string} username
@@ -83,7 +84,6 @@ class UnscrambleCommand extends MinecraftCommand {
 
       bot.on("chat", listener);
       this.send(`Unscramble the following word: "${scrambledWord}"`);
-      const startTime = Date.now();
 
       setTimeout(() => {
         bot.removeListener("chat", listener);

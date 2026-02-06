@@ -2,6 +2,46 @@
 import { titleCase } from "../../src/contracts/helperFunctions.js";
 
 /**
+ * Returns the score rank of a dojo.
+ * @param {number} points
+ * @returns {string}
+ */
+function getScore(points) {
+  if (points >= 1000) {
+    return "S";
+  } else if (points >= 800) {
+    return "A";
+  } else if (points >= 600) {
+    return "B";
+  } else if (points >= 400) {
+    return "C";
+  } else if (points >= 200) {
+    return "D";
+  }
+  return "F";
+}
+
+/**
+ * Returns the belt of a dojo.
+ * @param {number} points
+ * @returns {string}
+ */
+function getBelt(points) {
+  if (points >= 7000) {
+    return "Black";
+  } else if (points >= 6000) {
+    return "Brown";
+  } else if (points >= 4000) {
+    return "Blue";
+  } else if (points >= 2000) {
+    return "Green";
+  } else if (points >= 1000) {
+    return "Yellow";
+  }
+  return "White";
+}
+
+/**
  * Returns the Crimson Isle stats of a player.
  * @param {import("../../types/profiles.js").Member} profile
  * @returns {import("./crimson.types").CrimsonIsle | null}
@@ -77,49 +117,6 @@ export function getDojo(profile) {
     console.error(error);
     return null;
   }
-}
-
-/**
- * Returns the score rank of a dojo.
- * @param {number} points
- * @returns {string}
- */
-
-function getScore(points) {
-  if (points >= 1000) {
-    return "S";
-  } else if (points >= 800) {
-    return "A";
-  } else if (points >= 600) {
-    return "B";
-  } else if (points >= 400) {
-    return "C";
-  } else if (points >= 200) {
-    return "D";
-  } else {
-    return "F";
-  }
-}
-
-/**
- * Returns the belt of a dojo.
- * @param {number} points
- * @returns {string}
- */
-function getBelt(points) {
-  if (points >= 7000) {
-    return "Black";
-  } else if (points >= 6000) {
-    return "Brown";
-  } else if (points >= 4000) {
-    return "Blue";
-  } else if (points >= 2000) {
-    return "Green";
-  } else if (points >= 1000) {
-    return "Yellow";
-  }
-
-  return "White";
 }
 
 /**

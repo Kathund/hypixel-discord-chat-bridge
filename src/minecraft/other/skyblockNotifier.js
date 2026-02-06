@@ -1,23 +1,9 @@
-import config from "../../../config.json" with { type: "json" };
-import { load } from "cheerio";
 import Rss from "rss-parser";
 import axios from "axios";
+import config from "../../../config.json" with { type: "json" };
+import { load } from "cheerio";
 
 const parser = new Rss();
-
-if (config.minecraft.hypixelUpdates.enabled === true) {
-  if (config.minecraft.hypixelUpdates.hypixelNews === true) {
-    setInterval(checkForHypixelUpdates, 10000);
-  }
-
-  if (config.minecraft.hypixelUpdates.statusUpdates === true) {
-    setInterval(checkForIncidents, 10000);
-  }
-
-  if (config.minecraft.hypixelUpdates.skyblockVersion === true) {
-    setInterval(checkForSkyblockVersion, 10000);
-  }
-}
 
 const hypixelIncidents = {};
 async function checkForIncidents() {
@@ -112,5 +98,19 @@ async function checkForSkyblockVersion() {
     }
   } catch (error) {
     console.error(error);
+  }
+}
+
+if (config.minecraft.hypixelUpdates.enabled === true) {
+  if (config.minecraft.hypixelUpdates.hypixelNews === true) {
+    setInterval(checkForHypixelUpdates, 10000);
+  }
+
+  if (config.minecraft.hypixelUpdates.statusUpdates === true) {
+    setInterval(checkForIncidents, 10000);
+  }
+
+  if (config.minecraft.hypixelUpdates.skyblockVersion === true) {
+    setInterval(checkForSkyblockVersion, 10000);
   }
 }

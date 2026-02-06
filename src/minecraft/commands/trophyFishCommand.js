@@ -1,6 +1,6 @@
-import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
-import { formatNumber } from "../../contracts/helperFunctions.js";
 import MinecraftCommand from "../../contracts/MinecraftCommand.js";
+import { formatNumber } from "../../contracts/helperFunctions.js";
+import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
 import { getTrophyFish } from "../../../API/stats/crimson.js";
 
 class TrophyFishCommand extends MinecraftCommand {
@@ -33,8 +33,8 @@ class TrophyFishCommand extends MinecraftCommand {
       const { username, profile, profileData } = await getLatestProfile(player);
 
       const trophyfish = getTrophyFish(profile);
-      if (trophyfish == null) {
-        throw `${username} has never gone to Crimson Isle on ${profileData.cute_name}.`;
+      if (trophyfish === null) {
+        throw new Error(`${username} has never gone to Crimson Isle on ${profileData.cute_name}.`);
       }
 
       this.send(

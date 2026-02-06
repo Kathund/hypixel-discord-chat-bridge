@@ -11,6 +11,36 @@ export function getXpTable(type = "default") {
 }
 
 /**
+ * Calculates the total experience required to reach a certain level in a skill.
+ * @param {string} skill The ID of the skill used to determine the xp table.
+ * @param {number} level The target level.
+ * @returns {number} The total experience required.
+ */
+export function getSkillExperience(skill, level) {
+  const skillTable = getXpTable(skill);
+
+  // @ts-ignore
+  return Object.entries(skillTable).reduce((acc, [key, value]) => (key <= level ? acc + value : acc), 0);
+}
+
+/**
+ * Calculates the skill level caps for different skills based on the profile data and Hypixel player data.
+ * @param {import("../../types/profiles.js").Member} profileData
+ * @returns {{
+ *  farming: number;
+ *  taming: number;
+ *  runecrafting: number;
+ * }} An object containing the skill level caps for farming, taming, and runecrafting.
+ */
+export function getSkillLevelCaps(profileData) {
+  return {
+    farming: 50 + (profileData.jacobs_contest?.perks?.farming_level_cap || 0),
+    taming: 50 + (profileData.pets_data?.pet_care?.pet_types_sacrificed?.length || 0),
+    runecrafting: 25 // hypixelPlayer?.newPackageRank ? 25 : 3
+  };
+}
+
+/**
  * Gets the level and some other information from an xp amount.
  * @param {number} xp The experience points to calculate level information from.
  * @param {Object} [extra={}] Additional options for level calculation.
@@ -134,37 +164,6 @@ export function getSkillAverage(profileData, hypixelPlayer, options = { decimals
   const average = totalLevel / skillTables.skills.filter((skill) => !(!options.cosmetic && skillTables.cosmeticSkills.includes(skill))).length;
 
   return average.toFixed(options.decimals);
-}
-
-/**
- * Calculates the skill level caps for different skills based on the profile data and Hypixel player data.
- * @param {import("../../types/profiles.js").Member} profileData
- * @param {import("../../types/player.js").Player | null} hypixelPlayer
- * @returns {{
- *  farming: number;
- *  taming: number;
- *  runecrafting: number;
- * }} An object containing the skill level caps for farming, taming, and runecrafting.
- */
-export function getSkillLevelCaps(profileData, hypixelPlayer) {
-  return {
-    farming: 50 + (profileData.jacobs_contest?.perks?.farming_level_cap || 0),
-    taming: 50 + (profileData.pets_data?.pet_care?.pet_types_sacrificed?.length || 0),
-    runecrafting: 25 // hypixelPlayer?.newPackageRank ? 25 : 3
-  };
-}
-
-/**
- * Calculates the total experience required to reach a certain level in a skill.
- * @param {string} skill The ID of the skill used to determine the xp table.
- * @param {number} level The target level.
- * @returns {number} The total experience required.
- */
-export function getSkillExperience(skill, level) {
-  const skillTable = getXpTable(skill);
-
-  // @ts-ignore
-  return Object.entries(skillTable).reduce((acc, [key, value]) => (key <= level ? acc + value : acc), 0);
 }
 
 /**

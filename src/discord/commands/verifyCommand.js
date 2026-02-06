@@ -1,12 +1,12 @@
-import { Embed, ErrorEmbed, SuccessEmbed } from "../../contracts/embedHandler.js";
-import HypixelDiscordChatBridgeError from "../../contracts/errorHandler.js";
-import { formatError } from "../../contracts/helperFunctions.js";
-import { MessageFlags, SlashCommandBuilder } from "discord.js";
 import DiscordCommand from "../../contracts/DiscordCommand.js";
 import HypixelAPI from "../../contracts/API/HypixelAPI.js";
-import { writeFileSync, readFileSync } from "fs";
+import HypixelDiscordChatBridgeError from "../../contracts/errorHandler.js";
 import UpdateCommand from "./updateCommand.js";
 import config from "../../../config.json" with { type: "json" };
+import { Embed, ErrorEmbed, SuccessEmbed } from "../../contracts/embedHandler.js";
+import { MessageFlags, SlashCommandBuilder } from "discord.js";
+import { formatError } from "../../contracts/helperFunctions.js";
+import { readFileSync, writeFileSync } from "node:fs";
 
 class VerifyCommand extends DiscordCommand {
   /** @param {import("../discord/DiscordManager.js").default} discord */

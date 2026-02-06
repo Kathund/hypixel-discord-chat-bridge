@@ -49,7 +49,7 @@ class StateHandler {
     });
   }
 
-  async getChannel(type) {
+  getChannel(type) {
     if (typeof type !== "string" || type === undefined) {
       console.error(`Channel type must be a string! Received: ${type}`);
       return;

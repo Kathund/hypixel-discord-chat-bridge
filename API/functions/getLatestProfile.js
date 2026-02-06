@@ -1,11 +1,11 @@
 /* eslint-disable no-throw-literal */
-import { getUUID, getUsername } from "../../src/contracts/API/mowojangAPI.js";
-import { formatUsername } from "../../src/contracts/helperFunctions.js";
-import { getMuseum } from "./getMuseum.js";
-import { getGarden } from "./getGarden.js";
-import { isUuid } from "../utils/uuid.js";
-import config from "../../config.json" with { type: "json" };
 import axios from "axios";
+import config from "../../config.json" with { type: "json" };
+import { formatUsername } from "../../src/contracts/helperFunctions.js";
+import { getGarden } from "./getGarden.js";
+import { getMuseum } from "./getMuseum.js";
+import { getUUID, getUsername } from "../../src/contracts/API/mowojangAPI.js";
+import { isUuid } from "../utils/uuid.js";
 
 const cache = new Map();
 
@@ -56,12 +56,12 @@ export async function getLatestProfile(uuid, options = { museum: false, garden: 
 
   /** @type {import("../../types/profiles").Profile[]} */
   const allProfiles = profileRes.profiles;
-  if (allProfiles == null || allProfiles.length == 0) {
+  if (allProfiles === null || allProfiles.length === 0) {
     throw "Player has no SkyBlock profiles.";
   }
 
   const profileData = allProfiles.find((a) => a.selected) || null;
-  if (profileData == null) {
+  if (profileData === null) {
     throw "Player does not have selected profile.";
   }
 
@@ -73,6 +73,7 @@ export async function getLatestProfile(uuid, options = { museum: false, garden: 
   const output = {
     username: formatUsername(username, profileData.game_mode),
     rawUsername: username,
+    // eslint-disable-next-line camelcase
     last_save: Date.now(),
     profiles: profileRes.profiles,
     profile: profile,

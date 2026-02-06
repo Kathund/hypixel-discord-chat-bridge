@@ -1,14 +1,14 @@
-import { updateMessage } from "./Logger.js";
-import { exec } from "child_process";
 import config from "../config.json" with { type: "json" };
 import cron from "node-cron";
+import { exec } from "node:child_process";
+import { updateMessage } from "./Logger.js";
 
 function updateCode() {
   if (config.other.autoUpdater === false) {
     return;
   }
 
-  exec("git pull", (error, stdout, stderr) => {
+  exec("git pull", (error, stdout) => {
     if (error) {
       console.error(error);
       return;

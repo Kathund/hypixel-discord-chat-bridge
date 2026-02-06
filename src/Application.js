@@ -1,7 +1,7 @@
-import MinecraftManager from "./minecraft/MinecraftManager.js";
-import { existsSync, mkdirSync, writeFileSync } from "fs";
 import DiscordManager from "./discord/DiscordManager.js";
+import MinecraftManager from "./minecraft/MinecraftManager.js";
 import WebManager from "./web/WebManager.js";
+import { existsSync, mkdirSync, writeFileSync } from "node:fs";
 
 class Application {
   constructor() {
@@ -10,7 +10,7 @@ class Application {
     if (!existsSync("./data/inactivity.json")) writeFileSync("./data/inactivity.json", JSON.stringify({}));
   }
 
-  async register() {
+  register() {
     this.discord = new DiscordManager(this);
     this.minecraft = new MinecraftManager(this);
     this.web = new WebManager(this);
@@ -22,7 +22,7 @@ class Application {
   async connect() {
     await this.discord.connect();
     this.minecraft.connect();
-    await this.web.connect();
+    this.web.connect();
   }
 }
 

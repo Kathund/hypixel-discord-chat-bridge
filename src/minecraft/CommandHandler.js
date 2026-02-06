@@ -1,7 +1,7 @@
-import { Collection } from "discord.js";
-import config from "../../config.json" with { type: "json" };
-import { readdirSync } from "fs";
 import axios from "axios";
+import config from "../../config.json" with { type: "json" };
+import { Collection } from "discord.js";
+import { readdirSync } from "node:fs";
 
 class CommandHandler {
   /** @param {import("minecraft-protocol").Client} minecraft */

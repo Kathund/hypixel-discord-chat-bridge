@@ -1,6 +1,6 @@
-import { SuccessEmbed } from "../../contracts/embedHandler.js";
 import DiscordCommand from "../../contracts/DiscordCommand.js";
 import { SlashCommandBuilder } from "discord.js";
+import { SuccessEmbed } from "../../contracts/embedHandler.js";
 
 class PromoteCommand extends DiscordCommand {
   /** @param {import("../discord/DiscordManager.js").default} discord */

@@ -1,11 +1,11 @@
-import HypixelDiscordChatBridgeError from "../../contracts/errorHandler.js";
-import { Embed, SuccessEmbed } from "../../contracts/embedHandler.js";
-import { getUsername } from "../../contracts/API/mowojangAPI.js";
 import DiscordCommand from "../../contracts/DiscordCommand.js";
-import { SlashCommandBuilder } from "discord.js";
-import { writeFileSync, readFileSync } from "fs";
+import HypixelDiscordChatBridgeError from "../../contracts/errorHandler.js";
 import config from "../../../config.json" with { type: "json" };
 import ms from "ms";
+import { Embed, SuccessEmbed } from "../../contracts/embedHandler.js";
+import { SlashCommandBuilder } from "discord.js";
+import { getUsername } from "../../contracts/API/mowojangAPI.js";
+import { readFileSync, writeFileSync } from "node:fs";
 
 export function removeExpiredInactivity() {
   const inactivityData = readFileSync("data/inactivity.json");

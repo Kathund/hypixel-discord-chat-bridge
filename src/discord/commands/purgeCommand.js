@@ -1,5 +1,5 @@
-import HypixelDiscordChatBridgeError from "../../contracts/errorHandler.js";
 import DiscordCommand from "../../contracts/DiscordCommand.js";
+import HypixelDiscordChatBridgeError from "../../contracts/errorHandler.js";
 import { SlashCommandBuilder } from "discord.js";
 
 class PurgeCommand extends DiscordCommand {

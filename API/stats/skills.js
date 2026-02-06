@@ -1,4 +1,4 @@
-import { getSkillLevelCaps, getSocialSkillExperience, getLevelByXp } from "../constants/skills.js";
+import { getLevelByXp, getSkillLevelCaps, getSocialSkillExperience } from "../constants/skills.js";
 
 /**
  * Returns the skill levels for a player's profile data.

@@ -1,6 +1,6 @@
-import { formatNumber, formatError } from "../../contracts/helperFunctions.js";
-import MinecraftCommand from "../../contracts/MinecraftCommand.js";
 import HypixelAPI from "../../contracts/API/HypixelAPI.js";
+import MinecraftCommand from "../../contracts/MinecraftCommand.js";
+import { formatError, formatNumber } from "../../contracts/helperFunctions.js";
 
 class MurderMysteryCommand extends MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */

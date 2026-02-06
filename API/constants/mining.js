@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 // credit: https://github.com/SkyCryptWebsite/SkyCrypt/blob/b9842bea6f1494fa2d2fd005b64f57d84646c188/src/constants/forge.js#L1 (Modified)
 export const forge = {
   // Times in milliseconds

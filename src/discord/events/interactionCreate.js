@@ -1,9 +1,10 @@
-import { isLinkedMember, isGuildMember, isVerifiedMember } from "../../contracts/verificaiton.js";
-import HypixelDiscordChatBridgeError from "../../contracts/errorHandler.js";
-import { ErrorEmbed, SuccessEmbed } from "../../contracts/embedHandler.js";
 import DiscordEvent from "../../contracts/DiscordEvent.js";
-import { MessageFlags, Events } from "discord.js";
+import HypixelDiscordChatBridgeError from "../../contracts/errorHandler.js";
 import config from "../../../config.json" with { type: "json" };
+import { ErrorEmbed, SuccessEmbed } from "../../contracts/embedHandler.js";
+import { Events, MessageFlags } from "discord.js";
+import { isBotOnline } from "../../contracts/helperFunctions.js";
+import { isGuildMember, isLinkedMember, isModerator, isVerifiedMember } from "../../contracts/user.js";
 
 class InteractionCreateEvent extends DiscordEvent {
   /** @param {import("../DiscordManager.js").default} discord */
@@ -23,7 +24,7 @@ class InteractionCreateEvent extends DiscordEvent {
         }
 
         console.discord(`${interaction.user.username} - [${interaction.commandName}]`);
-        await interaction.deferReply().catch(() => {});
+        await interaction.deferReply().catch();
         if (memberRoles.some((role) => config.discord.commands.blacklistRoles.includes(role))) {
           throw new HypixelDiscordChatBridgeError("You are blacklisted from the bot.");
         }
@@ -58,7 +59,7 @@ class InteractionCreateEvent extends DiscordEvent {
 
         await command.execute(interaction);
       } else if (interaction.isButton()) {
-        await interaction.deferReply({ flags: MessageFlags.Ephemeral }).catch(() => {});
+        await interaction.deferReply({ flags: MessageFlags.Ephemeral });
         if (interaction.customId !== "joinRequestAccept") return;
         const username = interaction?.message?.embeds?.[0]?.title.split(" ")?.[0] || undefined;
         if (!username) throw new HypixelDiscordChatBridgeError("Something is missing");
@@ -95,25 +96,6 @@ class InteractionCreateEvent extends DiscordEvent {
       }
     }
   }
-}
-
-export function isBotOnline() {
-  if (bot === undefined || bot._client.chat === undefined) {
-    return false;
-  }
-
-  return true;
-}
-
-export function isModerator(interaction) {
-  const user = interaction.member;
-  const userRoles = user.roles.cache.map((role) => role.id);
-
-  if (config.discord.commands.checkPerms === true && !(userRoles.includes(config.discord.commands.commandRole) || config.discord.commands.users.includes(user.id))) {
-    return false;
-  }
-
-  return true;
 }
 
 export default InteractionCreateEvent;

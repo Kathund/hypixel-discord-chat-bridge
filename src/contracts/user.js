@@ -1,9 +1,9 @@
 import HypixelDiscordChatBridgeError from "./errorHandler.js";
-import { readFileSync } from "fs";
 import config from "../../config.json" with { type: "json" };
+import { readFileSync } from "node:fs";
 
 /**
- * @param {import("discord.js").ChatInputCommandInteraction} interaction
+ * @param {import("discord.js").BaseInteraction} interaction
  * @returns {boolean}
  */
 export function isGuildMember(interaction) {
@@ -21,7 +21,7 @@ export function isGuildMember(interaction) {
 }
 
 /**
- * @param {import("discord.js").ChatInputCommandInteraction} interaction
+ * @param {import("discord.js").BaseInteraction} interaction
  * @returns {boolean}
  */
 export function isVerifiedMember(interaction) {
@@ -39,7 +39,7 @@ export function isVerifiedMember(interaction) {
 }
 
 /**
- * @param {import("discord.js").ChatInputCommandInteraction} interaction
+ * @param {import("discord.js").BaseInteraction} interaction
  * @returns {boolean}
  */
 export function isLinkedMember(interaction) {
@@ -55,6 +55,21 @@ export function isLinkedMember(interaction) {
 
   const uuid = Object.entries(linked).find(([, value]) => value === interaction.user.id)?.[0];
   if (!uuid) {
+    return false;
+  }
+
+  return true;
+}
+
+/**
+ * @param {import("discord.js").BaseInteraction} interaction
+ * @returns {boolean}
+ */
+export function isModerator(interaction) {
+  const user = interaction.member;
+  const userRoles = user.roles.cache.map((role) => role.id);
+
+  if (config.discord.commands.checkPerms === true && !(userRoles.includes(config.discord.commands.commandRole) || config.discord.commands.users.includes(user.id))) {
     return false;
   }
 

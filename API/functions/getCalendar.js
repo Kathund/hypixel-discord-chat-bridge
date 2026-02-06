@@ -6,7 +6,7 @@ export function getSkyblockCalendar() {
     const calendar = buildSkyblockCalendar(null, Date.now(), Date.now() + 10710000000, 1, false);
 
     return calendar;
-  } catch (error) {
+  } catch {
     return null;
   }
 }

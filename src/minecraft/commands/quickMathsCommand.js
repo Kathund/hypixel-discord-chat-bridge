@@ -1,6 +1,6 @@
 import MinecraftCommand from "../../contracts/MinecraftCommand.js";
-import { delay } from "../../contracts/helperFunctions.js";
 import config from "../../../config.json" with { type: "json" };
+import { delay } from "../../contracts/helperFunctions.js";
 
 /**
  * Returns the answer
@@ -45,6 +45,7 @@ class QuickMathsCommand extends MinecraftCommand {
    * @param {string} player
    * @param {string} message
    * */
+  // eslint-disable-next-line no-unused-vars
   async onCommand(player, message) {
     try {
       const userUsername = player;

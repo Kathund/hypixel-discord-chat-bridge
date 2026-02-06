@@ -1,8 +1,16 @@
-import { getSkyblockCalendar } from "../../../API/functions/getCalendar.js";
-import minecraftCommand from "../../contracts/MinecraftCommand.js";
-import config from "../../../config.json" with { type: "json" };
 import axios from "axios";
+import config from "../../../config.json" with { type: "json" };
+import minecraftCommand from "../../contracts/MinecraftCommand.js";
 import { delay } from "../../contracts/helperFunctions.js";
+import { getSkyblockCalendar } from "../../../API/functions/getCalendar.js";
+
+function getCustomTime(events, value) {
+  if (events === undefined || value === undefined) {
+    return false;
+  }
+
+  return Object.keys(events).filter((key) => events[key].includes(value));
+}
 
 if (config.minecraft.skyblockEventsNotifications.enabled) {
   const { notifiers, customTime } = config.minecraft.skyblockEventsNotifications;
@@ -26,7 +34,7 @@ if (config.minecraft.skyblockEventsNotifications.enabled) {
         const minutes = Math.floor((eventData.events[0].start_timestamp - Date.now()) / 1000 / 60);
 
         let extraInfo = "";
-        if (event == "JACOBS_CONTEST") {
+        if (event === "JACOBS_CONTEST") {
           const { data: jacobResponse } = await axios.get("https://dawjaw.net/jacobs");
           const jacobCrops = jacobResponse.find((crop) => crop.time >= Math.floor(eventData.events[0].start_timestamp / 1000));
 
@@ -41,7 +49,7 @@ if (config.minecraft.skyblockEventsNotifications.enabled) {
           await delay(1500);
         }
 
-        if (minutes == 0) {
+        if (minutes === 0) {
           eventBOT.send(`[EVENT] ${eventData.name}${extraInfo}: Starting now!`);
           await delay(1500);
         }
@@ -51,12 +59,4 @@ if (config.minecraft.skyblockEventsNotifications.enabled) {
       /* empty */
     }
   }, 60000);
-}
-
-function getCustomTime(events, value) {
-  if (events === undefined || value === undefined) {
-    return false;
-  }
-
-  return Object.keys(events).filter((key) => events[key].includes(value));
 }

@@ -1,6 +1,6 @@
-import { SlashCommandBuilder } from "discord.js";
-import { Embed } from "../../contracts/embedHandler.js";
 import DiscordCommand from "../../contracts/DiscordCommand.js";
+import { Embed } from "../../contracts/embedHandler.js";
+import { SlashCommandBuilder } from "discord.js";
 
 class PingCommand extends DiscordCommand {
   /** @param {import("../discord/DiscordManager.js").default} discord */

@@ -1,6 +1,6 @@
 /* eslint-disable no-throw-literal */
-import config from "../../config.json" with { type: "json" };
 import axios from "axios";
+import config from "../../config.json" with { type: "json" };
 
 const cache = new Map();
 
@@ -37,6 +37,7 @@ export async function getMuseum(profileID, uuid) {
       museum: data.members ? data.members[uuid] : null,
       museumData: data.members ? data.members : null
     },
+    // eslint-disable-next-line camelcase
     last_save: Date.now()
   });
 

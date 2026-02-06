@@ -1,8 +1,8 @@
-import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
 import MinecraftCommand from "../../contracts/MinecraftCommand.js";
-import { uploadImage } from "../../contracts/API/imgurAPI.js";
-import { renderLore } from "../../contracts/renderItem.js";
 import { decodeData } from "../../../API/utils/nbt.js";
+import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
+import { renderLore } from "../../contracts/renderItem.js";
+import { uploadImage } from "../../contracts/API/imgurAPI.js";
 
 class EquipmentCommand extends MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */

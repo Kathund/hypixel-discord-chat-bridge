@@ -11,6 +11,7 @@ export function getJacob(profile) {
       return null;
     }
 
+    /* eslint-disable camelcase */
     return {
       medals: {
         gold: profile.jacobs_contest.medals_inv?.gold ?? 0,
@@ -34,7 +35,8 @@ export function getJacob(profile) {
         sugar_cane: profile.jacobs_contest.personal_bests?.SUGAR_CANE ?? 0
       }
     };
-  } catch (error) {
+    /* eslint-enable camelcase */
+  } catch {
     return null;
   }
 }

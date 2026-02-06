@@ -1,5 +1,5 @@
-import { delay } from "../../contracts/helperFunctions.js";
 import MinecraftCommand from "../../contracts/MinecraftCommand.js";
+import { delay } from "../../contracts/helperFunctions.js";
 
 class WarpoutCommand extends MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */
@@ -25,7 +25,7 @@ class WarpoutCommand extends MinecraftCommand {
 
       const user = this.getArgs(message)[0];
       if (user === undefined) {
-        throw "Please provide a username!";
+        throw new Error("Please provide a username!");
       }
       bot.chat("/lobby megawalls");
       await delay(250);

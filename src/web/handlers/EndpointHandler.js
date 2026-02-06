@@ -10,11 +10,11 @@ class EndpointHandler {
     web.post("*", this.post.bind(this));
   }
 
-  async get(req, res) {
+  get(req, res) {
     res.send("API is running.");
   }
 
-  async post(req, res) {
+  post(req, res) {
     res.json({ success: true });
   }
 }

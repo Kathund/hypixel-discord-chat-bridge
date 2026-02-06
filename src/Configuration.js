@@ -1,5 +1,5 @@
 import { configUpdateMessage } from "./Logger.js";
-import { readFileSync, writeFileSync } from "fs";
+import { readFileSync, writeFileSync } from "node:fs";
 
 const exampleConfig = JSON.parse(readFileSync("config.example.json"));
 const config = JSON.parse(readFileSync("config.json"));

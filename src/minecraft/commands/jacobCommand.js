@@ -1,7 +1,7 @@
-import { formatNumber, delay, titleCase } from "../../contracts/helperFunctions.js";
-import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
 import MinecraftCommand from "../../contracts/MinecraftCommand.js";
+import { delay, formatNumber, titleCase } from "../../contracts/helperFunctions.js";
 import { getJacob } from "../../../API/stats/jacob.js";
+import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
 
 class JacobCommand extends MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */

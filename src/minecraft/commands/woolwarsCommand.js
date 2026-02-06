@@ -1,6 +1,6 @@
+import HypixelAPI from "../../contracts/API/HypixelAPI.js";
 import MinecraftCommand from "../../contracts/MinecraftCommand.js";
 import { formatNumber } from "../../contracts/helperFunctions.js";
-import HypixelAPI from "../../contracts/API/HypixelAPI.js";
 
 class WoolwarsCommand extends MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */

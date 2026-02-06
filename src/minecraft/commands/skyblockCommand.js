@@ -1,12 +1,12 @@
-import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
 import MinecraftCommand from "../../contracts/MinecraftCommand.js";
-import { getAccessories } from "../../../API/stats/accessories.js";
-import { getSkillAverage } from "../../../API/constants/skills.js";
-import { formatNumber } from "../../contracts/helperFunctions.js";
 import { ProfileNetworthCalculator } from "skyhelper-networth";
+import { formatNumber } from "../../contracts/helperFunctions.js";
+import { getAccessories } from "../../../API/stats/accessories.js";
 import { getDungeons } from "../../../API/stats/dungeons.js";
-import { getSlayer } from "../../../API/stats/slayer.js";
 import { getHotm } from "../../../API/stats/hotm.js";
+import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
+import { getSkillAverage } from "../../../API/constants/skills.js";
+import { getSlayer } from "../../../API/stats/slayer.js";
 
 class SkyblockCommand extends MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */

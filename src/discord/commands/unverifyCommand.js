@@ -1,10 +1,10 @@
-import HypixelDiscordChatBridgeError from "../../contracts/errorHandler.js";
-import { SuccessEmbed, ErrorEmbed } from "../../contracts/embedHandler.js";
-import { getUsername } from "../../contracts/API/mowojangAPI.js";
-import { MessageFlags, SlashCommandBuilder } from "discord.js";
 import DiscordCommand from "../../contracts/DiscordCommand.js";
-import { writeFileSync, readFileSync } from "fs";
+import HypixelDiscordChatBridgeError from "../../contracts/errorHandler.js";
 import UpdateCommand from "./updateCommand.js";
+import { ErrorEmbed, SuccessEmbed } from "../../contracts/embedHandler.js";
+import { MessageFlags, SlashCommandBuilder } from "discord.js";
+import { getUsername } from "../../contracts/API/mowojangAPI.js";
+import { readFileSync, writeFileSync } from "node:fs";
 
 class UnverifyCommand extends DiscordCommand {
   /** @param {import("../discord/DiscordManager.js").default} discord */

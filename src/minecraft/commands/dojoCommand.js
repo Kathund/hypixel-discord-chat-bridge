@@ -1,7 +1,7 @@
-import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
 import MinecraftCommand from "../../contracts/MinecraftCommand.js";
 import { formatNumber } from "../../contracts/helperFunctions.js";
 import { getDojo } from "../../../API/stats/crimson.js";
+import { getLatestProfile } from "../../../API/functions/getLatestProfile.js";
 
 class DojoCommand extends MinecraftCommand {
   /** @param {import("minecraft-protocol").Client} minecraft */
@@ -33,8 +33,8 @@ class DojoCommand extends MinecraftCommand {
       const { username, profile, profileData } = await getLatestProfile(player);
 
       const dojo = getDojo(profile);
-      if (dojo == null) {
-        throw `${username} has never gone to Crimson Isle on ${profileData.cute_name}.`;
+      if (dojo === null) {
+        throw new Error(`${username} has never gone to Crimson Isle on ${profileData.cute_name}.`);
       }
 
       this.send(

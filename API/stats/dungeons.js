@@ -1,5 +1,5 @@
-import { titleCase } from "../../src/contracts/helperFunctions.js";
 import { getLevelByXp } from "../constants/skills.js";
+import { titleCase } from "../../src/contracts/helperFunctions.js";
 /**
  * Returns Dungeons stats of the player.
  * @param {import("../../types/profiles").Member} profile
@@ -26,7 +26,7 @@ export function getDungeons(profile) {
       selectedClass: titleCase(dungeons?.selected_dungeon_class ?? "none"),
       secretsFound: dungeons?.secrets ?? 0,
       dungeons: getLevelByXp(experience, { type: "dungeoneering" }),
-      classAverage: Object.entries(classes).reduce((acc, [key, value]) => acc + value.levelWithProgress, 0) / 5,
+      classAverage: Object.entries(classes).reduce((acc, [, value]) => acc + value.levelWithProgress, 0) / 5,
       classes
     };
   } catch (error) {
