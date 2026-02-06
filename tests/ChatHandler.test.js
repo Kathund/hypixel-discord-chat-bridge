@@ -1,5 +1,5 @@
-const ChatHandler = require("../src/minecraft/handlers/ChatHandler.js");
-const { describe, it, expect, beforeEach } = require("@jest/globals");
+import ChatHandler from "../src/minecraft/handlers/ChatHandler.js";
+import { describe, it, expect, beforeEach } from "@jest/globals";
 
 describe("ChatHandler", () => {
   describe("uncoloredRegex", () => {
