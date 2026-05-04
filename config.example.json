@@ -102,7 +102,11 @@
   },
   "verification": {
     "enabled": false,
-    "nickname": "{username}",
+    "nickname": {
+      "enabled": true,
+      "nickname": "{username}",
+      "removeCommas": false
+    },
     "roles": {
       "verified": {
         "enabled": false,
