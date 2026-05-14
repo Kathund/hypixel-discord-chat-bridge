@@ -1,4 +1,3 @@
-/* eslint-disable no-throw-literal */
 const config = require("../../config.json");
 // @ts-ignore
 const { get } = require("axios");
@@ -30,10 +29,7 @@ async function getGarden(profileID) {
     // throw "Profile doesn't have a garden.";
   }
 
-  cache.set(profileID, {
-    data: gardenData,
-    last_save: Date.now()
-  });
+  cache.set(profileID, { data: gardenData, last_save: Date.now() });
 
   return { garden: gardenData };
 }

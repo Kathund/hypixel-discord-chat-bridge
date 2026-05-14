@@ -1,7 +1,7 @@
 const HypixelDiscordChatBridgeError = require("../../contracts/errorHandler.js");
 const { SuccessEmbed, ErrorEmbed } = require("../../contracts/embedHandler.js");
 const { getUsername } = require("../../contracts/API/mowojangAPI.js");
-const { writeFileSync, readFileSync } = require("fs");
+const { writeFileSync, readFileSync } = require("node:fs");
 const { MessageFlags, SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
@@ -23,14 +23,14 @@ module.exports = {
 
       const uuid = linked[interaction.user.id];
       if (uuid === undefined) {
-        throw new HypixelDiscordChatBridgeError(`You are not verified. Please run /verify to continue.`);
+        throw new HypixelDiscordChatBridgeError("You are not verified. Please run /verify to continue.");
       }
 
       delete linked[interaction.user.id];
       writeFileSync("data/linked.json", JSON.stringify(linked, null, 2));
 
       const updateRole = new SuccessEmbed(`You have successfully unlinked \`${await getUsername(uuid)}\`. Run \`/verify\` to link a new account.`, {
-        text: `by @.kathund | /help [command] for more information`,
+        text: "by @.kathund | /help [command] for more information",
         iconURL: "https://i.imgur.com/uUuZx2E.png"
       });
       await interaction.followUp({ embeds: [updateRole] });
@@ -42,7 +42,7 @@ module.exports = {
       await updateRolesCommand.execute(interaction, undefined, true);
     } catch (error) {
       const errorEmbed = new ErrorEmbed(`\`\`\`${error}\`\`\``).setFooter({
-        text: `by @.kathund | /help [command] for more information`,
+        text: "by @.kathund | /help [command] for more information",
         iconURL: "https://i.imgur.com/uUuZx2E.png"
       });
 

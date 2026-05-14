@@ -10,12 +10,7 @@ module.exports = {
       option
         .setName("time")
         .setDescription("Days ago")
-        .addChoices(
-          ...Array.from({ length: 14 }, (_, index) => ({
-            name: `${index + 1} Day ago`,
-            value: (index + 1).toString()
-          }))
-        )
+        .addChoices(...Array.from({ length: 14 }, (_, index) => ({ name: `${index + 1} Day ago`, value: (index + 1).toString() })))
     ),
   requiresBot: true,
 

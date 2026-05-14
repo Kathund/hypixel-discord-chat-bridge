@@ -90,6 +90,4 @@ function getBestiary(profile) {
   }
 }
 
-module.exports = {
-  getBestiary
-};
+module.exports = { getBestiary };

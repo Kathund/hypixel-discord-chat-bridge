@@ -2,7 +2,7 @@ const HypixelDiscordChatBridgeError = require("../../contracts/errorHandler.js")
 const { Embed } = require("../../contracts/embedHandler.js");
 const { getCommands } = require("./infoCommand.js");
 const config = require("../../../config.json");
-const fs = require("fs");
+const fs = require("node:fs");
 const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
@@ -21,22 +21,8 @@ module.exports = {
           .setColor(0x0099ff)
           .setTitle("Hypixel Discord Chat Bridge Commands")
           .setDescription("`()` = **required** argument, `[]` = **optional** argument\n`u` = Minecraft Username")
-          .addFields(
-            {
-              name: "**Minecraft**: ",
-              value: `${minecraftCommands}`,
-              inline: true
-            },
-            {
-              name: "**Discord**: ",
-              value: `${discordCommands}`,
-              inline: true
-            }
-          )
-          .setFooter({
-            text: "by @duckysolucky | /help [command] for more information",
-            iconURL: "https://imgur.com/tgwQJTX.png"
-          });
+          .addFields({ name: "**Minecraft**: ", value: `${minecraftCommands}`, inline: true }, { name: "**Discord**: ", value: `${discordCommands}`, inline: true })
+          .setFooter({ text: "by @duckysolucky | /help [command] for more information", iconURL: "https://imgur.com/tgwQJTX.png" });
 
         await interaction.followUp({ embeds: [helpMenu] });
       } else {
@@ -73,10 +59,7 @@ module.exports = {
         const embed = new Embed()
           .setTitle(`**${type === "discord" ? "/" : config.minecraft.bot.prefix}${command.name}**`)
           .setDescription(description + "\n")
-          .setFooter({
-            text: "by @duckysolucky | () = required, [] = optional",
-            iconURL: "https://imgur.com/tgwQJTX.png"
-          });
+          .setFooter({ text: "by @duckysolucky | () = required, [] = optional", iconURL: "https://imgur.com/tgwQJTX.png" });
 
         await interaction.followUp({ embeds: [embed] });
       }

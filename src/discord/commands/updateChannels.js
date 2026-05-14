@@ -34,7 +34,7 @@ module.exports = {
 
     if (!extra.hidden) {
       const embed = new SuccessEmbed("The channels have been updated successfully.").setFooter({
-        text: `by @kathund. | /help [command] for more information`,
+        text: "by @kathund. | /help [command] for more information",
         iconURL: "https://i.imgur.com/uUuZx2E.png"
       });
 

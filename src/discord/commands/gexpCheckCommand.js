@@ -2,7 +2,7 @@ const HypixelDiscordChatBridgeError = require("../../contracts/errorHandler.js")
 const hypixelRebornAPI = require("../../contracts/API/HypixelRebornAPI.js");
 const { Embed, SuccessEmbed } = require("../../contracts/embedHandler.js");
 const { getUsername } = require("../../contracts/API/mowojangAPI.js");
-const { writeFileSync, readFileSync } = require("fs");
+const { writeFileSync, readFileSync } = require("node:fs");
 const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
@@ -49,10 +49,7 @@ module.exports = {
       const progressEmbed = new Embed()
         .setAuthor({ name: "Weekly Guild Experience Leaderboard" })
         .setDescription(`**Progress:** \`${progress}%\` (\`${position}/${members.length}\`)`)
-        .setFooter({
-          text: `by @.kathund | /help [command] for more information`,
-          iconURL: "https://i.imgur.com/uUuZx2E.png"
-        });
+        .setFooter({ text: "by @.kathund | /help [command] for more information", iconURL: "https://i.imgur.com/uUuZx2E.png" });
 
       await interaction.editReply({ embeds: [progressEmbed] });
 
@@ -82,7 +79,7 @@ module.exports = {
     writeFileSync("data/guildExperienceSkipped.txt", skippedString);
 
     const finalEmbed = new SuccessEmbed("Weekly Guild Experience Leaderboard").setFooter({
-      text: `by @.kathund | /help [command] for more information`,
+      text: "by @.kathund | /help [command] for more information",
       iconURL: "https://i.imgur.com/uUuZx2E.png"
     });
 

@@ -21,6 +21,4 @@ function getEssence(profile) {
   }
 }
 
-module.exports = {
-  getEssence
-};
+module.exports = { getEssence };

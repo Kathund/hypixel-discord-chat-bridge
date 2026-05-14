@@ -50,13 +50,7 @@ module.exports = {
     image: "https://sky.shiiyu.moe/item/DECENT_COFFEE",
     description: "This item can be purchased from the Bartender in the Hub"
   },
-  6: {
-    name: "Door",
-    quantity: 1,
-    text: "1x Door",
-    image: "https://sky.shiiyu.moe/item/WOOD_DOOR",
-    description: "This item can be crafted using 6 Wood planks"
-  },
+  6: { name: "Door", quantity: 1, text: "1x Door", image: "https://sky.shiiyu.moe/item/WOOD_DOOR", description: "This item can be crafted using 6 Wood planks" },
   7: {
     name: "Rabbit's Foot",
     quantity: 3,

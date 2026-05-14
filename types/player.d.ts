@@ -11,12 +11,6 @@ export type Player = {
   packageRank?: string;
 };
 
-export type Achievements = {
-  [key: string]: number;
-};
+export type Achievements = { [key: string]: number };
 
-export type SocialMedia = {
-  links?: {
-    [key: string]: string;
-  };
-};
+export type SocialMedia = { links?: { [key: string]: string } };

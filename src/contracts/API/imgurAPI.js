@@ -21,9 +21,7 @@ async function uploadImage(image) {
   try {
     /** @type {import('discord.js').Client} */
     // @ts-ignore
-    await client.channels.cache.get(config.discord.channels.guildChatChannel).send({
-      files: [image]
-    });
+    await client.channels.cache.get(config.discord.channels.guildChatChannel).send({ files: [image] });
 
     console.log("Image uploaded to Discord channel.");
   } catch (error) {

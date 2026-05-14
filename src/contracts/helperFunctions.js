@@ -29,9 +29,9 @@ function replaceAllRanks(input) {
  */
 function generateID(length) {
   let result = "";
-  const characters = "abcde0123456789",
-    charactersLength = characters.length;
-  for (var i = 0; i < length; i++) {
+  const characters = "abcde0123456789";
+  const charactersLength = characters.length;
+  for (let i = 0; i < length; i++) {
     result += characters.charAt(Math.floor(Math.random() * charactersLength));
   }
 

@@ -32,6 +32,4 @@ function getGarden(garden) {
   }
 }
 
-module.exports = {
-  getGarden
-};
+module.exports = { getGarden };

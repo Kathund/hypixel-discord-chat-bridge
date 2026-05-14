@@ -25,11 +25,7 @@ new Promise((resolve) => {
   }
 }).then(() => {
   // Define the message to be sent
-  const send = {
-    type: "message",
-    data: "/gc Example message",
-    token: "WEBSOCKET_TOKEN"
-  };
+  const send = { type: "message", data: "/gc Example message", token: "WEBSOCKET_TOKEN" };
 
   // Send the message
   ws.send(JSON.stringify(send));

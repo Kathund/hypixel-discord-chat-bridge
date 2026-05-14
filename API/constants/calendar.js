@@ -52,10 +52,7 @@ function getJacobEventTimes() {
   for (let month = 0; month < 12; month++) {
     let day = 2;
     while (day <= 31) {
-      times.push({
-        start: getOffset(months[month], day),
-        end: getOffset(months[month], day)
-      });
+      times.push({ start: getOffset(months[month], day), end: getOffset(months[month], day) });
 
       if (day === 30) break;
       day += 3;
@@ -74,10 +71,7 @@ function getDarkAuctionEventTimes() {
   for (let month = 0; month < 12; month++) {
     let day = 1;
     while (day <= 31) {
-      times.push({
-        start: getOffset(months[month], day),
-        end: getOffset(months[month], day)
-      });
+      times.push({ start: getOffset(months[month], day), end: getOffset(months[month], day) });
 
       if (day === 29) break;
       day += 3;
@@ -95,10 +89,7 @@ function getFallenStarCultTimes() {
 
   for (let month = 0; month < 12; month++) {
     for (let i = 1; i <= 4; i++) {
-      times.push({
-        start: getOffset(months[month], i * 7),
-        end: getOffset(months[month], i * 7, 6)
-      });
+      times.push({ start: getOffset(months[month], i * 7), end: getOffset(months[month], i * 7, 6) });
     }
   }
   return times;
@@ -112,121 +103,30 @@ const eventTimes = {
   BANK_INTEREST: {
     name: "Bank Interest",
     times: [
-      {
-        start: getOffset("Early Spring", 1),
-        end: getOffset("Early Spring", 1)
-      },
-      {
-        start: getOffset("Early Summer", 1),
-        end: getOffset("Early Summer", 1)
-      },
-      {
-        start: getOffset("Early Autumn", 1),
-        end: getOffset("Early Autumn", 1)
-      },
-      {
-        start: getOffset("Early Winter", 1),
-        end: getOffset("Early Winter", 1)
-      }
+      { start: getOffset("Early Spring", 1), end: getOffset("Early Spring", 1) },
+      { start: getOffset("Early Summer", 1), end: getOffset("Early Summer", 1) },
+      { start: getOffset("Early Autumn", 1), end: getOffset("Early Autumn", 1) },
+      { start: getOffset("Early Winter", 1), end: getOffset("Early Winter", 1) }
     ]
   },
-  DARK_AUCTION: {
-    name: "Dark Auction",
-    times: getDarkAuctionEventTimes()
-  },
-  ELECTION_BOOTH_OPENS: {
-    name: "Election Booth Opens",
-    times: [
-      {
-        start: getOffset("Late Summer", 27),
-        end: getOffset("Late Summer", 27)
-      }
-    ]
-  },
-  ELECTION_OVER: {
-    name: "Election Over",
-    times: [
-      {
-        start: getOffset("Late Spring", 27),
-        end: getOffset("Late Spring", 27)
-      }
-    ]
-  },
-  FALLEN_STAR_CULT: {
-    name: "Cult of the Fallen Star",
-    times: getFallenStarCultTimes()
-  },
-  FEAR_MONGERER: {
-    name: "Fear Mongerer",
-    times: [
-      {
-        start: getOffset("Autumn", 26),
-        end: getOffset("Late Autumn", 3)
-      }
-    ]
-  },
-  JACOBS_CONTEST: {
-    name: "Jacob's Farming Contest",
-    times: getJacobEventTimes()
-  },
-  JERRYS_WORKSHOP: {
-    name: "Jerry's Workshop",
-    times: [
-      {
-        start: getOffset("Late Winter", 1),
-        end: getOffset("Late Winter", 31)
-      }
-    ]
-  },
-  NEW_YEAR_CELEBRATION: {
-    name: "New Year Celebration",
-    times: [
-      {
-        start: getOffset("Late Winter", 29),
-        end: getOffset("Late Winter", 31)
-      }
-    ]
-  },
-  SEASON_OF_JERRY: {
-    name: "Season of Jerry",
-    times: [
-      {
-        start: getOffset("Late Winter", 24),
-        end: getOffset("Late Winter", 26)
-      }
-    ]
-  },
-  SPOOKY_FESTIVAL: {
-    name: "Spooky Festival",
-    times: [
-      {
-        start: getOffset("Autumn", 29),
-        end: getOffset("Autumn", 31)
-      }
-    ]
-  },
+  DARK_AUCTION: { name: "Dark Auction", times: getDarkAuctionEventTimes() },
+  ELECTION_BOOTH_OPENS: { name: "Election Booth Opens", times: [{ start: getOffset("Late Summer", 27), end: getOffset("Late Summer", 27) }] },
+  ELECTION_OVER: { name: "Election Over", times: [{ start: getOffset("Late Spring", 27), end: getOffset("Late Spring", 27) }] },
+  FALLEN_STAR_CULT: { name: "Cult of the Fallen Star", times: getFallenStarCultTimes() },
+  FEAR_MONGERER: { name: "Fear Mongerer", times: [{ start: getOffset("Autumn", 26), end: getOffset("Late Autumn", 3) }] },
+  JACOBS_CONTEST: { name: "Jacob's Farming Contest", times: getJacobEventTimes() },
+  JERRYS_WORKSHOP: { name: "Jerry's Workshop", times: [{ start: getOffset("Late Winter", 1), end: getOffset("Late Winter", 31) }] },
+  NEW_YEAR_CELEBRATION: { name: "New Year Celebration", times: [{ start: getOffset("Late Winter", 29), end: getOffset("Late Winter", 31) }] },
+  SEASON_OF_JERRY: { name: "Season of Jerry", times: [{ start: getOffset("Late Winter", 24), end: getOffset("Late Winter", 26) }] },
+  SPOOKY_FESTIVAL: { name: "Spooky Festival", times: [{ start: getOffset("Autumn", 29), end: getOffset("Autumn", 31) }] },
   TRAVELING_ZOO: {
     name: "Traveling Zoo",
     times: [
-      {
-        start: getOffset("Early Summer", 1),
-        end: getOffset("Early Summer", 3)
-      },
-      {
-        start: getOffset("Early Winter", 1),
-        end: getOffset("Early Winter", 3)
-      }
+      { start: getOffset("Early Summer", 1), end: getOffset("Early Summer", 3) },
+      { start: getOffset("Early Winter", 1), end: getOffset("Early Winter", 3) }
     ]
   },
-  HOPPITY_HUNT: {
-    name: "Hoppity's Hunt",
-    times: [
-      {
-        start: getOffset("Early Spring", 1),
-        end: getOffset("Late Spring", 31)
-      }
-    ]
-  }
+  HOPPITY_HUNT: { name: "Hoppity's Hunt", times: [{ start: getOffset("Early Spring", 1), end: getOffset("Late Spring", 31) }] }
 };
 
 function buildSkyblockCalendar(events, from, to, years, stopAtYearEnd = true) {
@@ -269,11 +169,7 @@ function buildSkyblockCalendar(events, from, to, years, stopAtYearEnd = true) {
   const eventList = {};
 
   Object.keys(eventTimes).forEach((key) => {
-    eventList[key] = {
-      name: "",
-      duration: 0,
-      events: []
-    };
+    eventList[key] = { name: "", duration: 0, events: [] };
   });
 
   // convert 'to' to years for looping
@@ -296,10 +192,7 @@ function buildSkyblockCalendar(events, from, to, years, stopAtYearEnd = true) {
       eventList[event].duration = duration;
 
       for (const { start: start_, end: end_ } of times_) {
-        const times = {
-          start: start_ + yearMs * i,
-          end: end_ + yearMs * i
-        };
+        const times = { start: start_ + yearMs * i, end: end_ + yearMs * i };
 
         if (stopBoolean && times.end < currentOffset) {
           continue;
@@ -363,7 +256,4 @@ function buildSkyblockEvents() {
   return o;
 }
 
-module.exports = {
-  buildSkyblockCalendar,
-  buildSkyblockEvents
-};
+module.exports = { buildSkyblockCalendar, buildSkyblockEvents };

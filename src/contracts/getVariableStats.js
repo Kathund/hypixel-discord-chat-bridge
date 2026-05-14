@@ -24,9 +24,7 @@ function getNetworthCalculator(profile, museum, bank) {
   try {
     return new ProfileNetworthCalculator(profile, museum, bank);
   } catch {
-    return {
-      getNetworth: async () => ({})
-    };
+    return { getNetworth: async () => ({}) };
   }
 }
 

@@ -168,21 +168,8 @@ const skillTables = {
     50: 116250000,
     51: 200000000
   },
-  skyblockLevel: {
-    1: 100
-  },
-  hotm: {
-    1: 0,
-    2: 3000,
-    3: 9000,
-    4: 25000,
-    5: 60000,
-    6: 100000,
-    7: 150000,
-    8: 210000,
-    9: 290000,
-    10: 400000
-  },
+  skyblockLevel: { 1: 100 },
+  hotm: { 1: 0, 2: 3000, 3: 9000, 4: 25000, 5: 60000, 6: 100000, 7: 150000, 8: 210000, 9: 290000, 10: 400000 },
   defaultSkillCaps: {
     farming: 50,
     mining: 60,
@@ -197,10 +184,7 @@ const skillTables = {
     social: 25,
     dungeoneering: 50
   },
-  maxedSkillCaps: {
-    farming: 60,
-    taming: 60
-  },
+  maxedSkillCaps: { farming: 60, taming: 60 },
   skills: ["combat", "farming", "fishing", "mining", "foraging", "enchanting", "alchemy", "carpentry", "runecrafting", "social", "taming"],
   classes: ["healer", "mage", "berserk", "archer", "tank"],
   cosmeticSkills: ["runecrafting", "social"],
@@ -292,27 +276,11 @@ const skillTables = {
     59: 1000000,
     60: 1000000
   },
-  garden: {
-    1: 0,
-    2: 70,
-    3: 70,
-    4: 140,
-    5: 240,
-    6: 600,
-    7: 1500,
-    8: 2000,
-    9: 2500,
-    10: 3000,
-    11: 10000,
-    12: 10000,
-    13: 10000,
-    14: 10000,
-    15: 10000
-  }
+  garden: { 1: 0, 2: 70, 3: 70, 4: 140, 5: 240, 6: 600, 7: 1500, 8: 2000, 9: 2500, 10: 3000, 11: 10000, 12: 10000, 13: 10000, 14: 10000, 15: 10000 }
 };
 
 const cropTables = {
-  WHEAT: {
+  "WHEAT": {
     1: 30,
     2: 50,
     3: 80,
@@ -360,7 +328,7 @@ const cropTables = {
     45: 3000000,
     46: 3000000
   },
-  CARROT_ITEM: {
+  "CARROT_ITEM": {
     1: 100,
     2: 150,
     3: 250,
@@ -408,7 +376,7 @@ const cropTables = {
     45: 10000000,
     46: 10000000
   },
-  POTATO_ITEM: {
+  "POTATO_ITEM": {
     1: 100,
     2: 150,
     3: 250,
@@ -456,7 +424,7 @@ const cropTables = {
     45: 10000000,
     46: 10000000
   },
-  MELON: {
+  "MELON": {
     1: 150,
     2: 250,
     3: 400,
@@ -504,7 +472,7 @@ const cropTables = {
     45: 15000000,
     46: 15000000
   },
-  PUMPKIN: {
+  "PUMPKIN": {
     1: 30,
     2: 50,
     3: 80,
@@ -552,7 +520,7 @@ const cropTables = {
     45: 3000000,
     46: 3000000
   },
-  SUGAR_CANE: {
+  "SUGAR_CANE": {
     1: 60,
     2: 100,
     3: 160,
@@ -648,7 +616,7 @@ const cropTables = {
     45: 9000000,
     46: 9000000
   },
-  CACTUS: {
+  "CACTUS": {
     1: 60,
     2: 100,
     3: 160,
@@ -696,7 +664,7 @@ const cropTables = {
     45: 6000000,
     46: 6000000
   },
-  MUSHROOM_COLLECTION: {
+  "MUSHROOM_COLLECTION": {
     1: 30,
     2: 50,
     3: 80,
@@ -744,7 +712,7 @@ const cropTables = {
     45: 3000000,
     46: 3000000
   },
-  NETHER_STALK: {
+  "NETHER_STALK": {
     1: 90,
     2: 150,
     3: 250,
@@ -792,20 +760,7 @@ const cropTables = {
     45: 9000000,
     46: 9000000
   },
-  COPPER: {
-    1: 5,
-    2: 10,
-    3: 20,
-    4: 50,
-    5: 100,
-    6: 500,
-    7: 1000,
-    8: 2000,
-    9: 4000
-  }
+  "COPPER": { 1: 5, 2: 10, 3: 20, 4: 50, 5: 100, 6: 500, 7: 1000, 8: 2000, 9: 4000 }
 };
 
-module.exports = {
-  skillTables,
-  cropTables
-};
+module.exports = { skillTables, cropTables };

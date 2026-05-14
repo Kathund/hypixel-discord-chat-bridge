@@ -15,8 +15,6 @@ module.exports = {
 
     const embed = new SuccessEmbed(`Successfully promoted \`${name}\` by one guild rank.`);
 
-    await interaction.followUp({
-      embeds: [embed]
-    });
+    await interaction.followUp({ embeds: [embed] });
   }
 };

@@ -56,14 +56,7 @@ function getForge(profile) {
   const forge = Object.values(profile.forge.forge_processes.forge_1);
 
   for (const item of forge) {
-    const forgeItem = {
-      id: item.id,
-      name: "Unknown Item",
-      slot: item.slot,
-      timeStarted: item.startTime,
-      timeFinished: 0,
-      timeFinishedText: ""
-    };
+    const forgeItem = { id: item.id, name: "Unknown Item", slot: item.slot, timeStarted: item.startTime, timeFinished: 0, timeFinishedText: "" };
 
     if (item.id in CONSTANTS.forge.items) {
       // @ts-ignore
@@ -89,7 +82,4 @@ function getForge(profile) {
   return forgeItems;
 }
 
-module.exports = {
-  getHotm,
-  getForge
-};
+module.exports = { getHotm, getForge };

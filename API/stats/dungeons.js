@@ -35,6 +35,4 @@ function getDungeons(profile) {
   }
 }
 
-module.exports = {
-  getDungeons
-};
+module.exports = { getDungeons };

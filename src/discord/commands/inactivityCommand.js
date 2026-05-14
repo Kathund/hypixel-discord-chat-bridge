@@ -1,7 +1,7 @@
 const HypixelDiscordChatBridgeError = require("../../contracts/errorHandler.js");
 const { Embed, SuccessEmbed } = require("../../contracts/embedHandler.js");
 const { getUsername } = require("../../contracts/API/mowojangAPI.js");
-const { writeFileSync, readFileSync } = require("fs");
+const { writeFileSync, readFileSync } = require("node:fs");
 const config = require("../../../config.json");
 const ms = require("ms");
 const { SlashCommandBuilder } = require("discord.js");
@@ -68,10 +68,7 @@ module.exports = {
       const embed = new Embed()
         .setTitle("Inactivity Failed")
         .setDescription(`You are already inactive until <t:${inactivity[uuid].expire}:F> (<t:${inactivity[uuid].expire}:R>)`)
-        .setFooter({
-          text: `by @.kathund | /help [command] for more information`,
-          iconURL: "https://i.imgur.com/uUuZx2E.png"
-        });
+        .setFooter({ text: "by @.kathund | /help [command] for more information", iconURL: "https://i.imgur.com/uUuZx2E.png" });
       return await interaction.followUp({ embeds: [embed] });
     }
 
@@ -96,10 +93,7 @@ module.exports = {
         `\`User:\` <@${interaction.user.id}>\n\`Username:\` ${username}\n\`Requested:\` <t:${date}:F> (<t:${date}:R>)\n\`Expiration:\` <t:${expire}:F> (<t:${expire}:R>)\n\`Reason:\` ${reason}`
       )
       .setThumbnail(`https://www.mc-heads.net/avatar/${username}`)
-      .setFooter({
-        text: `by @.kathund | /help [command] for more information`,
-        iconURL: "https://i.imgur.com/uUuZx2E.png"
-      });
+      .setFooter({ text: "by @.kathund | /help [command] for more information", iconURL: "https://i.imgur.com/uUuZx2E.png" });
 
     const channel = interaction.client.channels.cache.get(config.verification.inactivity.channel);
     if (channel === undefined) {
@@ -109,8 +103,8 @@ module.exports = {
     inactivity[uuid] = { id: interaction.user.id, reason, expire };
     writeFileSync("data/inactivity.json", JSON.stringify(inactivity, null, 2));
     await channel.send({ embeds: [inactivityEmbed] });
-    const inactivityResponse = new SuccessEmbed(`Inactivity request has been successfully sent to the guild staff.`).setFooter({
-      text: `by @.kathund | /help [command] for more information`,
+    const inactivityResponse = new SuccessEmbed("Inactivity request has been successfully sent to the guild staff.").setFooter({
+      text: "by @.kathund | /help [command] for more information",
       iconURL: "https://i.imgur.com/uUuZx2E.png"
     });
     await interaction.followUp({ embeds: [inactivityResponse] });

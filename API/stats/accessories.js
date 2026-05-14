@@ -55,16 +55,7 @@ async function getAccessories(profile) {
       magicalPower: 0,
       recombed: 0,
       enriched: 0,
-      rarities: {
-        common: 0,
-        uncommon: 0,
-        rare: 0,
-        epic: 0,
-        legendary: 0,
-        mythic: 0,
-        special: 0,
-        very: 0
-      }
+      rarities: { common: 0, uncommon: 0, rare: 0, epic: 0, legendary: 0, mythic: 0, special: 0, very: 0 }
     };
 
     const talismanBag = profile.inventory?.bag_contents?.talisman_bag?.data ?? "";
@@ -95,6 +86,4 @@ async function getAccessories(profile) {
   }
 }
 
-module.exports = {
-  getAccessories
-};
+module.exports = { getAccessories };

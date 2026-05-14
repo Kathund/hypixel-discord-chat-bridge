@@ -23,19 +23,9 @@ export type Profile = {
   community_upgrades: CommunityUpgrades;
 };
 
-export type CommunityUpgrades = {
-  currently_upgrading: string | null;
-  upgrade_states: CommunityUpgrade[];
-};
+export type CommunityUpgrades = { currently_upgrading: string | null; upgrade_states: CommunityUpgrade[] };
 
-export type CommunityUpgrade = {
-  upgrade: string;
-  tier: number;
-  started_ms: number;
-  started_by: string;
-  claimed_by: string;
-  fasttracked: boolean;
-};
+export type CommunityUpgrade = { upgrade: string; tier: number; started_ms: number; started_by: string; claimed_by: string; fasttracked: boolean };
 
 export type Member = {
   player_data?: PlayerData;
@@ -61,9 +51,7 @@ export type Member = {
   item_data: MemberItemData;
   forge?: Forge;
   experimentation: Experimentation;
-  coop_invitation?: {
-    confirmed: boolean;
-  };
+  coop_invitation?: { confirmed: boolean };
   garden_player_data?: MemberGardenData;
   glacite_player_data: GlacitePlayerData;
   events: Events;
@@ -79,42 +67,23 @@ export type JacobsContest = {
   personal_bests?: Record<string, number>;
 };
 
-export type Quests = {
-  trapper_quest: {
-    pelt_count: number;
-  };
-};
+export type Quests = { trapper_quest: { pelt_count: number } };
 
-export type Contest = {
-  collected: number;
-  claimed_rewards?: boolean;
-  claimed_position?: number;
-  claimed_participants?: number;
-  claimed_medal: Medal;
-};
+export type Contest = { collected: number; claimed_rewards?: boolean; claimed_position?: number; claimed_participants?: number; claimed_medal: Medal };
 
-export type Leveling = {
-  experience: number;
-  highest_pet_score?: number;
-};
+export type Leveling = { experience: number; highest_pet_score?: number };
 
 export type MemberProfile = {
   first_join?: number;
   cookie_buff_active?: boolean;
   personal_bank_upgrade?: number;
   bank_account?: number;
-  deletion_notice?: {
-    timestamp: number;
-  };
+  deletion_notice?: { timestamp: number };
 };
 
-export type Banking = {
-  balance: number;
-};
+export type Banking = { balance: number };
 
-export type FairySouls = {
-  total_collected: number;
-};
+export type FairySouls = { total_collected: number };
 
 export type Inventory = {
   inv_contents?: DecodedInventory;
@@ -136,10 +105,7 @@ export type BagContents = {
   quiver?: DecodedInventory;
 };
 
-export type DecodedInventory = {
-  type: number;
-  data: string;
-};
+export type DecodedInventory = { type: number; data: string };
 
 export type PlayerData = {
   experience?: Experience;
@@ -166,40 +132,17 @@ export type Experience = {
 };
 
 export type RiftRaw = {
-  access?: {
-    consumed_prism?: boolean;
-  };
-  dead_cats?: {
-    found_cats?: string[];
-    montezuma?: Pet;
-  };
-  enigma: {
-    found_souls: string[];
-  };
-  castle: {
-    grubber_stacks: number;
-  };
-  gallery: {
-    secured_trophies: {
-      type: string;
-      timestamp: number;
-    }[];
-  };
-  wither_cage: {
-    killed_eyes: string[];
-  };
-  inventory: {
-    inv_contents: DecodedInventory;
-    inv_armor: DecodedInventory;
-    ender_chest_contents: DecodedInventory;
-    equipment_contents: DecodedInventory;
-  };
+  access?: { consumed_prism?: boolean };
+  dead_cats?: { found_cats?: string[]; montezuma?: Pet };
+  enigma: { found_souls: string[] };
+  castle: { grubber_stacks: number };
+  gallery: { secured_trophies: { type: string; timestamp: number }[] };
+  wither_cage: { killed_eyes: string[] };
+  inventory: { inv_contents: DecodedInventory; inv_armor: DecodedInventory; ender_chest_contents: DecodedInventory; equipment_contents: DecodedInventory };
 };
 
 export type NetherIslandPlayerData = {
-  abiphone?: {
-    active_contacts: string[];
-  };
+  abiphone?: { active_contacts: string[] };
   kuudra_completed_tiers: Record<string, number>;
   dojo: Record<string, number>;
   selected_faction: string;
@@ -207,12 +150,7 @@ export type NetherIslandPlayerData = {
   barbarians_reputation: number;
 };
 
-export type ProfilePets = {
-  pets: Pet[];
-  pet_care?: {
-    pet_types_sacrificed?: string[];
-  };
-};
+export type ProfilePets = { pets: Pet[]; pet_care?: { pet_types_sacrificed?: string[] } };
 
 export type Mining = {
   nodes: Record<string, number>;
@@ -237,81 +175,31 @@ export type Mining = {
 
   crystals: Record<string, Crystal>;
 
-  biomes: {
-    precursor: {
-      parts_delivered: string[];
-    };
-  };
+  biomes: { precursor: { parts_delivered: string[] } };
 };
 
-export type Objectives = {
-  tutorial?: string[];
-};
+export type Objectives = { tutorial?: string[] };
 
-export type Crystal = {
-  state: string;
-  total_found: number;
-  total_placed: number;
-};
+export type Crystal = { state: string; total_found: number; total_placed: number };
 
 export type PlayerStats = {
   kills: Record<string, number>;
   deaths: Record<string, number>;
-  items_fished?: {
-    total: number;
-    normal: number;
-    treasure: number;
-    large_treasure: number;
-    trophy_fish: number;
-  };
-  shredder_rod?: {
-    fished: number;
-    bait: number;
-  };
+  items_fished?: { total: number; normal: number; treasure: number; large_treasure: number; trophy_fish: number };
+  shredder_rod?: { fished: number; bait: number };
   rift: PlayerStatsRift;
   races: PlayerStarsRaces;
-  gifts: {
-    total_given: number;
-    total_received: number;
-  };
-  winter: {
-    most_snowballs_hit: number;
-    most_damage_dealt: number;
-    most_magma_damage_dealt: number;
-    most_cannonballs_hit: number;
-  };
-  end_island: {
-    dragon_fight: {
-      ender_crystals_destroyed: number;
-      most_damage: Record<string, number>;
-      fastest_kill: Record<string, number>;
-    };
-  };
+  gifts: { total_given: number; total_received: number };
+  winter: { most_snowballs_hit: number; most_damage_dealt: number; most_magma_damage_dealt: number; most_cannonballs_hit: number };
+  end_island: { dragon_fight: { ender_crystals_destroyed: number; most_damage: Record<string, number>; fastest_kill: Record<string, number> } };
   highest_critical_damage: number;
-  pets: {
-    milestone: {
-      sea_creatures_killed: number;
-      ores_mined: number;
-    };
-  };
+  pets: { milestone: { sea_creatures_killed: number; ores_mined: number } };
   mythos: {
     kills: number;
-    burrows_dug_next: {
-      total: number;
-      [burrow: string]: number;
-    };
-    burrows_dug_combat: {
-      total: number;
-      [burrow: string]: number;
-    };
-    burrows_dug_treasure: {
-      total: number;
-      [burrow: string]: number;
-    };
-    burrows_chains_complete: {
-      total: number;
-      [burrow: string]: number;
-    };
+    burrows_dug_next: { total: number; [burrow: string]: number };
+    burrows_dug_combat: { total: number; [burrow: string]: number };
+    burrows_dug_treasure: { total: number; [burrow: string]: number };
+    burrows_chains_complete: { total: number; [burrow: string]: number };
   };
   auctions: {
     bids: number;
@@ -328,15 +216,9 @@ export type PlayerStats = {
   };
 };
 
-export type TrophyFish = {
-  rewards: number[];
-  total_caught: number;
-  [string: string]: number;
-};
+export type TrophyFish = { rewards: number[]; total_caught: number; [string: string]: number };
 
-export type Slayer = {
-  slayer_bosses: Record<string, SlayerBoss>;
-};
+export type Slayer = { slayer_bosses: Record<string, SlayerBoss> };
 
 export type SlayerBoss = {
   claimed_levels: Record<string, boolean>;
@@ -348,16 +230,9 @@ export type SlayerBoss = {
   boss_kills_tier_4: number;
 };
 
-export type Dungeons = {
-  dungeon_types: Record<string, Catacombs>;
-  player_classes: Record<string, PlayerClass>;
-  selected_dungeon_class: string;
-  secrets: number;
-};
+export type Dungeons = { dungeon_types: Record<string, Catacombs>; player_classes: Record<string, PlayerClass>; selected_dungeon_class: string; secrets: number };
 
-export type PlayerClass = {
-  experience: number;
-};
+export type PlayerClass = { experience: number };
 
 export type Catacombs = {
   [key: string]: number | Record<string, number>;
@@ -399,60 +274,25 @@ export type BestRun = {
   damage_mitigated: number;
 };
 
-export type Bestiary = {
-  kills: Record<string, number>;
-};
+export type Bestiary = { kills: Record<string, number> };
 
-export type Collection = {
-  [key: string]: number;
-};
+export type Collection = { [key: string]: number };
 
-export type PlayerStatsRift = {
-  visits: number;
-  lifetime_motes_earned: number;
-  motes_orb_pickup: number;
-};
+export type PlayerStatsRift = { visits: number; lifetime_motes_earned: number; motes_orb_pickup: number };
 
-export type Currencies = {
-  coin_purse: number;
-  motes_purse: number;
-  essence: Record<string, { current: number }>;
-};
+export type Currencies = { coin_purse: number; motes_purse: number; essence: Record<string, { current: number }> };
 
-export type PlayerStarsRaces = {
-  foraging_race_best_time: number;
-  end_race_best_time: number;
-  chicken_race_best_time_2: number;
-  dungeon_hub: {
-    [key: string]: number;
-  };
-};
+export type PlayerStarsRaces = { foraging_race_best_time: number; end_race_best_time: number; chicken_race_best_time_2: number; dungeon_hub: { [key: string]: number } };
 
-export type MemberItemData = {
-  soulflow: number;
-  teleporter_pill_consumed: boolean;
-};
+export type MemberItemData = { soulflow: number; teleporter_pill_consumed: boolean };
 
-export type Forge = {
-  forge_processes: {
-    forge_1: Record<string, ForgeProcess>;
-  };
-};
+export type Forge = { forge_processes: { forge_1: Record<string, ForgeProcess> } };
 
-export type ForgeProcess = {
-  id: string;
-  startTime: number;
-  slot: number;
-};
+export type ForgeProcess = { id: string; startTime: number; slot: number };
 
 export type Experimentation = Record<string, ExperimentationGame>;
 
-export type ExperimentationGame = {
-  last_attempt?: number;
-  last_claimed?: number;
-  bonus_clicks?: number;
-  [string: string]: number;
-};
+export type ExperimentationGame = { last_attempt?: number; last_claimed?: number; bonus_clicks?: number; [string: string]: number };
 
 export type DecodedMuseumItems = {
   value: number;
@@ -460,39 +300,15 @@ export type DecodedMuseumItems = {
   special: { donated_time: number; items: ProcessedItem[] }[];
 };
 
-export type MuseumItems = {
-  [key: string]: ProcessedItem & {
-    donated_as_child: boolean;
-    id: string;
-  };
-};
+export type MuseumItems = { [key: string]: ProcessedItem & { donated_as_child: boolean; id: string } };
 
-export type AccessoryBagStorage = {
-  selected_power?: string;
-};
+export type AccessoryBagStorage = { selected_power?: string };
 
-export type MemberGardenData = {
-  copper?: number;
-};
+export type MemberGardenData = { copper?: number };
 
-export type GlacitePlayerData = {
-  fossils_donated: string[];
-  fossil_dust: number;
-  corpses_looted: Record<string, number>;
-  mineshafts_entered: number;
-};
+export type GlacitePlayerData = { fossils_donated: string[]; fossil_dust: number; corpses_looted: Record<string, number>; mineshafts_entered: number };
 
-export type Pet = {
-  uuid: string;
-  uniqueId: string;
-  type: string;
-  exp: string;
-  active: boolean;
-  tier: string;
-  heldItem: string;
-  candyUsed: number;
-  skin: string | null;
-};
+export type Pet = { uuid: string; uniqueId: string; type: string; exp: string; active: boolean; tier: string; heldItem: string; candyUsed: number; skin: string | null };
 
 export type Events = {
   easter?: {
@@ -500,14 +316,6 @@ export type Events = {
     chocolate?: number;
     chocolate_since_prestige?: number;
     total_chocolate?: number;
-    employees: {
-      rabbit_bro: number;
-      rabbit_cousin: number;
-      rabbit_sis: number;
-      rabbit_father: number;
-      rabbit_grandma: number;
-      rabbit_uncle: number;
-      rabbit_dog: number;
-    };
+    employees: { rabbit_bro: number; rabbit_cousin: number; rabbit_sis: number; rabbit_father: number; rabbit_grandma: number; rabbit_uncle: number; rabbit_dog: number };
   };
 };

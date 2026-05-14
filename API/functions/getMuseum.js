@@ -1,4 +1,3 @@
-/* eslint-disable no-throw-literal */
 const config = require("../../config.json");
 // @ts-ignore
 const { get } = require("axios");
@@ -33,18 +32,9 @@ async function getMuseum(profileID, uuid) {
     // throw "Player doesn't have a museum.";
   }
 
-  cache.set(profileID, {
-    data: {
-      museum: data.members ? data.members[uuid] : null,
-      museumData: data.members ? data.members : null
-    },
-    last_save: Date.now()
-  });
+  cache.set(profileID, { data: { museum: data.members ? data.members[uuid] : null, museumData: data.members ? data.members : null }, last_save: Date.now() });
 
-  return {
-    museum: data.members ? data.members[uuid] : null,
-    museumData: data.members ? data.members : null
-  };
+  return { museum: data.members ? data.members[uuid] : null, museumData: data.members ? data.members : null };
 }
 
 module.exports = { getMuseum };

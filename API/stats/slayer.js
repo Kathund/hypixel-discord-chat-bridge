@@ -54,14 +54,7 @@ function getSlayerLevel(profile, slayer) {
     }
   }
 
-  return {
-    xp: experience,
-    totalKills: total,
-    level,
-    xpForNext,
-    progress,
-    kills
-  };
+  return { xp: experience, totalKills: total, level, xpForNext, progress, kills };
 }
 
 /**
@@ -85,6 +78,4 @@ function getSlayer(profile) {
   }
 }
 
-module.exports = {
-  getSlayer
-};
+module.exports = { getSlayer };

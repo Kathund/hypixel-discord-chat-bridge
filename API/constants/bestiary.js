@@ -14,12 +14,7 @@ const { get } = require("axios");
 function formatBestiaryMobs(mobs) {
   const output = [];
   for (const mob of mobs) {
-    output.push({
-      name: mob.name.replace(/§./g, ""),
-      cap: mob.cap,
-      mobs: mob.mobs,
-      bracket: mob.bracket
-    });
+    output.push({ name: mob.name.replace(/§./g, ""), cap: mob.cap, mobs: mob.mobs, bracket: mob.bracket });
   }
 
   return output;
@@ -53,19 +48,13 @@ async function getBestiaryConstants() {
 
         const id = islandId === categoryId ? islandId : `${islandId}:${categoryId}`;
         const name = categoryData.name.includes(islandData.name) ? categoryData.name : `${categoryData.name} ${islandData.name}`;
-        output.islands[id] = {
-          name: name,
-          mobs: formatBestiaryMobs(categoryData.mobs)
-        };
+        output.islands[id] = { name: name, mobs: formatBestiaryMobs(categoryData.mobs) };
       }
 
       continue;
     }
 
-    output.islands[islandId] = {
-      name: islandData.name,
-      mobs: formatBestiaryMobs(islandData.mobs)
-    };
+    output.islands[islandId] = { name: islandData.name, mobs: formatBestiaryMobs(islandData.mobs) };
   }
 
   cache.data = output;
@@ -74,6 +63,4 @@ async function getBestiaryConstants() {
   return output;
 }
 
-module.exports = {
-  getBestiaryConstants
-};
+module.exports = { getBestiaryConstants };

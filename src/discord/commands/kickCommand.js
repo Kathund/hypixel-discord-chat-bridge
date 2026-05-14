@@ -16,8 +16,6 @@ module.exports = {
 
     const embed = new SuccessEmbed(`Successfully kicked **${name}** from the guild.`);
 
-    await interaction.followUp({
-      embeds: [embed]
-    });
+    await interaction.followUp({ embeds: [embed] });
   }
 };

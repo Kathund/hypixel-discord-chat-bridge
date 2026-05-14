@@ -1,12 +1,7 @@
 export type Garden = {
   uuid: string;
   unlocked_plots_ids: string[];
-  commission_data: {
-    visits?: Record<string, number>;
-    completed?: Record<string, number>;
-    total_completed?: number;
-    unique_npcs_served?: number;
-  };
+  commission_data: { visits?: Record<string, number>; completed?: Record<string, number>; total_completed?: number; unique_npcs_served?: number };
   resources_collected: Record<string, number>;
   composter_data: {
     organic_matter?: number;

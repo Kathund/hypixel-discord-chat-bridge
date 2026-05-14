@@ -2,6 +2,7 @@ const config = require("../../../config.json");
 const cheerio = require("cheerio");
 const Rss = require("rss-parser");
 const axios = require("axios");
+
 const parser = new Rss();
 
 if (config.minecraft.hypixelUpdates.enabled === true) {
@@ -70,11 +71,7 @@ async function checkForHypixelUpdates(firstTime = false) {
       }
 
       if (bot !== undefined && bot._client.chat !== undefined && firstTime === false) {
-        const response = await axios.get(link, {
-          headers: {
-            "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:89.0) Gecko/20100101 Firefox/89.0"
-          }
-        });
+        const response = await axios.get(link, { headers: { "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:89.0) Gecko/20100101 Firefox/89.0" } });
 
         const $ = cheerio.load(response.data);
         const time = parseInt($("time.u-dt").eq(0).attr("data-time"));

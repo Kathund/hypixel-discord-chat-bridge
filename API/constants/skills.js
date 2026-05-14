@@ -178,11 +178,4 @@ function getSocialSkillExperience(profile) {
   }, 0);
 }
 
-module.exports = {
-  getSkillAverage,
-  getLevelByXp,
-  getXpTable,
-  getSkillLevelCaps,
-  getSkillExperience,
-  getSocialSkillExperience
-};
+module.exports = { getSkillAverage, getLevelByXp, getXpTable, getSkillLevelCaps, getSkillExperience, getSocialSkillExperience };

@@ -12,11 +12,7 @@ const MESSAGE_COOLDOWN = 60 * 60 * 1000; // 1 hour
 
 async function checkAlphaPlayerCount() {
   try {
-    const response = await minecraftProtocol.ping({
-      host: "alpha.hypixel.net",
-      port: 25565,
-      version: "1.8.9"
-    });
+    const response = await minecraftProtocol.ping({ host: "alpha.hypixel.net", port: 25565, version: "1.8.9" });
 
     if (response && response.players) {
       const currentPlayerCount = response.players.online;

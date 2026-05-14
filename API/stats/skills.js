@@ -32,6 +32,4 @@ function getSkills(profile, profileData) {
   return skills;
 }
 
-module.exports = {
-  getSkills
-};
+module.exports = { getSkills };

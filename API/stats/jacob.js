@@ -17,10 +17,7 @@ function getJacob(profile) {
         silver: profile.jacobs_contest.medals_inv?.silver ?? 0,
         bronze: profile.jacobs_contest.medals_inv?.bronze ?? 0
       },
-      perks: {
-        levelCap: profile.jacobs_contest.perks?.farming_level_cap ?? 0,
-        doubleDrops: profile.jacobs_contest.perks?.double_drops ?? 0
-      },
+      perks: { levelCap: profile.jacobs_contest.perks?.farming_level_cap ?? 0, doubleDrops: profile.jacobs_contest.perks?.double_drops ?? 0 },
       personalBests: {
         nether_wart: profile.jacobs_contest.personal_bests?.NETHER_STALK ?? 0,
         coco_beans: profile.jacobs_contest.personal_bests?.["INK_SACK:3"] ?? 0,
@@ -39,6 +36,4 @@ function getJacob(profile) {
   }
 }
 
-module.exports = {
-  getJacob
-};
+module.exports = { getJacob };

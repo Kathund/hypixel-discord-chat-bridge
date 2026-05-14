@@ -1,4 +1,4 @@
-//CREDIT: https://github.com/Senither/hypixel-skyblock-facade (Modified)
+// CREDIT: https://github.com/Senither/hypixel-skyblock-facade (Modified)
 /**
  * Returns whether or not the provided string is a valid UUID.
  * @param {string} uuid
@@ -15,6 +15,4 @@ function isUuid(uuid) {
   );
 }
 
-module.exports = {
-  isUuid
-};
+module.exports = { isUuid };

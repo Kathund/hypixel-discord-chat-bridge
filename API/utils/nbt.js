@@ -1,6 +1,7 @@
 // @ts-nocheck
 const nbt = require("prismarine-nbt");
-const util = require("util");
+const util = require("node:util");
+
 const parseNbt = util.promisify(nbt.parse);
 
 /**
@@ -28,7 +29,4 @@ async function decodeArrayBuffer(arraybuf) {
   return items;
 }
 
-module.exports = {
-  decodeData,
-  decodeArrayBuffer
-};
+module.exports = { decodeData, decodeArrayBuffer };

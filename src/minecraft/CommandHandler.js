@@ -1,7 +1,7 @@
 const { Collection } = require("discord.js");
 const config = require("../../config.json");
 const axios = require("axios");
-const fs = require("fs");
+const fs = require("node:fs");
 
 class CommandHandler {
   /** @param {import("minecraft-protocol").Client} minecraft */

@@ -1,7 +1,7 @@
 const HypixelDiscordChatBridgeError = require("../../contracts/errorHandler.js");
 const { getUUID, getUsername } = require("../../contracts/API/mowojangAPI.js");
 const { SuccessEmbed, ErrorEmbed } = require("../../contracts/embedHandler.js");
-const { readFileSync } = require("fs");
+const { readFileSync } = require("node:fs");
 const { MessageFlags, SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
@@ -39,7 +39,7 @@ module.exports = {
 
         const username = await getUsername(uuid);
         const embed = new SuccessEmbed(`<@${user.id}> is linked to \`${username}\` (\`${uuid}\`).`, {
-          text: `by @.kathund | /help [command] for more information`,
+          text: "by @.kathund | /help [command] for more information",
           iconURL: "https://i.imgur.com/uUuZx2E.png"
         });
         await interaction.followUp({ embeds: [embed], flags: MessageFlags.Ephemeral });
@@ -55,7 +55,7 @@ module.exports = {
         }
 
         const embed = new SuccessEmbed(`\`${name}\` (\`${uuid}\`) is linked to <@${discordID}>.`, {
-          text: `by @.kathund | /help [command] for more information`,
+          text: "by @.kathund | /help [command] for more information",
           iconURL: "https://i.imgur.com/uUuZx2E.png"
         });
 
@@ -65,7 +65,7 @@ module.exports = {
       }
     } catch (error) {
       const errorEmbed = new ErrorEmbed(`\`\`\`${error}\`\`\``).setFooter({
-        text: `by @.kathund | /help [command] for more information`,
+        text: "by @.kathund | /help [command] for more information",
         iconURL: "https://i.imgur.com/uUuZx2E.png"
       });
 

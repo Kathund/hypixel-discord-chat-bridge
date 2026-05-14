@@ -1,13 +1,6 @@
 export type Jacob = {
-  medals: {
-    gold: number;
-    silver: number;
-    bronze: number;
-  };
-  perks: {
-    levelCap: number;
-    doubleDrops: number;
-  };
+  medals: { gold: number; silver: number; bronze: number };
+  perks: { levelCap: number; doubleDrops: number };
   personalBests: {
     nether_wart: number;
     coco_beans: number;

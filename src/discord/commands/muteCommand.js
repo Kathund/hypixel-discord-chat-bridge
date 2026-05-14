@@ -16,8 +16,6 @@ module.exports = {
 
     const embed = new SuccessEmbed(`Successfully muted **${name}** for ${time}.`);
 
-    await interaction.followUp({
-      embeds: [embed]
-    });
+    await interaction.followUp({ embeds: [embed] });
   }
 };

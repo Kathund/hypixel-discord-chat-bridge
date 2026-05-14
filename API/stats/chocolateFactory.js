@@ -33,6 +33,4 @@ function getChocolateFactory(profile) {
   }
 }
 
-module.exports = {
-  getChocolateFactory
-};
+module.exports = { getChocolateFactory };

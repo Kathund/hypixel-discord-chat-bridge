@@ -1,6 +1,6 @@
 const HypixelDiscordChatBridgeError = require("./errorHandler.js");
 const config = require("../../config.json");
-const { readFileSync } = require("fs");
+const { readFileSync } = require("node:fs");
 
 function isGuildMember(interaction) {
   const user = interaction.member;
@@ -49,8 +49,4 @@ function isLinkedMember(interaction) {
   return true;
 }
 
-module.exports = {
-  isGuildMember,
-  isVerifiedMember,
-  isLinkedMember
-};
+module.exports = { isGuildMember, isVerifiedMember, isLinkedMember };

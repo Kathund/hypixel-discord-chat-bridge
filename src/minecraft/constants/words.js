@@ -272,9 +272,8 @@ function getRandomWord(length) {
     }
 
     return filteredWords[Math.floor(Math.random() * filteredWords.length)];
-  } else {
-    return words[Math.floor(Math.random() * words.length)];
   }
+  return words[Math.floor(Math.random() * words.length)];
 }
 
 /**
