@@ -1,6 +1,6 @@
-import Command from "../Private/Command.js";
-import CommandData from "../Private/CommandData.js";
-import type { MinecraftManagerWithBot } from "../../Types/Minecraft.js";
+import Command from '../Private/Command.js';
+import CommandData from '../Private/CommandData.js';
+import type { MinecraftManagerWithBot } from '../../Types/Minecraft.js';
 
 /*
 Derpy = 368 mod 24 = 8
@@ -21,9 +21,9 @@ class SpecialMayorCommand extends Command {
   constructor(minecraft: MinecraftManagerWithBot) {
     super(minecraft);
     this.data = new CommandData()
-      .setName("specialmayor")
-      .setDescription("How many years until next special mayor, along with speculated special mayor.")
-      .setAliases(["specmayor"]);
+      .setName('specialmayor')
+      .setDescription('How many years until next special mayor, along with speculated special mayor.')
+      .setAliases(['specmayor']);
   }
 
   getYearsUntilSpecial(year: number): number {
@@ -37,11 +37,11 @@ class SpecialMayorCommand extends Command {
   getSpecialMayor(year: number): string | null {
     switch (year % 24) {
       case 8:
-        return "Derpy";
+        return 'Derpy';
       case 16:
-        return "Jerry";
+        return 'Jerry';
       case 0:
-        return "Scorpius";
+        return 'Scorpius';
       default:
         return null;
     }

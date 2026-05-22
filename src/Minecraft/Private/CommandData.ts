@@ -1,8 +1,8 @@
-import type CommandDataOption from "./CommandDataOption.js";
-import type { CommandDataJSON } from "../../Types/Minecraft.js";
+import type CommandDataOption from './CommandDataOption.js';
+import type { CommandDataJSON } from '../../Types/Minecraft.js';
 
 class CommandData {
-  private name: string = "";
+  private name: string = '';
   private description: string | null = null;
   private aliases: string[] = [];
   private options: CommandDataOption[] = [];

@@ -1,7 +1,7 @@
-import type { CommandDataOptionJSON } from "../../Types/Minecraft.js";
+import type { CommandDataOptionJSON } from '../../Types/Minecraft.js';
 
 class CommandDataOption {
-  private name: string = "";
+  private name: string = '';
   private description: string | null = null;
   private required: boolean = false;
 

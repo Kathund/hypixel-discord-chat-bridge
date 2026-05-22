@@ -1,18 +1,18 @@
-import Command from "../Private/Command.js";
-import CommandData from "../Private/CommandData.js";
-import CommandDataOption from "../Private/CommandDataOption.js";
-import { FormatNumber } from "../../Utils/StringUtils.js";
-import { getSelectedProfile } from "../../Utils/HypixelUtils.js";
-import type { MinecraftManagerWithBot } from "../../Types/Minecraft.js";
+import Command from '../Private/Command.js';
+import CommandData from '../Private/CommandData.js';
+import CommandDataOption from '../Private/CommandDataOption.js';
+import { FormatNumber } from '../../Utils/StringUtils.js';
+import { getSelectedProfile } from '../../Utils/HypixelUtils.js';
+import type { MinecraftManagerWithBot } from '../../Types/Minecraft.js';
 
 class CatacombsCommand extends Command {
   constructor(minecraft: MinecraftManagerWithBot) {
     super(minecraft);
     this.data = new CommandData()
-      .setName("catacombs")
-      .setDescription("Skyblock Dungeons Stats of specified user.")
-      .setAliases(["cata", "dungeons"])
-      .setOptions([new CommandDataOption().setName("username").setDescription("Minecraft Username")]);
+      .setName('catacombs')
+      .setDescription('Skyblock Dungeons Stats of specified user.')
+      .setAliases(['cata', 'dungeons'])
+      .setOptions([new CommandDataOption().setName('username').setDescription('Minecraft Username')]);
   }
 
   override async execute(player: string, message: string) {

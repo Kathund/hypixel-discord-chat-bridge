@@ -1,14 +1,14 @@
-import CommandHandler from "./Handlers/CommandHandler.js";
-import CommunicationBridge from "../Private/CommunicationBridge.js";
-import MessageHandler from "./Handlers/MessageHandler.js";
-import StateHandler from "./Handlers/StateHandler.js";
-import { type Bot, createBot } from "mineflayer";
-import { Filter } from "bad-words";
-import { ReplaceVariables } from "../Utils/StringUtils.js";
-import type Application from "../Application.js";
-import type { BroadcastEvent } from "../Types/Bridge.js";
-import type { ChatMessage } from "prismarine-chat";
-import type { MinecraftManagerWithBot } from "../Types/Minecraft.js";
+import CommandHandler from './Handlers/CommandHandler.js';
+import CommunicationBridge from '../Private/CommunicationBridge.js';
+import MessageHandler from './Handlers/MessageHandler.js';
+import StateHandler from './Handlers/StateHandler.js';
+import { type Bot, createBot } from 'mineflayer';
+import { Filter } from 'bad-words';
+import { ReplaceVariables } from '../Utils/StringUtils.js';
+import type Application from '../Application.js';
+import type { BroadcastEvent } from '../Types/Bridge.js';
+import type { ChatMessage } from 'prismarine-chat';
+import type { MinecraftManagerWithBot } from '../Types/Minecraft.js';
 
 class MinecraftManager extends CommunicationBridge {
   readonly stateHandler: StateHandler;
@@ -34,21 +34,21 @@ class MinecraftManager extends CommunicationBridge {
     this.commandHandler.deployCommands();
     this.messageHandler.registerEvents();
 
-    this.bot.on("login", () => {
-      console.log("Minecraft bot is ready!");
+    this.bot.on('login', () => {
+      console.log('Minecraft bot is ready!');
     });
   }
 
   private createBotConnection() {
     return createBot({
-      host: "mc.hypixel.net",
+      host: 'mc.hypixel.net',
       port: 25565,
-      username: "DuckySoLucky",
-      auth: "microsoft",
-      version: "1.8.9",
-      viewDistance: "tiny",
+      username: 'DuckySoLucky',
+      auth: 'microsoft',
+      version: '1.8.9',
+      viewDistance: 'tiny',
       chatLengthLimit: 256,
-      profilesFolder: "./auth-cache"
+      profilesFolder: './auth-cache'
     });
   }
 
@@ -60,7 +60,7 @@ class MinecraftManager extends CommunicationBridge {
     if (!this.isBotOnline()) return;
     let { channelId, username, message, replyingTo, discordMessage } = event;
     if (channelId === undefined || username === undefined || message === undefined || replyingTo === undefined || discordMessage === undefined) return;
-    console.broadcast(`${username}: ${message}`, "Minecraft");
+    console.broadcast(`${username}: ${message}`, 'Minecraft');
     if (this.bot.player === undefined) return;
 
     if (channelId === this.Application.config.discord.channels.debugChannel && this.Application.config.discord.channels.debugMode === true) return this.bot.chat(message);
@@ -76,14 +76,14 @@ class MinecraftManager extends CommunicationBridge {
 
     if (this.Application.config.discord.other.stripEmojisFromUsernames) {
       try {
-        username = username.replace(/:[\w\-_]+:/g, "");
+        username = username.replace(/:[\w\-_]+:/g, '');
       } catch {
         // Do nothing
       }
     }
 
     message = ReplaceVariables(this.Application.config.minecraft.bot.messageFormat, { username, message });
-    const chat = channelId === this.Application.config.discord.channels.officerChannel ? "/oc" : "/gc";
+    const chat = channelId === this.Application.config.discord.channels.officerChannel ? '/oc' : '/gc';
     if (replyingTo) message = message.replace(username, `${username} replying to ${replyingTo}`);
 
     let successfullySent = false;
@@ -91,18 +91,18 @@ class MinecraftManager extends CommunicationBridge {
       const message = rawMessage.toString();
 
       if (message.trim().includes(message.trim()) && (this.messageHandler.isGuildMessage(message) || this.messageHandler.isOfficerMessage(message))) {
-        this.bot.removeListener("message", messageListener);
+        this.bot.removeListener('message', messageListener);
         successfullySent = true;
       }
     };
 
-    this.bot.on("message", messageListener);
+    this.bot.on('message', messageListener);
     this.bot.chat(`${chat} ${message}`);
 
     setTimeout(() => {
-      this.bot.removeListener("message", messageListener);
+      this.bot.removeListener('message', messageListener);
       if (successfullySent === true) return;
-      discordMessage.react("❌");
+      discordMessage.react('❌');
     }, 500);
   }
 }

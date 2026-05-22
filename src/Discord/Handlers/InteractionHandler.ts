@@ -1,5 +1,5 @@
-import { type BaseInteraction } from "discord.js";
-import type DiscordManager from "../DiscordManager.js";
+import { type BaseInteraction } from 'discord.js';
+import type DiscordManager from '../DiscordManager.js';
 
 class InteractionHandler {
   constructor(private readonly discord: DiscordManager) {}

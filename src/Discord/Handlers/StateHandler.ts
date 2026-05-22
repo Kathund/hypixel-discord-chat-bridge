@@ -1,7 +1,7 @@
-import HypixelDiscordChatBridgeError from "../../Private/Error.js";
-import type DiscordManager from "../DiscordManager.js";
-import type { Channel } from "discord.js";
-import type { ChannelNames } from "../../Types/Discord.js";
+import HypixelDiscordChatBridgeError from '../../Private/Error.js';
+import type DiscordManager from '../DiscordManager.js';
+import type { Channel } from 'discord.js';
+import type { ChannelNames } from '../../Types/Discord.js';
 
 class StateHandler {
   constructor(private readonly discord: DiscordManager) {}
@@ -15,29 +15,29 @@ class StateHandler {
   async onReady() {
     if (!this.discord.isClientOnline() || !this.discord.client.user) return;
     console.discord(`Client ready, logged in as ${this.discord.client.user?.username} (${this.discord.client.user?.id})!`);
-    this.discord.client.user.setPresence({ activities: [{ name: "/help | by @duckysolucky" }] });
+    this.discord.client.user.setPresence({ activities: [{ name: '/help | by @duckysolucky' }] });
 
     await this.loadGuild();
 
-    const channel = await this.getChannel("Guild");
+    const channel = await this.getChannel('Guild');
     if (channel === null || !channel.isSendable()) return console.error('Channel "Guild" not found!');
-    channel.send({ embeds: [{ author: { name: "Chat Bridge is Online" }, color: 2067276 }] });
+    channel.send({ embeds: [{ author: { name: 'Chat Bridge is Online' }, color: 2067276 }] });
   }
 
   async onClose() {
-    const channel = await this.getChannel("Guild");
+    const channel = await this.getChannel('Guild');
     if (channel === null || !channel.isSendable()) return console.error('Channel "Guild" not found!');
-    await channel.send({ embeds: [{ author: { name: "Chat Bridge is Offline" }, color: 15548997 }] });
+    await channel.send({ embeds: [{ author: { name: 'Chat Bridge is Offline' }, color: 15548997 }] });
   }
 
   async getChannel(type: ChannelNames): Promise<Channel | null> {
     if (!this.discord.isClientOnline()) return null;
-    switch (type.replace(/§[0-9a-fk-or]/g, "").trim()) {
-      case "Guild":
+    switch (type.replace(/§[0-9a-fk-or]/g, '').trim()) {
+      case 'Guild':
         return await this.discord.client.channels.fetch(this.discord.Application.config.discord.channels.guildChatChannel);
-      case "Officer":
+      case 'Officer':
         return await this.discord.client.channels.fetch(this.discord.Application.config.discord.channels.officerChannel);
-      case "Logger":
+      case 'Logger':
         return await this.discord.client.channels.fetch(this.discord.Application.config.discord.channels.loggingChannel);
       default:
         return await this.discord.client.channels.fetch(this.discord.Application.config.discord.channels.debugChannel);

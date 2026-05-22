@@ -1,10 +1,10 @@
-import HypixelDiscordChatBridgeError from "../../Private/Error.js";
-import { FormatNumber, ReplaceVariables } from "../../Utils/StringUtils.js";
-import { getPlayer } from "../../Utils/HypixelUtils.js";
-import type LinkedManager from "../LinkedManager.js";
-import type { Guild, GuildMember as HypixelGuildMember, Player } from "hypixel-api-reborn";
-import type { GuildMember } from "discord.js";
-import type { LinkedUserData } from "../../Types/Linked.js";
+import HypixelDiscordChatBridgeError from '../../Private/Error.js';
+import { FormatNumber, ReplaceVariables } from '../../Utils/StringUtils.js';
+import { getPlayer } from '../../Utils/HypixelUtils.js';
+import type LinkedManager from '../LinkedManager.js';
+import type { Guild, GuildMember as HypixelGuildMember, Player } from 'hypixel-api-reborn';
+import type { GuildMember } from 'discord.js';
+import type { LinkedUserData } from '../../Types/Linked.js';
 
 class LinkedUser {
   discordId: string;
@@ -37,7 +37,7 @@ class LinkedUser {
       const verificationRoles = this.linked.Application.config.verification.roles;
       const roles = [verificationRoles.guildMember.roleId, ...verificationRoles.custom.flatMap((r) => r.roleId)];
       for (const role of roles) {
-        if (member.roles.cache.has(role)) await member.roles.remove(role, "Updated Roles");
+        if (member.roles.cache.has(role)) await member.roles.remove(role, 'Updated Roles');
       }
     } catch (error) {
       console.error(`Failed to completely clean up roles for ${this.discordId}:`, error);
@@ -67,7 +67,7 @@ class LinkedUser {
     }
 
     if (this.linked.Application.discord.guild.ownerId === member.user.id) {
-      throw new HypixelDiscordChatBridgeError("This user owns the server thus the bot cannot update it");
+      throw new HypixelDiscordChatBridgeError('This user owns the server thus the bot cannot update it');
     }
 
     const verificationRoles = this.linked.Application.config.verification.roles;
@@ -83,7 +83,7 @@ class LinkedUser {
 
       const guildRank = verificationRoles.custom.find((r) =>
         r.requirements
-          .filter((req) => r.enabled !== false && req.type === "guildRank")
+          .filter((req) => r.enabled !== false && req.type === 'guildRank')
           .map((req) => req.value)
           .includes(guildMember.rank)
       );
@@ -93,7 +93,7 @@ class LinkedUser {
     }
 
     if (verificationRoles.custom.length > 0) {
-      for (const role of verificationRoles.custom.filter((r) => r.requirements.some((req) => req.type !== "guildRank"))) {
+      for (const role of verificationRoles.custom.filter((r) => r.requirements.some((req) => req.type !== 'guildRank'))) {
         if (role.enabled === false) continue;
         const meetsRequirements = role.requirements.every((req) => req.value <= (stats[req.type] ?? 0));
         if (meetsRequirements) rolesToAdd.push(role.roleId);
@@ -104,16 +104,16 @@ class LinkedUser {
       member.setNickname(
         ReplaceVariables(
           this.linked.Application.config.verification.nickname.nickname,
-          Object.fromEntries(Object.entries(stats).map(([key, value]) => [key, typeof value === "number" ? FormatNumber(value) : value]))
-        ).replace(/,/g, this.linked.Application.config.verification.nickname.removeCommas ? "" : ","),
-        "Updated Roles"
+          Object.fromEntries(Object.entries(stats).map(([key, value]) => [key, typeof value === 'number' ? FormatNumber(value) : value]))
+        ).replace(/,/g, this.linked.Application.config.verification.nickname.removeCommas ? '' : ','),
+        'Updated Roles'
       );
     }
 
-    await member.roles.add(rolesToAdd, "Updated Roles");
+    await member.roles.add(rolesToAdd, 'Updated Roles');
     await member.roles.remove(
       [verificationRoles.guildMember.roleId, ...verificationRoles.custom.flatMap((r) => r.roleId), ...rolesToRemove].filter((role) => !rolesToAdd.includes(role)),
-      "Updated Roles"
+      'Updated Roles'
     );
     return this;
   }

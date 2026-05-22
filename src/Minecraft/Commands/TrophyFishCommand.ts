@@ -1,20 +1,20 @@
-import Command from "../Private/Command.js";
-import CommandData from "../Private/CommandData.js";
-import CommandDataOption from "../Private/CommandDataOption.js";
-import { FormatNumber } from "../../Utils/StringUtils.js";
-import { getSelectedProfile } from "../../Utils/HypixelUtils.js";
-import type { MinecraftManagerWithBot } from "../../Types/Minecraft.js";
-import type { SkyBlockMemberCrimsonIsleTrophyFish, SkyBlockMemberCrimsonIsleTrophyFishFish } from "hypixel-api-reborn";
+import Command from '../Private/Command.js';
+import CommandData from '../Private/CommandData.js';
+import CommandDataOption from '../Private/CommandDataOption.js';
+import { FormatNumber } from '../../Utils/StringUtils.js';
+import { getSelectedProfile } from '../../Utils/HypixelUtils.js';
+import type { MinecraftManagerWithBot } from '../../Types/Minecraft.js';
+import type { SkyBlockMemberCrimsonIsleTrophyFish, SkyBlockMemberCrimsonIsleTrophyFishFish } from 'hypixel-api-reborn';
 
 // CREDITS: by @Kathund (https://github.com/Kathund)
 class TrophyFishCommand extends Command {
   constructor(minecraft: MinecraftManagerWithBot) {
     super(minecraft);
     this.data = new CommandData()
-      .setName("trophyfish")
-      .setDescription("Trophy Fish Stats of specified user.")
-      .setAliases(["tf", "trophyfishing", "trophy"])
-      .setOptions([new CommandDataOption().setName("username").setDescription("Minecraft Username")]);
+      .setName('trophyfish')
+      .setDescription('Trophy Fish Stats of specified user.')
+      .setAliases(['tf', 'trophyfishing', 'trophy'])
+      .setOptions([new CommandDataOption().setName('username').setDescription('Minecraft Username')]);
   }
 
   override async execute(player: string, message: string) {
@@ -31,7 +31,7 @@ class TrophyFishCommand extends Command {
     let uniqueDiamond = 0;
     const uniqueFish = 18;
     (Object.keys(trophyFishing) as (keyof SkyBlockMemberCrimsonIsleTrophyFish)[])
-      .filter((fish) => !["toString", "rank", "caught"].includes(fish as string))
+      .filter((fish) => !['toString', 'rank', 'caught'].includes(fish as string))
       .forEach((fishName) => {
         const fish = trophyFishing[fishName] as SkyBlockMemberCrimsonIsleTrophyFishFish;
         if (fish.bronze > 1) uniqueBronze++;

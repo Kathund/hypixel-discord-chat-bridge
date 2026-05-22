@@ -1,18 +1,18 @@
-import Command from "../../Private/Commands/Command.js";
-import CommandData from "../../Private/Commands/CommandData.js";
-import HypixelDiscordChatBridgeError from "../../../Private/Error.js";
-import UpdateCommand from "./UpdateCommand.js";
-import { CommandFlags, CommandResponse, type DiscordManagerWithBot } from "../../../Types/Discord.js";
-import type { ChatInputCommandInteraction } from "discord.js";
+import Command from '../../Private/Commands/Command.js';
+import CommandData from '../../Private/Commands/CommandData.js';
+import HypixelDiscordChatBridgeError from '../../../Private/Error.js';
+import UpdateCommand from './UpdateCommand.js';
+import { CommandFlags, CommandResponse, type DiscordManagerWithBot } from '../../../Types/Discord.js';
+import type { ChatInputCommandInteraction } from 'discord.js';
 
 class ForceUpdateCommand extends Command<DiscordManagerWithBot> {
   constructor(discord: DiscordManagerWithBot) {
     super(discord);
     this.data = new CommandData()
-      .setName("force-update")
+      .setName('force-update')
       .setDescription("Update user's or everyone's roles")
-      .addUserOption((option) => option.setName("user").setDescription("Discord Username"))
-      .addBooleanOption((option) => option.setName("everyone").setDescription("Update everyone's roles"));
+      .addUserOption((option) => option.setName('user').setDescription('Discord Username'))
+      .addBooleanOption((option) => option.setName('everyone').setDescription("Update everyone's roles"));
     this.flags = [CommandFlags.RequiresMinecraftBot, CommandFlags.StaffOnly, CommandFlags.VerificationCommand];
     this.response = CommandResponse.Ephemeral;
   }
@@ -21,10 +21,10 @@ class ForceUpdateCommand extends Command<DiscordManagerWithBot> {
     const updateCommand = new UpdateCommand(this.discord);
     updateCommand.isSelf = false;
 
-    const user = interaction.options.getUser("user");
-    const everyone = interaction.options.getBoolean("everyone");
-    if (!user && !everyone) throw new HypixelDiscordChatBridgeError("You must specify a user or everyone.");
-    if (user && everyone) throw new HypixelDiscordChatBridgeError("You cannot specify both user and everyone.");
+    const user = interaction.options.getUser('user');
+    const everyone = interaction.options.getBoolean('everyone');
+    if (!user && !everyone) throw new HypixelDiscordChatBridgeError('You must specify a user or everyone.');
+    if (user && everyone) throw new HypixelDiscordChatBridgeError('You cannot specify both user and everyone.');
 
     if (user) {
       updateCommand.discordId = user.id;

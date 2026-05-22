@@ -1,18 +1,18 @@
-import Command from "../Private/Command.js";
-import CommandData from "../Private/CommandData.js";
-import CommandDataOption from "../Private/CommandDataOption.js";
-import { FormatNumber } from "../../Utils/StringUtils.js";
-import { getNetWorthCalculator, getSelectedProfile } from "../../Utils/HypixelUtils.js";
-import type { MinecraftManagerWithBot } from "../../Types/Minecraft.js";
+import Command from '../Private/Command.js';
+import CommandData from '../Private/CommandData.js';
+import CommandDataOption from '../Private/CommandDataOption.js';
+import { FormatNumber } from '../../Utils/StringUtils.js';
+import { getNetWorthCalculator, getSelectedProfile } from '../../Utils/HypixelUtils.js';
+import type { MinecraftManagerWithBot } from '../../Types/Minecraft.js';
 
 class NetworthCommand extends Command {
   constructor(minecraft: MinecraftManagerWithBot) {
     super(minecraft);
     this.data = new CommandData()
-      .setName("networth")
-      .setDescription("Networth of specified user.")
-      .setAliases(["nw"])
-      .setOptions([new CommandDataOption().setName("username").setRequired(true)]);
+      .setName('networth')
+      .setDescription('Networth of specified user.')
+      .setAliases(['nw'])
+      .setOptions([new CommandDataOption().setName('username').setRequired(true)]);
   }
 
   override async execute(player: string, message: string) {
@@ -31,8 +31,8 @@ class NetworthCommand extends Command {
     const nonCosmeticUnsoulboundNetworth = FormatNumber(nonCosmeticNetworthData.unsoulboundNetworth);
 
     const purse = FormatNumber(networthData.purse);
-    const bank = profile.banking.balance !== 0 ? FormatNumber(profile.banking.balance) : "N/A";
-    const personalBank = profile.me.profileStats.bankAccount !== 0 ? FormatNumber(profile.me.profileStats.bankAccount) : "N/A";
+    const bank = profile.banking.balance !== 0 ? FormatNumber(profile.banking.balance) : 'N/A';
+    const personalBank = profile.me.profileStats.bankAccount !== 0 ? FormatNumber(profile.me.profileStats.bankAccount) : 'N/A';
     const museumData = FormatNumber(networthData.types.museum?.total ?? 0);
 
     this.send(

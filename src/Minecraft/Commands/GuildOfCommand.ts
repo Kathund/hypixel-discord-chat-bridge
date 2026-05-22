@@ -1,26 +1,26 @@
-import Command from "../Private/Command.js";
-import CommandData from "../Private/CommandData.js";
-import CommandDataOption from "../Private/CommandDataOption.js";
-import HypixelAPIReborn from "../../Private/HypixelAPIReborn.js";
-import HypixelDiscordChatBridgeError from "../../Private/Error.js";
-import { FormatNumber } from "../../Utils/StringUtils.js";
-import type { MinecraftManagerWithBot } from "../../Types/Minecraft.js";
+import Command from '../Private/Command.js';
+import CommandData from '../Private/CommandData.js';
+import CommandDataOption from '../Private/CommandDataOption.js';
+import HypixelAPIReborn from '../../Private/HypixelAPIReborn.js';
+import HypixelDiscordChatBridgeError from '../../Private/Error.js';
+import { FormatNumber } from '../../Utils/StringUtils.js';
+import type { MinecraftManagerWithBot } from '../../Types/Minecraft.js';
 
 // CREDITS: by @MattyHD0 (https://github.com/MattyHD0)
 class GuildOfCommand extends Command {
   constructor(minecraft: MinecraftManagerWithBot) {
     super(minecraft);
     this.data = new CommandData()
-      .setName("guildof")
+      .setName('guildof')
       .setDescription("View the player's guild")
-      .setAliases(["gof", "guildofplayer", "gop"])
-      .setOptions([new CommandDataOption().setName("player").setRequired(true)]);
+      .setAliases(['gof', 'guildofplayer', 'gop'])
+      .setOptions([new CommandDataOption().setName('player').setRequired(true)]);
   }
 
   override async execute(player: string, message: string) {
     player = this.getArgs(message)[0] || player;
-    const guild = await HypixelAPIReborn.getGuild("player", player).then((data) => {
-      if (data === null) throw new HypixelDiscordChatBridgeError("Player is not in a guild");
+    const guild = await HypixelAPIReborn.getGuild('player', player).then((data) => {
+      if (data === null) throw new HypixelDiscordChatBridgeError('Player is not in a guild');
       if (data.isRaw()) throw new HypixelDiscordChatBridgeError("Failed to fetch Player's guild data.");
       return data;
     });

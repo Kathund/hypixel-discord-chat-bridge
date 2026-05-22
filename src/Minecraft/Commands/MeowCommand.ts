@@ -1,18 +1,18 @@
-import Command from "../Private/Command.js";
-import CommandData from "../Private/CommandData.js";
-import type { MinecraftManagerWithBot } from "../../Types/Minecraft.js";
+import Command from '../Private/Command.js';
+import CommandData from '../Private/CommandData.js';
+import type { MinecraftManagerWithBot } from '../../Types/Minecraft.js';
 
 // CREDITS: by @Kathund (https://github.com/Kathund)
 class MeowCommand extends Command {
   private variations: string[];
   constructor(minecraft: MinecraftManagerWithBot) {
     super(minecraft);
-    this.variations = ["mrrp", "mrrow", "miau", "mauww", "meep", ":3", "nja", "nya", "awawa"];
-    this.data = new CommandData().setName("meow").setDescription("meow").setAliases(this.variations);
+    this.variations = ['mrrp', 'mrrow', 'miau', 'mauww', 'meep', ':3', 'nja', 'nya', 'awawa'];
+    this.data = new CommandData().setName('meow').setDescription('meow').setAliases(this.variations);
   }
 
   override execute(username: string, message: string): void {
-    this.send(this.variations[Math.floor(Math.random() * this.variations.length)] || "meow");
+    this.send(this.variations[Math.floor(Math.random() * this.variations.length)] || 'meow');
   }
 }
 

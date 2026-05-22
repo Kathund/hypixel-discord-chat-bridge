@@ -13,7 +13,7 @@ import {
   type SlashCommandSubcommandBuilder,
   type SlashCommandSubcommandGroupBuilder,
   type SlashCommandUserOption
-} from "discord.js";
+} from 'discord.js';
 
 class CommandData extends SlashCommandBuilder {
   constructor() {

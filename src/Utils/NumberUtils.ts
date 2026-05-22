@@ -8,11 +8,11 @@ export function FormatNumber(number: number, decimals: number = 2) {
     return Number(number).toLocaleString();
   }
 
-  const abbrev = ["", "K", "M", "B", "T", "Qa", "Qi", "S", "O", "N", "D"];
+  const abbrev = ['', 'K', 'M', 'B', 'T', 'Qa', 'Qi', 'S', 'O', 'N', 'D'];
   const unformattedNumber = Math.abs(number);
 
   const abbrevIndex = Math.floor(Math.log10(unformattedNumber) / 3);
   const shortNumber = (unformattedNumber / Math.pow(10, abbrevIndex * 3)).toFixed(decimals);
 
-  return `${isNegative ? "-" : ""}${shortNumber}${abbrev[abbrevIndex]}`;
+  return `${isNegative ? '-' : ''}${shortNumber}${abbrev[abbrevIndex]}`;
 }

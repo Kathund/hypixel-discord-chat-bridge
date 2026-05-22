@@ -1,19 +1,19 @@
-import Command from "../Private/Command.js";
-import CommandData from "../Private/CommandData.js";
-import CommandDataOption from "../Private/CommandDataOption.js";
-import { FormatNumber } from "../../Utils/StringUtils.js";
-import { getPlayer } from "../../Utils/HypixelUtils.js";
-import type { MinecraftManagerWithBot } from "../../Types/Minecraft.js";
+import Command from '../Private/Command.js';
+import CommandData from '../Private/CommandData.js';
+import CommandDataOption from '../Private/CommandDataOption.js';
+import { FormatNumber } from '../../Utils/StringUtils.js';
+import { getPlayer } from '../../Utils/HypixelUtils.js';
+import type { MinecraftManagerWithBot } from '../../Types/Minecraft.js';
 
 // CREDITS: by @Kathund (https://github.com/Kathund)
 class MurderMysteryCommand extends Command {
   constructor(minecraft: MinecraftManagerWithBot) {
     super(minecraft);
     this.data = new CommandData()
-      .setName("murdermystery")
-      .setDescription("Get Murder Mystery Player Stats")
-      .setAliases(["mm"])
-      .setOptions([new CommandDataOption().setName("username").setDescription("Minecraft Username")]);
+      .setName('murdermystery')
+      .setDescription('Get Murder Mystery Player Stats')
+      .setAliases(['mm'])
+      .setOptions([new CommandDataOption().setName('username').setDescription('Minecraft Username')]);
   }
 
   override async execute(player: string, message: string) {

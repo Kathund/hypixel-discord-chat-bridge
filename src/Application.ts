@@ -1,14 +1,14 @@
-import DiscordManager from "./Discord/DiscordManager.js";
-import HypixelAPIReborn from "./Private/HypixelAPIReborn.js";
-import HypixelDiscordChatBridgeError from "./Private/Error.js";
-import LinkedManager from "./Linked/LinkedManager.js";
-import MinecraftManager from "./Minecraft/MinecraftManager.js";
-import config from "../config.json" with { type: "json" };
-import messages from "../messages.json" with { type: "json" };
-import { configUpdateMessage, updateMessage } from "./Private/Logger.js";
-import { exec } from "node:child_process";
-import { readFileSync, writeFileSync } from "node:fs";
-import type { Guild } from "hypixel-api-reborn";
+import DiscordManager from './Discord/DiscordManager.js';
+import HypixelAPIReborn from './Private/HypixelAPIReborn.js';
+import HypixelDiscordChatBridgeError from './Private/Error.js';
+import LinkedManager from './Linked/LinkedManager.js';
+import MinecraftManager from './Minecraft/MinecraftManager.js';
+import config from '../config.json' with { type: 'json' };
+import messages from '../messages.json' with { type: 'json' };
+import { configUpdateMessage, updateMessage } from './Private/Logger.js';
+import { exec } from 'node:child_process';
+import { readFileSync, writeFileSync } from 'node:fs';
+import type { Guild } from 'hypixel-api-reborn';
 
 class Application {
   readonly config: typeof config;
@@ -29,8 +29,8 @@ class Application {
     this.discord.setBridge(this.minecraft);
     this.minecraft.setBridge(this.discord);
 
-    this.exampleConfig = JSON.parse(readFileSync("config.example.json").toString());
-    this.configFile = JSON.parse(readFileSync("config.json").toString());
+    this.exampleConfig = JSON.parse(readFileSync('config.example.json').toString());
+    this.configFile = JSON.parse(readFileSync('config.json').toString());
 
     this.migrateConfig();
 
@@ -40,10 +40,10 @@ class Application {
         configUpdateMessage(`${key}: ${JSON.stringify(value)}`);
       }
 
-      if (typeof value === "object") this.checkConfig(this.configFile[key], this.exampleConfig[key]);
+      if (typeof value === 'object') this.checkConfig(this.configFile[key], this.exampleConfig[key]);
     }
 
-    writeFileSync("config.json", JSON.stringify(this.configFile, null, 2));
+    writeFileSync('config.json', JSON.stringify(this.configFile, null, 2));
   }
 
   connect() {
@@ -53,17 +53,17 @@ class Application {
 
   async stop(): Promise<void> {
     if (this.discord.isClientOnline()) await this.discord.client.destroy();
-    if (this.minecraft.isBotOnline()) this.minecraft.bot.end("Shutting Down");
+    if (this.minecraft.isBotOnline()) this.minecraft.bot.end('Shutting Down');
   }
 
   updateCode() {
     if (this.config.other.autoUpdater === false) return;
-    exec("git pull", (error, stdout, stderr) => {
+    exec('git pull', (error, stdout, stderr) => {
       if (error) return console.error(error);
 
       // console.log(`Git pull output: ${stdout}`);
 
-      if (stdout === "Already up to date.\n") return;
+      if (stdout === 'Already up to date.\n') return;
 
       updateMessage();
     });
@@ -72,16 +72,16 @@ class Application {
   migrateConfig() {
     this.configFile.verification ??= {};
     const nickname = this.configFile.verification.nickname;
-    if (typeof nickname === "string") this.configFile.verification.nickname = { nickname };
+    if (typeof nickname === 'string') this.configFile.verification.nickname = { nickname };
 
     const REQUIREMENT_MAP = {
-      bedwarsStar: "bedwarsStars",
-      bedwarsFinalKDRatio: "bedwarsFKDR",
-      skywarsStar: "skywarsStars",
-      skywarsKDRatio: "skywarsKDR",
-      duelsWins: "duelsWins",
-      duelsWLRatio: "duelsWLR",
-      skyblockLevel: "skyblockLevel"
+      bedwarsStar: 'bedwarsStars',
+      bedwarsFinalKDRatio: 'bedwarsFKDR',
+      skywarsStar: 'skywarsStars',
+      skywarsKDRatio: 'skywarsKDR',
+      duelsWins: 'duelsWins',
+      duelsWLRatio: 'duelsWLR',
+      skyblockLevel: 'skyblockLevel'
     };
 
     this.configFile.minecraft ??= {};
@@ -98,22 +98,22 @@ class Application {
 
   checkConfig(object: Record<string, any>, exampleObject: Record<string, any>) {
     for (const [key, value] of Object.entries(exampleObject)) {
-      if (key === "messageFormat" && object[key] && object[key].length <= 2) object[key] = value;
+      if (key === 'messageFormat' && object[key] && object[key].length <= 2) object[key] = value;
 
       if (object[key] === undefined) {
         object[key] = value;
         configUpdateMessage(`${key}: ${JSON.stringify(value)}`);
       }
 
-      if (typeof value === "object") this.checkConfig(object[key], exampleObject[key]);
+      if (typeof value === 'object') this.checkConfig(object[key], exampleObject[key]);
     }
   }
 
   async getBotGuild(): Promise<Guild> {
     if (!this.minecraft.isBotOnline()) throw new HypixelDiscordChatBridgeError(this.messages.minecraftBotOffline);
-    return await HypixelAPIReborn.getGuild("player", this.minecraft.bot.username).then((guild) => {
-      if (guild === null) throw new HypixelDiscordChatBridgeError("In game Hypixel Guild not found.");
-      if (guild.isRaw()) throw new HypixelDiscordChatBridgeError("In game Hypixel Guild not found.");
+    return await HypixelAPIReborn.getGuild('player', this.minecraft.bot.username).then((guild) => {
+      if (guild === null) throw new HypixelDiscordChatBridgeError('In game Hypixel Guild not found.');
+      if (guild.isRaw()) throw new HypixelDiscordChatBridgeError('In game Hypixel Guild not found.');
       return guild;
     });
   }

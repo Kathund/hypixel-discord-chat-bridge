@@ -1,24 +1,24 @@
 export function TitleCase(string: string): string {
-  if (!string) return "";
+  if (!string) return '';
   return string
     .toLowerCase()
-    .replaceAll("_", " ")
-    .split(" ")
+    .replaceAll('_', ' ')
+    .split(' ')
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
+    .join(' ');
 }
 
 export function TitleCaseCamel(str: string): string {
-  if (!str || typeof str !== "string") return "";
+  if (!str || typeof str !== 'string') return '';
 
-  const withUnderscores = str.replace(/([a-z])([A-Z])/g, "$1_$2");
+  const withUnderscores = str.replace(/([a-z])([A-Z])/g, '$1_$2');
 
   return TitleCase(withUnderscores);
 }
 
 export function CleanMessageForDiscord(string: string): string {
-  if (!string) return "";
-  return string.replaceAll("_", "\\_").replaceAll("*", "\\*").replaceAll("~", "\\~").replaceAll(">", "\\>").replaceAll("`", "\\`").replaceAll("|", "\\|");
+  if (!string) return '';
+  return string.replaceAll('_', '\\_').replaceAll('*', '\\*').replaceAll('~', '\\~').replaceAll('>', '\\>').replaceAll('`', '\\`').replaceAll('|', '\\|');
 }
 
 export function ReplaceVariables(template: string, variables: Record<string, any>): string {
@@ -36,15 +36,15 @@ export function SplitMessage(message: string, amount: number): string[] {
 
 export function FormatUsername(username: string, gamemode: string | null): string {
   if (!gamemode) return username;
-  if (gamemode === "ironman") return `♲ ${username}`;
-  if (gamemode === "bingo") return `Ⓑ ${username}`;
-  if (gamemode === "island") return `☀ ${username}`;
+  if (gamemode === 'ironman') return `♲ ${username}`;
+  if (gamemode === 'bingo') return `Ⓑ ${username}`;
+  if (gamemode === 'island') return `☀ ${username}`;
 
   return username;
 }
 
 export function FormatNumber(number: number, decimals: number = 2): string {
-  if (number === undefined || number === 0) return "0";
+  if (number === undefined || number === 0) return '0';
 
   const isNegative = number < 0;
 
@@ -52,11 +52,11 @@ export function FormatNumber(number: number, decimals: number = 2): string {
     return Number(number).toLocaleString();
   }
 
-  const abbrev = ["", "K", "M", "B", "T", "Qa", "Qi", "S", "O", "N", "D"];
+  const abbrev = ['', 'K', 'M', 'B', 'T', 'Qa', 'Qi', 'S', 'O', 'N', 'D'];
   const unformattedNumber = Math.abs(number);
 
   const abbrevIndex = Math.floor(Math.log10(unformattedNumber) / 3);
   const shortNumber = (unformattedNumber / Math.pow(10, abbrevIndex * 3)).toFixed(decimals);
 
-  return `${isNegative ? "-" : ""}${shortNumber}${abbrev[abbrevIndex]}`;
+  return `${isNegative ? '-' : ''}${shortNumber}${abbrev[abbrevIndex]}`;
 }

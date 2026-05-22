@@ -1,9 +1,9 @@
-import { Client, Collection, Guild } from "discord.js";
-import type Command from "../Discord/Private/Commands/Command.js";
-import type DiscordManager from "../Discord/DiscordManager.js";
-import type { MinecraftManagerWithBot } from "./Minecraft.js";
+import { Client, Collection, Guild } from 'discord.js';
+import type Command from '../Discord/Private/Commands/Command.js';
+import type DiscordManager from '../Discord/DiscordManager.js';
+import type { MinecraftManagerWithBot } from './Minecraft.js';
 
-declare module "discord.js" {
+declare module 'discord.js' {
   export interface Client {
     commands: Collection<string, Command>;
   }
@@ -28,7 +28,7 @@ export enum ButtonResponse {
   Update
 }
 
-export type ChannelNames = "Guild" | "Officer" | "Logger" | "Debug";
+export type ChannelNames = 'Guild' | 'Officer' | 'Logger' | 'Debug';
 export type DiscordManagerWithClient = DiscordManager & { client: Client };
 export type DiscordManagerWithGuild = DiscordManagerWithClient & { guild: Guild };
 export type DiscordManagerWithBot = DiscordManagerWithClient & { Application: { minecraft: MinecraftManagerWithBot } };

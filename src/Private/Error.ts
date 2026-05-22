@@ -1,7 +1,7 @@
 class HypixelDiscordChatBridgeError extends Error {
   constructor(message: string) {
     super(message);
-    this.name = "HypixelDiscordChatBridgeError";
+    this.name = 'HypixelDiscordChatBridgeError';
   }
 
   override toString() {

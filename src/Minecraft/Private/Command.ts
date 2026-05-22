@@ -1,12 +1,12 @@
-import { Delay, GenerateId } from "../../Utils/MiscUtils.js";
-import { SplitMessage } from "../../Utils/StringUtils.js";
-import type CommandData from "./CommandData.js";
-import type { ChatMessage } from "prismarine-chat";
-import type { MinecraftManagerWithBot } from "../../Types/Minecraft.js";
+import { Delay, GenerateId } from '../../Utils/MiscUtils.js';
+import { SplitMessage } from '../../Utils/StringUtils.js';
+import type CommandData from './CommandData.js';
+import type { ChatMessage } from 'prismarine-chat';
+import type { MinecraftManagerWithBot } from '../../Types/Minecraft.js';
 
 enum SendErrorType {
-  RATE_LIMITED = "rate-limited",
-  DUPLICATE_MESSAGE = "duplicate-message"
+  RATE_LIMITED = 'rate-limited',
+  DUPLICATE_MESSAGE = 'duplicate-message'
 }
 
 class SendError extends Error {
@@ -33,7 +33,7 @@ class Command<T extends MinecraftManagerWithBot = MinecraftManagerWithBot> {
   }
 
   getArgs(message: string): string[] {
-    const args = message.split(" ");
+    const args = message.split(' ');
     args.shift();
     return args;
   }
@@ -48,7 +48,7 @@ class Command<T extends MinecraftManagerWithBot = MinecraftManagerWithBot> {
       const messages = SplitMessage(message, this.MAX_MESSAGE_LENGTH);
 
       for (const part of messages) {
-        if (hasTimedOut()) return console.error("Message sending timed out after 10 seconds");
+        if (hasTimedOut()) return console.error('Message sending timed out after 10 seconds');
         await Delay(1000);
         await this.send(part, maxRetries, isErrorMessage);
       }
@@ -61,9 +61,9 @@ class Command<T extends MinecraftManagerWithBot = MinecraftManagerWithBot> {
         await this.sendMessage(message);
         return;
       } catch (error) {
-        if (hasTimedOut()) return console.error("Message sending timed out after 10 seconds");
+        if (hasTimedOut()) return console.error('Message sending timed out after 10 seconds');
 
-        if (!(error instanceof SendError)) return console.error("Unexpected send error:", error);
+        if (!(error instanceof SendError)) return console.error('Unexpected send error:', error);
 
         switch (error.type) {
           case SendErrorType.RATE_LIMITED: {
@@ -98,24 +98,24 @@ class Command<T extends MinecraftManagerWithBot = MinecraftManagerWithBot> {
       const listener = (rawMessage: ChatMessage) => {
         const message = rawMessage.toString();
 
-        if (message.includes("You are sending commands too fast!") && !message.includes(":")) {
+        if (message.includes('You are sending commands too fast!') && !message.includes(':')) {
           // eslint-disable-next-line no-use-before-define
           cleanup();
           reject(new SendError(SendErrorType.RATE_LIMITED));
           return;
         }
 
-        if (message.includes("You cannot say the same message twice!") && !message.includes(":")) {
+        if (message.includes('You cannot say the same message twice!') && !message.includes(':')) {
           // eslint-disable-next-line no-use-before-define
           cleanup();
           reject(new SendError(SendErrorType.DUPLICATE_MESSAGE));
         }
       };
 
-      const cleanup = () => this.minecraft.bot.removeListener("message", listener);
+      const cleanup = () => this.minecraft.bot.removeListener('message', listener);
 
-      this.minecraft.bot.once("message", listener);
-      this.minecraft.bot.chat(`/${this.officer ? "oc" : "gc"} ${message}`);
+      this.minecraft.bot.once('message', listener);
+      this.minecraft.bot.chat(`/${this.officer ? 'oc' : 'gc'} ${message}`);
 
       setTimeout(() => {
         cleanup();
@@ -125,7 +125,7 @@ class Command<T extends MinecraftManagerWithBot = MinecraftManagerWithBot> {
   }
 
   execute(username: string, message: string): Promise<void> | void {
-    throw new Error("Execute Method not implemented!");
+    throw new Error('Execute Method not implemented!');
   }
 }
 

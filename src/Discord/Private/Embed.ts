@@ -1,6 +1,6 @@
-import { CommonDevs } from "../../Private/Constants.js";
-import { EmbedBuilder } from "discord.js";
-import type { CommonDev } from "../../Types/Misc.js";
+import { CommonDevs } from '../../Private/Constants.js';
+import { EmbedBuilder } from 'discord.js';
+import type { CommonDev } from '../../Types/Misc.js';
 
 export class BasicEmbed extends EmbedBuilder {
   constructor() {
@@ -21,7 +21,7 @@ export default class Embed extends BasicEmbed {
     super();
     this.setTimestamp();
     this.setColor(3447003);
-    this.setDevFooter("DuckySoLucky");
+    this.setDevFooter('DuckySoLucky');
   }
 }
 
@@ -30,7 +30,7 @@ export class ErrorEmbed extends Embed {
     super();
     this.setColor(15548997);
     this.setDescription(description);
-    this.setAuthor({ name: "An Error has occurred" });
+    this.setAuthor({ name: 'An Error has occurred' });
   }
 }
 
@@ -39,6 +39,6 @@ export class SuccessEmbed extends Embed {
     super();
     this.setColor(5763719);
     this.setDescription(description);
-    this.setAuthor({ name: "Success" });
+    this.setAuthor({ name: 'Success' });
   }
 }

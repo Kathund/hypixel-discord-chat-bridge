@@ -1,20 +1,20 @@
-import Command from "../Private/Command.js";
-import CommandData from "../Private/CommandData.js";
-import CommandDataOption from "../Private/CommandDataOption.js";
-import HypixelDiscordChatBridgeError from "../../Private/Error.js";
-import { FormatNumber, ReplaceVariables } from "../../Utils/StringUtils.js";
-import { getSelectedProfile } from "../../Utils/HypixelUtils.js";
-import type { MinecraftManagerWithBot } from "../../Types/Minecraft.js";
-import type { Rarity, SkyBlockInventoryItem } from "hypixel-api-reborn";
+import Command from '../Private/Command.js';
+import CommandData from '../Private/CommandData.js';
+import CommandDataOption from '../Private/CommandDataOption.js';
+import HypixelDiscordChatBridgeError from '../../Private/Error.js';
+import { FormatNumber, ReplaceVariables } from '../../Utils/StringUtils.js';
+import { getSelectedProfile } from '../../Utils/HypixelUtils.js';
+import type { MinecraftManagerWithBot } from '../../Types/Minecraft.js';
+import type { Rarity, SkyBlockInventoryItem } from 'hypixel-api-reborn';
 
 class AccessoriesCommand extends Command {
   constructor(minecraft: MinecraftManagerWithBot) {
     super(minecraft);
     this.data = new CommandData()
-      .setName("accessories")
-      .setDescription("Accessories of specified user.")
-      .setAliases(["acc", "talismans", "talisman", "mp", "magicpower"])
-      .setOptions([new CommandDataOption().setName("username").setDescription("Minecraft Username")]);
+      .setName('accessories')
+      .setDescription('Accessories of specified user.')
+      .setAliases(['acc', 'talismans', 'talisman', 'mp', 'magicpower'])
+      .setOptions([new CommandDataOption().setName('username').setDescription('Minecraft Username')]);
   }
 
   private getAccessories(accessories: SkyBlockInventoryItem[]) {

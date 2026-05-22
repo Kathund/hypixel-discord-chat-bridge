@@ -1,23 +1,23 @@
-import HypixelDiscordChatBridgeError from "../Private/Error.js";
-import LinkedUser from "./Private/LinkedUser.js";
-import MowojangAPI from "../Private/MowojangAPI.js";
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { getNetWorth, getPlayer, getSelectedProfile } from "../Utils/HypixelUtils.js";
-import type Application from "../Application.js";
-import type { Guild, Player, SkyBlockMember, SkyblockProfileWithMe } from "hypixel-api-reborn";
-import type { LinkedData } from "../Types/Linked.js";
+import HypixelDiscordChatBridgeError from '../Private/Error.js';
+import LinkedUser from './Private/LinkedUser.js';
+import MowojangAPI from '../Private/MowojangAPI.js';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { getNetWorth, getPlayer, getSelectedProfile } from '../Utils/HypixelUtils.js';
+import type Application from '../Application.js';
+import type { Guild, Player, SkyBlockMember, SkyblockProfileWithMe } from 'hypixel-api-reborn';
+import type { LinkedData } from '../Types/Linked.js';
 
 class LinkedManager {
   constructor(readonly Application: Application) {
-    if (!existsSync("./data/")) mkdirSync("./data/", { recursive: true });
-    if (!existsSync("./data/linked.json")) writeFileSync("./data/linked.json", JSON.stringify({}));
+    if (!existsSync('./data/')) mkdirSync('./data/', { recursive: true });
+    if (!existsSync('./data/linked.json')) writeFileSync('./data/linked.json', JSON.stringify({}));
   }
 
   getLinkedFile(): LinkedData {
-    const linkedData = readFileSync("data/linked.json");
-    if (!linkedData) throw new HypixelDiscordChatBridgeError("The linked data file does not exist. Please contact an administrator.");
+    const linkedData = readFileSync('data/linked.json');
+    if (!linkedData) throw new HypixelDiscordChatBridgeError('The linked data file does not exist. Please contact an administrator.');
     const linked = JSON.parse(linkedData.toString());
-    if (!linked) throw new HypixelDiscordChatBridgeError("The linked data file is malformed. Please contact an administrator.");
+    if (!linked) throw new HypixelDiscordChatBridgeError('The linked data file is malformed. Please contact an administrator.');
     return linked;
   }
 
@@ -39,7 +39,7 @@ class LinkedManager {
   }
 
   writeLinkedUsers(data: LinkedData): LinkedUser[] {
-    writeFileSync("./data/linked.json", JSON.stringify(data, null, 2));
+    writeFileSync('./data/linked.json', JSON.stringify(data, null, 2));
     return this.parseLinkedData(data);
   }
 
@@ -82,9 +82,9 @@ class LinkedManager {
     if (!skyblock) fetches.push(getSelectedProfile(uuid).then((s) => (skyblock = s.profile)));
 
     await Promise.all(fetches);
-    if (!hypixelGuild) throw new HypixelDiscordChatBridgeError("In game Hypixel Guild not found.");
-    if (!player) throw new HypixelDiscordChatBridgeError("Failed to fetch Player data");
-    if (!skyblock) throw new HypixelDiscordChatBridgeError("Failed to fetch SkyBlock data");
+    if (!hypixelGuild) throw new HypixelDiscordChatBridgeError('In game Hypixel Guild not found.');
+    if (!player) throw new HypixelDiscordChatBridgeError('Failed to fetch Player data');
+    if (!skyblock) throw new HypixelDiscordChatBridgeError('Failed to fetch SkyBlock data');
 
     const networth = await getNetWorth(skyblock);
     const profile: SkyBlockMember = skyblock.me;
@@ -95,7 +95,7 @@ class LinkedManager {
       level: player.level.level,
       karma: player.karma,
       achievementPoints: player.achievements.points,
-      guildRank: guildMember?.rank ?? "",
+      guildRank: guildMember?.rank ?? '',
       guildName: hypixelGuild.name,
 
       bedwarsStar: player.stats.BedWars.level,
@@ -197,7 +197,7 @@ class LinkedManager {
       skywarsWLRatio: player.stats.SkyWars.WLRatio,
       skywarsPlayedGames: player.stats.SkyWars.gamesPlayed,
 
-      duelsDivision: player.stats.Duels.title ?? "",
+      duelsDivision: player.stats.Duels.title ?? '',
       duelsKills: player.stats.Duels.kills,
       duelsDeaths: player.stats.Duels.deaths,
       duelsKDRatio: player.stats.Duels.KDR,
@@ -336,7 +336,7 @@ class LinkedManager {
       skyblockJacobPerksDoubleDrops: profile.jacobContests.perks?.doubleDrops,
 
       skyblockJacobPersonalBestNetherWart: profile.jacobContests.personalBests.NETHER_STALK ?? 0,
-      skyblockJacobPersonalBestCocoBeans: profile.jacobContests.personalBests["INK_SACK:3"] ?? 0,
+      skyblockJacobPersonalBestCocoBeans: profile.jacobContests.personalBests['INK_SACK:3'] ?? 0,
       skyblockJacobPersonalBestMushroom: profile.jacobContests.personalBests?.MUSHROOM_COLLECTION ?? 0,
       skyblockJacobPersonalBestWheat: profile.jacobContests.personalBests?.WHEAT ?? 0,
       skyblockJacobPersonalBestPotato: profile.jacobContests.personalBests?.POTATO_ITEM ?? 0,

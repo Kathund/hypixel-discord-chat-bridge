@@ -1,18 +1,18 @@
-import Command from "../Private/Command.js";
-import CommandData from "../Private/CommandData.js";
-import CommandDataOption from "../Private/CommandDataOption.js";
-import { FormatNumber } from "../../Utils/StringUtils.js";
-import { getPlayer } from "../../Utils/HypixelUtils.js";
-import type { MinecraftManagerWithBot } from "../../Types/Minecraft.js";
+import Command from '../Private/Command.js';
+import CommandData from '../Private/CommandData.js';
+import CommandDataOption from '../Private/CommandDataOption.js';
+import { FormatNumber } from '../../Utils/StringUtils.js';
+import { getPlayer } from '../../Utils/HypixelUtils.js';
+import type { MinecraftManagerWithBot } from '../../Types/Minecraft.js';
 
 class DuelsCommand extends Command {
   constructor(minecraft: MinecraftManagerWithBot) {
     super(minecraft);
     this.data = new CommandData()
-      .setName("duels")
-      .setDescription("Duel stats of specified user.")
-      .setAliases(["d"])
-      .setOptions([new CommandDataOption().setName("username").setDescription("Minecraft Username")]);
+      .setName('duels')
+      .setDescription('Duel stats of specified user.')
+      .setAliases(['d'])
+      .setOptions([new CommandDataOption().setName('username').setDescription('Minecraft Username')]);
   }
 
   override async execute(player: string, message: string) {

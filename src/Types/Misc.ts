@@ -1,7 +1,7 @@
-import type Application from "../Application.js";
-import type { ChalkInstance } from "chalk";
-import type { DiscordManagerWithClient } from "./Discord.js";
-import type { MinecraftManagerWithBot } from "./Minecraft.js";
+import type Application from '../Application.js';
+import type { ChalkInstance } from 'chalk';
+import type { DiscordManagerWithClient } from './Discord.js';
+import type { MinecraftManagerWithBot } from './Minecraft.js';
 
 declare global {
   export interface Console {
@@ -41,7 +41,7 @@ export type ApplicationWithClient = Application & { discord: DiscordManagerWithC
 export type ApplicationWithBot = Application & { minecraft: MinecraftManagerWithBot };
 export type ApplicationWithClientBot = Application & { discord: DiscordManagerWithClient; minecraft: MinecraftManagerWithBot };
 
-export type CommonDev = "DuckySoLucky" | "Kathund";
+export type CommonDev = 'DuckySoLucky' | 'Kathund';
 export interface CommonDevData {
   username: string;
   iconURL?: string;

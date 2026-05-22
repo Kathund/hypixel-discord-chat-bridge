@@ -1,9 +1,9 @@
-import Command from "../Private/Command.js";
-import CommandData from "../Private/CommandData.js";
-import CommandDataOption from "../Private/CommandDataOption.js";
-import HypixelDiscordChatBridgeError from "../../Private/Error.js";
-import { Delay } from "../../Utils/MiscUtils.js";
-import type { MinecraftManagerWithBot } from "../../Types/Minecraft.js";
+import Command from '../Private/Command.js';
+import CommandData from '../Private/CommandData.js';
+import CommandDataOption from '../Private/CommandDataOption.js';
+import HypixelDiscordChatBridgeError from '../../Private/Error.js';
+import { Delay } from '../../Utils/MiscUtils.js';
+import type { MinecraftManagerWithBot } from '../../Types/Minecraft.js';
 
 // CREDITS: by @Zickles (https://github.com/Zickles)
 class BoopCommand extends Command {
@@ -11,10 +11,10 @@ class BoopCommand extends Command {
   constructor(minecraft: MinecraftManagerWithBot) {
     super(minecraft);
     this.data = new CommandData()
-      .setName("boop")
-      .setDescription("Boop someone!")
-      .setAliases(["bp"])
-      .setOptions([new CommandDataOption().setName("username").setRequired(true)]);
+      .setName('boop')
+      .setDescription('Boop someone!')
+      .setAliases(['bp'])
+      .setOptions([new CommandDataOption().setName('username').setRequired(true)]);
 
     this.isOnCooldown = false;
   }

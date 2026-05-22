@@ -1,7 +1,7 @@
-import { type AutocompleteInteraction, type ChatInputCommandInteraction } from "discord.js";
-import { CommandFlags, CommandResponse, type DiscordManagerWithClient } from "../../../Types/Discord.js";
-import type CommandData from "./CommandData.js";
-import type DiscordManager from "../../DiscordManager.js";
+import { type AutocompleteInteraction, type ChatInputCommandInteraction } from 'discord.js';
+import { CommandFlags, CommandResponse, type DiscordManagerWithClient } from '../../../Types/Discord.js';
+import type CommandData from './CommandData.js';
+import type DiscordManager from '../../DiscordManager.js';
 
 class Command<T extends DiscordManager = DiscordManagerWithClient> {
   data!: CommandData;
@@ -13,11 +13,11 @@ class Command<T extends DiscordManager = DiscordManagerWithClient> {
   }
 
   execute(interaction: ChatInputCommandInteraction): Promise<void> | void {
-    throw new Error("Execute Method not implemented!");
+    throw new Error('Execute Method not implemented!');
   }
 
   autocomplete(interaction: AutocompleteInteraction): Promise<void> | void {
-    throw new Error("Auto Complete Method not implemented!");
+    throw new Error('Auto Complete Method not implemented!');
   }
 }
 

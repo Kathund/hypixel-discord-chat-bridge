@@ -1,8 +1,8 @@
-import axios from "axios";
-import { Collection } from "discord.js";
-import { readdirSync } from "node:fs";
-import type Command from "../Private/Command.js";
-import type MinecraftManager from "../MinecraftManager.js";
+import axios from 'axios';
+import { Collection } from 'discord.js';
+import { readdirSync } from 'node:fs';
+import type Command from '../Private/Command.js';
+import type MinecraftManager from '../MinecraftManager.js';
 
 class CommandHandler {
   private readonly commands: Collection<string, Command> = new Collection<string, Command>();
@@ -10,26 +10,26 @@ class CommandHandler {
 
   handle(player: string, message: string, officer: boolean) {
     if (!this.minecraft.isBotOnline()) return;
-    if (!message.startsWith(this.minecraft.Application.config.minecraft.bot.prefix) && !message.startsWith("-")) return;
+    if (!message.startsWith(this.minecraft.Application.config.minecraft.bot.prefix) && !message.startsWith('-')) return;
 
     if (message.startsWith(this.minecraft.Application.config.minecraft.bot.prefix)) {
       if (this.minecraft.Application.config.minecraft.commands.normal === false) return;
       const args = message.slice(this.minecraft.Application.config.minecraft.bot.prefix.length).trim().split(/ +/);
       if (!args) return;
-      const commandName = args.shift() ?? "".toLowerCase();
+      const commandName = args.shift() ?? ''.toLowerCase();
       const command = this.commands.get(commandName) ?? this.commands.find((cmd) => cmd.data.getAliases() && cmd.data.getAliases().includes(commandName));
       if (command === undefined) return;
       console.minecraft(`${player} - [${command.data.getName()}] ${message}`);
       command.officer = officer;
       command.execute(player, message);
-    } else if (message.startsWith("-") && message.startsWith("- ") === false) {
-      if (this.minecraft.Application.config.minecraft.commands.soopy === false || message.at(1) === "-") return;
+    } else if (message.startsWith('-') && message.startsWith('- ') === false) {
+      if (this.minecraft.Application.config.minecraft.commands.soopy === false || message.at(1) === '-') return;
 
-      const command = message.slice(1).split(" ")[0];
+      const command = message.slice(1).split(' ')[0];
       if (!command) return;
-      if (isNaN(parseInt(command.replace(/[^-()\d/*+.]/g, ""))) === false) return;
+      if (isNaN(parseInt(command.replace(/[^-()\d/*+.]/g, ''))) === false) return;
 
-      const chat = officer ? "oc" : "gc";
+      const chat = officer ? 'oc' : 'gc';
 
       this.minecraft.bot.chat(`/${chat} [SOOPY V2] ${message}`);
 
@@ -47,7 +47,7 @@ class CommandHandler {
           this.minecraft.bot.chat(`/${chat} [SOOPY V2] ${response.data.msg}`);
         } catch (error) {
           if (!(error instanceof Error)) return;
-          this.minecraft.bot.chat(`/${chat} [SOOPY V2] ${error.cause ?? error.message ?? "Unknown error"}`);
+          this.minecraft.bot.chat(`/${chat} [SOOPY V2] ${error.cause ?? error.message ?? 'Unknown error'}`);
         }
       })();
     }
@@ -56,7 +56,7 @@ class CommandHandler {
   async deployCommands(): Promise<void> {
     this.commands.clear();
 
-    const commandFiles = readdirSync("./src/Minecraft/Commands/", { recursive: true, encoding: "utf-8" }).filter((file) => file.endsWith(".ts"));
+    const commandFiles = readdirSync('./src/Minecraft/Commands/', { recursive: true, encoding: 'utf-8' }).filter((file) => file.endsWith('.ts'));
     for (const file of commandFiles) {
       const command: Command = new (await import(`../Commands/${file}`)).default(this.minecraft);
       if (!command.data.getName()) continue;

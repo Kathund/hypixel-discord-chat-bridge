@@ -1,18 +1,18 @@
-import CommandHandler from "./Handlers/CommandHandler.js";
-import CommunicationBridge from "../Private/CommunicationBridge.js";
-import DiscordUtils from "./Private/DiscordUtils.js";
-import Embed, { BasicEmbed, ErrorEmbed } from "./Private/Embed.js";
-import HypixelDiscordChatBridgeError from "../Private/Error.js";
-import InteractionHandler from "./Handlers/InteractionHandler.js";
-import MessageHandler from "./Handlers/MessageHandler.js";
-import MessageToImage from "../Utils/MessageToImage.js";
-import StateHandler from "./Handlers/StateHandler.js";
-import { AttachmentBuilder, ChannelType, Client, Events, GatewayIntentBits, Guild, Webhook } from "discord.js";
-import { HexToDecimal } from "../Utils/MiscUtils.js";
-import { ReplaceVariables } from "../Utils/StringUtils.js";
-import type Application from "../Application.js";
-import type { BroadcastEvent } from "../Types/Bridge.js";
-import type { ChannelNames, DiscordManagerWithClient, DiscordManagerWithGuild } from "../Types/Discord.js";
+import CommandHandler from './Handlers/CommandHandler.js';
+import CommunicationBridge from '../Private/CommunicationBridge.js';
+import DiscordUtils from './Private/DiscordUtils.js';
+import Embed, { BasicEmbed, ErrorEmbed } from './Private/Embed.js';
+import HypixelDiscordChatBridgeError from '../Private/Error.js';
+import InteractionHandler from './Handlers/InteractionHandler.js';
+import MessageHandler from './Handlers/MessageHandler.js';
+import MessageToImage from '../Utils/MessageToImage.js';
+import StateHandler from './Handlers/StateHandler.js';
+import { AttachmentBuilder, ChannelType, Client, Events, GatewayIntentBits, Guild, Webhook } from 'discord.js';
+import { HexToDecimal } from '../Utils/MiscUtils.js';
+import { ReplaceVariables } from '../Utils/StringUtils.js';
+import type Application from '../Application.js';
+import type { BroadcastEvent } from '../Types/Bridge.js';
+import type { ChannelNames, DiscordManagerWithClient, DiscordManagerWithGuild } from '../Types/Discord.js';
 
 class DiscordManager extends CommunicationBridge {
   readonly commandHandler: CommandHandler;
@@ -39,9 +39,9 @@ class DiscordManager extends CommunicationBridge {
     this.client.on(Events.InteractionCreate, (interaction) => this.interactionHandler.onInteraction(interaction));
     this.client.login(this.Application.config.discord.bot.token).catch((e) => console.error(e));
 
-    process.on("SIGINT", async () => {
+    process.on('SIGINT', async () => {
       await this.stateHandler.onClose();
-      process.kill(process.pid, "SIGTERM");
+      process.kill(process.pid, 'SIGTERM');
     });
   }
 
@@ -52,19 +52,19 @@ class DiscordManager extends CommunicationBridge {
       const webhooks = await channel.fetchWebhooks();
 
       if (webhooks.size === 0) {
-        await channel.createWebhook({ name: "Hypixel Chat Bridge", avatar: "https://imgur.com/tgwQJTX.png" });
+        await channel.createWebhook({ name: 'Hypixel Chat Bridge', avatar: 'https://imgur.com/tgwQJTX.png' });
         return await this.getWebhook(type);
       }
 
       const hook = webhooks.first();
       if (hook === undefined) {
-        throw new HypixelDiscordChatBridgeError("An error occurred while trying to fetch the webhooks. Please make sure the bot has the `MANAGE_WEBHOOKS` permission.");
+        throw new HypixelDiscordChatBridgeError('An error occurred while trying to fetch the webhooks. Please make sure the bot has the `MANAGE_WEBHOOKS` permission.');
       }
       return hook;
     } catch (error) {
       console.error(error);
       channel.send({
-        embeds: [new ErrorEmbed().setDescription("An error occurred while trying to fetch the webhooks. Please make sure the bot has the `MANAGE_WEBHOOKS` permission.")]
+        embeds: [new ErrorEmbed().setDescription('An error occurred while trying to fetch the webhooks. Please make sure the bot has the `MANAGE_WEBHOOKS` permission.')]
       });
       return null;
     }
@@ -74,25 +74,25 @@ class DiscordManager extends CommunicationBridge {
     let { fullMessage, chatType, username, rank, guildRank, message, color = 1752220 } = event;
 
     const mode =
-      chatType === "Debug"
+      chatType === 'Debug'
         ? this.Application.config.discord.channels.debugChannelMessageMode.toLowerCase()
         : this.Application.config.discord.other.messageMode.toLowerCase();
-    message = ["text"].includes(mode) ? fullMessage : message;
+    message = ['text'].includes(mode) ? fullMessage : message;
 
     if (fullMessage === undefined || chatType === undefined || username === undefined || rank === undefined || guildRank === undefined || message === undefined) {
       return;
     }
 
-    if (message !== undefined && chatType !== "Debug") {
-      console.broadcast(`${username} [${guildRank.replace(/§[0-9a-fk-or]/g, "").replace(/^\[|\]$/g, "")}]: ${message}`, "Discord");
+    if (message !== undefined && chatType !== 'Debug') {
+      console.broadcast(`${username} [${guildRank.replace(/§[0-9a-fk-or]/g, '').replace(/^\[|\]$/g, '')}]: ${message}`, 'Discord');
     }
 
-    if (mode === "minecraft") message = ReplaceVariables(this.Application.config.discord.other.messageFormat, { chatType, username, rank, guildRank, message });
+    if (mode === 'minecraft') message = ReplaceVariables(this.Application.config.discord.other.messageFormat, { chatType, username, rank, guildRank, message });
     const channel = await this.stateHandler.getChannel(chatType);
-    if (channel === null || !channel.isSendable()) return console.error(`Channel "${chatType.replace(/§[0-9a-fk-or]/g, "").trim()}" not found!`);
+    if (channel === null || !channel.isSendable()) return console.error(`Channel "${chatType.replace(/§[0-9a-fk-or]/g, '').trim()}" not found!`);
 
     switch (mode) {
-      case "bot": {
+      case 'bot': {
         await channel.send({
           embeds: [
             new Embed()
@@ -103,14 +103,14 @@ class DiscordManager extends CommunicationBridge {
           ]
         });
 
-        if (message.includes("https://")) {
+        if (message.includes('https://')) {
           const links = message.match(/https?:\/\/[^\s]+/g);
-          if (links) channel.send(links.join("\n"));
+          if (links) channel.send(links.join('\n'));
         }
 
         break;
       }
-      case "webhook": {
+      case 'webhook': {
         message = this.cleanMessage(message);
         if (message.length === 0) return;
         const webhook = await this.getWebhook(chatType);
@@ -118,22 +118,22 @@ class DiscordManager extends CommunicationBridge {
         webhook.send({ content: message, username: username, avatarURL: `https://www.mc-heads.net/avatar/${username}` });
         break;
       }
-      case "minecraft": {
+      case 'minecraft': {
         if (fullMessage.length === 0) return;
         await channel.send({ files: [new AttachmentBuilder(await MessageToImage(message, username), { name: `${username}.png` })] });
-        if (message.includes("https://")) {
+        if (message.includes('https://')) {
           const links = message.match(/https?:\/\/[^\s]+/g);
-          if (links) channel.send(links.join("\n"));
+          if (links) channel.send(links.join('\n'));
         }
         break;
       }
-      case "text": {
+      case 'text': {
         if (message.trim().length === 0) return;
         await channel.send({ content: message });
         break;
       }
       default: {
-        throw new Error("Invalid message mode: must be bot, webhook or minecraft");
+        throw new Error('Invalid message mode: must be bot, webhook or minecraft');
       }
     }
   }
@@ -141,39 +141,39 @@ class DiscordManager extends CommunicationBridge {
   override async onBroadcastCleanEmbed(event: BroadcastEvent) {
     const { chatType, message, color } = event;
     if (chatType === undefined || message === undefined || color === undefined) return;
-    console.broadcast(message, "Event");
+    console.broadcast(message, 'Event');
 
     const channel = await this.stateHandler.getChannel(chatType);
-    if (channel === null || !channel.isSendable()) return console.error(`Channel "${chatType.replace(/§[0-9a-fk-or]/g, "").trim()}" not found!`);
+    if (channel === null || !channel.isSendable()) return console.error(`Channel "${chatType.replace(/§[0-9a-fk-or]/g, '').trim()}" not found!`);
     channel.send({ embeds: [new BasicEmbed().setColor(color).setDescription(message)] });
     channel.send({ embeds: [{ color: color, description: message }] });
   }
 
   override async onBroadcastHeadedEmbed(event: BroadcastEvent) {
-    const { message, title = "", icon = "", color, chatType } = event;
+    const { message, title = '', icon = '', color, chatType } = event;
     if (message === undefined || color === undefined || chatType === undefined) return;
-    console.broadcast(message, "Event");
+    console.broadcast(message, 'Event');
 
     const channel = await this.stateHandler.getChannel(chatType);
-    if (channel === null || !channel.isSendable()) return console.error(`Channel "${chatType.replace(/§[0-9a-fk-or]/g, "").trim()}" not found!`);
+    if (channel === null || !channel.isSendable()) return console.error(`Channel "${chatType.replace(/§[0-9a-fk-or]/g, '').trim()}" not found!`);
     channel.send({ embeds: [new BasicEmbed().setColor(color).setDescription(message).setAuthor({ name: title, iconURL: icon })] });
   }
 
   override async onPlayerToggle(event: BroadcastEvent) {
     let { fullMessage, username, message, color, chatType } = event;
     if (fullMessage === undefined || username === undefined || message === undefined || color === undefined || chatType === undefined) return;
-    console.broadcast(message, "Event");
+    console.broadcast(message, 'Event');
     const channel = await this.stateHandler.getChannel(chatType);
-    if (channel === null || !channel.isSendable()) return console.error(`Channel "${chatType.replace(/§[0-9a-fk-or]/g, "").trim()}" not found!`);
+    if (channel === null || !channel.isSendable()) return console.error(`Channel "${chatType.replace(/§[0-9a-fk-or]/g, '').trim()}" not found!`);
 
     switch (this.Application.config.discord.other.messageMode.toLowerCase()) {
-      case "bot":
+      case 'bot':
         await channel.send({ embeds: [new Embed().setColor(color).setAuthor({ name: message, iconURL: `https://www.mc-heads.net/avatar/${username}` })] });
         break;
-      case "webhook":
+      case 'webhook':
         message = this.cleanMessage(message);
         if (message.length === 0) return;
-        const webhook = await this.getWebhook("Guild");
+        const webhook = await this.getWebhook('Guild');
         if (webhook === null) return;
         webhook.send({
           username: username,
@@ -181,22 +181,22 @@ class DiscordManager extends CommunicationBridge {
           embeds: [new BasicEmbed().setColor(color).setDescription(message)]
         });
         break;
-      case "minecraft":
+      case 'minecraft':
         await channel.send({ files: [new AttachmentBuilder(await MessageToImage(fullMessage), { name: `${username}.png` })] });
         break;
       default:
-        throw new Error("Invalid message mode: must be bot or webhook");
+        throw new Error('Invalid message mode: must be bot or webhook');
     }
   }
 
   cleanMessage(message: string) {
     return message
-      .split("\n")
+      .split('\n')
       .map((part) => {
         part = part.trim();
-        return part.length === 0 ? "" : part.replace(/@(everyone|here)/gi, "").trim() + " ";
+        return part.length === 0 ? '' : part.replace(/@(everyone|here)/gi, '').trim() + ' ';
       })
-      .join("");
+      .join('');
   }
 
   formatMessage(message: string, data: Record<string, any>) {

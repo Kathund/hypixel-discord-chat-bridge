@@ -1,8 +1,8 @@
-import HypixelDiscordChatBridgeError from "../../Private/Error.js";
-import config from "../../../config.json" with { type: "json" };
-import { AutocompleteInteraction, ButtonInteraction, ChatInputCommandInteraction, GuildMember, MessageFlags, Role, type SendableChannels, Team } from "discord.js";
-import { ErrorEmbed } from "./Embed.js";
-import type DiscordManager from "../DiscordManager.js";
+import HypixelDiscordChatBridgeError from '../../Private/Error.js';
+import config from '../../../config.json' with { type: 'json' };
+import { AutocompleteInteraction, ButtonInteraction, ChatInputCommandInteraction, GuildMember, MessageFlags, Role, type SendableChannels, Team } from 'discord.js';
+import { ErrorEmbed } from './Embed.js';
+import type DiscordManager from '../DiscordManager.js';
 
 class DiscordUtils {
   constructor(private readonly discord: DiscordManager) {}
@@ -25,7 +25,7 @@ class DiscordUtils {
   }
 
   private getErrorEmbed(error: Error | HypixelDiscordChatBridgeError): ErrorEmbed {
-    const errorStack = error instanceof Error ? (error.stack ?? error.message) : String(error ?? "Unknown");
+    const errorStack = error instanceof Error ? (error.stack ?? error.message) : String(error ?? 'Unknown');
     return new ErrorEmbed().setDescription(`\`\`\`${errorStack}\`\`\``);
   }
 
@@ -41,7 +41,7 @@ class DiscordUtils {
       if (!hasPermission) return;
 
       const owners = await this.getOwners();
-      await channel.send({ content: owners.map((id) => `<@${id}>`).join(" "), embeds: [this.getErrorEmbed(error)] });
+      await channel.send({ content: owners.map((id) => `<@${id}>`).join(' '), embeds: [this.getErrorEmbed(error)] });
     } catch (e) {
       console.error(e);
     }
@@ -60,7 +60,7 @@ class DiscordUtils {
     if (error instanceof HypixelDiscordChatBridgeError) {
       embed.setDescription(`\`\`\`${error.message}\`\`\``);
     } else {
-      embed.setDescription("This error has been reported to the owner. Please try again later.");
+      embed.setDescription('This error has been reported to the owner. Please try again later.');
     }
 
     try {

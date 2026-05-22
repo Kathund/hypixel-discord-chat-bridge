@@ -1,5 +1,5 @@
-import type { ChannelNames } from "./Discord.js";
-import type { Message, User } from "discord.js";
+import type { ChannelNames } from './Discord.js';
+import type { Message, User } from 'discord.js';
 
 export interface BroadcastEvent {
   fullMessage?: string;

@@ -1,7 +1,7 @@
-import { unemojify } from "node-emoji";
-import type DiscordManager from "../DiscordManager.js";
-import type { Attachment, GuildBasedChannel, GuildMember, Message } from "discord.js";
-import type { BroadcastEvent } from "../../Types/Bridge.js";
+import { unemojify } from 'node-emoji';
+import type DiscordManager from '../DiscordManager.js';
+import type { Attachment, GuildBasedChannel, GuildMember, Message } from 'discord.js';
+import type { BroadcastEvent } from '../../Types/Bridge.js';
 
 class MessageHandler {
   constructor(private readonly discord: DiscordManager) {}
@@ -25,7 +25,7 @@ class MessageHandler {
       const messageData: BroadcastEvent = {
         discordUser: discordUser.user,
         channelId: message.channel.id,
-        username: formattedUsername.replaceAll(" ", ""),
+        username: formattedUsername.replaceAll(' ', ''),
         message: content,
         replyingTo: await this.fetchReply(message),
         discordMessage: message
@@ -43,7 +43,7 @@ class MessageHandler {
           await new Promise((resolve) => setTimeout(resolve, 1000));
 
           if (messageParts.indexOf(part) >= 3) {
-            messageData.message = "Message too long. Truncated.";
+            messageData.message = 'Message too long. Truncated.';
             this.discord.broadcastMessage(messageData);
             return;
           }
@@ -68,19 +68,19 @@ class MessageHandler {
       const discUser = await message.guild.members.fetch(message.mentions.repliedUser.id);
       const mentionedUserName = this.getDisplayName(discUser);
 
-      if (this.discord.Application.config.discord.other.messageMode === "bot" && reference.embeds.length >= 1) {
+      if (this.discord.Application.config.discord.other.messageMode === 'bot' && reference.embeds.length >= 1) {
         const name = reference.embeds[0]?.author?.name;
         if (name === undefined) return mentionedUserName;
         return name;
       }
 
-      if (this.discord.Application.config.discord.other.messageMode === "minecraft" && reference.attachments !== null) {
+      if (this.discord.Application.config.discord.other.messageMode === 'minecraft' && reference.attachments !== null) {
         const name = reference.attachments.values()?.next()?.value?.name;
         if (name === undefined) return mentionedUserName;
-        return name.split(".")?.[0] ?? "UNKNOWN";
+        return name.split('.')?.[0] ?? 'UNKNOWN';
       }
 
-      if (this.discord.Application.config.discord.other.messageMode === "webhook") {
+      if (this.discord.Application.config.discord.other.messageMode === 'webhook') {
         if (reference.author.username === undefined) return mentionedUserName;
         return reference.author.username;
       }
@@ -93,14 +93,14 @@ class MessageHandler {
   }
 
   stripDiscordContent(message: Message): string {
-    if (!message.guild) return "";
+    if (!message.guild) return '';
     let output = message.content
-      .split("\n")
+      .split('\n')
       .map((part) => {
         part = part.trim();
-        return part.length === 0 ? "" : part.replace(/@(everyone|here)/gi, "").trim() + " ";
+        return part.length === 0 ? '' : part.replace(/@(everyone|here)/gi, '').trim() + ' ';
       })
-      .join("");
+      .join('');
 
     const hasMentions = /<@|<#|<:|<a:/.test(message.content);
     if (hasMentions) {
@@ -109,7 +109,7 @@ class MessageHandler {
 
       const replaceUserMention = (_match: string, mentionedUserId: string): string => {
         const mentionedUser = message.guild?.members.cache.get(mentionedUserId);
-        return mentionedUser ? `@${this.getDisplayName(mentionedUser)}` : "@unknown-user";
+        return mentionedUser ? `@${this.getDisplayName(mentionedUser)}` : '@unknown-user';
       };
       output = output.replace(userMentionPattern, replaceUserMention);
 
@@ -117,13 +117,13 @@ class MessageHandler {
       const channelMentionPattern = /<#(\d+)>/g;
       const replaceChannelMention = (_match: string, mentionedChannelId: string): string => {
         const mentionedChannel = message.guild?.channels.fetch(mentionedChannelId) as GuildBasedChannel | undefined;
-        return mentionedChannel?.name ? `#${mentionedChannel.name}` : "#unknown-channel";
+        return mentionedChannel?.name ? `#${mentionedChannel.name}` : '#unknown-channel';
       };
       output = output.replace(channelMentionPattern, replaceChannelMention);
 
       // Replace <:KEKW:628249422253391902> with :KEKW: || Replace <a:KEKW:628249422253391902> with :KEKW:
       const emojiMentionPattern = /<a?:(\w+):\d+>/g;
-      output = output.replace(emojiMentionPattern, ":$1:");
+      output = output.replace(emojiMentionPattern, ':$1:');
     }
 
     if (message.stickers.size > 0) {
@@ -134,19 +134,19 @@ class MessageHandler {
     if (message.attachments.size > 0) {
       const attachments: string = [...message.attachments.values()]
         .map((attachment: Attachment) => {
-          const fileName = attachment.name ?? "unknown-file";
-          const dot = fileName.lastIndexOf(".");
-          const clean = (dot !== -1 ? fileName.slice(0, dot) : fileName).replace(/\./g, "_");
+          const fileName = attachment.name ?? 'unknown-file';
+          const dot = fileName.lastIndexOf('.');
+          const clean = (dot !== -1 ? fileName.slice(0, dot) : fileName).replace(/\./g, '_');
           return `[${clean}]`;
         })
-        .join(" ");
+        .join(' ');
 
       output = output ? `${attachments} ${output}` : attachments;
     }
 
     // Replace IP Adresses with [Content Redacted]
     const IPAddressPattern = /(?:\d{1,3}\s*\s\s*){3}\d{1,3}/g;
-    output = output.replaceAll(IPAddressPattern, "[Content Redacted]");
+    output = output.replaceAll(IPAddressPattern, '[Content Redacted]');
 
     output = unemojify(output);
 

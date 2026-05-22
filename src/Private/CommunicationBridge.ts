@@ -1,4 +1,4 @@
-import type { BroadcastEvent } from "../Types/Bridge.js";
+import type { BroadcastEvent } from '../Types/Bridge.js';
 
 class CommunicationBridge {
   declare bridge: CommunicationBridge;
@@ -16,7 +16,7 @@ class CommunicationBridge {
   }
 
   onBroadcast(event: BroadcastEvent) {
-    throw new Error("Communication bridge broadcast handling is not implemented yet!");
+    throw new Error('Communication bridge broadcast handling is not implemented yet!');
   }
 
   broadcastPlayerToggle(event: BroadcastEvent) {
@@ -24,7 +24,7 @@ class CommunicationBridge {
   }
 
   onPlayerToggle(event: BroadcastEvent) {
-    throw new Error("Communication bridge broadcast handling is not implemented yet!");
+    throw new Error('Communication bridge broadcast handling is not implemented yet!');
   }
 
   broadcastCleanEmbed(event: BroadcastEvent) {
@@ -32,7 +32,7 @@ class CommunicationBridge {
   }
 
   onBroadcastCleanEmbed(event: BroadcastEvent) {
-    throw new Error("Communication bridge broadcast handling is not implemented yet!");
+    throw new Error('Communication bridge broadcast handling is not implemented yet!');
   }
 
   broadcastHeadedEmbed(event: BroadcastEvent) {
@@ -40,7 +40,7 @@ class CommunicationBridge {
   }
 
   onBroadcastHeadedEmbed(event: BroadcastEvent) {
-    throw new Error("Communication bridge broadcast handling is not implemented yet!");
+    throw new Error('Communication bridge broadcast handling is not implemented yet!');
   }
 }
 

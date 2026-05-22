@@ -1,7 +1,7 @@
-import type MinecraftManager from "../Minecraft/MinecraftManager.js";
-import type { Bot } from "mineflayer";
-import type { DiscordManagerWithBot } from "./Discord.js";
-import type { SkyBlockProfile, SkyBlockProfileName, SkyblockProfileWithMe, WithSelectedProfile } from "hypixel-api-reborn";
+import type MinecraftManager from '../Minecraft/MinecraftManager.js';
+import type { Bot } from 'mineflayer';
+import type { DiscordManagerWithBot } from './Discord.js';
+import type { SkyBlockProfile, SkyBlockProfileName, SkyblockProfileWithMe, WithSelectedProfile } from 'hypixel-api-reborn';
 
 export type MinecraftManagerWithBot = MinecraftManager & { bot: Bot };
 export type MinecraftManagerWithClient = MinecraftManagerWithBot & { Application: { discord: DiscordManagerWithBot } };
@@ -39,5 +39,5 @@ export interface SelectedProfileData {
   rawUsername: string;
   uuid: string;
   profile: SkyblockProfileWithMe;
-  profiles: WithSelectedProfile<Map<SkyBlockProfileName | "UNKNOWN", SkyBlockProfile>>;
+  profiles: WithSelectedProfile<Map<SkyBlockProfileName | 'UNKNOWN', SkyBlockProfile>>;
 }
