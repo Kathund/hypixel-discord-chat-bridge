@@ -42,30 +42,25 @@ class AccessoriesCommand extends Command {
   }
 
   override async execute(player: string, message: string) {
-    try {
-      const args = this.getArgs(message);
-      player = args[0] ?? player;
+    player = this.getArgs(message)[0] || player;
 
-      const { username, profile } = await getSelectedProfile(player);
-      if (profile.me.inventory.bags.talisman.base64 === undefined || profile.me.inventory.inventory.base64 === null) {
-        throw new HypixelDiscordChatBridgeError(`${username} has Inventory API off.`);
-      }
-
-      const decoded = await profile.me.inventory.bags.talisman.decodeData();
-      if (!decoded) throw new HypixelDiscordChatBridgeError(`${username} has no SkyBlock profiles.`);
-      const talismans = this.getAccessories(decoded.items);
-      if (!talismans) throw new HypixelDiscordChatBridgeError(ReplaceVariables("Couldn't parse {username}'s talismans", { username }));
-
-      const { recombed, amount, enriched, rarities } = talismans;
-      const { COMMON, RARE, EPIC, LEGENDARY, MYTHIC, SPECIAL } = rarities;
-      this.send(
-        `${username}'s Accessories: ${amount} (${FormatNumber(decoded.magicalPower)} MP), Recombed: ${recombed}, Enriched: ${enriched} (${COMMON}C, ${RARE}R, ${EPIC}E, ${
-          LEGENDARY
-        }L, ${MYTHIC}M, ${SPECIAL}S)`
-      );
-    } catch (error) {
-      this.send(`[ERROR] ${error}`);
+    const { username, profile } = await getSelectedProfile(player);
+    if (profile.me.inventory.bags.talisman.base64 === undefined || profile.me.inventory.inventory.base64 === null) {
+      throw new HypixelDiscordChatBridgeError(`${username} has Inventory API off.`);
     }
+
+    const decoded = await profile.me.inventory.bags.talisman.decodeData();
+    if (!decoded) throw new HypixelDiscordChatBridgeError(`${username} has no SkyBlock profiles.`);
+    const talismans = this.getAccessories(decoded.items);
+    if (!talismans) throw new HypixelDiscordChatBridgeError(ReplaceVariables("Couldn't parse {username}'s talismans", { username }));
+
+    const { recombed, amount, enriched, rarities } = talismans;
+    const { COMMON, RARE, EPIC, LEGENDARY, MYTHIC, SPECIAL } = rarities;
+    this.send(
+      `${username}'s Accessories: ${amount} (${FormatNumber(decoded.magicalPower)} MP), Recombed: ${recombed}, Enriched: ${enriched} (${COMMON}C, ${RARE}R, ${EPIC}E, ${
+        LEGENDARY
+      }L, ${MYTHIC}M, ${SPECIAL}S)`
+    );
   }
 }
 

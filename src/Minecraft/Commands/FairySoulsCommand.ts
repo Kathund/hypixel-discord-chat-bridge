@@ -15,11 +15,8 @@ class FairySoulsCommand extends Command {
   }
 
   override async execute(player: string, message: string) {
-    const args = this.getArgs(message);
-    player = args[0] || player;
-
+    player = this.getArgs(message)[0] || player;
     const { username, profile } = await getSelectedProfile(player);
-
     const { collected } = profile.me.fairySouls;
     const total = profile.gameMode === 'island' ? 5 : 266;
 

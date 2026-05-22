@@ -1,7 +1,7 @@
 import Command from '../Private/Command.js';
 import CommandData from '../Private/CommandData.js';
 import CommandDataOption from '../Private/CommandDataOption.js';
-import { FormatNumber } from '../../Utils/StringUtils.js';
+import { FormatNumber, TitleCase } from '../../Utils/StringUtils.js';
 import { getSelectedProfile } from '../../Utils/HypixelUtils.js';
 import type { MinecraftManagerWithBot } from '../../Types/Minecraft.js';
 
@@ -16,19 +16,18 @@ class EssenceCommand extends Command {
   }
 
   override async execute(player: string, message: string) {
-    const args = this.getArgs(message);
-    player = args[0] || player;
-
+    player = this.getArgs(message)[0] || player;
     const { username, profile } = await getSelectedProfile(player);
-    const { crimsonEssence, diamondEssence, dragonEssence, goldEssence, iceEssence, spiderEssence, witherEssence, undeadEssence } = profile.me.currencies;
+    const essenceString = Object.entries(profile.me.currencies)
+      .filter(([key]) => key.endsWith('Essence'))
+      .sort(([a], [b]) => a.localeCompare(b))
+      .map(([key, value]) => {
+        const name = key.replace('Essence', '');
+        return `${TitleCase(name)}: ${FormatNumber(value as number)}`;
+      })
+      .join(', ');
 
-    this.send(
-      `${username}'s Essence: Crimson: ${FormatNumber(crimsonEssence)}, Diamond: ${FormatNumber(diamondEssence)}, Dragon: ${FormatNumber(
-        dragonEssence
-      )}, Gold: ${FormatNumber(goldEssence)}, Ice: ${FormatNumber(iceEssence)}, Spider: ${FormatNumber(spiderEssence)}, Wither: ${FormatNumber(
-        witherEssence
-      )}, Undead: ${FormatNumber(undeadEssence)}`
-    );
+    this.send(`${username}'s Essence: ${essenceString}`);
   }
 }
 

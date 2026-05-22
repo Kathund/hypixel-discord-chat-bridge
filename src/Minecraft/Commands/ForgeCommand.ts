@@ -18,9 +18,7 @@ class ForgeCommand extends Command {
   }
 
   override async execute(player: string, message: string) {
-    const args = this.getArgs(message);
-    player = args[0] || player;
-
+    player = this.getArgs(message)[0] || player;
     const { username, profile } = await getSelectedProfile(player);
     const slots: ParsedForgeSlot[] = [];
     Object.values(profile.me.mining.hotm.forge)

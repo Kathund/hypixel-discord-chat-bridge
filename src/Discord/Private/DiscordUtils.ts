@@ -1,17 +1,32 @@
 import HypixelDiscordChatBridgeError from '../../Private/Error.js';
 import config from '../../../config.json' with { type: 'json' };
-import { AutocompleteInteraction, ButtonInteraction, ChatInputCommandInteraction, GuildMember, MessageFlags, Role, type SendableChannels, Team } from 'discord.js';
+import {
+  AutocompleteInteraction,
+  ButtonInteraction,
+  ChatInputCommandInteraction,
+  Client,
+  GuildMember,
+  MessageFlags,
+  Role,
+  type SendableChannels,
+  Team
+} from 'discord.js';
 import { ErrorEmbed } from './Embed.js';
 import type DiscordManager from '../DiscordManager.js';
 
 class DiscordUtils {
   constructor(private readonly discord: DiscordManager) {}
 
-  async getOwners(): Promise<string[]> {
-    if (!this.discord.client?.application) return [];
-    const app = await this.discord.client.application.fetch();
+  static async getApplicationOwners(client: Client): Promise<string[]> {
+    if (!client.application) return [];
+    const app = await client.application.fetch();
     if (app.owner instanceof Team) return app.owner.members.map((member) => member.id);
     return app.owner?.id ? [app.owner.id] : [];
+  }
+
+  async getOwners(): Promise<string[]> {
+    if (!this.discord.isClientOnline()) return [];
+    return await DiscordUtils.getApplicationOwners(this.discord.client);
   }
 
   async checkMessagePermissionsInChannel(channel: SendableChannels): Promise<boolean> {
@@ -41,7 +56,10 @@ class DiscordUtils {
       if (!hasPermission) return;
 
       const owners = await this.getOwners();
-      await channel.send({ content: owners.map((id) => `<@${id}>`).join(' '), embeds: [this.getErrorEmbed(error)] });
+      await channel.send({
+        content: `${owners.map((id) => `<@${id}>`).join(' ')} <@&${this.discord.Application.config.discord.commands.commandRole}>`,
+        embeds: [this.getErrorEmbed(error)]
+      });
     } catch (e) {
       console.error(e);
     }
@@ -78,6 +96,11 @@ class DiscordUtils {
     }
   }
 
+  static async getAdminUsers(client: Client): Promise<string[]> {
+    const applicationOwners = await this.getApplicationOwners(client);
+    return [...new Set([...config.discord.commands.users, ...applicationOwners])];
+  }
+
   static async getRoles(member: GuildMember): Promise<Role[]> {
     member = await member.fetch();
     return member.roles.cache.map((role) => role);
@@ -85,11 +108,9 @@ class DiscordUtils {
 
   static async isStaffMember(member: GuildMember): Promise<boolean> {
     const userRoles = await this.getRoles(member).then((roles) => roles.map((role) => role.id));
+    const adminUsers = await this.getAdminUsers(member.client);
 
-    if (
-      config.discord.commands.checkPerms === true &&
-      !(userRoles.includes(config.discord.commands.commandRole) || config.discord.commands.users.includes(member.user.id))
-    ) {
+    if (config.discord.commands.checkPerms === true && !(userRoles.includes(config.discord.commands.commandRole) || adminUsers.includes(member.user.id))) {
       return false;
     }
 
@@ -98,11 +119,9 @@ class DiscordUtils {
 
   static async isGuildMember(member: GuildMember): Promise<boolean> {
     const userRoles = await this.getRoles(member).then((roles) => roles.map((role) => role.id));
+    const adminUsers = await this.getAdminUsers(member.client);
 
-    if (
-      config.discord.commands.checkPerms === true &&
-      !(userRoles.includes(config.verification.roles.guildMember.roleId) || config.discord.commands.users.includes(member.user.id))
-    ) {
+    if (config.discord.commands.checkPerms === true && !(userRoles.includes(config.verification.roles.guildMember.roleId) || adminUsers.includes(member.user.id))) {
       return false;
     }
 
@@ -111,11 +130,9 @@ class DiscordUtils {
 
   static async isVerifiedMember(member: GuildMember): Promise<boolean> {
     const userRoles = await this.getRoles(member).then((roles) => roles.map((role) => role.id));
+    const adminUsers = await this.getAdminUsers(member.client);
 
-    if (
-      config.discord.commands.checkPerms === true &&
-      !(userRoles.includes(config.verification.roles.verified.roleId) || config.discord.commands.users.includes(member.user.id))
-    ) {
+    if (config.discord.commands.checkPerms === true && !(userRoles.includes(config.verification.roles.verified.roleId) || adminUsers.includes(member.user.id))) {
       return false;
     }
 

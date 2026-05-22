@@ -3,7 +3,6 @@ import CommandData from '../Private/CommandData.js';
 import CommandDataOption from '../Private/CommandDataOption.js';
 import HypixelDiscordChatBridgeError from '../../Private/Error.js';
 import { Delay } from '../../Utils/MiscUtils.js';
-import { ReplaceVariables } from '../../Utils/StringUtils.js';
 import type { ChatMessage } from 'prismarine-chat';
 import type { MinecraftManagerWithBot } from '../../Types/Minecraft.js';
 
@@ -32,10 +31,7 @@ class WarpoutCommand extends Command {
 
   override async execute(player: string, message: string) {
     try {
-      if (this.isOnCooldown) {
-        throw new HypixelDiscordChatBridgeError(ReplaceVariables('{player} Command is on cooldown', { player }));
-      }
-
+      if (this.isOnCooldown) throw new HypixelDiscordChatBridgeError(`${player} Command is on cooldown`);
       this.enableCooldown();
 
       const username = this.getArgs(message)[0];
@@ -120,8 +116,8 @@ class WarpoutCommand extends Command {
         }
       }, 30000);
     } catch (error) {
-      this.send(`[ERROR] ${error}`);
       this.disableCooldown();
+      throw error;
     }
   }
 }

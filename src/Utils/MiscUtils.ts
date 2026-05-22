@@ -1,3 +1,5 @@
+import type HypixelDiscordChatBridgeError from '../Private/Error.js';
+
 export function Delay(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -12,8 +14,13 @@ export function GenerateId(length: number): string {
   return result;
 }
 
-export function FormatError(error: Error): string {
-  return error.toString().replace('[hypixel-api-reborn] ', '').replace('For help join our Discord Server https://discord.gg/NSEBNMM', '').replace('Error:', '[ERROR]');
+export function FormatError(error: Error | HypixelDiscordChatBridgeError): string {
+  return error
+    .toString()
+    .replace('Hypixel-API-Reborn', 'hypixel-api-reborn')
+    .replace('[hypixel-api-reborn] ', '')
+    .replace('For help join our Discord Server https://discord.gg/NSEBNMM', '')
+    .replace('Error:', '[ERROR]');
 }
 
 // CREDIT: https://github.com/Senither/hypixel-skyblock-facade (Modified)

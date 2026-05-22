@@ -67,7 +67,7 @@ class LinkedUser {
     }
 
     if (this.linked.Application.discord.guild.ownerId === member.user.id) {
-      throw new HypixelDiscordChatBridgeError('This user owns the server thus the bot cannot update it');
+      throw new HypixelDiscordChatBridgeError('This user owns the server thus no one can edit their roles');
     }
 
     const verificationRoles = this.linked.Application.config.verification.roles;

@@ -16,12 +16,9 @@ class KuudraCommand extends Command {
   }
 
   override async execute(player: string, message: string) {
-    const args = this.getArgs(message);
-    player = args[0] || player;
-
+    player = this.getArgs(message)[0] || player;
     const { username, profile } = await getSelectedProfile(player);
     const { basicCompletions, hotCompletions, burningCompletions, fieryCompletions, infernalCompletions } = profile.me.crimsonIsle.kuudra;
-
     this.send(
       `${username}'s Basic: ${FormatNumber(basicCompletions)} | Hot: ${FormatNumber(hotCompletions)} | Burning: ${FormatNumber(
         burningCompletions

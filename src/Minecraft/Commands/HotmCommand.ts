@@ -17,16 +17,12 @@ class HotmCommand extends Command {
   }
 
   override async execute(player: string, message: string) {
-    const args = this.getArgs(message);
-    player = args[0] || player;
-
+    player = this.getArgs(message)[0] || player;
     const { username, profile } = await getSelectedProfile(player);
-
-    const { hotm, powder, pickaxeAbility } = profile.me.mining;
-    const { level } = hotm;
-
+    const { level } = profile.me.skillTrees.mining;
+    const { powder, pickaxeAbility } = profile.me.mining;
     this.send(
-      `${username}'s Hotm: ${level} | Gemstone Powder: ${FormatNumber(powder.gemstone.total)} | Mithril Powder: ${FormatNumber(
+      `${username}'s Hotm: ${level.level} | Gemstone Powder: ${FormatNumber(powder.gemstone.total)} | Mithril Powder: ${FormatNumber(
         powder.mithril.total
       )} | Glacite Powder: ${FormatNumber(powder.glacite.total)} | Selected Ability: ${pickaxeAbility}`
     );

@@ -33,8 +33,8 @@ class BoopCommand extends Command {
       this.send(`Booped ${args[0]}!`);
       setTimeout(() => (this.isOnCooldown = false), 30000);
     } catch (error) {
-      this.send(`[ERROR] ${error}`);
       this.isOnCooldown = false;
+      throw error;
     }
   }
 }

@@ -16,23 +16,15 @@ class BestiaryCommand extends Command {
   }
 
   override async execute(player: string, message: string) {
-    try {
-      const args = this.getArgs(message);
-      player = args[0] ?? player;
-
-      const { username, profile } = await getSelectedProfile(player);
-      const { level, maxLevel, familyTiers, maxFamilyTiers, familiesUnlocked, totalFamilies, familiesCompleted } = profile.me.bestiary;
-
-      const progress = FormatNumber((profile.me.bestiary.level / profile.me.bestiary.maxLevel) * 100, 2);
-      this.send(
-        `${username}'s Bestiary: ${level} / ${maxLevel} (${progress}%) | Unlocked Tiers: ${familyTiers} / ${maxFamilyTiers} | Unlocked Families: ${familiesUnlocked} / ${
-          totalFamilies
-        } | Families Maxed: ${familiesCompleted}`
-      );
-    } catch (error) {
-      console.error(error);
-      this.send(`[ERROR] ${error}`);
-    }
+    player = this.getArgs(message)[0] || player;
+    const { username, profile } = await getSelectedProfile(player);
+    const { level, maxLevel, familyTiers, maxFamilyTiers, familiesUnlocked, totalFamilies, familiesCompleted } = profile.me.bestiary;
+    const progress = FormatNumber((profile.me.bestiary.level / profile.me.bestiary.maxLevel) * 100, 2);
+    this.send(
+      `${username}'s Bestiary: ${level} / ${maxLevel} (${progress}%) | Unlocked Tiers: ${familyTiers} / ${maxFamilyTiers} | Unlocked Families: ${familiesUnlocked} / ${
+        totalFamilies
+      } | Families Maxed: ${familiesCompleted}`
+    );
   }
 }
 

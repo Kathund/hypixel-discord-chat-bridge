@@ -133,7 +133,7 @@ class DiscordManager extends CommunicationBridge {
         break;
       }
       default: {
-        throw new Error('Invalid message mode: must be bot, webhook or minecraft');
+        throw new HypixelDiscordChatBridgeError('Invalid message mode: must be bot, webhook or minecraft');
       }
     }
   }
@@ -185,7 +185,7 @@ class DiscordManager extends CommunicationBridge {
         await channel.send({ files: [new AttachmentBuilder(await MessageToImage(fullMessage), { name: `${username}.png` })] });
         break;
       default:
-        throw new Error('Invalid message mode: must be bot or webhook');
+        throw new HypixelDiscordChatBridgeError('Invalid message mode: must be bot or webhook');
     }
   }
 

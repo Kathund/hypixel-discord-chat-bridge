@@ -19,7 +19,7 @@ export async function getSelectedProfile(input: string, options?: LatestProfileO
   const { UUID: uuid, username } = profile.data;
   const profiles = await HypixelAPIReborn.getSkyBlockProfiles(uuid, { garden: options?.garden ?? false, museum: options?.museum ?? false });
   if (profiles.isRaw()) throw new Error('Something went wrong while parsing the data from the Hypixel API.');
-  if (!profiles.selectedProfile) throw new Error(`${uuid} has no selected SkyBlock profile.`);
+  if (!profiles.selectedProfile) throw new HypixelDiscordChatBridgeError(`${uuid} has no selected SkyBlock profile.`);
   return { username: FormatUsername(username, profiles.selectedProfile.gameMode), rawUsername: username, uuid, profile: profiles.selectedProfile, profiles };
 }
 
@@ -27,7 +27,7 @@ export async function getNetWorthCalculator(profile: SkyblockProfileWithMe): Pro
   const museum = await HypixelAPIReborn.getSkyBlockMuseum(profile.profileId, { raw: true });
   if (!museum.isRaw()) throw new Error('Something went wrong while parsing the data from the hypixel API and it ended up parsed.');
   const museumProfile = museum.data.members[profile.me.uuid];
-  if (museumProfile === undefined) throw new Error('Player has museum API off.');
+  if (museumProfile === undefined) throw new HypixelDiscordChatBridgeError('Player has museum API off.');
   const profileData = PrepareSkyBlockProfileForSkyHelperNetworth(profile);
   return new ProfileNetworthCalculator(profileData, museumProfile, profile.banking.balance);
 }

@@ -67,7 +67,7 @@ class CommandHandler {
     const clientID = Buffer.from(this.discord.Application.config.discord.bot.token.split('.')?.[0] || 'UNKNOWN', 'base64').toString('ascii');
 
     await rest
-      .put(Routes.applicationCommands(clientID), { body: commands })
+      .put(Routes.applicationGuildCommands(clientID, this.discord.Application.config.discord.bot.serverID), { body: commands })
       .then(() => console.discord(`Successfully reloaded ${commands.length} application command(s).`));
   }
 }

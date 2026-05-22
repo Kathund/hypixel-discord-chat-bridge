@@ -1,5 +1,7 @@
+import HypixelDiscordChatBridgeError from '../../Private/Error.js';
 import axios from 'axios';
 import { Collection } from 'discord.js';
+import { FormatError } from '../../Utils/MiscUtils.js';
 import { readdirSync } from 'node:fs';
 import type Command from '../Private/Command.js';
 import type MinecraftManager from '../MinecraftManager.js';
@@ -8,7 +10,7 @@ class CommandHandler {
   private readonly commands: Collection<string, Command> = new Collection<string, Command>();
   constructor(private readonly minecraft: MinecraftManager) {}
 
-  handle(player: string, message: string, officer: boolean) {
+  async handle(player: string, message: string, officer: boolean) {
     if (!this.minecraft.isBotOnline()) return;
     if (!message.startsWith(this.minecraft.Application.config.minecraft.bot.prefix) && !message.startsWith('-')) return;
 
@@ -21,7 +23,14 @@ class CommandHandler {
       if (command === undefined) return;
       console.minecraft(`${player} - [${command.data.getName()}] ${message}`);
       command.officer = officer;
-      command.execute(player, message);
+      try {
+        await command.execute(player, message);
+      } catch (error) {
+        console.error(error);
+        if (error instanceof Error || error instanceof HypixelDiscordChatBridgeError) {
+          command.send(FormatError(error));
+        }
+      }
     } else if (message.startsWith('-') && message.startsWith('- ') === false) {
       if (this.minecraft.Application.config.minecraft.commands.soopy === false || message.at(1) === '-') return;
 

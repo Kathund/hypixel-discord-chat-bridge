@@ -17,9 +17,7 @@ class ChocolateFactoryCommand extends Command {
   }
 
   override async execute(player: string, message: string) {
-    const args = this.getArgs(message);
-    player = args[0] || player;
-
+    player = this.getArgs(message)[0] || player;
     const { username, profile } = await getSelectedProfile(player);
     const { prestige, totalChocolate, currentChocolate, employees } = profile.me.chocolateFactory;
     const { bro, cousin, sis, father, grandma, dog, uncle } = employees;

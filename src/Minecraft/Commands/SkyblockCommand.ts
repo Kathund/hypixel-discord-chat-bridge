@@ -18,11 +18,9 @@ class SkyblockCommand extends Command {
   }
 
   override async execute(player: string, message: string) {
-    const args = this.getArgs(message);
-    player = args[0] || player;
-
+    player = this.getArgs(message)[0] || player;
     const { username, profile } = await getSelectedProfile(player);
-    const { dungeons, slayers, playerData, leveling, inventory, mining } = profile.me;
+    const { dungeons, slayers, playerData, leveling, inventory, skillTrees } = profile.me;
     const decodedTalismans = await inventory.bags.talisman.decodeData();
     if (!decodedTalismans) throw new HypixelDiscordChatBridgeError(`${username} has no SkyBlock profiles.`);
 
@@ -39,7 +37,7 @@ class SkyblockCommand extends Command {
         dungeons.level.level,
         2
       )} | Class Avg: ${FormatNumber(dungeons.classes.average, 2)} | MP: ${FormatNumber(decodedTalismans.magicalPower, 2)} | Hotm: ${FormatNumber(
-        mining.hotm.level.level,
+        skillTrees.mining.level.level,
         2
       )}`
     );

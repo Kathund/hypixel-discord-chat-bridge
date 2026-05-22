@@ -2,7 +2,7 @@ import Command from '../../Private/Commands/Command.js';
 import CommandData from '../../Private/Commands/CommandData.js';
 import HypixelDiscordChatBridgeError from '../../../Private/Error.js';
 import UpdateCommand from './UpdateCommand.js';
-import { CommandFlags, CommandResponse, type DiscordManagerWithBot } from '../../../Types/Discord.js';
+import { CommandFlags, type DiscordManagerWithBot } from '../../../Types/Discord.js';
 import type { ChatInputCommandInteraction } from 'discord.js';
 
 class ForceUpdateCommand extends Command<DiscordManagerWithBot> {
@@ -14,7 +14,6 @@ class ForceUpdateCommand extends Command<DiscordManagerWithBot> {
       .addUserOption((option) => option.setName('user').setDescription('Discord Username'))
       .addBooleanOption((option) => option.setName('everyone').setDescription("Update everyone's roles"));
     this.flags = [CommandFlags.RequiresMinecraftBot, CommandFlags.StaffOnly, CommandFlags.VerificationCommand];
-    this.response = CommandResponse.Ephemeral;
   }
 
   override async execute(interaction: ChatInputCommandInteraction): Promise<void> {
