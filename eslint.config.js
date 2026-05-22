@@ -12,12 +12,10 @@ export default [
   importPlugin.flatConfigs.recommended,
   importPlugin.flatConfigs.typescript,
   prettier,
-  // globalIgnores(["./build/"]), - Disabled as we still have js files. Renable when fully moved to ts
-  globalIgnores(['./build/', '**/*.js']),
+  globalIgnores(['./build/']),
   {
     ignores: ['**/*.test.ts', 'build/*'],
-    // files: ["**/*.ts", "**/*.js"], - Disabled as we still have js files. Renable when fully moved to ts
-    files: ['**/*.ts'],
+    files: ['**/*.ts', '**/*.js'],
     languageOptions: { ecmaVersion: 2022, sourceType: 'module', globals: { ...globals.es2022, ...globals.node } },
     plugins: { '@stylistic': stylistic, 'sort-imports': sortImports },
     settings: { 'import/resolver': { typescript: true, node: true } },
