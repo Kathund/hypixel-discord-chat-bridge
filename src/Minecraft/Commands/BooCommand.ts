@@ -12,7 +12,7 @@ class BooCommand extends Command {
     super(minecraft);
     this.data = new CommandData()
       .setName("boop")
-      .setAliases([])
+      .setDescription("Boo someone!")
       .setOptions([new CommandDataOption().setName("username").setRequired(true)]);
 
     this.isOnCooldown = false;

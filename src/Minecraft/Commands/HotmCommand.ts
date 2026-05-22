@@ -5,13 +5,15 @@ import { FormatNumber } from "../../Utils/StringUtils.js";
 import { getSelectedProfile } from "../../Utils/HypixelUtils.js";
 import type { MinecraftManagerWithBot } from "../../Types/Minecraft.js";
 
+// CREDITS: by @Kathund (https://github.com/Kathund)
 class HotmCommand extends Command {
   constructor(minecraft: MinecraftManagerWithBot) {
     super(minecraft);
     this.data = new CommandData()
       .setName("hotm")
+      .setDescription("Skyblock Hotm Stats of specified user.")
       .setAliases(["mining"])
-      .setOptions([new CommandDataOption().setName("username").setRequired(false)]);
+      .setOptions([new CommandDataOption().setName("username").setDescription("Minecraft Username")]);
   }
 
   override async execute(player: string, message: string) {

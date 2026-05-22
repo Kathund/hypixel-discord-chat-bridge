@@ -10,8 +10,9 @@ class DuelsCommand extends Command {
     super(minecraft);
     this.data = new CommandData()
       .setName("duels")
+      .setDescription("Duel stats of specified user.")
       .setAliases(["d"])
-      .setOptions([new CommandDataOption().setName("username").setRequired(false)]);
+      .setOptions([new CommandDataOption().setName("username").setDescription("Minecraft Username")]);
   }
 
   override async execute(player: string, message: string) {

@@ -20,7 +20,10 @@ const yearZero = 1560275700000;
 class SpecialMayorCommand extends Command {
   constructor(minecraft: MinecraftManagerWithBot) {
     super(minecraft);
-    this.data = new CommandData().setName("specialmayor").setAliases(["specmayor"]);
+    this.data = new CommandData()
+      .setName("specialmayor")
+      .setDescription("How many years until next special mayor, along with speculated special mayor.")
+      .setAliases(["specmayor"]);
   }
 
   getYearsUntilSpecial(year: number): number {

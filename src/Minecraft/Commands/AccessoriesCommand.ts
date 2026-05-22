@@ -12,8 +12,9 @@ class AccessoriesCommand extends Command {
     super(minecraft);
     this.data = new CommandData()
       .setName("accessories")
+      .setDescription("Accessories of specified user.")
       .setAliases(["acc", "talismans", "talisman", "mp", "magicpower"])
-      .setOptions([new CommandDataOption().setName("username").setRequired(false)]);
+      .setOptions([new CommandDataOption().setName("username").setDescription("Minecraft Username")]);
   }
 
   private getAccessories(accessories: SkyBlockInventoryItem[]) {

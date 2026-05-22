@@ -11,8 +11,9 @@ class SlayersCommand extends Command {
     super(minecraft);
     this.data = new CommandData()
       .setName("slayer")
+      .setDescription("Slayer of specified user.")
       .setAliases(["slayers"])
-      .setOptions([new CommandDataOption().setName("username").setRequired(false)]);
+      .setOptions([new CommandDataOption().setName("username").setDescription("Minecraft Username")]);
   }
 
   override async execute(player: string, message: string) {

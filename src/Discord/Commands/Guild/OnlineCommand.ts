@@ -21,16 +21,16 @@ class OnlineCommand extends Command<DiscordManagerWithBot> {
         cachedMessages.push(message);
 
         if (message.startsWith("Offline Members")) {
-          this.discord.app.minecraft.bot.removeListener("message", listener);
+          this.discord.Application.minecraft.bot.removeListener("message", listener);
           resolve(cachedMessages);
         }
       };
 
-      this.discord.app.minecraft.bot.on("message", listener);
-      this.discord.app.minecraft.bot.chat("/g online");
+      this.discord.Application.minecraft.bot.on("message", listener);
+      this.discord.Application.minecraft.bot.chat("/g online");
 
       setTimeout(() => {
-        this.discord.app.minecraft.bot.removeListener("message", listener);
+        this.discord.Application.minecraft.bot.removeListener("message", listener);
         resolve(cachedMessages);
       }, 5000);
     });

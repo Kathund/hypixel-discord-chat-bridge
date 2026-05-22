@@ -5,13 +5,15 @@ import { FormatNumber, TitleCase } from "../../Utils/StringUtils.js";
 import { getSelectedProfile } from "../../Utils/HypixelUtils.js";
 import type { MinecraftManagerWithBot } from "../../Types/Minecraft.js";
 
+// CREDITS: by @Kathund (https://github.com/Kathund)
 class CrimsonIsleCommand extends Command {
   constructor(minecraft: MinecraftManagerWithBot) {
     super(minecraft);
     this.data = new CommandData()
       .setName("crimsonisle")
+      .setDescription("Crimson Isle Stats of specified user.")
       .setAliases(["crimson", "nether", "isle"])
-      .setOptions([new CommandDataOption().setName("username").setRequired(false)]);
+      .setOptions([new CommandDataOption().setName("username").setDescription("Minecraft Username")]);
   }
 
   override async execute(player: string, message: string) {

@@ -5,13 +5,15 @@ import { FormatNumber } from "../../Utils/StringUtils.js";
 import { getSelectedProfile } from "../../Utils/HypixelUtils.js";
 import type { MinecraftManagerWithBot } from "../../Types/Minecraft.js";
 
+// CREDITS: by @Kathund (https://github.com/Kathund)
 class ChocolateFactoryCommand extends Command {
   constructor(minecraft: MinecraftManagerWithBot) {
     super(minecraft);
     this.data = new CommandData()
       .setName("chocolatefactory")
+      .setDescription("Skyblock Chocolate Factory Stats of specified user.")
       .setAliases(["cf", "factory", "chocolate"])
-      .setOptions([new CommandDataOption().setName("username").setRequired(false)]);
+      .setOptions([new CommandDataOption().setName("username").setDescription("Minecraft Username")]);
   }
 
   override async execute(player: string, message: string) {

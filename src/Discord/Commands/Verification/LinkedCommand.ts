@@ -2,7 +2,7 @@ import Command from "../../Private/Commands/Command.js";
 import CommandData from "../../Private/Commands/CommandData.js";
 import HypixelDiscordChatBridgeError from "../../../Private/Error.js";
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, type ChatInputCommandInteraction } from "discord.js";
-import { CommandFlags, CommandType, type DiscordManagerWithClient } from "../../../Types/Discord.js";
+import { CommandFlags, type DiscordManagerWithClient } from "../../../Types/Discord.js";
 import { SuccessEmbed } from "../../Private/Embed.js";
 
 class LinkedCommand extends Command {
@@ -13,8 +13,7 @@ class LinkedCommand extends Command {
       .setDescription("View who a user is linked to")
       .addUserOption((option) => option.setName("user").setDescription("Discord Username"))
       .addStringOption((option) => option.setName("username").setDescription("Minecraft Username"));
-    this.flags = [CommandFlags.VerificationCommand];
-    this.type = CommandType.Staff;
+    this.flags = [CommandFlags.StaffOnly, CommandFlags.VerificationCommand];
   }
 
   override async execute(interaction: ChatInputCommandInteraction) {
@@ -22,7 +21,7 @@ class LinkedCommand extends Command {
     const username = interaction.options.getString("username");
     if (!user && !username) throw new HypixelDiscordChatBridgeError("You must specify a user or username.");
     if (user && username) throw new HypixelDiscordChatBridgeError("You cannot specify both user and username.");
-    const linkedUser = username ? await this.discord.app.linked.getUserByUsername(username) : this.discord.app.linked.getUserByDiscordId(user!.id);
+    const linkedUser = username ? await this.discord.Application.linked.getUserByUsername(username) : this.discord.Application.linked.getUserByDiscordId(user!.id);
     if (!linkedUser) throw new HypixelDiscordChatBridgeError("User is not verified");
     const [{ uuid, nickname, rank }, guildMember] = await Promise.all([linkedUser.getHypixelPlayer(), linkedUser.isUserInHypixelGuild()]);
 

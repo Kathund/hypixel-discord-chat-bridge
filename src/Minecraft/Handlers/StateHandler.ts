@@ -1,12 +1,8 @@
 import type MinecraftManager from "../MinecraftManager.js";
 
 class StateHandler {
-  private readonly minecraft: MinecraftManager;
-  private loginAttempts: number;
-  constructor(minecraftManager: MinecraftManager) {
-    this.minecraft = minecraftManager;
-    this.loginAttempts = 0;
-  }
+  private loginAttempts: number = 0;
+  constructor(private readonly minecraft: MinecraftManager) {}
 
   registerEvents() {
     if (!this.minecraft.isBotOnline()) return;

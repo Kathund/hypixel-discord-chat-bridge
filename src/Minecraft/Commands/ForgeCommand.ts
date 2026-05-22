@@ -7,10 +7,14 @@ import { getSelectedProfile } from "../../Utils/HypixelUtils.js";
 import type { MinecraftManagerWithBot, ParsedForgeSlot } from "../../Types/Minecraft.js";
 import type { SkyBlockMemberMiningHotmForgeItem } from "hypixel-api-reborn";
 
+// CREDITS: by @Kathund (https://github.com/Kathund)
 class ForgeCommand extends Command {
   constructor(minecraft: MinecraftManagerWithBot) {
     super(minecraft);
-    this.data = new CommandData().setName("forge").setOptions([new CommandDataOption().setName("username").setRequired(false)]);
+    this.data = new CommandData()
+      .setName("forge")
+      .setDescription("Skyblock Forge Info Stats of specified user.")
+      .setOptions([new CommandDataOption().setName("username").setDescription("Minecraft Username")]);
   }
 
   override async execute(player: string, message: string) {

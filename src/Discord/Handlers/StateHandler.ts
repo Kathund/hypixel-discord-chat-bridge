@@ -4,14 +4,11 @@ import type { Channel } from "discord.js";
 import type { ChannelNames } from "../../Types/Discord.js";
 
 class StateHandler {
-  readonly discord: DiscordManager;
-  constructor(discordManager: DiscordManager) {
-    this.discord = discordManager;
-  }
+  constructor(private readonly discord: DiscordManager) {}
 
   async loadGuild() {
     if (!this.discord.isClientOnline()) throw new HypixelDiscordChatBridgeError("The discord bot doesn't seam to be online? Please restart the application");
-    this.discord.guild = await this.discord.client.guilds.fetch(this.discord.app.config.discord.bot.serverID);
+    this.discord.guild = await this.discord.client.guilds.fetch(this.discord.Application.config.discord.bot.serverID);
     console.discord(`Guild ready, successfully fetched ${this.discord.guild.name}`);
   }
 
@@ -37,13 +34,13 @@ class StateHandler {
     if (!this.discord.isClientOnline()) return null;
     switch (type.replace(/§[0-9a-fk-or]/g, "").trim()) {
       case "Guild":
-        return await this.discord.client.channels.fetch(this.discord.app.config.discord.channels.guildChatChannel);
+        return await this.discord.client.channels.fetch(this.discord.Application.config.discord.channels.guildChatChannel);
       case "Officer":
-        return await this.discord.client.channels.fetch(this.discord.app.config.discord.channels.officerChannel);
+        return await this.discord.client.channels.fetch(this.discord.Application.config.discord.channels.officerChannel);
       case "Logger":
-        return await this.discord.client.channels.fetch(this.discord.app.config.discord.channels.loggingChannel);
+        return await this.discord.client.channels.fetch(this.discord.Application.config.discord.channels.loggingChannel);
       default:
-        return await this.discord.client.channels.fetch(this.discord.app.config.discord.channels.debugChannel);
+        return await this.discord.client.channels.fetch(this.discord.Application.config.discord.channels.debugChannel);
     }
   }
 }

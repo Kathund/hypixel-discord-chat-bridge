@@ -1,7 +1,6 @@
 import Command from "../Private/Command.js";
 import CommandData from "../Private/CommandData.js";
 import CommandDataOption from "../Private/CommandDataOption.js";
-import { FormatError } from "../../Utils/MiscUtils.js";
 import { FormatNumber } from "../../Utils/StringUtils.js";
 import { getPlayer } from "../../Utils/HypixelUtils.js";
 import type { BedWarsMode, Player } from "hypixel-api-reborn";
@@ -15,8 +14,9 @@ class BedwarsCommand extends Command {
     super(minecraft);
     this.data = new CommandData()
       .setName("bedwars")
+      .setDescription("BedWars stats of specified user.")
       .setAliases(["bw", "bws"])
-      .setOptions([new CommandDataOption().setName("username").setRequired(false)]);
+      .setOptions([new CommandDataOption().setName("username").setDescription("Minecraft username")]);
   }
 
   convertMode(mode: BedWarsModeNames): BedWarsInternalName {
@@ -46,7 +46,7 @@ class BedwarsCommand extends Command {
     }
     const { finals, wins, winstreak } = stats;
     const { broken, ratio } = stats.beds;
-    return { finalKills: finals.total.kills, wins, winstreak, broken, BLRatio: ratio };
+    return { finalKills: finals.total.kills, FKDR: finals.total.ratio, wins, winstreak, broken, BLRatio: ratio };
   }
 
   override async execute(player: string, message: string) {
@@ -58,11 +58,11 @@ class BedwarsCommand extends Command {
 
     const hypixelPlayer = await getPlayer(player);
 
-    const { finalKills, wins, winstreak, broken, BLRatio } = this.getStats(hypixelPlayer, mode);
+    const { finalKills, FKDR, wins, winstreak, broken, BLRatio } = this.getStats(hypixelPlayer, mode);
     this.send(
-      `[${Math.floor(hypixelPlayer.stats.BedWars.level)}✫] ${hypixelPlayer.nickname} ${mode} FK: ${FormatNumber(finalKills)} W: ${FormatNumber(wins)} BB: ${FormatNumber(
-        broken
-      )} BLR: ${BLRatio} WS: ${winstreak}`
+      `[${Math.floor(hypixelPlayer.stats.BedWars.level)}✫] ${hypixelPlayer.nickname} ${mode} FK: ${FormatNumber(finalKills)} FKDR: ${FKDR} W: ${FormatNumber(
+        wins
+      )} BB: ${FormatNumber(broken)} BLR: ${BLRatio} WS: ${winstreak}`
     );
   }
 }

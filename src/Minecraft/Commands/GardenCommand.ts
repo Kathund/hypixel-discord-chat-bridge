@@ -5,13 +5,14 @@ import HypixelDiscordChatBridgeError from "../../Private/Error.js";
 import { getSelectedProfile } from "../../Utils/HypixelUtils.js";
 import type { MinecraftManagerWithBot } from "../../Types/Minecraft.js";
 
+// CREDITS: by @Kathund (https://github.com/Kathund)
 class GardenCommand extends Command {
   constructor(minecraft: MinecraftManagerWithBot) {
     super(minecraft);
     this.data = new CommandData()
       .setName("garden")
-      .setAliases([])
-      .setOptions([new CommandDataOption().setName("username").setRequired(false)]);
+      .setDescription("Skyblock Garden Stats of specified user.")
+      .setOptions([new CommandDataOption().setName("username").setDescription("Minecraft Username")]);
   }
 
   override async execute(player: string, message: string) {

@@ -9,8 +9,9 @@ class FairySoulsCommand extends Command {
     super(minecraft);
     this.data = new CommandData()
       .setName("fairysouls")
+      .setDescription("Fairy Souls of specified user.")
       .setAliases(["fs", "fairysoul"])
-      .setOptions([new CommandDataOption().setName("username").setRequired(false)]);
+      .setOptions([new CommandDataOption().setName("username").setDescription("Minecraft Username")]);
   }
 
   override async execute(player: string, message: string) {

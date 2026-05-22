@@ -11,21 +11,19 @@ import type { ChatMessage } from "prismarine-chat";
 import type { MinecraftManagerWithBot } from "../Types/Minecraft.js";
 
 class MinecraftManager extends CommunicationBridge {
-  readonly app: Application;
   readonly stateHandler: StateHandler;
   readonly commandHandler: CommandHandler;
   readonly messageHandler: MessageHandler;
   readonly filter: Filter;
   bot?: Bot;
-  constructor(app: Application) {
+  constructor(readonly Application: Application) {
     super();
-    this.app = app;
     this.stateHandler = new StateHandler(this);
     this.commandHandler = new CommandHandler(this);
     this.messageHandler = new MessageHandler(this);
 
     this.filter = new Filter();
-    const fileredWords = this.app.config.discord.other.filterWords ?? [];
+    const fileredWords = this.Application.config.discord.other.filterWords ?? [];
     this.filter.addWords(...fileredWords);
   }
 
@@ -65,9 +63,9 @@ class MinecraftManager extends CommunicationBridge {
     console.broadcast(`${username}: ${message}`, "Minecraft");
     if (this.bot.player === undefined) return;
 
-    if (channelId === this.app.config.discord.channels.debugChannel && this.app.config.discord.channels.debugMode === true) return this.bot.chat(message);
+    if (channelId === this.Application.config.discord.channels.debugChannel && this.Application.config.discord.channels.debugMode === true) return this.bot.chat(message);
 
-    if (this.app.config.discord.other.filterMessages) {
+    if (this.Application.config.discord.other.filterMessages) {
       try {
         message = this.filter.clean(message);
         username = this.filter.clean(username);
@@ -76,7 +74,7 @@ class MinecraftManager extends CommunicationBridge {
       }
     }
 
-    if (this.app.config.discord.other.stripEmojisFromUsernames) {
+    if (this.Application.config.discord.other.stripEmojisFromUsernames) {
       try {
         username = username.replace(/:[\w\-_]+:/g, "");
       } catch {
@@ -84,8 +82,8 @@ class MinecraftManager extends CommunicationBridge {
       }
     }
 
-    message = ReplaceVariables(this.app.config.minecraft.bot.messageFormat, { username, message });
-    const chat = channelId === this.app.config.discord.channels.officerChannel ? "/oc" : "/gc";
+    message = ReplaceVariables(this.Application.config.minecraft.bot.messageFormat, { username, message });
+    const chat = channelId === this.Application.config.discord.channels.officerChannel ? "/oc" : "/gc";
     if (replyingTo) message = message.replace(username, `${username} replying to ${replyingTo}`);
 
     let successfullySent = false;

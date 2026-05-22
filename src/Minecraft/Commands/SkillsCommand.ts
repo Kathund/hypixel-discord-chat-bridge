@@ -12,8 +12,9 @@ class SkillsCommand extends Command {
     super(minecraft);
     this.data = new CommandData()
       .setName("skills")
+      .setDescription("Skills and Skill Average of specified user.")
       .setAliases(["skill", "sa"])
-      .setOptions([new CommandDataOption().setName("username").setRequired(false)]);
+      .setOptions([new CommandDataOption().setName("username").setDescription("Minecraft Username")]);
   }
 
   override async execute(player: string, message: string) {

@@ -2,7 +2,7 @@ import Command from "../../Private/Commands/Command.js";
 import CommandData from "../../Private/Commands/CommandData.js";
 import HypixelDiscordChatBridgeError from "../../../Private/Error.js";
 import VerifyCommand from "./VerifyCommand.js";
-import { CommandFlags, CommandResponse, CommandType, type DiscordManagerWithBot } from "../../../Types/Discord.js";
+import { CommandFlags, CommandResponse, type DiscordManagerWithBot } from "../../../Types/Discord.js";
 import type { ChatInputCommandInteraction } from "discord.js";
 
 class ForceVerify extends Command<DiscordManagerWithBot> {
@@ -13,9 +13,8 @@ class ForceVerify extends Command<DiscordManagerWithBot> {
       .setDescription("Connect Discord account to a Minecraft")
       .addUserOption((option) => option.setName("user").setDescription("Discord Username").setRequired(true))
       .addStringOption((option) => option.setName("username").setDescription("Minecraft Username").setRequired(true));
-    this.flags = [CommandFlags.RequiresMinecraftBot, CommandFlags.VerificationCommand];
+    this.flags = [CommandFlags.RequiresMinecraftBot, CommandFlags.StaffOnly, CommandFlags.VerificationCommand];
     this.response = CommandResponse.Ephemeral;
-    this.type = CommandType.Staff;
   }
 
   override async execute(interaction: ChatInputCommandInteraction): Promise<void> {

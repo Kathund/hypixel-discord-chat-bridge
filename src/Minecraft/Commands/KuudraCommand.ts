@@ -5,10 +5,14 @@ import { FormatNumber } from "../../Utils/StringUtils.js";
 import { getSelectedProfile } from "../../Utils/HypixelUtils.js";
 import type { MinecraftManagerWithBot } from "../../Types/Minecraft.js";
 
+// CREDITS: by @Kathund (https://github.com/Kathund)
 class KuudraCommand extends Command {
   constructor(minecraft: MinecraftManagerWithBot) {
     super(minecraft);
-    this.data = new CommandData().setName("kuudra").setOptions([new CommandDataOption().setName("username").setRequired(false)]);
+    this.data = new CommandData()
+      .setName("kuudra")
+      .setDescription("Kuudra Stats of specified user.")
+      .setOptions([new CommandDataOption().setName("username").setDescription("Minecraft Username")]);
   }
 
   override async execute(player: string, message: string) {

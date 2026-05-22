@@ -12,6 +12,7 @@ class BoopCommand extends Command {
     super(minecraft);
     this.data = new CommandData()
       .setName("boop")
+      .setDescription("Boop someone!")
       .setAliases(["bp"])
       .setOptions([new CommandDataOption().setName("username").setRequired(true)]);
 

@@ -29,16 +29,16 @@ class GuildTopCommand extends Command<DiscordManagerWithBot> {
         cachedMessages.push(message);
 
         if (message.startsWith("10.") && message.endsWith("Guild Experience")) {
-          this.discord.app.minecraft.bot.removeListener("message", listener);
+          this.discord.Application.minecraft.bot.removeListener("message", listener);
           resolve(cachedMessages);
         }
       };
 
-      this.discord.app.minecraft.bot.on("message", listener);
-      this.discord.app.minecraft.bot.chat(`/g top ${time || ""}`);
+      this.discord.Application.minecraft.bot.on("message", listener);
+      this.discord.Application.minecraft.bot.chat(`/g top ${time || ""}`);
 
       setTimeout(() => {
-        this.discord.app.minecraft.bot.removeListener("message", listener);
+        this.discord.Application.minecraft.bot.removeListener("message", listener);
         resolve(cachedMessages);
       }, 1000);
     });

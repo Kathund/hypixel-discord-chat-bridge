@@ -7,11 +7,12 @@ import type { GuildMember } from "discord.js";
 import type { LinkedUserData } from "../../Types/Linked.js";
 
 class LinkedUser {
-  private linked: LinkedManager;
   discordId: string;
   uuid: string;
-  constructor(data: LinkedUserData, linked: LinkedManager) {
-    this.linked = linked;
+  constructor(
+    data: LinkedUserData,
+    private readonly linked: LinkedManager
+  ) {
     this.discordId = data.discordId;
     this.uuid = data.uuid;
   }
@@ -25,15 +26,15 @@ class LinkedUser {
   }
 
   async reset(): Promise<void> {
-    if (!this.linked.app.minecraft.isBotOnline()) return;
-    if (!this.linked.app.discord.isClientOnline()) return;
-    if (!this.linked.app.discord.isGuildReady()) return this.linked.app.discord.stateHandler.loadGuild();
+    if (!this.linked.Application.minecraft.isBotOnline()) return;
+    if (!this.linked.Application.discord.isClientOnline()) return;
+    if (!this.linked.Application.discord.isGuildReady()) return this.linked.Application.discord.stateHandler.loadGuild();
 
     try {
-      const member = await this.linked.app.discord.guild.members.fetch(this.discordId);
+      const member = await this.linked.Application.discord.guild.members.fetch(this.discordId);
       if (!member) return;
-      if (this.linked.app.config.verification.nickname.enabled && member.nickname) await member.setNickname(null);
-      const verificationRoles = this.linked.app.config.verification.roles;
+      if (this.linked.Application.config.verification.nickname.enabled && member.nickname) await member.setNickname(null);
+      const verificationRoles = this.linked.Application.config.verification.roles;
       const roles = [verificationRoles.guildMember.roleId, ...verificationRoles.custom.flatMap((r) => r.roleId)];
       for (const role of roles) {
         if (member.roles.cache.has(role)) await member.roles.remove(role, "Updated Roles");
@@ -50,10 +51,12 @@ class LinkedUser {
   }
 
   async updateRoles(): Promise<this | null> {
-    if (!this.linked.app.minecraft.isBotOnline()) throw new HypixelDiscordChatBridgeError("Bot doesn't seem to be connected to Hypixel. Please try again.");
-    if (!this.linked.app.discord.isClientOnline()) throw new HypixelDiscordChatBridgeError("The discord bot doesn't seam to be online? Please restart the application");
-    if (!this.linked.app.discord.isGuildReady()) {
-      this.linked.app.discord.stateHandler.loadGuild();
+    if (!this.linked.Application.minecraft.isBotOnline()) throw new HypixelDiscordChatBridgeError(this.linked.Application.messages.minecraftBotOffline);
+    if (!this.linked.Application.discord.isClientOnline()) {
+      throw new HypixelDiscordChatBridgeError("The discord bot doesn't seam to be online? Please restart the application");
+    }
+    if (!this.linked.Application.discord.isGuildReady()) {
+      this.linked.Application.discord.stateHandler.loadGuild();
       throw new HypixelDiscordChatBridgeError("The discord server isn't ready. Please try again later");
     }
 
@@ -63,14 +66,16 @@ class LinkedUser {
       return null;
     }
 
-    if (this.linked.app.discord.guild.ownerId === member.user.id) throw new HypixelDiscordChatBridgeError("This user owns the server thus the bot cannot update it");
+    if (this.linked.Application.discord.guild.ownerId === member.user.id) {
+      throw new HypixelDiscordChatBridgeError("This user owns the server thus the bot cannot update it");
+    }
 
-    const verificationRoles = this.linked.app.config.verification.roles;
+    const verificationRoles = this.linked.Application.config.verification.roles;
     const rolesToAdd: string[] = [];
     const rolesToRemove: string[] = [];
 
     if (verificationRoles.verified.enabled) rolesToAdd.push(verificationRoles.verified.roleId);
-    const hypixelGuild = await this.linked.app.getBotGuild();
+    const hypixelGuild = await this.linked.Application.getBotGuild();
     const stats = await this.linked.getPlayerVariableStats(this.uuid, hypixelGuild);
     const guildMember = await this.isUserInHypixelGuild(hypixelGuild);
     if (guildMember) {
@@ -95,12 +100,12 @@ class LinkedUser {
       }
     }
 
-    if (this.linked.app.config.verification.nickname.enabled) {
+    if (this.linked.Application.config.verification.nickname.enabled) {
       member.setNickname(
         ReplaceVariables(
-          this.linked.app.config.verification.nickname.nickname,
+          this.linked.Application.config.verification.nickname.nickname,
           Object.fromEntries(Object.entries(stats).map(([key, value]) => [key, typeof value === "number" ? FormatNumber(value) : value]))
-        ).replace(/,/g, this.linked.app.config.verification.nickname.removeCommas ? "" : ","),
+        ).replace(/,/g, this.linked.Application.config.verification.nickname.removeCommas ? "" : ","),
         "Updated Roles"
       );
     }
@@ -114,14 +119,16 @@ class LinkedUser {
   }
 
   async getDiscordUser(): Promise<GuildMember | null> {
-    if (!this.linked.app.discord.isClientOnline()) throw new HypixelDiscordChatBridgeError("The discord bot doesn't seam to be online? Please restart the application");
-    if (!this.linked.app.discord.isGuildReady()) {
-      this.linked.app.discord.stateHandler.loadGuild();
+    if (!this.linked.Application.discord.isClientOnline()) {
+      throw new HypixelDiscordChatBridgeError("The discord bot doesn't seam to be online? Please restart the application");
+    }
+    if (!this.linked.Application.discord.isGuildReady()) {
+      this.linked.Application.discord.stateHandler.loadGuild();
       throw new HypixelDiscordChatBridgeError("The discord server isn't ready. Please try again later");
     }
 
-    return await this.linked.app.discord.guild.members.fetch(this.discordId).catch((e) => {
-      console.log(e);
+    return await this.linked.Application.discord.guild.members.fetch(this.discordId).catch((e) => {
+      console.error(e);
       return null;
     });
   }
@@ -131,7 +138,7 @@ class LinkedUser {
   }
 
   async isUserInHypixelGuild(hypixelGuild: Guild | null = null): Promise<HypixelGuildMember | undefined> {
-    const guild = hypixelGuild ?? (await this.linked.app.getBotGuild());
+    const guild = hypixelGuild ?? (await this.linked.Application.getBotGuild());
     return guild.members.find((member) => member.uuid === this.uuid);
   }
 

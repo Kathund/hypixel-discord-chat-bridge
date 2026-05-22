@@ -12,8 +12,9 @@ class SkyblockCommand extends Command {
     super(minecraft);
     this.data = new CommandData()
       .setName("skyblock")
+      .setDescription("Skyblock Stats of specified user.")
       .setAliases(["stats", "sb"])
-      .setOptions([new CommandDataOption().setName("username").setRequired(false)]);
+      .setOptions([new CommandDataOption().setName("username").setDescription("Minecraft Username")]);
   }
 
   override async execute(player: string, message: string) {

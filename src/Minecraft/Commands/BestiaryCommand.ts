@@ -10,8 +10,9 @@ class BestiaryCommand extends Command {
     super(minecraft);
     this.data = new CommandData()
       .setName("bestiary")
+      .setDescription("Bestiary of specified user.")
       .setAliases(["be"])
-      .setOptions([new CommandDataOption().setName("username").setRequired(false)]);
+      .setOptions([new CommandDataOption().setName("username").setDescription("Minecraft Username")]);
   }
 
   override async execute(player: string, message: string) {

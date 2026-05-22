@@ -9,6 +9,7 @@ class EightBallCommand extends Command {
     super(minecraft);
     this.data = new CommandData()
       .setName("8ball")
+      .setDescription("Ask an 8ball a question.")
       .setAliases(["8b"])
       .setOptions([new CommandDataOption().setName("question").setRequired(true)]);
   }

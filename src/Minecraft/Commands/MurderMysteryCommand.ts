@@ -11,8 +11,9 @@ class MurderMysteryCommand extends Command {
     super(minecraft);
     this.data = new CommandData()
       .setName("murdermystery")
+      .setDescription("Get Murder Mystery Player Stats")
       .setAliases(["mm"])
-      .setOptions([new CommandDataOption().setName("username").setRequired(false)]);
+      .setOptions([new CommandDataOption().setName("username").setDescription("Minecraft Username")]);
   }
 
   override async execute(player: string, message: string) {

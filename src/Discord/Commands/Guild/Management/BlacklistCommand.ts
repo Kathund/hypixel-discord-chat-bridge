@@ -1,7 +1,7 @@
 import Command from "../../../Private/Commands/Command.js";
 import CommandData from "../../../Private/Commands/CommandData.js";
 import HypixelDiscordChatBridgeError from "../../../../Private/Error.js";
-import { CommandFlags, CommandType, type DiscordManagerWithBot } from "../../../../Types/Discord.js";
+import { CommandFlags, type DiscordManagerWithBot } from "../../../../Types/Discord.js";
 import { Delay } from "../../../../Utils/MiscUtils.js";
 import { SuccessEmbed } from "../../../Private/Embed.js";
 import type { ChatInputCommandInteraction } from "discord.js";
@@ -16,8 +16,7 @@ class BlacklistCommand extends Command<DiscordManagerWithBot> {
         option.setName("arg").setDescription("Add or Remove").addChoices({ name: "Add", value: "add" }, { name: "Remove", value: "remove" }).setRequired(true)
       )
       .addStringOption((option) => option.setName("username").setDescription("Minecraft Username").setRequired(true));
-    this.flags = [CommandFlags.RequiresMinecraftBot];
-    this.type = CommandType.Staff;
+    this.flags = [CommandFlags.RequiresMinecraftBot, CommandFlags.StaffOnly];
   }
 
   override async execute(interaction: ChatInputCommandInteraction): Promise<void> {
@@ -25,18 +24,18 @@ class BlacklistCommand extends Command<DiscordManagerWithBot> {
     if (!username) throw new HypixelDiscordChatBridgeError("The \`username\` option is missing?");
     const arg = interaction.options.getString("arg");
     if (!arg) throw new HypixelDiscordChatBridgeError("The \`arg\` option is missing?");
-    this.discord.app.minecraft.bot.chat("/lobby megawalls");
+    this.discord.Application.minecraft.bot.chat("/lobby megawalls");
 
     await Delay(250);
     if (arg === "add") {
-      this.discord.app.minecraft.bot.chat(`/ignore add ${username}`);
+      this.discord.Application.minecraft.bot.chat(`/ignore add ${username}`);
     } else if (arg === "remove") {
-      this.discord.app.minecraft.bot.chat(`/ignore remove ${username}`);
+      this.discord.Application.minecraft.bot.chat(`/ignore remove ${username}`);
     } else {
       throw new HypixelDiscordChatBridgeError("Invalid Usage: `/ignore [add/remove] [name]`.");
     }
     await Delay(250);
-    this.discord.app.minecraft.bot.chat("/limbo");
+    this.discord.Application.minecraft.bot.chat("/limbo");
 
     await interaction.followUp({
       embeds: [new SuccessEmbed().setDescription(`Successfully ${arg === "add" ? "added" : "removed"} \`${username}\` ${arg === "add" ? "to" : "from"} the blacklist.`)]

@@ -8,10 +8,7 @@ import type { Guild, Player, SkyBlockMember, SkyblockProfileWithMe } from "hypix
 import type { LinkedData } from "../Types/Linked.js";
 
 class LinkedManager {
-  readonly app: Application;
-  constructor(app: Application) {
-    this.app = app;
-
+  constructor(readonly Application: Application) {
     if (!existsSync("./data/")) mkdirSync("./data/", { recursive: true });
     if (!existsSync("./data/linked.json")) writeFileSync("./data/linked.json", JSON.stringify({}));
   }
@@ -77,10 +74,10 @@ class LinkedManager {
     player: Player | null = null,
     skyblock: SkyblockProfileWithMe | null = null
   ): Promise<Record<string, string | number>> {
-    if (!this.app.minecraft.isBotOnline()) throw new HypixelDiscordChatBridgeError("Bot doesn't seem to be connected to Hypixel. Please try again.");
+    if (!this.Application.minecraft.isBotOnline()) throw new HypixelDiscordChatBridgeError(this.Application.messages.minecraftBotOffline);
     const fetches = [];
 
-    if (!hypixelGuild) fetches.push(this.app.getBotGuild().then((guild) => (hypixelGuild = guild)));
+    if (!hypixelGuild) fetches.push(this.Application.getBotGuild().then((guild) => (hypixelGuild = guild)));
     if (!player) fetches.push(getPlayer(uuid).then((playerData) => (player = playerData)));
     if (!skyblock) fetches.push(getSelectedProfile(uuid).then((s) => (skyblock = s.profile)));
 

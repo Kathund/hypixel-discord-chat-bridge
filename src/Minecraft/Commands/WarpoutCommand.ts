@@ -13,8 +13,9 @@ class WarpoutCommand extends Command {
     super(minecraft);
     this.data = new CommandData()
       .setName("warpout")
+      .setDescription("Warp player out of the game")
       .setAliases(["warp"])
-      .setOptions([new CommandDataOption().setName("username").setRequired(false)]);
+      .setOptions([new CommandDataOption().setName("username").setDescription("Minecraft Username")]);
 
     this.isOnCooldown = false;
   }

@@ -7,11 +7,12 @@ import { FormatNumber } from "../../Utils/StringUtils.js";
 import type { MinecraftManagerWithBot } from "../../Types/Minecraft.js";
 
 // CREDITS: by @MattyHD0 (https://github.com/MattyHD0)
-class GuildInformationCommand extends Command {
+class GuildOfCommand extends Command {
   constructor(minecraft: MinecraftManagerWithBot) {
     super(minecraft);
     this.data = new CommandData()
       .setName("guildof")
+      .setDescription("View the player's guild")
       .setAliases(["gof", "guildofplayer", "gop"])
       .setOptions([new CommandDataOption().setName("player").setRequired(true)]);
   }
@@ -28,4 +29,4 @@ class GuildInformationCommand extends Command {
   }
 }
 
-export default GuildInformationCommand;
+export default GuildOfCommand;

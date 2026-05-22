@@ -16,7 +16,6 @@ class SendError extends Error {
 }
 
 class Command<T extends MinecraftManagerWithBot = MinecraftManagerWithBot> {
-  protected readonly minecraft: T;
   data!: CommandData;
   officer: boolean = false;
   MAX_MESSAGE_LENGTH: number;
@@ -24,7 +23,7 @@ class Command<T extends MinecraftManagerWithBot = MinecraftManagerWithBot> {
   SEND_TIMEOUT: number;
   RETRY_DELAY: number;
   DUPLICATE_DELAY: number;
-  constructor(minecraft: T) {
+  constructor(protected readonly minecraft: T) {
     this.minecraft = minecraft;
     this.MAX_MESSAGE_LENGTH = 256;
     this.MAX_EXECUTION_TIME = 10_000;
@@ -81,7 +80,7 @@ class Command<T extends MinecraftManagerWithBot = MinecraftManagerWithBot> {
           }
           case SendErrorType.DUPLICATE_MESSAGE: {
             await Delay(this.DUPLICATE_DELAY);
-            const randomId = GenerateId(this.minecraft.app.config.minecraft.bot.messageRepeatBypassLength);
+            const randomId = GenerateId(this.minecraft.Application.config.minecraft.bot.messageRepeatBypassLength);
             const maxLength = this.MAX_MESSAGE_LENGTH - randomId.length - 3;
             message = `${message.slice(0, maxLength)} - ${randomId}`;
             break;

@@ -17,8 +17,8 @@ class RequirementsCommand extends Command {
   }
 
   async checkRequirements(uuid: string): Promise<Requirements> {
-    const stats = await this.discord.app.linked.getPlayerVariableStats(uuid);
-    const { requirements: configRequirements, requiredToHave } = this.discord.app.config.minecraft.guildRequirements;
+    const stats = await this.discord.Application.linked.getPlayerVariableStats(uuid);
+    const { requirements: configRequirements, requiredToHave } = this.discord.Application.config.minecraft.guildRequirements;
 
     const requirements: Requirement[] = Object.entries(configRequirements).map(([key, required]) => {
       const has = stats[key] ?? 0;
@@ -37,7 +37,7 @@ class RequirementsCommand extends Command {
       .setTitle(`${username} **${passed ? "has" : "hasn't"}** got the requirements to join ${guildName}!`)
       .setDescription(
         `${username} meets **${requirementsPassed} requirement(s)** out of the required **${
-          this.discord.app.config.minecraft.guildRequirements.requiredToHave
+          this.discord.Application.config.minecraft.guildRequirements.requiredToHave
         } requirement(s)** needed to join ${guildName}`
       )
       .addFields(

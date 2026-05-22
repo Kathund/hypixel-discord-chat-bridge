@@ -6,13 +6,15 @@ import { getSelectedProfile } from "../../Utils/HypixelUtils.js";
 import type { MinecraftManagerWithBot } from "../../Types/Minecraft.js";
 import type { SkyBlockMemberCrimsonIsleTrophyFish, SkyBlockMemberCrimsonIsleTrophyFishFish } from "hypixel-api-reborn";
 
+// CREDITS: by @Kathund (https://github.com/Kathund)
 class TrophyFishCommand extends Command {
   constructor(minecraft: MinecraftManagerWithBot) {
     super(minecraft);
     this.data = new CommandData()
       .setName("trophyfish")
+      .setDescription("Trophy Fish Stats of specified user.")
       .setAliases(["tf", "trophyfishing", "trophy"])
-      .setOptions([new CommandDataOption().setName("username").setRequired(false)]);
+      .setOptions([new CommandDataOption().setName("username").setDescription("Minecraft Username")]);
   }
 
   override async execute(player: string, message: string) {

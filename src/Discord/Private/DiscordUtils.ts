@@ -5,10 +5,7 @@ import { ErrorEmbed } from "./Embed.js";
 import type DiscordManager from "../DiscordManager.js";
 
 class DiscordUtils {
-  private discord: DiscordManager;
-  constructor(discord: DiscordManager) {
-    this.discord = discord;
-  }
+  constructor(private readonly discord: DiscordManager) {}
 
   async getOwners(): Promise<string[]> {
     if (!this.discord.client?.application) return [];
@@ -37,7 +34,7 @@ class DiscordUtils {
     if (!this.discord.client?.application) return;
 
     try {
-      const channel = await this.discord.client.channels.fetch(this.discord.app.config.discord.channels.loggingChannel);
+      const channel = await this.discord.client.channels.fetch(this.discord.Application.config.discord.channels.loggingChannel);
       if (!channel || !channel.isSendable()) return;
 
       const hasPermission = await this.checkMessagePermissionsInChannel(channel);
@@ -86,8 +83,22 @@ class DiscordUtils {
     return member.roles.cache.map((role) => role);
   }
 
+  static async isStaffMember(member: GuildMember): Promise<boolean> {
+    const userRoles = await this.getRoles(member).then((roles) => roles.map((role) => role.id));
+
+    if (
+      config.discord.commands.checkPerms === true &&
+      !(userRoles.includes(config.discord.commands.commandRole) || config.discord.commands.users.includes(member.user.id))
+    ) {
+      return false;
+    }
+
+    return true;
+  }
+
   static async isGuildMember(member: GuildMember): Promise<boolean> {
     const userRoles = await this.getRoles(member).then((roles) => roles.map((role) => role.id));
+
     if (
       config.discord.commands.checkPerms === true &&
       !(userRoles.includes(config.verification.roles.guildMember.roleId) || config.discord.commands.users.includes(member.user.id))

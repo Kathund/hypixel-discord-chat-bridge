@@ -28,7 +28,7 @@ class VerifyCommand extends Command<DiscordManagerWithBot> {
       this.discordId = interaction.user.id;
     }
 
-    const linkedUser = this.discord.app.linked.getUserByDiscordId(this.discordId);
+    const linkedUser = this.discord.Application.linked.getUserByDiscordId(this.discordId);
     if (linkedUser !== undefined) {
       await interaction.followUp({ embeds: [new ErrorEmbed().setDescription("User is verified\nPlease use /unverify first").setDevFooter("Kathund")] });
       return;
@@ -51,7 +51,7 @@ class VerifyCommand extends Command<DiscordManagerWithBot> {
       }
     }
 
-    new LinkedUser({ discordId: this.discordId, uuid }, this.discord.app.linked).save();
+    new LinkedUser({ discordId: this.discordId, uuid }, this.discord.Application.linked).save();
 
     await interaction.followUp({
       embeds: [

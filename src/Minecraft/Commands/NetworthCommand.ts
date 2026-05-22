@@ -10,6 +10,7 @@ class NetworthCommand extends Command {
     super(minecraft);
     this.data = new CommandData()
       .setName("networth")
+      .setDescription("Networth of specified user.")
       .setAliases(["nw"])
       .setOptions([new CommandDataOption().setName("username").setRequired(true)]);
   }

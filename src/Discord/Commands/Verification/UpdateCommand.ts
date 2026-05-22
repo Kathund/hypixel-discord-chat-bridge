@@ -22,7 +22,7 @@ class UpdateCommand extends Command<DiscordManagerWithBot> {
       this.discordId = interaction.user.id;
     }
 
-    const linkedUser = this.discord.app.linked.getUserByDiscordId(this.discordId);
+    const linkedUser = this.discord.Application.linked.getUserByDiscordId(this.discordId);
     if (linkedUser === undefined) {
       await interaction.followUp({ embeds: [new ErrorEmbed().setDescription("User is not verified").setDevFooter("Kathund")] });
       return;

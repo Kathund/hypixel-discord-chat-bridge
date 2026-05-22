@@ -12,7 +12,6 @@ class CommunicationBridge {
   }
 
   broadcastMessage(event: BroadcastEvent) {
-    if (this.bridge.onBroadcast === undefined) console.log(this.bridge);
     return this.bridge.onBroadcast(event);
   }
 

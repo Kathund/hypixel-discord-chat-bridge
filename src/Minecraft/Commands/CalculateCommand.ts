@@ -9,6 +9,7 @@ class CalculateCommand extends Command {
     super(minecraft);
     this.data = new CommandData()
       .setName("calculate")
+      .setDescription("Calculate.")
       .setAliases(["math", "calc"])
       .setOptions([new CommandDataOption().setName("calculation").setRequired(true)]);
   }

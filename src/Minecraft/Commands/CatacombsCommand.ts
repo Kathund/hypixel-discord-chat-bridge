@@ -10,8 +10,9 @@ class CatacombsCommand extends Command {
     super(minecraft);
     this.data = new CommandData()
       .setName("catacombs")
+      .setDescription("Skyblock Dungeons Stats of specified user.")
       .setAliases(["cata", "dungeons"])
-      .setOptions([new CommandDataOption().setName("username").setRequired(false)]);
+      .setOptions([new CommandDataOption().setName("username").setDescription("Minecraft Username")]);
   }
 
   override async execute(player: string, message: string) {

@@ -9,7 +9,7 @@ import type { MinecraftManagerWithBot } from "../../Types/Minecraft.js";
 class MayorCommand extends Command {
   constructor(minecraft: MinecraftManagerWithBot) {
     super(minecraft);
-    this.data = new CommandData().setName("mayor");
+    this.data = new CommandData().setName("mayor").setDescription("Skyblock Mayor.");
   }
 
   override async execute(player: string, message: string) {

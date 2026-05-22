@@ -27,5 +27,6 @@
   "blacklistRemoveMessage": "{username} has been successfully removed from the blacklist.",
   "alreadyBlacklistedMessage": "Player is already blacklisted.",
   "guildLevelUpMessage": "The guild has reached level {level}",
-  "requestMessage": "{username} requested to join the guild."
+  "requestMessage": "{username} requested to join the guild.",
+  "minecraftBotOffline": "Bot doesn't seem to be connected to Hypixel. Please try again."
 }

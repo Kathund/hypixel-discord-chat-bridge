@@ -9,7 +9,10 @@ import type { MinecraftManagerWithBot } from "../../Types/Minecraft.js";
 class PlayerCommand extends Command {
   constructor(minecraft: MinecraftManagerWithBot) {
     super(minecraft);
-    this.data = new CommandData().setName("player").setOptions([new CommandDataOption().setName("username").setRequired(false)]);
+    this.data = new CommandData()
+      .setName("player")
+      .setDescription("Get Hypixel Player Stats")
+      .setOptions([new CommandDataOption().setName("username").setDescription("Minecraft Username")]);
   }
 
   override async execute(player: string, message: string) {

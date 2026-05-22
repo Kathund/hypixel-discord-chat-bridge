@@ -11,6 +11,7 @@ class GuildCommand extends Command {
     super(minecraft);
     this.data = new CommandData()
       .setName("guild")
+      .setDescription("View information of a guild")
       .setAliases(["g"])
       .setOptions([new CommandDataOption().setName("guild").setRequired(true)]);
   }

@@ -5,13 +5,15 @@ import { FormatNumber } from "../../Utils/StringUtils.js";
 import { getPlayer } from "../../Utils/HypixelUtils.js";
 import type { MinecraftManagerWithBot } from "../../Types/Minecraft.js";
 
+// CREDITS: by @Kathund (https://github.com/Kathund)
 class BlitzSurvivalGamesCommand extends Command {
   constructor(minecraft: MinecraftManagerWithBot) {
     super(minecraft);
     this.data = new CommandData()
       .setName("blitzsurvivalgames")
+      .setDescription("Blitz Survival Games stats of specified user.")
       .setAliases(["blitz", "blitzsg", "bsg"])
-      .setOptions([new CommandDataOption().setName("username").setRequired(false)]);
+      .setOptions([new CommandDataOption().setName("username").setDescription("Minecraft Username")]);
   }
 
   override async execute(player: string, message: string) {

@@ -110,7 +110,7 @@ class Application {
   }
 
   async getBotGuild(): Promise<Guild> {
-    if (!this.minecraft.isBotOnline()) throw new HypixelDiscordChatBridgeError("Bot doesn't seem to be connected to Hypixel. Please try again.");
+    if (!this.minecraft.isBotOnline()) throw new HypixelDiscordChatBridgeError(this.messages.minecraftBotOffline);
     return await HypixelAPIReborn.getGuild("player", this.minecraft.bot.username).then((guild) => {
       if (guild === null) throw new HypixelDiscordChatBridgeError("In game Hypixel Guild not found.");
       if (guild.isRaw()) throw new HypixelDiscordChatBridgeError("In game Hypixel Guild not found.");

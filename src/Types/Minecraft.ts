@@ -4,7 +4,7 @@ import type { DiscordManagerWithBot } from "./Discord.js";
 import type { SkyBlockProfile, SkyBlockProfileName, SkyblockProfileWithMe, WithSelectedProfile } from "hypixel-api-reborn";
 
 export type MinecraftManagerWithBot = MinecraftManager & { bot: Bot };
-export type MinecraftManagerWithClient = MinecraftManagerWithBot & { app: { discord: DiscordManagerWithBot } };
+export type MinecraftManagerWithClient = MinecraftManagerWithBot & { Application: { discord: DiscordManagerWithBot } };
 
 export interface CommandDataOptionJSON {
   name: string;

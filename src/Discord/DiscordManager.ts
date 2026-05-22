@@ -8,14 +8,13 @@ import MessageHandler from "./Handlers/MessageHandler.js";
 import MessageToImage from "../Utils/MessageToImage.js";
 import StateHandler from "./Handlers/StateHandler.js";
 import { AttachmentBuilder, ChannelType, Client, Events, GatewayIntentBits, Guild, Webhook } from "discord.js";
-import { HexToDecimal } from "../Utils/ColorUtils.js";
+import { HexToDecimal } from "../Utils/MiscUtils.js";
 import { ReplaceVariables } from "../Utils/StringUtils.js";
 import type Application from "../Application.js";
 import type { BroadcastEvent } from "../Types/Bridge.js";
 import type { ChannelNames, DiscordManagerWithClient, DiscordManagerWithGuild } from "../Types/Discord.js";
 
 class DiscordManager extends CommunicationBridge {
-  readonly app: Application;
   readonly commandHandler: CommandHandler;
   readonly interactionHandler: InteractionHandler;
   readonly messageHandler: MessageHandler;
@@ -23,9 +22,8 @@ class DiscordManager extends CommunicationBridge {
   readonly utils: DiscordUtils;
   client?: Client;
   guild?: Guild;
-  constructor(app: Application) {
+  constructor(readonly Application: Application) {
     super();
-    this.app = app;
     this.commandHandler = new CommandHandler(this);
     this.interactionHandler = new InteractionHandler(this);
     this.messageHandler = new MessageHandler(this);
@@ -39,7 +37,7 @@ class DiscordManager extends CommunicationBridge {
     this.client.on(Events.ClientReady, () => this.stateHandler.onReady());
     this.client.on(Events.MessageCreate, (message) => this.messageHandler.onMessage(message));
     this.client.on(Events.InteractionCreate, (interaction) => this.interactionHandler.onInteraction(interaction));
-    this.client.login(this.app.config.discord.bot.token).catch((e) => console.error(e));
+    this.client.login(this.Application.config.discord.bot.token).catch((e) => console.error(e));
 
     process.on("SIGINT", async () => {
       await this.stateHandler.onClose();
@@ -73,10 +71,12 @@ class DiscordManager extends CommunicationBridge {
   }
 
   override async onBroadcast(event: BroadcastEvent) {
-    console.log(event);
     let { fullMessage, chatType, username, rank, guildRank, message, color = 1752220 } = event;
 
-    const mode = chatType === "Debug" ? this.app.config.discord.channels.debugChannelMessageMode.toLowerCase() : this.app.config.discord.other.messageMode.toLowerCase();
+    const mode =
+      chatType === "Debug"
+        ? this.Application.config.discord.channels.debugChannelMessageMode.toLowerCase()
+        : this.Application.config.discord.other.messageMode.toLowerCase();
     message = ["text"].includes(mode) ? fullMessage : message;
 
     if (fullMessage === undefined || chatType === undefined || username === undefined || rank === undefined || guildRank === undefined || message === undefined) {
@@ -87,7 +87,7 @@ class DiscordManager extends CommunicationBridge {
       console.broadcast(`${username} [${guildRank.replace(/§[0-9a-fk-or]/g, "").replace(/^\[|\]$/g, "")}]: ${message}`, "Discord");
     }
 
-    if (mode === "minecraft") message = ReplaceVariables(this.app.config.discord.other.messageFormat, { chatType, username, rank, guildRank, message });
+    if (mode === "minecraft") message = ReplaceVariables(this.Application.config.discord.other.messageFormat, { chatType, username, rank, guildRank, message });
     const channel = await this.stateHandler.getChannel(chatType);
     if (channel === null || !channel.isSendable()) return console.error(`Channel "${chatType.replace(/§[0-9a-fk-or]/g, "").trim()}" not found!`);
 
@@ -166,7 +166,7 @@ class DiscordManager extends CommunicationBridge {
     const channel = await this.stateHandler.getChannel(chatType);
     if (channel === null || !channel.isSendable()) return console.error(`Channel "${chatType.replace(/§[0-9a-fk-or]/g, "").trim()}" not found!`);
 
-    switch (this.app.config.discord.other.messageMode.toLowerCase()) {
+    switch (this.Application.config.discord.other.messageMode.toLowerCase()) {
       case "bot":
         await channel.send({ embeds: [new Embed().setColor(color).setAuthor({ name: message, iconURL: `https://www.mc-heads.net/avatar/${username}` })] });
         break;

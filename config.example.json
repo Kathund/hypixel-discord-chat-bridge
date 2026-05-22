@@ -3,9 +3,9 @@
   "minecraft": {
     "bot": { "prefix": "!", "messageFormat": "{username} » {message}", "messageRepeatBypassLength": 24 },
     "commands": { "normal": true, "soopy": true },
-    "fragBot": { "enabled": true, "whitelist": false, "whitelisted": [], "blacklist": false, "blacklisted": [] },
+    "fragBot": { "enabled": true, "whitelist": false, "whitelisted": ["EXAMPLE"], "blacklist": false, "blacklisted": ["EXAMPLE"] },
     "API": { "hypixelAPIkey": "HYPIXEL_API_KEY", "imgurAPIkey": "IMGUR_API_KEY" },
-    "guildRequirements": { "enabled": false, "autoAccept": false, "requiredToHave": 1, "requirements": {} },
+    "guildRequirements": { "enabled": false, "autoAccept": false, "requiredToHave": 1, "requirements": { "bedwarsStar": 10 } },
     "skyblockEventsNotifications": {
       "enabled": true,
       "notifiers": {
@@ -53,7 +53,11 @@
   "verification": {
     "enabled": false,
     "nickname": { "enabled": true, "nickname": "{username}", "removeCommas": false },
-    "roles": { "verified": { "enabled": false, "roleId": "" }, "guildMember": { "enabled": false, "roleId": "" }, "custom": [] },
+    "roles": {
+      "verified": { "enabled": false, "roleId": "" },
+      "guildMember": { "enabled": false, "roleId": "" },
+      "custom": [{ "enabled": true, "roleId": "ROLE_ID", "requirements": [{ "type": "guildRank", "value": "EXAMPLE" }] }]
+    },
     "autoRoleUpdater": { "enabled": false, "interval": 24 },
     "inactivity": { "enabled": false, "channel": "INACTIVITY_LOG_CHANNEL", "maxInactivityTime": 30 }
   },

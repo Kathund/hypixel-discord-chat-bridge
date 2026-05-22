@@ -5,21 +5,16 @@ import type Command from "../Private/Command.js";
 import type MinecraftManager from "../MinecraftManager.js";
 
 class CommandHandler {
-  private readonly minecraft: MinecraftManager;
   private readonly commands: Collection<string, Command> = new Collection<string, Command>();
-  readonly prefix: string;
-  constructor(minecraft: MinecraftManager) {
-    this.minecraft = minecraft;
-    this.prefix = this.minecraft.app.config.minecraft.bot.prefix;
-  }
+  constructor(private readonly minecraft: MinecraftManager) {}
 
   handle(player: string, message: string, officer: boolean) {
     if (!this.minecraft.isBotOnline()) return;
-    if (!message.startsWith(this.prefix) && !message.startsWith("-")) return;
+    if (!message.startsWith(this.minecraft.Application.config.minecraft.bot.prefix) && !message.startsWith("-")) return;
 
-    if (message.startsWith(this.prefix)) {
-      if (this.minecraft.app.config.minecraft.commands.normal === false) return;
-      const args = message.slice(this.prefix.length).trim().split(/ +/);
+    if (message.startsWith(this.minecraft.Application.config.minecraft.bot.prefix)) {
+      if (this.minecraft.Application.config.minecraft.commands.normal === false) return;
+      const args = message.slice(this.minecraft.Application.config.minecraft.bot.prefix.length).trim().split(/ +/);
       if (!args) return;
       const commandName = args.shift() ?? "".toLowerCase();
       const command = this.commands.get(commandName) ?? this.commands.find((cmd) => cmd.data.getAliases() && cmd.data.getAliases().includes(commandName));
@@ -28,7 +23,7 @@ class CommandHandler {
       command.officer = officer;
       command.execute(player, message);
     } else if (message.startsWith("-") && message.startsWith("- ") === false) {
-      if (this.minecraft.app.config.minecraft.commands.soopy === false || message.at(1) === "-") return;
+      if (this.minecraft.Application.config.minecraft.commands.soopy === false || message.at(1) === "-") return;
 
       const command = message.slice(1).split(" ")[0];
       if (!command) return;
