@@ -6,5 +6,4 @@ allow modes to be inputed in duels command
 port web
 port tests
 port inactivity
-port stat channels
 port cron scripts

@@ -29,6 +29,7 @@ class CommandHandler {
       const checks: Array<[boolean, string]> = [
         [command.flags.includes(CommandFlags.GuildMemberOnly) && !isGuildMember, "You don't have permission to use this command."],
         [command.flags.includes(CommandFlags.StaffOnly) && !isStaffMember, "You don't have permission to use this command."],
+        [command.flags.includes(CommandFlags.StatChannelsCommand) && !this.discord.Application.config.statsChannels.enabled, 'Stat Channel Commands are disbled.'],
         [command.flags.includes(CommandFlags.VerifiedOnly) && !isVerifiedMember, "You don't have permission to use this command."],
         [command.flags.includes(CommandFlags.VerificationCommand) && !this.discord.Application.config.verification.enabled, 'Verification commands are disabled.'],
         [
@@ -58,6 +59,9 @@ class CommandHandler {
     for (const file of commandFiles) {
       const command: Command = new (await import(`../Commands/${file}`)).default(this.discord);
       if (command.data.name) {
+        if (command.flags.includes(CommandFlags.StatChannelsCommand) && !this.discord.Application.config.statsChannels.enabled) continue;
+        if (command.flags.includes(CommandFlags.VerificationCommand) && !this.discord.Application.config.verification.enabled) continue;
+
         commands.push(command.data.toJSON());
         this.discord.client.commands.set(command.data.name, command);
       }

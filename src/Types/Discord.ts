@@ -13,6 +13,7 @@ export enum CommandFlags {
   GuildMemberOnly,
   RequiresMinecraftBot,
   StaffOnly,
+  StatChannelsCommand,
   VerificationCommand,
   VerifiedOnly
 }
