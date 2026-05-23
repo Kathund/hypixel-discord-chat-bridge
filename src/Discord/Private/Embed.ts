@@ -19,8 +19,6 @@ export class BasicEmbed extends EmbedBuilder {
 export default class Embed extends BasicEmbed {
   constructor() {
     super();
-    this.setTimestamp();
-    this.setColor(3447003);
     this.setDevFooter('DuckySoLucky');
   }
 }
