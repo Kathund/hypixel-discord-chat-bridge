@@ -18,9 +18,9 @@ class MuteCommand extends Command<DiscordManagerWithBot> {
 
   override async execute(interaction: ChatInputCommandInteraction): Promise<void> {
     const username = interaction.options.getString('username');
-    if (!username) throw new HypixelDiscordChatBridgeError('The \`username\` option is missing?');
+    if (!username) throw new HypixelDiscordChatBridgeError('The `username` option is missing?');
     const time = interaction.options.getString('time');
-    if (!time) throw new HypixelDiscordChatBridgeError('The \`time\` option is missing?');
+    if (!time) throw new HypixelDiscordChatBridgeError('The `time` option is missing?');
     this.discord.Application.minecraft.bot.chat(`/g mute ${username} ${time}`);
     await interaction.followUp({ embeds: [new SuccessEmbed().setDescription(`Successfully muted **${username}** for ${time}.`)] });
   }

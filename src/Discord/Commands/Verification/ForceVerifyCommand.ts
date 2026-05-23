@@ -18,7 +18,7 @@ class ForceVerify extends Command<DiscordManagerWithBot> {
 
   override async execute(interaction: ChatInputCommandInteraction): Promise<void> {
     const user = interaction.options.getUser('user');
-    if (!user) throw new HypixelDiscordChatBridgeError('The \`user\` option is missing?');
+    if (!user) throw new HypixelDiscordChatBridgeError('The `user` option is missing?');
     const verifyCommand = new VerifyCommand(this.discord);
     verifyCommand.isSelf = false;
     verifyCommand.discordId = user.id;

@@ -17,7 +17,7 @@ class ExecuteCommand extends Command<DiscordManagerWithBot> {
 
   override async execute(interaction: ChatInputCommandInteraction): Promise<void> {
     const command = interaction.options.getString('command');
-    if (!command) throw new HypixelDiscordChatBridgeError('The \`command\` option is missing?');
+    if (!command) throw new HypixelDiscordChatBridgeError('The `command` option is missing?');
     this.discord.Application.minecraft.bot.chat(`/${command}`);
     await interaction.followUp({ embeds: [new SuccessEmbed().setDescription(`Successfully executed \`/${command}\``)] });
   }

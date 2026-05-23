@@ -17,7 +17,7 @@ class UnmuteCommand extends Command<DiscordManagerWithBot> {
 
   override async execute(interaction: ChatInputCommandInteraction): Promise<void> {
     const username = interaction.options.getString('username');
-    if (!username) throw new HypixelDiscordChatBridgeError('The \`username\` option is missing?');
+    if (!username) throw new HypixelDiscordChatBridgeError('The `username` option is missing?');
     this.discord.Application.minecraft.bot.chat(`/g unmute ${username}`);
     await interaction.followUp({ embeds: [new SuccessEmbed().setDescription(`Successfully unmuted **${username}**.`)] });
   }

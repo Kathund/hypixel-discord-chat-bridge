@@ -18,9 +18,9 @@ class KickCommand extends Command<DiscordManagerWithBot> {
 
   override async execute(interaction: ChatInputCommandInteraction): Promise<void> {
     const username = interaction.options.getString('username');
-    if (!username) throw new HypixelDiscordChatBridgeError('The \`username\` option is missing?');
+    if (!username) throw new HypixelDiscordChatBridgeError('The `username` option is missing?');
     const reason = interaction.options.getString('reason');
-    if (!reason) throw new HypixelDiscordChatBridgeError('The \`reason\` option is missing?');
+    if (!reason) throw new HypixelDiscordChatBridgeError('The `reason` option is missing?');
     this.discord.Application.minecraft.bot.chat(`/g kick ${username} ${reason}`);
     await interaction.followUp({ embeds: [new SuccessEmbed().setDescription(`Successfully kicked \`${username}\` from the guild.`)] });
   }

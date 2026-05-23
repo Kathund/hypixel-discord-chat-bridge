@@ -9,8 +9,8 @@ import { getPlayer } from '../../../Utils/HypixelUtils.js';
 import type { ChatInputCommandInteraction } from 'discord.js';
 
 class VerifyCommand extends Command<DiscordManagerWithBot> {
-  discordId: string | null;
-  isSelf: boolean;
+  discordId: string | null = null;
+  isSelf: boolean = false;
   constructor(discord: DiscordManagerWithBot) {
     super(discord);
     this.data = new CommandData()
@@ -18,8 +18,6 @@ class VerifyCommand extends Command<DiscordManagerWithBot> {
       .setDescription('Connect your Discord account to Minecraft')
       .addStringOption((option) => option.setName('username').setDescription('Minecraft Username').setRequired(true));
     this.flags = [CommandFlags.RequiresMinecraftBot, CommandFlags.VerificationCommand];
-    this.discordId = null;
-    this.isSelf = false;
   }
 
   override async execute(interaction: ChatInputCommandInteraction): Promise<void> {
@@ -28,6 +26,10 @@ class VerifyCommand extends Command<DiscordManagerWithBot> {
       this.discordId = interaction.user.id;
     }
 
+    if (!interaction.guild || !this.discordId) throw new HypixelDiscordChatBridgeError('Please run this command inside of a guild');
+    const discordUser = await interaction.guild.members.fetch(this.discordId).catch((e) => console.error(e));
+    if (!discordUser) throw new HypixelDiscordChatBridgeError("This discord user doesn't exist")
+
     const linkedUser = this.discord.Application.linked.getUserByDiscordId(this.discordId);
     if (linkedUser !== undefined) {
       await interaction.followUp({ embeds: [new ErrorEmbed().setDescription('User is verified\nPlease use /unverify first').setDevFooter('Kathund')] });
@@ -35,16 +37,16 @@ class VerifyCommand extends Command<DiscordManagerWithBot> {
     }
 
     const username = interaction.options.getString('username');
-    if (!username) throw new HypixelDiscordChatBridgeError('The \`username\` option is missing?');
+    if (!username) throw new HypixelDiscordChatBridgeError('The `username` option is missing?');
     const { socialMedia, nickname, uuid } = await getPlayer(username);
 
-    if (!this.isSelf) {
+    if (this.isSelf) {
       const discordUsername = socialMedia.discord;
       if (!discordUsername) {
         throw new HypixelDiscordChatBridgeError(`The player '${nickname}' has not linked their Discord account. Please follow the instructions below.`);
       }
 
-      if (discordUsername.toLowerCase() !== interaction.user.username) {
+      if (discordUsername.toLowerCase() !== discordUser.user.username) {
         throw new HypixelDiscordChatBridgeError(
           `The player '${nickname}' has linked their Discord account to a different account ('${discordUsername}'). Please follow the instructions below.`
         );

@@ -86,7 +86,7 @@ class LinkedManager {
     if (!player) throw new HypixelDiscordChatBridgeError('Failed to fetch Player data');
     if (!skyblock) throw new HypixelDiscordChatBridgeError('Failed to fetch SkyBlock data');
 
-    const networth = await getNetWorth(skyblock);
+    const networth = await getNetWorth(skyblock).catch(() => null);
     const profile: SkyBlockMember = skyblock.me;
     const guildMember = hypixelGuild.members.find((m) => m.uuid === uuid);
 
@@ -206,8 +206,8 @@ class LinkedManager {
       duelsWLRatio: player.stats.Duels.WLR,
       duelsPlayedGames: player.stats.Duels.playedGames,
 
-      skyblockBank: networth.bank,
-      skyblockPurse: networth.purse,
+      skyblockBank: networth?.bank ?? 0,
+      skyblockPurse: networth?.purse ?? 0,
       skyblockLevel: profile.leveling.level,
 
       skyblockSkillsAverageLevel: profile.playerData.skills.average,
@@ -285,35 +285,35 @@ class LinkedManager {
       skyblockCrimsonIsleKuudraFiery: profile.crimsonIsle.kuudra.fieryCompletions,
       skyblockCrimsonIsleKuudraInfernal: profile.crimsonIsle.kuudra.infernalCompletions,
 
-      skyblockNetworth: networth.networth,
-      skyblockNetwrothArmor: networth.types.armor.total,
-      skyblockNetwrothEquipment: networth.types.equipment.total,
-      skyblockNetwrothWardrobe: networth.types.wardrobe.total,
-      skyblockNetwrothInventory: networth.types.inventory.total,
-      skyblockNetwrothEnderchest: networth.types.enderchest.total,
-      skyblockNetwrothAccessories: networth.types.accessories.total,
-      skyblockNetwrothPersonalVault: networth.types.personal_vault.total,
-      skyblockNetwrothFishingBag: networth.types.fishing_bag.total,
-      skyblockNetwrothStorage: networth.types.storage.total,
-      skyblockNetwrothMuseum: networth.types.museum.total,
-      skyblockNetwrothSacks: networth.types.sacks.total,
-      skyblockNetwrothEssence: networth.types.essence.total,
-      skyblockNetwrothPets: networth.types.pets.total,
+      skyblockNetworth: networth?.networth ?? 0,
+      skyblockNetwrothArmor: networth?.types?.armor?.total ?? 0,
+      skyblockNetwrothEquipment: networth?.types?.equipment?.total ?? 0,
+      skyblockNetwrothWardrobe: networth?.types?.wardrobe?.total ?? 0,
+      skyblockNetwrothInventory: networth?.types?.inventory?.total ?? 0,
+      skyblockNetwrothEnderchest: networth?.types?.enderchest?.total ?? 0,
+      skyblockNetwrothAccessories: networth?.types?.accessories?.total ?? 0,
+      skyblockNetwrothPersonalVault: networth?.types?.personal_vault?.total ?? 0,
+      skyblockNetwrothFishingBag: networth?.types?.fishing_bag?.total ?? 0,
+      skyblockNetwrothStorage: networth?.types?.storage?.total ?? 0,
+      skyblockNetwrothMuseum: networth?.types?.museum?.total ?? 0,
+      skyblockNetwrothSacks: networth?.types?.sacks?.total ?? 0,
+      skyblockNetwrothEssence: networth?.types?.essence?.total ?? 0,
+      skyblockNetwrothPets: networth?.types?.pets?.total ?? 0,
 
-      skyblockNetworthNetworthUnsoulbound: networth.unsoulboundNetworth,
-      skyblockNetwrothArmorUnsoulbound: networth.types.armor.unsoulboundTotal,
-      skyblockNetwrothEquipmentUnsoulbound: networth.types.equipment.unsoulboundTotal,
-      skyblockNetwrothWardrobeUnsoulbound: networth.types.wardrobe.unsoulboundTotal,
-      skyblockNetwrothInventoryUnsoulbound: networth.types.inventory.unsoulboundTotal,
-      skyblockNetwrothEnderchestUnsoulbound: networth.types.enderchest.unsoulboundTotal,
-      skyblockNetwrothAccessoriesUnsoulbound: networth.types.accessories.unsoulboundTotal,
-      skyblockNetwrothPersonalVaultUnsoulbound: networth.types.personal_vault.unsoulboundTotal,
-      skyblockNetwrothFishingBagUnsoulbound: networth.types.fishing_bag.unsoulboundTotal,
-      skyblockNetwrothStorageUnsoulbound: networth.types.storage.unsoulboundTotal,
-      skyblockNetwrothMuseumUnsoulbound: networth.types.museum.unsoulboundTotal,
-      skyblockNetwrothSacksUnsoulbound: networth.types.sacks.unsoulboundTotal,
-      skyblockNetwrothEssenceUnsoulbound: networth.types.essence.unsoulboundTotal,
-      skyblockNetwrothPetsUnsoulbound: networth.types.pets.unsoulboundTotal,
+      skyblockNetworthNetworthUnsoulbound: networth?.unsoulboundNetworth ?? 0,
+      skyblockNetwrothArmorUnsoulbound: networth?.types?.armor?.unsoulboundTotal ?? 0,
+      skyblockNetwrothEquipmentUnsoulbound: networth?.types?.equipment?.unsoulboundTotal ?? 0,
+      skyblockNetwrothWardrobeUnsoulbound: networth?.types?.wardrobe?.unsoulboundTotal ?? 0,
+      skyblockNetwrothInventoryUnsoulbound: networth?.types?.inventory?.unsoulboundTotal ?? 0,
+      skyblockNetwrothEnderchestUnsoulbound: networth?.types?.enderchest?.unsoulboundTotal ?? 0,
+      skyblockNetwrothAccessoriesUnsoulbound: networth?.types?.accessories?.unsoulboundTotal ?? 0,
+      skyblockNetwrothPersonalVaultUnsoulbound: networth?.types?.personal_vault?.unsoulboundTotal ?? 0,
+      skyblockNetwrothFishingBagUnsoulbound: networth?.types?.fishing_bag?.unsoulboundTotal ?? 0,
+      skyblockNetwrothStorageUnsoulbound: networth?.types?.storage?.unsoulboundTotal ?? 0,
+      skyblockNetwrothMuseumUnsoulbound: networth?.types?.museum?.unsoulboundTotal ?? 0,
+      skyblockNetwrothSacksUnsoulbound: networth?.types?.sacks?.unsoulboundTotal ?? 0,
+      skyblockNetwrothEssenceUnsoulbound: networth?.types?.essence?.unsoulboundTotal ?? 0,
+      skyblockNetwrothPetsUnsoulbound: networth?.types?.pets?.unsoulboundTotal ?? 0,
 
       skyblockChocolateFactoryLevel: profile.chocolateFactory.prestige,
       skyblockChocolateFactoryChocolateCurrent: profile.chocolateFactory.currentChocolate,
