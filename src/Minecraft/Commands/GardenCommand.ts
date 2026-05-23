@@ -15,6 +15,7 @@ class GardenCommand extends Command {
       .setName('garden')
       .setDescription('Skyblock Garden Stats of specified user.')
       .setOptions([new CommandDataOption().setName('username').setDescription('Minecraft Username')]);
+    // prettier-ignore
     this.keyRemap = { 'Nether Wart': 'Wart', 'Sugar Cane': 'Cane', 'Sun Flower': 'SF', 'Wild Rose': 'WR', 'Cocoa Beans': 'Cocoa', Average: 'Avg' };
   }
 
