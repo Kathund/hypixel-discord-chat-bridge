@@ -25,6 +25,11 @@ class LinkedUser {
     return this.linked.writeLinkedUsersParsed(linked);
   }
 
+  private getLinkedRoles(): string[] {
+    const verificationRoles = this.linked.Application.config.verification.roles;
+    return [verificationRoles.verified.roleId, verificationRoles.guildMember.roleId, ...verificationRoles.custom.flatMap((r) => r.roleId)];
+  }
+
   async reset(): Promise<void> {
     if (!this.linked.Application.minecraft.isBotOnline()) return;
     if (!this.linked.Application.discord.isClientOnline()) return;
@@ -34,11 +39,7 @@ class LinkedUser {
       const member = await this.linked.Application.discord.guild.members.fetch(this.discordId);
       if (!member) return;
       if (this.linked.Application.config.verification.nickname.enabled && member.nickname) await member.setNickname(null);
-      const verificationRoles = this.linked.Application.config.verification.roles;
-      const roles = [verificationRoles.guildMember.roleId, ...verificationRoles.custom.flatMap((r) => r.roleId)];
-      for (const role of roles) {
-        if (member.roles.cache.has(role)) await member.roles.remove(role, 'Updated Roles');
-      }
+      await member.roles.remove(this.getLinkedRoles(), 'Updated Roles');
     } catch (error) {
       console.error(`Failed to completely clean up roles for ${this.discordId}:`, error);
     }
@@ -72,7 +73,6 @@ class LinkedUser {
 
     const verificationRoles = this.linked.Application.config.verification.roles;
     const rolesToAdd: string[] = [];
-    const rolesToRemove: string[] = [];
 
     if (verificationRoles.verified.enabled) rolesToAdd.push(verificationRoles.verified.roleId);
     const hypixelGuild = await this.linked.Application.getBotGuild();
@@ -88,8 +88,6 @@ class LinkedUser {
           .includes(guildMember.rank)
       );
       if (guildRank && guildRank.enabled !== false) rolesToAdd.push(guildRank.roleId);
-    } else if (verificationRoles.guildMember.enabled) {
-      rolesToRemove.push(verificationRoles.guildMember.roleId);
     }
 
     if (verificationRoles.custom.length > 0) {
@@ -112,7 +110,7 @@ class LinkedUser {
 
     await member.roles.add(rolesToAdd, 'Updated Roles');
     await member.roles.remove(
-      [verificationRoles.guildMember.roleId, ...verificationRoles.custom.flatMap((r) => r.roleId), ...rolesToRemove].filter((role) => !rolesToAdd.includes(role)),
+      this.getLinkedRoles().filter((role) => !rolesToAdd.includes(role)),
       'Updated Roles'
     );
     return this;

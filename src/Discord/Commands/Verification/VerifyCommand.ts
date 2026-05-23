@@ -28,7 +28,7 @@ class VerifyCommand extends Command<DiscordManagerWithBot> {
 
     if (!interaction.guild || !this.discordId) throw new HypixelDiscordChatBridgeError('Please run this command inside of a guild');
     const discordUser = await interaction.guild.members.fetch(this.discordId).catch((e) => console.error(e));
-    if (!discordUser) throw new HypixelDiscordChatBridgeError("This discord user doesn't exist")
+    if (!discordUser) throw new HypixelDiscordChatBridgeError("This discord user doesn't exist");
 
     const linkedUser = this.discord.Application.linked.getUserByDiscordId(this.discordId);
     if (linkedUser !== undefined) {

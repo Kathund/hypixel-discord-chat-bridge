@@ -2,7 +2,7 @@ import Command from '../../Private/Commands/Command.js';
 import CommandData from '../../Private/Commands/CommandData.js';
 import HypixelDiscordChatBridgeError from '../../../Private/Error.js';
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, type ChatInputCommandInteraction } from 'discord.js';
-import { CommandFlags, type DiscordManagerWithClient } from '../../../Types/Discord.js';
+import { CommandFlags, CommandResponse, type DiscordManagerWithClient } from '../../../Types/Discord.js';
 import { SuccessEmbed } from '../../Private/Embed.js';
 
 class LinkedCommand extends Command {
@@ -14,6 +14,7 @@ class LinkedCommand extends Command {
       .addUserOption((option) => option.setName('user').setDescription('Discord Username'))
       .addStringOption((option) => option.setName('username').setDescription('Minecraft Username'));
     this.flags = [CommandFlags.StaffOnly, CommandFlags.VerificationCommand];
+    this.response = CommandResponse.Ephemeral;
   }
 
   override async execute(interaction: ChatInputCommandInteraction) {
@@ -23,7 +24,7 @@ class LinkedCommand extends Command {
     if (user && username) throw new HypixelDiscordChatBridgeError('You cannot specify both user and username.');
     const linkedUser = username ? await this.discord.Application.linked.getUserByUsername(username) : this.discord.Application.linked.getUserByDiscordId(user!.id);
     if (!linkedUser) throw new HypixelDiscordChatBridgeError('User is not verified');
-    const [{ uuid, nickname, rank }, guildMember] = await Promise.all([linkedUser.getHypixelPlayer(), linkedUser.isUserInHypixelGuild()]);
+    const [{ uuid, nickname, formattedNickname }, guildMember] = await Promise.all([linkedUser.getHypixelPlayer(), linkedUser.isUserInHypixelGuild()]);
 
     let buttons: ButtonBuilder[];
     if (guildMember) {
@@ -40,9 +41,6 @@ class LinkedCommand extends Command {
       buttons = [new ButtonBuilder().setCustomId('inviteUser').setLabel('Invite').setStyle(ButtonStyle.Success)];
     }
 
-    // Reborn will be getting this in next update
-    const formattedUsername = rank ? `[${rank}] ${nickname}` : nickname;
-
     await interaction.followUp({
       embeds: [
         new SuccessEmbed()
@@ -51,12 +49,18 @@ class LinkedCommand extends Command {
             { name: 'Discord ID', value: `\`\`\`${linkedUser.discordId}\`\`\`` },
             { name: 'UUID', value: `\`\`\`${uuid}\`\`\`` },
             { name: 'Username', value: `\`\`\`${nickname}\`\`\`` },
-            { name: 'Formatted Username', value: `\`\`\`${formattedUsername}\`\`\`` },
+            { name: 'Formatted Username', value: `\`\`\`${formattedNickname}\`\`\`` },
             { name: 'Is in Guild', value: guildMember ? ':white_check_mark: Yes' : ':x: No' }
           )
           .setDevFooter('Kathund')
       ],
-      components: [new ActionRowBuilder<ButtonBuilder>().addComponents(buttons)]
+      components: [
+        new ActionRowBuilder<ButtonBuilder>().addComponents(buttons),
+        new ActionRowBuilder<ButtonBuilder>().addComponents(
+          new ButtonBuilder().setCustomId('unverifyUser').setLabel('Force Unverify User').setStyle(ButtonStyle.Danger),
+          new ButtonBuilder().setCustomId('updateUser').setLabel('Force Update User').setStyle(ButtonStyle.Success)
+        )
+      ]
     });
   }
 }

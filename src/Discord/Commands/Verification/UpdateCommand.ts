@@ -1,10 +1,10 @@
 import Command from '../../Private/Commands/Command.js';
 import CommandData from '../../Private/Commands/CommandData.js';
+import HypixelDiscordChatBridgeError from '../../../Private/Error.js';
 import MowojangAPI from '../../../Private/MowojangAPI.js';
 import { CommandFlags, type DiscordManagerWithBot } from '../../../Types/Discord.js';
 import { SuccessEmbed } from '../../Private/Embed.js';
 import type { ChatInputCommandInteraction } from 'discord.js';
-import HypixelDiscordChatBridgeError from '../../../Private/Error.js';
 
 class UpdateCommand extends Command<DiscordManagerWithBot> {
   discordId: string | null;
