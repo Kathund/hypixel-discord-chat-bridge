@@ -41,8 +41,19 @@ export type ApplicationWithClient = Application & { discord: DiscordManagerWithC
 export type ApplicationWithBot = Application & { minecraft: MinecraftManagerWithBot };
 export type ApplicationWithClientBot = Application & { discord: DiscordManagerWithClient; minecraft: MinecraftManagerWithBot };
 
-export type CommonDev = 'DuckySoLucky' | 'Kathund';
-export interface CommonDevData {
+export type Devs = 'DuckySoLucky' | 'Kathund' | 'GeorgeFilos' | 'Zickles';
+export const DevTypes = ['Maintainer', 'Contributor'] as const;
+export type DevType = (typeof DevTypes)[number];
+export interface Dev {
   username: string;
-  iconURL?: string;
+  github?: string;
+  id: string;
+  iconURL: string;
+  type: DevType;
+}
+
+export interface MiscCredit {
+  name: string;
+  description: string;
+  link: string;
 }

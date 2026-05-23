@@ -12,9 +12,11 @@ class RestartCommand extends Command {
   }
 
   override async execute(interaction: ChatInputCommandInteraction): Promise<void> {
-    await interaction.followUp({ embeds: [new Embed().setTitle('Restarting...').setDescription('The bot is restarting. This might take few seconds.')] });
+    await interaction.followUp({
+      embeds: [new Embed().setTitle('Restarting...').setDescription('The bot is restarting. This might take few seconds.').setDevFooter('GeorgeFilos')]
+    });
     this.discord.Application.stop().then(() => this.discord.Application.connect());
-    await interaction.followUp({ embeds: [new Embed().setTitle('Success').setDescription('The bot has been restarted successfully.')] });
+    await interaction.followUp({ embeds: [new Embed().setTitle('Success').setDescription('The bot has been restarted successfully.').setDevFooter('GeorgeFilos')] });
   }
 }
 

@@ -539,13 +539,10 @@ If you think that message format is boring, you can check out my repository for 
 
 ## Credits
 
+- [discord.js](https://discord.js.org)
+- [mineflayer](https://prismarinejs.github.io/mineflayer)
+- [Hypixel API](http://api.hypixel.net)
 - [Hypixel API Reborn](https://github.com/Hypixel-API-Reborn/hypixel-api-reborn)
-- [SkyHelper API](https://github.com/Altpapier/SkyHelperAPI)
-- [Mowojang API](https://mowojang.matdoes.dev/)
-- [Hypixel API](http://api.hypixel.net/)
-- [Altpapier](https://github.com/altpapier/hypixel-discord-guild-bridge/)
-- [SkyCrypt](https://github.com/SkyCryptWebsite/SkyCrypt)
-- [Senither](https://github.com/Senither)
-- [Pixelicc](https://github.com/Pixelicc)
-- [DawJaw](https://dawjaw.net/jacobs)
-- [Soopy](https://soopy.dev/)
+- [Mowojang API](https://mowojang.matdoes.dev)
+- [DawJaw](https://dawjaw.net)
+- [Soopy](https://soopy.dev)

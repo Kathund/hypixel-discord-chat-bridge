@@ -1,6 +1,6 @@
 import { CommonDevs } from '../../Private/Constants.js';
 import { EmbedBuilder } from 'discord.js';
-import type { CommonDev } from '../../Types/Misc.js';
+import type { Devs } from '../../Types/Misc.js';
 
 export class BasicEmbed extends EmbedBuilder {
   constructor() {
@@ -9,7 +9,7 @@ export class BasicEmbed extends EmbedBuilder {
     this.setTimestamp();
   }
 
-  setDevFooter(dev: CommonDev): this {
+  setDevFooter(dev: Devs): this {
     const { username, iconURL } = CommonDevs[dev];
     this.setFooter({ text: `by @${username} | /help [command] for more information`, iconURL });
     return this;
