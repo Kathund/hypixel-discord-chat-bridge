@@ -3,13 +3,14 @@ import CommandData from '../../Private/Commands/CommandData.js';
 import Embed from '../../Private/Embed.js';
 import HypixelDiscordChatBridgeError from '../../../Private/Error.js';
 import { CommandFlags, type DiscordManagerWithBot, type ListMembers, type ListMembersGroup } from '../../../Types/Discord.js';
+import { RemoveColorCodes } from '../../../Utils/StringUtils.js';
 import type { ChatInputCommandInteraction } from 'discord.js';
 import type { ChatMessage } from 'prismarine-chat';
 
-class OnlineCommand extends Command<DiscordManagerWithBot> {
+class ListCommand extends Command<DiscordManagerWithBot> {
   constructor(discord: DiscordManagerWithBot) {
     super(discord);
-    this.data = new CommandData().setName('online').setDescription('List of online members.');
+    this.data = new CommandData().setName('list').setDescription('List of guild members.');
     this.flags = [CommandFlags.RequiresMinecraftBot];
   }
 
@@ -18,16 +19,16 @@ class OnlineCommand extends Command<DiscordManagerWithBot> {
       const cachedMessages: string[] = [];
       const listener = (rawMessage: ChatMessage) => {
         const message = rawMessage.toString();
-        cachedMessages.push(message);
+        cachedMessages.push(rawMessage.toMotd());
 
-        if (message.startsWith('Offline Members')) {
+        if (message.startsWith('Online Members')) {
           this.discord.Application.minecraft.bot.removeListener('message', listener);
           resolve(cachedMessages);
         }
       };
 
       this.discord.Application.minecraft.bot.on('message', listener);
-      this.discord.Application.minecraft.bot.chat('/g online');
+      this.discord.Application.minecraft.bot.chat('/g list');
 
       setTimeout(() => {
         this.discord.Application.minecraft.bot.removeListener('message', listener);
@@ -36,16 +37,16 @@ class OnlineCommand extends Command<DiscordManagerWithBot> {
     });
   }
 
-  async getOnlineMembers(): Promise<ListMembers> {
+  async getListMembers(): Promise<ListMembers> {
     const messages = await this.getMessages();
-    if (messages.length === 0) throw new HypixelDiscordChatBridgeError('Could not retrieve the guild online.');
+    if (messages.length === 0) throw new HypixelDiscordChatBridgeError('Could not retrieve the guild list.');
 
-    let onlineString = messages.find((message) => message.startsWith('Online Members: '));
+    let onlineString = messages.map((message) => RemoveColorCodes(message)).find((message) => message.startsWith('Online Members: '));
     if (onlineString === undefined) throw new HypixelDiscordChatBridgeError("The online members message is missing. Is the bot's hypixel language english?");
     const online = Number(onlineString.split('Online Members: ')?.[1] || '0');
     onlineString = `**Online:** ${online}`;
 
-    let totalString = messages.find((message) => message.startsWith('Total Members: '));
+    let totalString = messages.map((message) => RemoveColorCodes(message)).find((message) => message.startsWith('Total Members: '));
     if (totalString === undefined) throw new HypixelDiscordChatBridgeError("The total members message is missing. Is the bot's hypixel language english?");
     const total = Number(totalString.split('Total Members: ')?.[1] || '0');
     totalString = `**Total:** ${total}`;
@@ -56,9 +57,15 @@ class OnlineCommand extends Command<DiscordManagerWithBot> {
       const nextLine = messages[index + 1];
       if (!nextLine) return;
       if (!nextLine.includes('●')) return;
-      const rank = item.replaceAll('--', '').trim();
+      const rank = RemoveColorCodes(item.replaceAll('--', '')).trim();
       const players = nextLine
         .split('●')
+        .map((item) => item.trim())
+        .map((item) => {
+          if (item.endsWith('§a')) return `● ${item}`;
+          return item;
+        })
+        .map((item) => RemoveColorCodes(item))
         .map((item) => item.trim())
         .filter((item) => item);
       if (rank === undefined || players === undefined) return;
@@ -69,9 +76,9 @@ class OnlineCommand extends Command<DiscordManagerWithBot> {
   }
 
   override async execute(interaction: ChatInputCommandInteraction) {
-    const { groups, totalString, onlineString } = await this.getOnlineMembers();
-    await interaction.followUp({ embeds: [new Embed().setTitle('Online Members').setDescription(`${totalString}\n${onlineString}`).setFields(groups)] });
+    const { groups, totalString, onlineString } = await this.getListMembers();
+    await interaction.followUp({ embeds: [new Embed().setTitle('List Members').setDescription(`${totalString}\n${onlineString}`).setFields(groups)] });
   }
 }
 
-export default OnlineCommand;
+export default ListCommand;

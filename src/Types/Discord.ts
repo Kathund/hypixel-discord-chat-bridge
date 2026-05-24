@@ -34,17 +34,17 @@ export type DiscordManagerWithClient = DiscordManager & { client: Client };
 export type DiscordManagerWithGuild = DiscordManagerWithClient & { guild: Guild };
 export type DiscordManagerWithBot = DiscordManagerWithClient & { Application: { minecraft: MinecraftManagerWithBot } };
 
-export interface OnlineMembersGroup {
+export interface ListMembersGroup {
   name: string;
   value: string;
 }
 
-export interface OnlineMembers {
+export interface ListMembers {
   online: number;
   onlineString: string;
   total: number;
   totalString: string;
-  groups: OnlineMembersGroup[];
+  groups: ListMembersGroup[];
 }
 
 export interface Requirement {

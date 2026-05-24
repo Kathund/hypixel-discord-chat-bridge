@@ -60,3 +60,7 @@ export function FormatNumber(number: number, decimals: number = 2): string {
 
   return `${isNegative ? '-' : ''}${shortNumber}${abbrev[abbrevIndex]}`;
 }
+
+export function RemoveColorCodes(input: string): string {
+  return input.replace(/§./g, '');
+}

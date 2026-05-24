@@ -75,12 +75,12 @@ class Application {
     if (typeof nickname === 'string') this.configFile.verification.nickname = { nickname };
 
     const REQUIREMENT_MAP = {
-      bedwarsStar: 'bedwarsStars',
-      bedwarsFinalKDRatio: 'bedwarsFKDR',
-      skywarsStar: 'skywarsStars',
-      skywarsKDRatio: 'skywarsKDR',
+      bedwarsStars: 'bedwarsStar',
+      bedwarsFKDR: 'bedwarsFinalKDRatio',
+      skywarsStars: 'skywarsStar',
+      skywarsKDR: 'skywarsKDRatio',
       duelsWins: 'duelsWins',
-      duelsWLRatio: 'duelsWLR',
+      duelsWLR: 'duelsWLRatio',
       skyblockLevel: 'skyblockLevel'
     };
 
