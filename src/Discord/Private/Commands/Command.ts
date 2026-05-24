@@ -1,5 +1,6 @@
+import DiscordUtils from '../DiscordUtils.js';
+import { type AutoComplateOption, CommandFlags, CommandResponse, type DiscordManagerWithClient } from '../../../Types/Discord.js';
 import { type AutocompleteInteraction, type ChatInputCommandInteraction } from 'discord.js';
-import { CommandFlags, CommandResponse, type DiscordManagerWithClient } from '../../../Types/Discord.js';
 import type CommandData from './CommandData.js';
 import type DiscordManager from '../../DiscordManager.js';
 
@@ -12,12 +13,30 @@ class Command<T extends DiscordManager = DiscordManagerWithClient> {
     this.response = CommandResponse.Public;
   }
 
-  execute(interaction: ChatInputCommandInteraction): Promise<void> | void {
-    throw new Error('Execute Method not implemented!');
+  async autocomplete(interaction: AutocompleteInteraction) {
+    const focusedOption = interaction.options.getFocused(true);
+    let choices: AutoComplateOption[];
+    switch (focusedOption.name) {
+      case 'guild-member-username': {
+        const members = this.discord.Application.botGuildMembers;
+        if (members === undefined) {
+          choices = [{ name: "No username's cached" }];
+          break;
+        }
+        choices = members.sort((a, b) => a.username.localeCompare(b.username)).map(({ username }) => ({ name: username }));
+        break;
+      }
+      default: {
+        choices = [{ name: 'Something went wrong' }];
+        break;
+      }
+    }
+
+    await interaction.respond(DiscordUtils.ParseAutoComplete(interaction, choices));
   }
 
-  autocomplete(interaction: AutocompleteInteraction): Promise<void> | void {
-    throw new Error('Auto Complete Method not implemented!');
+  execute(interaction: ChatInputCommandInteraction): Promise<void> | void {
+    throw new Error('Execute Method not implemented!');
   }
 }
 

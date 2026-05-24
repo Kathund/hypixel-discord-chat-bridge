@@ -1,3 +1,5 @@
+/update cannot be ran with user's that don't have sb profiles
+
 allow management commands like /kick to return the message that gets added to log
 see bad impl - https://github.com/Kathund/Hypixel-Discord-Guild-Chat-Bridge/blob/main/src/Minecraft/Handlers/MessageHandler.ts#L131-L135
 

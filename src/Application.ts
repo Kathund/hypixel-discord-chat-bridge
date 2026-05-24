@@ -3,12 +3,14 @@ import HypixelAPIReborn from './Private/HypixelAPIReborn.js';
 import HypixelDiscordChatBridgeError from './Private/Error.js';
 import LinkedManager from './Linked/LinkedManager.js';
 import MinecraftManager from './Minecraft/MinecraftManager.js';
+import MowojangAPI from './Private/MowojangAPI.js';
 import config from '../config.json' with { type: 'json' };
 import messages from '../messages.json' with { type: 'json' };
 import { configUpdateMessage, updateMessage } from './Private/Logger.js';
 import { exec } from 'node:child_process';
 import { readFileSync, writeFileSync } from 'node:fs';
 import type { Guild } from 'hypixel-api-reborn';
+import type { ParsedSession } from './Types/MowojangAPI.js';
 
 class Application {
   readonly config: typeof config;
@@ -16,6 +18,8 @@ class Application {
   readonly discord: DiscordManager;
   readonly linked: LinkedManager;
   readonly minecraft: MinecraftManager;
+  botGuild?: Guild;
+  botGuildMembers?: ParsedSession[];
 
   private exampleConfig: Record<string, any>;
   private configFile: Record<string, any>;
@@ -111,11 +115,16 @@ class Application {
 
   async getBotGuild(): Promise<Guild> {
     if (!this.minecraft.isBotOnline()) throw new HypixelDiscordChatBridgeError(this.messages.minecraftBotOffline);
-    return await HypixelAPIReborn.getGuild('player', this.minecraft.bot.username).then((guild) => {
+    this.botGuild = await HypixelAPIReborn.getGuild('player', this.minecraft.bot.username).then((guild) => {
       if (guild === null) throw new HypixelDiscordChatBridgeError('In game Hypixel Guild not found.');
       if (guild.isRaw()) throw new HypixelDiscordChatBridgeError('In game Hypixel Guild not found.');
       return guild;
     });
+    this.botGuildMembers = await MowojangAPI.getSessions(this.botGuild.members.map((member) => member.uuid)).then((data) => {
+      if (data.data === null) return undefined;
+      return data.data.map(({ UUID, username }) => ({ UUID, username }));
+    });
+    return this.botGuild;
   }
 }
 

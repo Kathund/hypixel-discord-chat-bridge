@@ -1,6 +1,6 @@
 import DiscordUtils from '../Private/DiscordUtils.js';
 import HypixelDiscordChatBridgeError from '../../Private/Error.js';
-import { type ChatInputCommandInteraction, Collection, GuildMember, MessageFlags, REST, Routes } from 'discord.js';
+import { type AutocompleteInteraction, type ChatInputCommandInteraction, Collection, GuildMember, MessageFlags, REST, Routes } from 'discord.js';
 import { CommandFlags, CommandResponse } from '../../Types/Discord.js';
 import { readdirSync } from 'node:fs';
 import type Command from '../Private/Commands/Command.js';
@@ -43,6 +43,18 @@ class CommandHandler {
       }
 
       await command.execute(interaction);
+    } catch (error: unknown) {
+      if (error instanceof Error || error instanceof HypixelDiscordChatBridgeError) {
+        this.discord.utils.handleError(error, interaction);
+      }
+    }
+  }
+
+  async onAutoComplete(interaction: AutocompleteInteraction): Promise<void> {
+    const command = interaction.client.commands.get(interaction.commandName);
+    if (!command) return;
+    try {
+      await command.autocomplete(interaction);
     } catch (error: unknown) {
       if (error instanceof Error || error instanceof HypixelDiscordChatBridgeError) {
         this.discord.utils.handleError(error, interaction);

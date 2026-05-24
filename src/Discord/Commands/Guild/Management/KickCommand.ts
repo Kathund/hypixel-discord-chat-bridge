@@ -11,14 +11,14 @@ class KickCommand extends Command<DiscordManagerWithBot> {
     this.data = new CommandData()
       .setName('kick')
       .setDescription('Kicks the given user to the guild.')
-      .addStringOption((option) => option.setName('username').setDescription('Minecraft Username').setRequired(true))
+      .addStringOption((option) => option.setName('guild-member-username').setDescription('Minecraft Username').setRequired(true).setAutocomplete(true))
       .addStringOption((option) => option.setName('reason').setDescription('Reason').setRequired(true));
     this.flags = [CommandFlags.RequiresMinecraftBot, CommandFlags.StaffOnly];
   }
 
   override async execute(interaction: ChatInputCommandInteraction): Promise<void> {
-    const username = interaction.options.getString('username');
-    if (!username) throw new HypixelDiscordChatBridgeError('The `username` option is missing?');
+    const username = interaction.options.getString('guild-member-username');
+    if (!username) throw new HypixelDiscordChatBridgeError('The `guild-member-username` option is missing?');
     const reason = interaction.options.getString('reason');
     if (!reason) throw new HypixelDiscordChatBridgeError('The `reason` option is missing?');
     this.discord.Application.minecraft.bot.chat(`/g kick ${username} ${reason}`);

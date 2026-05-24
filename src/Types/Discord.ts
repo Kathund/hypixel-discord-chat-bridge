@@ -62,3 +62,8 @@ export interface Requirements {
   requirementsPassed: number;
   requirements: Requirement[];
 }
+
+export interface AutoComplateOption {
+  name: string;
+  value?: string;
+}
