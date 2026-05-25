@@ -2,6 +2,7 @@ import CommandHandler from './Handlers/CommandHandler.js';
 import CommunicationBridge from '../Private/CommunicationBridge.js';
 import DiscordUtils from './Private/DiscordUtils.js';
 import Embed, { BasicEmbed, ErrorEmbed } from './Private/Embed.js';
+import EventHandler from './Handlers/EventHandler.js';
 import HypixelDiscordChatBridgeError from '../Private/Error.js';
 import InteractionHandler from './Handlers/InteractionHandler.js';
 import MessageHandler from './Handlers/MessageHandler.js';
@@ -16,6 +17,7 @@ import type { ChannelNames, DiscordManagerWithClient, DiscordManagerWithGuild } 
 
 class DiscordManager extends CommunicationBridge {
   readonly commandHandler: CommandHandler;
+  readonly eventHandler: EventHandler;
   readonly interactionHandler: InteractionHandler;
   readonly messageHandler: MessageHandler;
   readonly stateHandler: StateHandler;
@@ -25,6 +27,7 @@ class DiscordManager extends CommunicationBridge {
   constructor(readonly Application: Application) {
     super();
     this.commandHandler = new CommandHandler(this);
+    this.eventHandler = new EventHandler(this);
     this.interactionHandler = new InteractionHandler(this);
     this.messageHandler = new MessageHandler(this);
     this.stateHandler = new StateHandler(this);
@@ -37,6 +40,7 @@ class DiscordManager extends CommunicationBridge {
     this.client.on(Events.ClientReady, () => this.stateHandler.onReady());
     this.client.on(Events.MessageCreate, (message) => this.messageHandler.onMessage(message));
     this.client.on(Events.InteractionCreate, (interaction) => this.interactionHandler.onInteraction(interaction));
+    this.client.on(Events.GuildMemberRemove, (member) => this.eventHandler.onGuildMemberRemove(member));
     this.client.login(this.Application.config.discord.bot.token).catch((e) => console.error(e));
 
     process.on('SIGINT', async () => {
