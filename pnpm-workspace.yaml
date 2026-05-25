@@ -2,5 +2,6 @@ allowBuilds:
   canvas: true
   esbuild: true
   unrs-resolver: true
+  hypixel-api-reborn: true
 onlyBuiltDependencies:
   - 'hypixel-api-reborn'
