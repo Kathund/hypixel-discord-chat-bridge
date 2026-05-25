@@ -38,12 +38,8 @@ class BedwarsCommand extends Command {
 
   getStats(hypixelPlayer: Player, mode: BedWarsModeNames) {
     let stats: BedWarsMode;
-    if (mode === 'overall') {
-      stats = hypixelPlayer.stats.BedWars;
-    } else {
-      const internalMode = this.convertMode(mode);
-      stats = hypixelPlayer.stats.BedWars[internalMode];
-    }
+    if (mode === 'overall') stats = hypixelPlayer.stats.BedWars;
+    else stats = hypixelPlayer.stats.BedWars[this.convertMode(mode)];
     const { finals, wins, winstreak } = stats;
     const { broken, ratio } = stats.beds;
     return { finalKills: finals.total.kills, FKDR: finals.total.ratio, wins, winstreak, broken, BLRatio: ratio };
@@ -57,7 +53,6 @@ class BedwarsCommand extends Command {
     player = msg[0] ? (modes.includes(msg[0]) ? (msg[1] ? msg[1] : player) : msg[0] || player) : player;
 
     const hypixelPlayer = await getPlayer(player);
-
     const { finalKills, FKDR, wins, winstreak, broken, BLRatio } = this.getStats(hypixelPlayer, mode);
     this.send(
       `[${Math.floor(hypixelPlayer.stats.BedWars.level)}✫] ${hypixelPlayer.nickname} ${mode} FK: ${FormatNumber(finalKills)} FKDR: ${FKDR} W: ${FormatNumber(

@@ -23,20 +23,6 @@ export interface LatestProfileOptions {
   museum?: boolean;
 }
 
-export interface MowojangData {
-  username: string;
-  uuid: string;
-}
-
-export interface CachedMowojangData extends MowojangData {
-  lastSave: number;
-}
-
-export interface MowojangApiResponse {
-  id: string;
-  name: string;
-}
-
 export type ApplicationWithClient = Application & { discord: DiscordManagerWithClient };
 export type ApplicationWithBot = Application & { minecraft: MinecraftManagerWithBot };
 export type ApplicationWithClientBot = Application & { discord: DiscordManagerWithClient; minecraft: MinecraftManagerWithBot };

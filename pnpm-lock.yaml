@@ -27,8 +27,8 @@ importers:
         specifier: ^5.2.1
         version: 5.2.1
       hypixel-api-reborn:
-        specifier: 12.0.0-24
-        version: 12.0.0-24
+        specifier: github:Hypixel-API-Reborn/Hypixel-API-Reborn
+        version: https://codeload.github.com/Hypixel-API-Reborn/Hypixel-API-Reborn/tar.gz/2457b4bb9e6ca1b20e5d64f0ac2f01b07656e6eb
       mineflayer:
         specifier: ^4.37.1
         version: 4.37.1
@@ -1353,8 +1353,9 @@ packages:
     resolution: {integrity: sha512-dFcAjpTQFgoLMzC2VwU+C/CbS7uRL0lWmxDITmqm7C+7F0Odmj6s9l6alZc6AELXhrnggM2CeWSXHGOdX2YtwA==}
     engines: {node: '>= 6'}
 
-  hypixel-api-reborn@12.0.0-24:
-    resolution: {integrity: sha512-KHRe7UZUvmZsDx0xcEIqif4KQtTkIDczd1ArazWH9tGxMRRywUhlBaPEbWdwjjq3y16+JXXxFiUQw7C+PDiYcg==}
+  hypixel-api-reborn@https://codeload.github.com/Hypixel-API-Reborn/Hypixel-API-Reborn/tar.gz/2457b4bb9e6ca1b20e5d64f0ac2f01b07656e6eb:
+    resolution: {tarball: https://codeload.github.com/Hypixel-API-Reborn/Hypixel-API-Reborn/tar.gz/2457b4bb9e6ca1b20e5d64f0ac2f01b07656e6eb}
+    version: 12.0.0-24
     engines: {node: '>=20.19.5'}
 
   iconv-lite@0.7.2:
@@ -3742,7 +3743,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  hypixel-api-reborn@12.0.0-24:
+  hypixel-api-reborn@https://codeload.github.com/Hypixel-API-Reborn/Hypixel-API-Reborn/tar.gz/2457b4bb9e6ca1b20e5d64f0ac2f01b07656e6eb:
     dependencies:
       minecraft-data: 3.110.2
       node-cache: 5.1.2
