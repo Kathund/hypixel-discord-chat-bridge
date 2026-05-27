@@ -4,10 +4,11 @@ import HypixelDiscordChatBridgeError from './Private/Error.js';
 import LinkedManager from './Linked/LinkedManager.js';
 import MinecraftManager from './Minecraft/MinecraftManager.js';
 import MowojangAPI from './Private/MowojangAPI.js';
+import ScriptManager from './Scripts/ScriptsManager.js';
 import config from '../config.json' with { type: 'json' };
 import messages from '../messages.json' with { type: 'json' };
-import { configUpdateMessage, updateMessage } from './Private/Logger.js';
-import { exec } from 'node:child_process';
+import { Filter } from 'bad-words';
+import { configUpdateMessage } from './Private/Logger.js';
 import { readFileSync, writeFileSync } from 'node:fs';
 import type { Guild } from 'hypixel-api-reborn';
 import type { ParsedSession } from './Types/MowojangAPI.js';
@@ -18,8 +19,10 @@ class Application {
   readonly discord: DiscordManager;
   readonly linked: LinkedManager;
   readonly minecraft: MinecraftManager;
+  readonly scripts: ScriptManager;
   botGuild?: Guild;
   botGuildMembers?: ParsedSession[];
+  readonly filter: Filter;
 
   private exampleConfig: Record<string, any>;
   private configFile: Record<string, any>;
@@ -29,6 +32,11 @@ class Application {
     this.discord = new DiscordManager(this);
     this.linked = new LinkedManager(this);
     this.minecraft = new MinecraftManager(this);
+    this.scripts = new ScriptManager(this);
+
+    this.filter = new Filter();
+    const fileredWords = this.config.discord.other.filterWords ?? [];
+    this.filter.addWords(...fileredWords);
 
     this.discord.setBridge(this.minecraft);
     this.minecraft.setBridge(this.discord);
@@ -58,19 +66,6 @@ class Application {
   async stop(): Promise<void> {
     if (this.discord.isClientOnline()) await this.discord.client.destroy();
     if (this.minecraft.isBotOnline()) this.minecraft.bot.end('Shutting Down');
-  }
-
-  updateCode() {
-    if (this.config.other.autoUpdater === false) return;
-    exec('git pull', (error, stdout, stderr) => {
-      if (error) return console.error(error);
-
-      // console.log(`Git pull output: ${stdout}`);
-
-      if (stdout === 'Already up to date.\n') return;
-
-      updateMessage();
-    });
   }
 
   migrateConfig() {

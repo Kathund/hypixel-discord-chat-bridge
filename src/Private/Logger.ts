@@ -8,6 +8,7 @@ const otherLog = { level: 'other', background: chalk.bgCyan.black, color: chalk.
 const logs: LogData[] = [
   { level: 'discord', background: chalk.bgMagenta.black, color: chalk.reset.magenta },
   { level: 'minecraft', background: chalk.bgGreen.black, color: chalk.reset.green },
+  { level: 'scripts', background: chalk.bgBlue.black, color: chalk.reset.blue },
   { level: 'broadcast', background: chalk.inverse, color: chalk.reset },
   otherLog,
   { level: 'warn', background: chalk.bgYellow.black, color: chalk.reset.yellow },
@@ -36,7 +37,7 @@ function getErrorString(error: Error): string {
 }
 
 function logSomething(message: string, log: LogData): void {
-  console.log(log.background(`[${getCurrentTime()}] ${TitleCase(log.level)} > ${log.color(message)}`));
+  console.log(log.background(`[${getCurrentTime()}] ${TitleCase(log.level)} >${log.color(` ${message}`)}`));
 }
 
 const combinedTransport = new transports.File({ level: 'max', filename: './logs/combined.log' });
@@ -69,6 +70,13 @@ console.discord = (message: string): void => {
 
 console.minecraft = (message: string): void => {
   const log = logs.find((log) => log.level === 'minecraft') || otherLog;
+  logSomething(message, log);
+  const logger = loggers[log.level];
+  if (logger) logger.log(log.level, message);
+};
+
+console.scripts = (message: string): void => {
+  const log = logs.find((log) => log.level === 'scripts') || otherLog;
   logSomething(message, log);
   const logger = loggers[log.level];
   if (logger) logger.log(log.level, message);

@@ -3,7 +3,6 @@ import CommunicationBridge from '../Private/CommunicationBridge.js';
 import MessageHandler from './Handlers/MessageHandler.js';
 import StateHandler from './Handlers/StateHandler.js';
 import { type Bot, createBot } from 'mineflayer';
-import { Filter } from 'bad-words';
 import { ReplaceVariables } from '../Utils/StringUtils.js';
 import type Application from '../Application.js';
 import type { BroadcastEvent } from '../Types/Bridge.js';
@@ -14,17 +13,12 @@ class MinecraftManager extends CommunicationBridge {
   readonly stateHandler: StateHandler;
   readonly commandHandler: CommandHandler;
   readonly messageHandler: MessageHandler;
-  readonly filter: Filter;
   bot?: Bot;
   constructor(readonly Application: Application) {
     super();
     this.stateHandler = new StateHandler(this);
     this.commandHandler = new CommandHandler(this);
     this.messageHandler = new MessageHandler(this);
-
-    this.filter = new Filter();
-    const fileredWords = this.Application.config.discord.other.filterWords ?? [];
-    this.filter.addWords(...fileredWords);
   }
 
   connect() {
@@ -63,8 +57,8 @@ class MinecraftManager extends CommunicationBridge {
 
     if (this.Application.config.discord.other.filterMessages) {
       try {
-        message = this.filter.clean(message);
-        username = this.filter.clean(username);
+        message = this.Application.filter.clean(message);
+        username = this.Application.filter.clean(username);
       } catch {
         // Do nothing
       }

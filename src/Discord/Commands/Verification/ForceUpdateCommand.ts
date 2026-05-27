@@ -10,31 +10,18 @@ class ForceUpdateCommand extends Command<DiscordManagerWithBot> {
     super(discord);
     this.data = new CommandData()
       .setName('force-update')
-      .setDescription("Update user's or everyone's roles")
-      .addUserOption((option) => option.setName('user').setDescription('Discord Username'))
-      .addBooleanOption((option) => option.setName('everyone').setDescription("Update everyone's roles"));
+      .setDescription("Update user's roles")
+      .addUserOption((option) => option.setName('user').setDescription('Discord Username').setRequired(true));
     this.flags = [CommandFlags.RequiresMinecraftBot, CommandFlags.StaffOnly, CommandFlags.VerificationCommand];
   }
 
   override async execute(interaction: ChatInputCommandInteraction): Promise<void> {
+    const user = interaction.options.getUser('user');
+    if (!user) throw new HypixelDiscordChatBridgeError('The `user` option is missing?');
     const updateCommand = new UpdateCommand(this.discord);
     updateCommand.isSelf = false;
-
-    const user = interaction.options.getUser('user');
-    const everyone = interaction.options.getBoolean('everyone');
-    if (!user && !everyone) throw new HypixelDiscordChatBridgeError('You must specify a user or everyone.');
-    if (user && everyone) throw new HypixelDiscordChatBridgeError('You cannot specify both user and everyone.');
-
-    if (user) {
-      updateCommand.discordId = user.id;
-      await updateCommand.execute(interaction);
-    } else if (everyone) {
-      for (const [, discordId] of Object.entries(this.discord.Application.linked.getLinkedFile())) {
-        updateCommand.discordId = discordId;
-        await updateCommand.execute(interaction);
-        console.log(`Updated roles for ${discordId}`);
-      }
-    }
+    updateCommand.discordId = user.id;
+    await updateCommand.execute(interaction);
   }
 }
 

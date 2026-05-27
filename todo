@@ -3,13 +3,23 @@ see bad impl - https://github.com/Kathund/Hypixel-Discord-Guild-Chat-Bridge/blob
 
 allow modes to be inputed in duels command
 
+debug doesn't work
+
+Convert updater to tag system? Maybe? Ask ducky about tagging commits
+
 port web
 port tests
 port inactivity
-port cron scripts
 port help discord command
 port info discord command
 
 Make buttons on linked command timeout after 2 minutes since last use
 
 Make guild accept button time out after 5 minutes
+
+config system
+has a schema
+type checks the entire config
+if config version is not one (as in undefined) throw error and stop launch
+
+any support should the maintainers (me and ducky)
