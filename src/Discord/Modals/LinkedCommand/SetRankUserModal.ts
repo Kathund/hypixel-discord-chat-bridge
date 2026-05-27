@@ -1,9 +1,9 @@
-import HypixelDiscordChatBridgeError from '../../Private/Error.js';
-import LinkedCommand from '../Commands/Verification/LinkedCommand.js';
-import Modal from '../Private/Modals/Modal.js';
-import ModalData from '../Private/Modals/ModalData.js';
-import { CommandFlags, type DiscordManagerWithBot } from '../../Types/Discord.js';
-import { SuccessEmbed } from '../Private/Embed.js';
+import HypixelDiscordChatBridgeError from '../../../Private/Error.js';
+import LinkedCommand from '../../Commands/Verification/LinkedCommand.js';
+import Modal from '../../Private/Modals/Modal.js';
+import ModalData from '../../Private/Modals/ModalData.js';
+import { CommandFlags, type DiscordManagerWithBot } from '../../../Types/Discord.js';
+import { SuccessEmbed } from '../../Private/Embed.js';
 import type { ModalSubmitInteraction } from 'discord.js';
 
 class SetRankUserModal extends Modal<DiscordManagerWithBot> {
