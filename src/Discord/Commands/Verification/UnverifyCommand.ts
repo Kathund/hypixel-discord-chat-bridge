@@ -3,7 +3,7 @@ import CommandData from '../../Private/Commands/CommandData.js';
 import HypixelDiscordChatBridgeError from '../../../Private/Error.js';
 import { CommandFlags, type DiscordManagerWithBot } from '../../../Types/Discord.js';
 import { SuccessEmbed } from '../../Private/Embed.js';
-import type { ChatInputCommandInteraction } from 'discord.js';
+import type { ButtonInteraction, ChatInputCommandInteraction } from 'discord.js';
 
 class UnverifyCommand extends Command<DiscordManagerWithBot> {
   discordId: string | null = null;
@@ -14,7 +14,7 @@ class UnverifyCommand extends Command<DiscordManagerWithBot> {
     this.flags = [CommandFlags.VerificationCommand];
   }
 
-  override async execute(interaction: ChatInputCommandInteraction): Promise<void> {
+  override async execute(interaction: ChatInputCommandInteraction | ButtonInteraction): Promise<void> {
     if (this.discordId === null) {
       this.isSelf = true;
       this.discordId = interaction.user.id;

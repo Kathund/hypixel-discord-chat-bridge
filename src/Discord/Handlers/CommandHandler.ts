@@ -1,7 +1,6 @@
-import DiscordUtils from '../Private/DiscordUtils.js';
 import HypixelDiscordChatBridgeError from '../../Private/Error.js';
-import { type AutocompleteInteraction, type ChatInputCommandInteraction, Collection, GuildMember, MessageFlags, REST, Routes } from 'discord.js';
-import { CommandFlags, CommandResponse } from '../../Types/Discord.js';
+import { type AutocompleteInteraction, type ChatInputCommandInteraction, Collection, MessageFlags, REST, Routes } from 'discord.js';
+import { BasicInteractionResponse, CommandFlags } from '../../Types/Discord.js';
 import { readdirSync } from 'node:fs';
 import type Command from '../Private/Commands/Command.js';
 import type DiscordManager from '../DiscordManager.js';
@@ -14,39 +13,16 @@ class CommandHandler {
     if (!command) return;
 
     try {
-      await interaction.deferReply({ flags: command.response === CommandResponse.Ephemeral ? MessageFlags.Ephemeral : undefined });
+      if (command.response !== BasicInteractionResponse.None) {
+        await interaction.deferReply({ flags: command.response === BasicInteractionResponse.Ephemeral ? MessageFlags.Ephemeral : undefined });
+      }
       console.discord(`Interaction Event trigged by ${interaction.user.username} (${interaction.user.id}) ran command ${interaction.commandName}`);
 
-      if (!interaction.guild || !interaction.member) throw new HypixelDiscordChatBridgeError('Please run this command inside of a guild');
-      const member = interaction.member instanceof GuildMember ? interaction.member : await interaction.guild.members.fetch(interaction.user.id);
-
-      const [isGuildMember, isStaffMember, isVerifiedMember] = await Promise.all([
-        DiscordUtils.isGuildMember(member),
-        DiscordUtils.isStaffMember(member),
-        DiscordUtils.isVerifiedMember(member)
-      ]);
-
-      const checks: Array<[boolean, string]> = [
-        [command.flags.includes(CommandFlags.GuildMemberOnly) && !isGuildMember, "You don't have permission to use this command."],
-        [command.flags.includes(CommandFlags.StaffOnly) && !isStaffMember, "You don't have permission to use this command."],
-        [command.flags.includes(CommandFlags.StatChannelsCommand) && !this.discord.Application.config.statsChannels.enabled, 'Stat Channel Commands are disbled.'],
-        [command.flags.includes(CommandFlags.VerifiedOnly) && !isVerifiedMember, "You don't have permission to use this command."],
-        [command.flags.includes(CommandFlags.VerificationCommand) && !this.discord.Application.config.verification.enabled, 'Verification commands are disabled.'],
-        [
-          command.flags.includes(CommandFlags.RequiresMinecraftBot) && !this.discord.Application.minecraft.isBotOnline(),
-          this.discord.Application.messages.minecraftBotOffline
-        ]
-      ];
-
-      for (const [failed, message] of checks) {
-        if (failed) throw new HypixelDiscordChatBridgeError(message);
-      }
+      await this.discord.interactionHandler.checkPerms(interaction, command);
 
       await command.execute(interaction);
     } catch (error: unknown) {
-      if (error instanceof Error || error instanceof HypixelDiscordChatBridgeError) {
-        this.discord.utils.handleError(error, interaction);
-      }
+      if (error instanceof Error || error instanceof HypixelDiscordChatBridgeError) this.discord.utils.handleError(error, interaction);
     }
   }
 

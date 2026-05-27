@@ -1,4 +1,5 @@
 import HypixelDiscordChatBridgeError from '../../Private/Error.js';
+import MowojangAPI from '../../Private/MowojangAPI.js';
 import { FormatNumber, ReplaceVariables } from '../../Utils/StringUtils.js';
 import { getPlayer } from '../../Utils/HypixelUtils.js';
 import type LinkedManager from '../LinkedManager.js';
@@ -15,6 +16,12 @@ class LinkedUser {
   ) {
     this.discordId = data.discordId;
     this.uuid = data.uuid;
+  }
+
+  async getUsername(): Promise<string> {
+    const username = await MowojangAPI.getUsername(this.uuid);
+    if (username === null) throw new HypixelDiscordChatBridgeError("User doesn't exist");
+    return username;
   }
 
   save(): LinkedUser[] {

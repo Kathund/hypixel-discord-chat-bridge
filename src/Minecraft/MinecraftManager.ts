@@ -33,10 +33,6 @@ class MinecraftManager extends CommunicationBridge {
     this.stateHandler.registerEvents();
     this.commandHandler.deployCommands();
     this.messageHandler.registerEvents();
-
-    this.bot.on('login', () => {
-      console.log('Minecraft bot is ready!');
-    });
   }
 
   private createBotConnection() {

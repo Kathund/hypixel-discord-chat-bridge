@@ -1,9 +1,10 @@
 import Command from '../../Private/Commands/Command.js';
 import CommandData from '../../Private/Commands/CommandData.js';
 import HypixelDiscordChatBridgeError from '../../../Private/Error.js';
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, type ChatInputCommandInteraction } from 'discord.js';
-import { CommandFlags, CommandResponse, type DiscordManagerWithClient } from '../../../Types/Discord.js';
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, type ChatInputCommandInteraction, Message } from 'discord.js';
+import { BasicInteractionResponse, CommandFlags, type DiscordManagerWithClient } from '../../../Types/Discord.js';
 import { SuccessEmbed } from '../../Private/Embed.js';
+import type LinkedUser from '../../../Linked/Private/LinkedUser.js';
 
 class LinkedCommand extends Command {
   constructor(discord: DiscordManagerWithClient) {
@@ -14,7 +15,15 @@ class LinkedCommand extends Command {
       .addUserOption((option) => option.setName('user').setDescription('Discord Username'))
       .addStringOption((option) => option.setName('username').setDescription('Minecraft Username'));
     this.flags = [CommandFlags.StaffOnly, CommandFlags.VerificationCommand];
-    this.response = CommandResponse.Ephemeral;
+    this.response = BasicInteractionResponse.Ephemeral;
+  }
+
+  getLinked(message: Message): LinkedUser | undefined {
+    const embed = message.embeds[0];
+    if (embed === undefined) return undefined;
+    const field = embed.fields.find((field) => field.name === 'Discord ID');
+    if (field === undefined) return undefined;
+    return this.discord.Application.linked.getUserByDiscordId(field.value.replaceAll('`', ''));
   }
 
   override async execute(interaction: ChatInputCommandInteraction) {
@@ -35,7 +44,8 @@ class LinkedCommand extends Command {
           .setLabel(guildMember.mutedUntil ? 'Unmute' : 'Mute')
           .setStyle(guildMember.mutedUntil ? ButtonStyle.Success : ButtonStyle.Danger),
         new ButtonBuilder().setCustomId('demoteUser').setLabel('Demote').setStyle(ButtonStyle.Danger),
-        new ButtonBuilder().setCustomId('promoteUser').setLabel('Promote').setStyle(ButtonStyle.Success)
+        new ButtonBuilder().setCustomId('promoteUser').setLabel('Promote').setStyle(ButtonStyle.Success),
+        new ButtonBuilder().setCustomId('setRankUser').setLabel('Set Rank').setStyle(ButtonStyle.Success)
       ];
     } else {
       buttons = [new ButtonBuilder().setCustomId('inviteUser').setLabel('Invite').setStyle(ButtonStyle.Success)];

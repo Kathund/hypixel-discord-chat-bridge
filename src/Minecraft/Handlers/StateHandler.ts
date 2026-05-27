@@ -12,10 +12,11 @@ class StateHandler {
     this.minecraft.bot.on('error', (...args) => this.onError(...args));
   }
 
-  onLogin() {
+  async onLogin() {
     if (!this.minecraft.isBotOnline()) return;
     console.minecraft(`Client ready, logged in as ${this.minecraft.bot.username}`);
     this.loginAttempts = 0;
+    if (this.minecraft.Application.botGuild === undefined) await this.minecraft.Application.getBotGuild();
   }
 
   onEnd(reason: string) {

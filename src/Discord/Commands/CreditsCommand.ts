@@ -4,10 +4,10 @@ import Embed from '../Private/Embed.js';
 import { CommonDevs, MiscCredits } from '../../Private/Constants.js';
 import { DevTypes } from '../../Types/Misc.js';
 import type { ChatInputCommandInteraction } from 'discord.js';
-import type { DiscordManagerWithBot } from '../../Types/Discord.js';
+import type { DiscordManagerWithClient } from '../../Types/Discord.js';
 
-class CreditsCommand extends Command<DiscordManagerWithBot> {
-  constructor(discord: DiscordManagerWithBot) {
+class CreditsCommand extends Command {
+  constructor(discord: DiscordManagerWithClient) {
     super(discord);
     this.data = new CommandData().setName('credits').setDescription('Shows the credits of the people who make this possible');
   }

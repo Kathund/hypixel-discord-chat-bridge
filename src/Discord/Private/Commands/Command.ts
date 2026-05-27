@@ -1,16 +1,16 @@
+import BasicInteractionData from '../BasicInteractionData.js';
 import DiscordUtils from '../DiscordUtils.js';
-import { type AutoComplateOption, CommandFlags, CommandResponse, type DiscordManagerWithClient } from '../../../Types/Discord.js';
-import { type AutocompleteInteraction, type ChatInputCommandInteraction } from 'discord.js';
+import { type AutoComplateOption, BasicInteractionResponse, type DiscordManagerWithClient } from '../../../Types/Discord.js';
 import type CommandData from './CommandData.js';
 import type DiscordManager from '../../DiscordManager.js';
+import type { AutocompleteInteraction, ChatInputCommandInteraction } from 'discord.js';
 
-class Command<T extends DiscordManager = DiscordManagerWithClient> {
+class Command<T extends DiscordManager = DiscordManagerWithClient> extends BasicInteractionData<T> {
   data!: CommandData;
-  flags: CommandFlags[];
-  response: CommandResponse;
-  constructor(protected readonly discord: T) {
-    this.flags = [];
-    this.response = CommandResponse.Public;
+  response: BasicInteractionResponse;
+  constructor(discord: T) {
+    super(discord);
+    this.response = BasicInteractionResponse.Public;
   }
 
   async autocomplete(interaction: AutocompleteInteraction) {
@@ -24,6 +24,15 @@ class Command<T extends DiscordManager = DiscordManagerWithClient> {
           break;
         }
         choices = members.sort((a, b) => a.username.localeCompare(b.username)).map(({ username }) => ({ name: username }));
+        break;
+      }
+      case 'guild-rank': {
+        const ranks = this.discord.Application.botGuild?.ranks;
+        if (ranks === undefined) {
+          choices = [{ name: "No guild's cached" }];
+          break;
+        }
+        choices = ranks.sort((a, b) => a.name.localeCompare(b.name)).map(({ name }) => ({ name }));
         break;
       }
       default: {

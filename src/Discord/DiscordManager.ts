@@ -1,3 +1,4 @@
+import ButtonHandler from './Handlers/ButtonHandler.js';
 import CommandHandler from './Handlers/CommandHandler.js';
 import CommunicationBridge from '../Private/CommunicationBridge.js';
 import DiscordUtils from './Private/DiscordUtils.js';
@@ -7,6 +8,7 @@ import HypixelDiscordChatBridgeError from '../Private/Error.js';
 import InteractionHandler from './Handlers/InteractionHandler.js';
 import MessageHandler from './Handlers/MessageHandler.js';
 import MessageToImage from '../Utils/MessageToImage.js';
+import ModalHandler from './Handlers/ModalHandler.js';
 import StateHandler from './Handlers/StateHandler.js';
 import { AttachmentBuilder, ChannelType, Client, Events, GatewayIntentBits, Guild, Webhook } from 'discord.js';
 import { HexToDecimal } from '../Utils/MiscUtils.js';
@@ -16,21 +18,25 @@ import type { BroadcastEvent } from '../Types/Bridge.js';
 import type { ChannelNames, DiscordManagerWithClient, DiscordManagerWithGuild } from '../Types/Discord.js';
 
 class DiscordManager extends CommunicationBridge {
+  readonly buttonHandler: ButtonHandler;
   readonly commandHandler: CommandHandler;
   readonly eventHandler: EventHandler;
   readonly interactionHandler: InteractionHandler;
   readonly messageHandler: MessageHandler;
   readonly stateHandler: StateHandler;
+  readonly modalHandler: ModalHandler;
   readonly utils: DiscordUtils;
   client?: Client;
   guild?: Guild;
   constructor(readonly Application: Application) {
     super();
+    this.buttonHandler = new ButtonHandler(this);
     this.commandHandler = new CommandHandler(this);
     this.eventHandler = new EventHandler(this);
     this.interactionHandler = new InteractionHandler(this);
     this.messageHandler = new MessageHandler(this);
     this.stateHandler = new StateHandler(this);
+    this.modalHandler = new ModalHandler(this);
     this.utils = new DiscordUtils(this);
   }
 

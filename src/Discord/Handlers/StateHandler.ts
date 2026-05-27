@@ -18,10 +18,14 @@ class StateHandler {
     this.discord.client.user.setPresence({ activities: [{ name: '/help | by @duckysolucky' }] });
 
     await this.loadGuild();
+    await this.discord.buttonHandler.loadButtons();
+    await this.discord.modalHandler.loadModals();
 
     const channel = await this.getChannel('Guild');
     if (channel === null || !channel.isSendable()) return console.error('Channel "Guild" not found!');
     channel.send({ embeds: [{ author: { name: 'Chat Bridge is Online' }, color: 2067276 }] });
+
+    console.discord('Client is fully ready!');
   }
 
   async onClose() {

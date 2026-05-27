@@ -1,11 +1,15 @@
 import { Client, Collection, Guild } from 'discord.js';
+import type Button from '../Discord/Private/Buttons/Button.js';
 import type Command from '../Discord/Private/Commands/Command.js';
 import type DiscordManager from '../Discord/DiscordManager.js';
+import type Modal from '../Discord/Private/Modals/Modal.js';
 import type { MinecraftManagerWithBot } from './Minecraft.js';
 
 declare module 'discord.js' {
   export interface Client {
     commands: Collection<string, Command>;
+    buttons: Collection<string, Button>;
+    modals: Collection<string, Modal>;
   }
 }
 
@@ -18,14 +22,16 @@ export enum CommandFlags {
   VerifiedOnly
 }
 
-export enum CommandResponse {
+export enum BasicInteractionResponse {
   Public,
-  Ephemeral
+  Ephemeral,
+  None
 }
 
 export enum ButtonResponse {
-  Public,
-  Ephemeral,
+  Public = BasicInteractionResponse.Public,
+  Ephemeral = BasicInteractionResponse.Ephemeral,
+  None = BasicInteractionResponse.None,
   Update
 }
 

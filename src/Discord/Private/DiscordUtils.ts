@@ -8,6 +8,7 @@ import {
   Client,
   GuildMember,
   MessageFlags,
+  ModalSubmitInteraction,
   Role,
   type SendableChannels,
   Team
@@ -69,7 +70,7 @@ class DiscordUtils {
 
   async handleError(
     error: Error | HypixelDiscordChatBridgeError,
-    interaction: ChatInputCommandInteraction | ButtonInteraction | AutocompleteInteraction | null = null
+    interaction: ChatInputCommandInteraction | ButtonInteraction | AutocompleteInteraction | ModalSubmitInteraction | null = null
   ): Promise<void> {
     console.error(error);
     await this.logError(error);

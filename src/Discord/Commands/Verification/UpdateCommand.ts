@@ -4,7 +4,7 @@ import HypixelDiscordChatBridgeError from '../../../Private/Error.js';
 import MowojangAPI from '../../../Private/MowojangAPI.js';
 import { CommandFlags, type DiscordManagerWithBot } from '../../../Types/Discord.js';
 import { SuccessEmbed } from '../../Private/Embed.js';
-import type { ChatInputCommandInteraction } from 'discord.js';
+import type { ButtonInteraction, ChatInputCommandInteraction } from 'discord.js';
 
 class UpdateCommand extends Command<DiscordManagerWithBot> {
   discordId: string | null;
@@ -17,7 +17,7 @@ class UpdateCommand extends Command<DiscordManagerWithBot> {
     this.isSelf = false;
   }
 
-  override async execute(interaction: ChatInputCommandInteraction): Promise<void> {
+  override async execute(interaction: ChatInputCommandInteraction | ButtonInteraction): Promise<void> {
     if (this.discordId === null) {
       this.isSelf = true;
       this.discordId = interaction.user.id;
