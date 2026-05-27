@@ -9,3 +9,7 @@ port inactivity
 port cron scripts
 port help discord command
 port info discord command
+
+Make buttons on linked command timeout after 2 minutes since last use
+
+Make guild accept button time out after 5 minutes
