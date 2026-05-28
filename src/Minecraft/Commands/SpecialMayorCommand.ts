@@ -17,6 +17,7 @@ const yearLength = 12;
 const yearMs = yearLength * monthLength * dayMs;
 const yearZero = 1560275700000;
 
+// CREDITS: by @CarsonCodes (https://github.com/CarsonCodess)
 class SpecialMayorCommand extends Command {
   constructor(minecraft: MinecraftManagerWithBot) {
     super(minecraft);
