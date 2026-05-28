@@ -1,66 +1,129 @@
 {
-  "configVersion": 1,
-  "minecraft": {
-    "bot": { "prefix": "!", "messageFormat": "{username} » {message}", "messageRepeatBypassLength": 24 },
-    "commands": { "normal": true, "soopy": true },
-    "fragBot": { "enabled": true, "whitelist": false, "whitelisted": ["EXAMPLE"], "blacklist": false, "blacklisted": ["EXAMPLE"] },
-    "API": { "hypixelAPIkey": "HYPIXEL_API_KEY", "imgurAPIkey": "IMGUR_API_KEY" },
-    "guildRequirements": { "enabled": false, "autoAccept": false, "requiredToHave": 1, "requirements": { "bedwarsStar": 10 } },
-    "skyblockEventsNotifications": {
-      "enabled": true,
-      "notifiers": {
-        "BANK_INTEREST": true,
-        "DARK_AUCTION": true,
-        "ELECTION_BOOTH_OPENS": true,
-        "ELECTION_OVER": true,
-        "FALLEN_STAR_CULT": true,
-        "FEAR_MONGERER": true,
-        "JACOBS_CONTEST": true,
-        "JERRYS_WORKSHOP": true,
-        "NEW_YEAR_CELEBRATION": true,
-        "SEASON_OF_JERRY": true,
-        "SPOOKY_FESTIVAL": true,
-        "TRAVELING_ZOO": true,
-        "HOPPITY_HUNT": true
-      },
-      "customTime": { "2": ["BANK_INTEREST", "DARK_AUCTION", "JACOBS_CONTEST"] }
+  "configVersion": 2,
+  "API": {
+    "hypixel": {
+      "key": "HYPIXEL_API_KEY",
+      "baseURL": null
     },
-    "hypixelUpdates": { "enabled": true, "hypixelNews": true, "statusUpdates": true, "skyblockVersion": true, "alphaPlayerCountTracker": true }
-  },
-  "discord": {
-    "bot": { "token": "DISCORD_BOT_TOKEN", "serverID": "DISCORD_SERVER_ID" },
-    "channels": {
-      "guildChatChannel": "GUILD_CHAT_CHANNEL_ID",
-      "officerChannel": "OFFICER_CHANNEL_ID",
-      "loggingChannel": "LOGGING_CHANNEL_ID",
-      "debugMode": true,
-      "debugChannel": "DEBUG_CHANNEL_ID",
-      "debugChannelMessageMode": "text",
-      "allowedBots": ["BOT_USER_ID"]
-    },
-    "commands": { "checkPerms": true, "commandRole": "COMMAND_ROLE_ID", "blacklistRoles": ["BLACKLIST_ROLE_ID"], "users": ["486155512568741900"] },
-    "other": {
-      "messageMode": "bot",
-      "messageFormat": "{chatType} > {skin} {rank} {username} {guildRank}§f: {message}",
-      "stripEmojisFromUsernames": true,
-      "filterMessages": true,
-      "filterWords": ["dox", "doxx", "doxed", "doxxed", "doxing", "doxxing", "doxes", "doxxes"],
-      "joinMessage": true,
-      "autoLimbo": false
+    "mowojang": {
+      "baseURL": null
     }
   },
-  "web": { "enabled": false, "port": 1439, "token": "WEBSOCKET_TOKEN" },
+  "bridge": {
+    "minecraft": {
+      "format": "{username} » {message}"
+    },
+    "discord": {
+      "allowedBots": [
+        "BOT_USER_ID"
+      ],
+      "mode": "bot",
+      "format": "{chatType} > {skin} {rank} {username} {guildRank}§f: {message}"
+    },
+    "channels": {
+      "debug": {
+        "enabled": true,
+        "channel": "DEBUG_CHANNEL_ID",
+        "mode": "text"
+      },
+      "guild": {
+        "enabled": true,
+        "channel": "GUILD_CHAT_CHANNEL_ID"
+      },
+      "officer": {
+        "enabled": true,
+        "channel": "OFFICER_CHANNEL_ID"
+      },
+      "logging": {
+        "enabled": true,
+        "channel": "LOGGING_CHANNEL_ID",
+        "events": {}
+      }
+    },
+    "filter": {
+      "enabled": true,
+      "customWords": [
+        "dox",
+        "doxx",
+        "doxed",
+        "doxxed",
+        "doxing",
+        "doxxing",
+        "doxes",
+        "doxxes"
+      ]
+    },
+    "stripEmojisFromUsernames": true
+  },
+  "minecraft": {
+    "autoLimbo": true,
+    "commands": {
+      "messageRepeatBypassLength": 24,
+      "normal": {
+        "enabled": true,
+        "prefix": "!"
+      },
+      "soopy": {
+        "enabled": true,
+        "prefix": "-"
+      }
+    },
+    "guild": {
+      "requirements": {
+        "enabled": false,
+        "autoAccept": false,
+        "requiredToHave": 1,
+        "requirements": {}
+      }
+    }
+  },
+  "discord": {
+    "serverId": "DISCORD_SERVER_ID",
+    "token": "DISCORD_BOT_TOKEN",
+    "commands": {
+      "checkPermissions": true,
+      "staffRole": "COMMAND_ROLE_ID",
+      "adminUsers": [
+        "486155512568741900",
+        "1276524855445164098"
+      ]
+    }
+  },
   "verification": {
     "enabled": false,
-    "nickname": { "enabled": true, "nickname": "{username}", "removeCommas": false },
-    "roles": {
-      "verified": { "enabled": false, "roleId": "" },
-      "guildMember": { "enabled": false, "roleId": "" },
-      "custom": [{ "enabled": true, "roleId": "ROLE_ID", "requirements": [{ "type": "guildRank", "value": "EXAMPLE" }] }]
+    "nickname": {
+      "enabled": true,
+      "nickname": "{username}",
+      "removeCommas": false
     },
-    "autoRoleUpdater": { "enabled": false, "interval": 24 },
-    "inactivity": { "enabled": false, "channel": "INACTIVITY_LOG_CHANNEL", "maxInactivityTime": 30 }
+    "roles": {
+      "verified": {
+        "enabled": false,
+        "roleId": ""
+      },
+      "guildMember": {
+        "enabled": false,
+        "roleId": ""
+      },
+      "custom": []
+    },
+    "autoRoleUpdater": {
+      "enabled": false,
+      "interval": 24
+    },
+    "inactivity": {
+      "enabled": false,
+      "channel": "INACTIVITY_LOG_CHANNEL",
+      "maxInactivityTime": 30
+    }
   },
-  "other": { "autoUpdater": true, "autoUpdaterInterval": 12, "logToFiles": true, "timezone": "UTC" },
-  "statsChannels": { "enabled": false, "autoUpdaterInterval": 5, "channels": [{ "id": "CHANNEL_ID", "name": "Guild Level: {guildLevel}" }] }
+  "statsChannels": {
+    "enabled": false,
+    "autoUpdaterInterval": 5,
+    "channels": []
+  },
+  "codeUpdater": {
+    "enabled": true,
+    "interval": 12
+  }
 }

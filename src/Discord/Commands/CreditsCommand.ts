@@ -28,7 +28,13 @@ class CreditsCommand extends Command {
           };
         })
       )
-      .addFields({ name: '**Misc**', value: `Below are some tools/projects that this bot utilizes to stay a float\n${miscCredits}` });
+      .addFields({ name: '**Misc**', value: `Below are some tools/projects that this bot utilizes to stay a float\n${miscCredits}` })
+      .addFields({
+        name: '**Support**',
+        value: `If you need any support please reach out to the maintainers: ${Object.values(CommonDevs)
+          .filter(({ type }) => type === 'Maintainer')
+          .map(({ username }) => `@${username}`)}`
+      });
 
     await interaction.followUp({ embeds: [embed] });
   }

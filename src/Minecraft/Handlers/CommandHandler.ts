@@ -1,4 +1,3 @@
-import HypixelDiscordChatBridgeError from '../../Private/Error.js';
 import axios from 'axios';
 import { Collection } from 'discord.js';
 import { FormatError } from '../../Utils/MiscUtils.js';
@@ -12,11 +11,16 @@ class CommandHandler {
 
   async handle(player: string, message: string, officer: boolean) {
     if (!this.minecraft.isBotOnline()) return;
-    if (!message.startsWith(this.minecraft.Application.config.minecraft.bot.prefix) && !message.startsWith('-')) return;
+    if (
+      !message.startsWith(this.minecraft.Application.config.minecraft.commands.normal.prefix) &&
+      !message.startsWith(this.minecraft.Application.config.minecraft.commands.soopy.prefix)
+    ) {
+      return;
+    }
 
-    if (message.startsWith(this.minecraft.Application.config.minecraft.bot.prefix)) {
-      if (this.minecraft.Application.config.minecraft.commands.normal === false) return;
-      const args = message.slice(this.minecraft.Application.config.minecraft.bot.prefix.length).trim().split(/ +/);
+    if (message.startsWith(this.minecraft.Application.config.minecraft.commands.normal.prefix)) {
+      if (this.minecraft.Application.config.minecraft.commands.normal.enabled === false) return;
+      const args = message.slice(this.minecraft.Application.config.minecraft.commands.normal.prefix.length).trim().split(/ +/);
       if (!args) return;
       const commandName = args.shift() ?? ''.toLowerCase();
       const command = this.commands.get(commandName) ?? this.commands.find((cmd) => cmd.data.getAliases() && cmd.data.getAliases().includes(commandName));
@@ -27,12 +31,16 @@ class CommandHandler {
         await command.execute(player, message);
       } catch (error) {
         console.error(error);
-        if (error instanceof Error || error instanceof HypixelDiscordChatBridgeError) {
-          command.send(FormatError(error));
-        }
+        if (!(error instanceof Error)) return;
+        command.send(FormatError(error));
       }
-    } else if (message.startsWith('-') && message.startsWith('- ') === false) {
-      if (this.minecraft.Application.config.minecraft.commands.soopy === false || message.at(1) === '-') return;
+    } else if (message.startsWith(this.minecraft.Application.config.minecraft.commands.soopy.prefix)) {
+      if (
+        this.minecraft.Application.config.minecraft.commands.soopy.enabled === false ||
+        message.at(1) === this.minecraft.Application.config.minecraft.commands.soopy.prefix
+      ) {
+        return;
+      }
 
       const command = message.slice(1).split(' ')[0];
       if (!command) return;
@@ -55,6 +63,7 @@ class CommandHandler {
 
           this.minecraft.bot.chat(`/${chat} [SOOPY V2] ${response.data.msg}`);
         } catch (error) {
+          console.error(error);
           if (!(error instanceof Error)) return;
           this.minecraft.bot.chat(`/${chat} [SOOPY V2] ${error.cause ?? error.message ?? 'Unknown error'}`);
         }

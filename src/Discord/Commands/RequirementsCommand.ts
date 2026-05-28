@@ -3,8 +3,7 @@ import CommandData from '../Private/Commands/CommandData.js';
 import Embed from '../Private/Embed.js';
 import HypixelDiscordChatBridgeError from '../../Private/Error.js';
 import MowojangAPI from '../../Private/MowojangAPI.js';
-import { FormatNumber } from '../../Utils/NumberUtils.js';
-import { TitleCaseCamel } from '../../Utils/StringUtils.js';
+import { FormatNumber, TitleCaseCamel } from '../../Utils/StringUtils.js';
 import type { ChatInputCommandInteraction } from 'discord.js';
 import type { DiscordManagerWithClient, Requirement, Requirements } from '../../Types/Discord.js';
 
@@ -19,7 +18,7 @@ class RequirementsCommand extends Command {
 
   async checkRequirements(uuid: string): Promise<Requirements> {
     const stats = await this.discord.Application.linked.getPlayerVariableStats(uuid);
-    const { requirements: configRequirements, requiredToHave } = this.discord.Application.config.minecraft.guildRequirements;
+    const { requirements: configRequirements, requiredToHave } = this.discord.Application.config.minecraft.guild.requirements;
 
     const requirements: Requirement[] = Object.entries(configRequirements).map(([key, required]) => {
       const has = stats[key] ?? 0;
@@ -38,7 +37,7 @@ class RequirementsCommand extends Command {
       .setTitle(`${username} **${passed ? 'has' : "hasn't"}** got the requirements to join ${guildName}!`)
       .setDescription(
         `${username} meets **${requirementsPassed} requirement(s)** out of the required **${
-          this.discord.Application.config.minecraft.guildRequirements.requiredToHave
+          this.discord.Application.config.minecraft.guild.requirements.requiredToHave
         } requirement(s)** needed to join ${guildName}`
       )
       .addFields(

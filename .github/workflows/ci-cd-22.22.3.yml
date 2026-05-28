@@ -78,7 +78,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Generate Default Config
-        run: cp config.example.json config.json
+        run: pnpm exec tsx .github/generateBasicConfig.ts
 
       - name: Check eslint
         run: pnpm eslint:check
@@ -106,7 +106,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Generate Default Config
-        run: cp config.example.json config.json
+        run: pnpm exec tsx .github/generateBasicConfig.ts
 
       - name: Check building
         run: pnpm build

@@ -31,9 +31,9 @@ function getCurrentTime() {
 }
 
 function getErrorString(error: Error): string {
-  return `${error.toString()}${error.stack
-    ?.replaceAll(error.toString(), '')
-    .replaceAll('Hypixel Discord Guild Chat Bridge:', '\nHypixel Discord Guild Chat Bridge:')}${error.cause}`;
+  const message = error.toString();
+  const stack = error.stack?.replaceAll(message, '').replaceAll('Hypixel Discord Guild Chat Bridge:', '\nHypixel Discord Guild Chat Bridge:');
+  return [message, stack, error.cause ? `Cause: ${String(error.cause)}` : undefined].filter(Boolean).join('');
 }
 
 function logSomething(message: string, log: LogData): void {
@@ -112,32 +112,15 @@ console.error = (message: Error): void => {
   if (logger) logger.log(log.level, errorString);
 };
 
-export function configUpdateMessage(message: string) {
+// eslint-disable-next-line import/prefer-default-export
+export function displayBigMessage(message: string) {
   const columns = process.stdout.columns;
   const warning = 'IMPORTANT!';
-  const message2 = 'Please update your Configuration file!';
   const padding = ' '.repeat(Math.floor((columns - warning.length + 1) / 2));
-  const padding2 = ' '.repeat(Math.floor((columns - message2.length + 1) / 2));
+  const padding2 = ' '.repeat(Math.floor((columns - message.length + 1) / 2));
 
   console.log(chalk.bgRed.black(' '.repeat(columns).repeat(3)));
   console.log(chalk.bgRed.black(padding + warning + padding));
-  console.log(chalk.bgRed.black(padding2 + message2 + padding2));
-  console.log(chalk.bgRed.black(' '.repeat(columns).repeat(3)));
-  console.log();
-  console.log(
-    `${chalk.bgRedBright.black(`[${getCurrentTime()}] Config Update >`)} ${chalk.redBright('Added')} ${chalk.gray(message)} ${chalk.redBright('to config.json')}`
-  );
-}
-
-export function updateMessage() {
-  const columns = process.stdout.columns;
-  const warning = 'IMPORTANT!';
-  const message2 = 'Bot has been updated, please restart the bot to apply changes!';
-  const padding = ' '.repeat(Math.floor((columns - warning.length + 1) / 2));
-  const padding2 = ' '.repeat(Math.floor((columns - message2.length + 1) / 2));
-
-  console.log(chalk.bgRed.black(' '.repeat(columns).repeat(3)));
-  console.log(chalk.bgRed.black(padding + warning + padding));
-  console.log(chalk.bgRed.black(padding2 + message2 + padding2));
+  console.log(chalk.bgRed.black(padding2 + message + padding2));
   console.log(chalk.bgRed.black(' '.repeat(columns).repeat(3)));
 }

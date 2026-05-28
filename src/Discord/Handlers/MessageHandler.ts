@@ -11,9 +11,6 @@ class MessageHandler {
       if (!message.guild || message.author.id === message.client.user.id || !this.shouldBroadcastMessage(message)) return;
 
       const discordUser = await message.guild.members.fetch(message.author.id);
-      const memberRoles = discordUser.roles.cache.map((role) => role.id);
-      if (memberRoles.some((role) => this.discord.Application.config.discord.commands.blacklistRoles.includes(role))) return;
-
       const content = this.stripDiscordContent(message).trim();
       if (content.length === 0 && message.attachments.size === 0) return;
 
@@ -64,28 +61,31 @@ class MessageHandler {
       if (message.reference?.messageId === undefined || message.mentions === undefined || message.mentions.repliedUser === null) return null;
 
       const reference = await message.channel.messages.fetch(message.reference.messageId);
-
       const discUser = await message.guild.members.fetch(message.mentions.repliedUser.id);
       const mentionedUserName = this.getDisplayName(discUser);
 
-      if (this.discord.Application.config.discord.other.messageMode === 'bot' && reference.embeds.length >= 1) {
-        const name = reference.embeds[0]?.author?.name;
-        if (name === undefined) return mentionedUserName;
-        return name;
+      switch (this.discord.Application.config.bridge.discord.mode) {
+        case 'bot': {
+          if (reference.embeds.length === 0) return null;
+          const name = reference.embeds[0]?.author?.name;
+          if (name === undefined) return mentionedUserName;
+          return name;
+        }
+        case 'minecraft': {
+          if (reference.attachments === null) return null;
+          const name = reference.attachments.values()?.next()?.value?.name;
+          if (name === undefined) return mentionedUserName;
+          return name.split('.')?.[0] ?? 'UNKNOWN';
+        }
+        case 'webhook': {
+          if (reference.attachments === null) return null;
+          if (reference.author.username === undefined) return mentionedUserName;
+          return reference.author.username;
+        }
+        default: {
+          return mentionedUserName ?? null;
+        }
       }
-
-      if (this.discord.Application.config.discord.other.messageMode === 'minecraft' && reference.attachments !== null) {
-        const name = reference.attachments.values()?.next()?.value?.name;
-        if (name === undefined) return mentionedUserName;
-        return name.split('.')?.[0] ?? 'UNKNOWN';
-      }
-
-      if (this.discord.Application.config.discord.other.messageMode === 'webhook') {
-        if (reference.author.username === undefined) return mentionedUserName;
-        return reference.author.username;
-      }
-
-      return mentionedUserName ?? null;
     } catch (error) {
       console.error(error);
       return null;
@@ -154,12 +154,12 @@ class MessageHandler {
   }
 
   shouldBroadcastMessage(message: Message) {
-    const isBot = Boolean(message.author.bot && this.discord.Application.config.discord.channels.allowedBots.includes(message.author.id) === false);
+    const isBot = Boolean(message.author.bot && this.discord.Application.config.bridge.discord.allowedBots.includes(message.author.id) === false);
     const isValid = !isBot && (message.content.length > 0 || message.attachments.size > 0 || message.stickers.size > 0);
     const validChannelIds = [
-      this.discord.Application.config.discord.channels.officerChannel,
-      this.discord.Application.config.discord.channels.guildChatChannel,
-      this.discord.Application.config.discord.channels.debugChannel
+      this.discord.Application.config.bridge.channels.officer.channel,
+      this.discord.Application.config.bridge.channels.guild.channel,
+      this.discord.Application.config.bridge.channels.debug.channel
     ];
 
     return isValid && validChannelIds.includes(message.channel.id);

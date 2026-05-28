@@ -29,7 +29,7 @@ class InteractionHandler {
       [data.flags.includes(CommandFlags.GuildMemberOnly) && !isGuildMember, "You don't have permission to use this command."],
       [data.flags.includes(CommandFlags.StaffOnly) && !isStaffMember, "You don't have permission to use this command."],
       [data.flags.includes(CommandFlags.StatChannelsCommand) && !this.discord.Application.config.statsChannels.enabled, 'Stat Channel Commands are disbled.'],
-      [data.flags.includes(CommandFlags.VerifiedOnly) && !isVerifiedMember, "You don't have permission to use this command."],
+      [data.flags.includes(CommandFlags.VerifiedOnly) && !isVerifiedMember, 'This command requires you to be verified. Please use /verify to verify.'],
       [data.flags.includes(CommandFlags.VerificationCommand) && !this.discord.Application.config.verification.enabled, 'Verification commands are disabled.'],
       [data.flags.includes(CommandFlags.RequiresMinecraftBot) && !this.discord.Application.minecraft.isBotOnline(), this.discord.Application.messages.minecraftBotOffline]
     ];

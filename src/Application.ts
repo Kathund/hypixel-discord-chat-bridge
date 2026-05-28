@@ -8,8 +8,6 @@ import ScriptManager from './Scripts/ScriptsManager.js';
 import config from '../config.json' with { type: 'json' };
 import messages from '../messages.json' with { type: 'json' };
 import { Filter } from 'bad-words';
-import { configUpdateMessage } from './Private/Logger.js';
-import { readFileSync, writeFileSync } from 'node:fs';
 import type { Guild } from 'hypixel-api-reborn';
 import type { ParsedSession } from './Types/MowojangAPI.js';
 
@@ -20,12 +18,9 @@ class Application {
   readonly linked: LinkedManager;
   readonly minecraft: MinecraftManager;
   readonly scripts: ScriptManager;
+  readonly filter: Filter;
   botGuild?: Guild;
   botGuildMembers?: ParsedSession[];
-  readonly filter: Filter;
-
-  private exampleConfig: Record<string, any>;
-  private configFile: Record<string, any>;
   constructor() {
     this.config = config;
     this.messages = messages;
@@ -35,27 +30,10 @@ class Application {
     this.scripts = new ScriptManager(this);
 
     this.filter = new Filter();
-    const fileredWords = this.config.discord.other.filterWords ?? [];
-    this.filter.addWords(...fileredWords);
+    this.filter.addWords(...(this.config.bridge.filter.customWords ?? []));
 
     this.discord.setBridge(this.minecraft);
     this.minecraft.setBridge(this.discord);
-
-    this.exampleConfig = JSON.parse(readFileSync('config.example.json').toString());
-    this.configFile = JSON.parse(readFileSync('config.json').toString());
-
-    this.migrateConfig();
-
-    for (const [key, value] of Object.entries(this.exampleConfig)) {
-      if (this.configFile[key] === undefined) {
-        this.configFile[key] = value;
-        configUpdateMessage(`${key}: ${JSON.stringify(value)}`);
-      }
-
-      if (typeof value === 'object') this.checkConfig(this.configFile[key], this.exampleConfig[key]);
-    }
-
-    writeFileSync('config.json', JSON.stringify(this.configFile, null, 2));
   }
 
   connect() {
@@ -66,46 +44,6 @@ class Application {
   async stop(): Promise<void> {
     if (this.discord.isClientOnline()) await this.discord.client.destroy();
     if (this.minecraft.isBotOnline()) this.minecraft.bot.end('Shutting Down');
-  }
-
-  migrateConfig() {
-    this.configFile.verification ??= {};
-    const nickname = this.configFile.verification.nickname;
-    if (typeof nickname === 'string') this.configFile.verification.nickname = { nickname };
-
-    const REQUIREMENT_MAP = {
-      bedwarsStars: 'bedwarsStar',
-      bedwarsFKDR: 'bedwarsFinalKDRatio',
-      skywarsStars: 'skywarsStar',
-      skywarsKDR: 'skywarsKDRatio',
-      duelsWins: 'duelsWins',
-      duelsWLR: 'duelsWLRatio',
-      skyblockLevel: 'skyblockLevel'
-    };
-
-    this.configFile.minecraft ??= {};
-    this.configFile.minecraft.guildRequirements ??= {};
-    this.configFile.minecraft.guildRequirements.requirements ??= {};
-    const oldReq = this.configFile.minecraft.guildRequirements.requirements;
-
-    this.configFile.minecraft.guildRequirements.requirements = Object.fromEntries(
-      Object.entries(REQUIREMENT_MAP)
-        .map(([newKey, oldKey]) => [newKey, oldReq[oldKey]])
-        .filter(([, value]) => value !== -1 && value !== undefined)
-    );
-  }
-
-  checkConfig(object: Record<string, any>, exampleObject: Record<string, any>) {
-    for (const [key, value] of Object.entries(exampleObject)) {
-      if (key === 'messageFormat' && object[key] && object[key].length <= 2) object[key] = value;
-
-      if (object[key] === undefined) {
-        object[key] = value;
-        configUpdateMessage(`${key}: ${JSON.stringify(value)}`);
-      }
-
-      if (typeof value === 'object') this.checkConfig(object[key], exampleObject[key]);
-    }
   }
 
   async getBotGuild(): Promise<Guild> {

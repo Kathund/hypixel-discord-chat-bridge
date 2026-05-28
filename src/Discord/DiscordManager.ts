@@ -10,7 +10,7 @@ import MessageHandler from './Handlers/MessageHandler.js';
 import MessageToImage from '../Utils/MessageToImage.js';
 import ModalHandler from './Handlers/ModalHandler.js';
 import StateHandler from './Handlers/StateHandler.js';
-import { AttachmentBuilder, ChannelType, Client, Events, GatewayIntentBits, Guild, Webhook } from 'discord.js';
+import { AttachmentBuilder, type Channel, ChannelType, Client, Events, GatewayIntentBits, Guild, Webhook } from 'discord.js';
 import { HexToDecimal } from '../Utils/MiscUtils.js';
 import { ReplaceVariables } from '../Utils/StringUtils.js';
 import type Application from '../Application.js';
@@ -47,7 +47,7 @@ class DiscordManager extends CommunicationBridge {
     this.client.on(Events.MessageCreate, (message) => this.messageHandler.onMessage(message));
     this.client.on(Events.InteractionCreate, (interaction) => this.interactionHandler.onInteraction(interaction));
     this.client.on(Events.GuildMemberRemove, (member) => this.eventHandler.onGuildMemberRemove(member));
-    this.client.login(this.Application.config.discord.bot.token).catch((e) => console.error(e));
+    this.client.login(this.Application.config.discord.token).catch((e) => console.error(e));
 
     process.on('SIGINT', async () => {
       await this.stateHandler.onClose();
@@ -56,7 +56,7 @@ class DiscordManager extends CommunicationBridge {
   }
 
   async getWebhook(type: ChannelNames): Promise<Webhook | null> {
-    const channel = await this.stateHandler.getChannel(type);
+    const channel = await this.getChannel(type);
     if (channel === null || !channel.isSendable() || channel.type !== ChannelType.GuildText) throw new HypixelDiscordChatBridgeError(`Channel "${type}" not found!`);
     try {
       const webhooks = await channel.fetchWebhooks();
@@ -83,10 +83,7 @@ class DiscordManager extends CommunicationBridge {
   override async onBroadcast(event: BroadcastEvent) {
     let { fullMessage, chatType, username, rank, guildRank, message, color = 1752220 } = event;
 
-    const mode =
-      chatType === 'Debug'
-        ? this.Application.config.discord.channels.debugChannelMessageMode.toLowerCase()
-        : this.Application.config.discord.other.messageMode.toLowerCase();
+    const mode = chatType === 'Debug' ? this.Application.config.bridge.channels.debug.mode : this.Application.config.bridge.discord.mode;
     message = ['text'].includes(mode) ? fullMessage : message;
 
     if (fullMessage === undefined || chatType === undefined || username === undefined || rank === undefined || guildRank === undefined || message === undefined) {
@@ -97,8 +94,8 @@ class DiscordManager extends CommunicationBridge {
       console.broadcast(`${username} [${guildRank.replace(/§[0-9a-fk-or]/g, '').replace(/^\[|\]$/g, '')}]: ${message}`, 'Discord');
     }
 
-    if (mode === 'minecraft') message = ReplaceVariables(this.Application.config.discord.other.messageFormat, { chatType, username, rank, guildRank, message });
-    const channel = await this.stateHandler.getChannel(chatType);
+    if (mode === 'minecraft') message = ReplaceVariables(this.Application.config.bridge.discord.format, { chatType, username, rank, guildRank, message });
+    const channel = await this.getChannel(chatType);
     if (channel === null || !channel.isSendable()) return console.error(`Channel "${chatType.replace(/§[0-9a-fk-or]/g, '').trim()}" not found!`);
 
     switch (mode) {
@@ -153,7 +150,7 @@ class DiscordManager extends CommunicationBridge {
     if (chatType === undefined || message === undefined || color === undefined) return;
     console.broadcast(message, 'Event');
 
-    const channel = await this.stateHandler.getChannel(chatType);
+    const channel = await this.getChannel(chatType);
     if (channel === null || !channel.isSendable()) return console.error(`Channel "${chatType.replace(/§[0-9a-fk-or]/g, '').trim()}" not found!`);
     channel.send({ embeds: [new BasicEmbed().setColor(color).setDescription(message)] });
     channel.send({ embeds: [{ color: color, description: message }] });
@@ -164,7 +161,7 @@ class DiscordManager extends CommunicationBridge {
     if (message === undefined || color === undefined || chatType === undefined) return;
     console.broadcast(message, 'Event');
 
-    const channel = await this.stateHandler.getChannel(chatType);
+    const channel = await this.getChannel(chatType);
     if (channel === null || !channel.isSendable()) return console.error(`Channel "${chatType.replace(/§[0-9a-fk-or]/g, '').trim()}" not found!`);
     channel.send({ embeds: [new BasicEmbed().setColor(color).setDescription(message).setAuthor({ name: title, iconURL: icon })] });
   }
@@ -173,10 +170,10 @@ class DiscordManager extends CommunicationBridge {
     let { fullMessage, username, message, color, chatType } = event;
     if (fullMessage === undefined || username === undefined || message === undefined || color === undefined || chatType === undefined) return;
     console.broadcast(message, 'Event');
-    const channel = await this.stateHandler.getChannel(chatType);
+    const channel = await this.getChannel(chatType);
     if (channel === null || !channel.isSendable()) return console.error(`Channel "${chatType.replace(/§[0-9a-fk-or]/g, '').trim()}" not found!`);
 
-    switch (this.Application.config.discord.other.messageMode.toLowerCase()) {
+    switch (this.Application.config.bridge.discord.mode) {
       case 'bot':
         await channel.send({ embeds: [new Embed().setColor(color).setAuthor({ name: message, iconURL: `https://www.mc-heads.net/avatar/${username}` })] });
         break;
@@ -219,6 +216,22 @@ class DiscordManager extends CommunicationBridge {
 
   isClientOnline(): this is DiscordManagerWithClient {
     return this.client?.isReady() !== undefined;
+  }
+
+  async getChannel(type: ChannelNames): Promise<Channel | null> {
+    if (!this.isClientOnline()) return null;
+    const cleanType = type.replace(/§[0-9a-fk-or]/g, '').trim();
+
+    const channelMap = {
+      Guild: this.Application.config.bridge.channels.guild,
+      Officer: this.Application.config.bridge.channels.officer,
+      Logger: this.Application.config.bridge.channels.logging,
+      Debug: this.Application.config.bridge.channels.debug
+    } as const;
+
+    const config = channelMap[cleanType as keyof typeof channelMap];
+    if (!config || !config.enabled) return null;
+    return await this.client.channels.fetch(config.channel);
   }
 }
 

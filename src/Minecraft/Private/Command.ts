@@ -80,7 +80,7 @@ class Command<T extends MinecraftManagerWithBot = MinecraftManagerWithBot> {
           }
           case SendErrorType.DUPLICATE_MESSAGE: {
             await Delay(this.DUPLICATE_DELAY);
-            const randomId = GenerateId(this.minecraft.Application.config.minecraft.bot.messageRepeatBypassLength);
+            const randomId = GenerateId(this.minecraft.Application.config.minecraft.commands.messageRepeatBypassLength);
             const maxLength = this.MAX_MESSAGE_LENGTH - randomId.length - 3;
             message = `${message.slice(0, maxLength)} - ${randomId}`;
             break;

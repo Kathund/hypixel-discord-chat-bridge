@@ -55,11 +55,11 @@ class CommandHandler {
       }
     }
 
-    const rest = new REST({ version: '10' }).setToken(this.discord.Application.config.discord.bot.token);
-    const clientID = Buffer.from(this.discord.Application.config.discord.bot.token.split('.')?.[0] || 'UNKNOWN', 'base64').toString('ascii');
+    const rest = new REST({ version: '10' }).setToken(this.discord.Application.config.discord.token);
+    const clientId = Buffer.from(this.discord.Application.config.discord.token.split('.')?.[0] || 'UNKNOWN', 'base64').toString('ascii');
 
     await rest
-      .put(Routes.applicationGuildCommands(clientID, this.discord.Application.config.discord.bot.serverID), { body: commands })
+      .put(Routes.applicationGuildCommands(clientId, this.discord.Application.config.discord.serverId), { body: commands })
       .then(() => console.discord(`Successfully reloaded ${commands.length} application command(s).`));
   }
 }

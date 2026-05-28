@@ -5,19 +5,26 @@ allow modes to be inputed in duels command
 
 debug doesn't work
 
-Convert updater to tag system? Maybe? Ask ducky about tagging commits
-
 port web
 port tests
 port inactivity
+port hypixel events
+port skyblock events Notifications
 port help discord command
 port info discord command
 
+discord command alias
 Make buttons on linked command timeout after 2 minutes since last use
 
-config system
-has a schema
-type checks the entire config
-if config version is not one (as in undefined) throw error and stop launch
+Config
+Config Schema
+Validation from that schema with full type checking
+Update github pages with all the moved/new config shit
 
-any support should the maintainers (me and ducky)
+Updater
+Has modes
+  rolling - latest commit
+  tag/version - uses git tags and effectivly is a release system
+alerts via discord that there is a new update with one click pull and restart
+
+i18n? Maybe? Probs out of scope of typescript but something I want to look into

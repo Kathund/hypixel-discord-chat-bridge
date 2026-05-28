@@ -53,9 +53,11 @@ class MinecraftManager extends CommunicationBridge {
     console.broadcast(`${username}: ${message}`, 'Minecraft');
     if (this.bot.player === undefined) return;
 
-    if (channelId === this.Application.config.discord.channels.debugChannel && this.Application.config.discord.channels.debugMode === true) return this.bot.chat(message);
+    if (channelId === this.Application.config.bridge.channels.debug.channel && this.Application.config.bridge.channels.debug.enabled === true) {
+      return this.bot.chat(message);
+    }
 
-    if (this.Application.config.discord.other.filterMessages) {
+    if (this.Application.config.bridge.filter.enabled) {
       try {
         message = this.Application.filter.clean(message);
         username = this.Application.filter.clean(username);
@@ -64,7 +66,7 @@ class MinecraftManager extends CommunicationBridge {
       }
     }
 
-    if (this.Application.config.discord.other.stripEmojisFromUsernames) {
+    if (this.Application.config.bridge.stripEmojisFromUsernames) {
       try {
         username = username.replace(/:[\w\-_]+:/g, '');
       } catch {
@@ -72,8 +74,8 @@ class MinecraftManager extends CommunicationBridge {
       }
     }
 
-    message = ReplaceVariables(this.Application.config.minecraft.bot.messageFormat, { username, message });
-    const chat = channelId === this.Application.config.discord.channels.officerChannel ? '/oc' : '/gc';
+    message = ReplaceVariables(this.Application.config.bridge.minecraft.format, { username, message });
+    const chat = channelId === this.Application.config.bridge.channels.officer.channel ? '/oc' : '/gc';
     if (replyingTo) message = message.replace(username, `${username} replying to ${replyingTo}`);
 
     let successfullySent = false;

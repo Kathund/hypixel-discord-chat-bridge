@@ -43,7 +43,8 @@ export function FormatUsername(username: string, gamemode: string | null): strin
   return username;
 }
 
-export function FormatNumber(number: number, decimals: number = 2): string {
+export function FormatNumber(number: number | string, decimals: number = 2) {
+  if (typeof number === 'string') return number;
   if (number === undefined || number === 0) return '0';
 
   const isNegative = number < 0;
@@ -62,5 +63,5 @@ export function FormatNumber(number: number, decimals: number = 2): string {
 }
 
 export function RemoveColorCodes(input: string): string {
-  return input.replace(/§./g, '');
+  return input.replace(/§[0-9a-fk-or]/g, '');
 }

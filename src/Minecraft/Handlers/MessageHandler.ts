@@ -31,42 +31,12 @@ class MessageHandler {
     // NOTE: fixes "100/100❤     100/100✎ Mana" spam in the debug channel
     if (message.includes('✎ Mana') && message.includes('❤') && message.includes('/')) return;
 
-    if (this.minecraft.Application.config.discord.channels.debugMode === true) {
+    if (this.minecraft.Application.config.bridge.channels.debug.enabled === true) {
       this.minecraft.broadcastMessage({ fullMessage: colouredMessage, message, chatType: 'Debug' });
     }
 
-    if (this.isLobbyJoinMessage(message) && this.minecraft.Application.config.discord.other.autoLimbo === true) {
+    if (this.isLobbyJoinMessage(message) && this.minecraft.Application.config.minecraft.autoLimbo === true) {
       if (this.allowLimbo) return this.minecraft.bot.chat('/limbo');
-    }
-
-    if (this.isPartyMessage(message) && this.minecraft.Application.config.minecraft.fragBot.enabled === true) {
-      const content = message.substring(54).trim();
-      const parts = content.split(/\s+/);
-      const username: string = content.startsWith('[') ? (parts[1] ?? '').trim() : (parts[0] ?? '').trim();
-
-      const { blacklist, blacklisted, whitelist, whitelisted } = this.minecraft.Application.config.minecraft.fragBot;
-      if (blacklist || whitelist) {
-        const uuid = await MowojangAPI.getUUID(username);
-        if (uuid === null) return;
-
-        if (this.minecraft.Application.config.minecraft.fragBot.blacklist === true) {
-          if (blacklisted.includes(username) || blacklisted.includes(uuid)) {
-            return;
-          }
-        }
-
-        const guild = await this.minecraft.Application.getBotGuild();
-        const members = guild.members.map((member) => member.uuid);
-        if ((this.minecraft.Application.config.minecraft.fragBot.whitelist && whitelisted.includes(username)) || members.includes(uuid)) {
-          this.minecraft.bot.chat(`/party accept ${username}`);
-          await Delay(Math.floor(Math.random() * (6900 - 4200 + 1)) + 4200);
-          this.minecraft.bot.chat('/party leave');
-        }
-      } else {
-        this.minecraft.bot.chat(`/party accept ${username}`);
-        await Delay(Math.floor(Math.random() * (6900 - 4200 + 1)) + 4200);
-        this.minecraft.bot.chat('/party leave');
-      }
     }
 
     if (this.isRequestMessage(message)) {
@@ -74,7 +44,7 @@ class MessageHandler {
       if (!this.minecraft.Application.discord.isClientOnline()) {
         throw new HypixelDiscordChatBridgeError("The discord bot doesn't seam to be online? Please restart the application");
       }
-      const logChannel = await this.minecraft.Application.discord.client.channels.fetch(`${this.minecraft.Application.config.discord.channels.loggingChannel}`);
+      const logChannel = await this.minecraft.Application.discord.client.channels.fetch(`${this.minecraft.Application.config.bridge.channels.logging.channel}`);
       if (!logChannel || !logChannel.isSendable()) return;
       const joinRequestButton = new ButtonBuilder().setCustomId('joinRequestAccept').setLabel('Accept Request').setStyle(ButtonStyle.Success);
       const logMessage = await logChannel.send({
@@ -96,17 +66,17 @@ class MessageHandler {
         5 * 60 * 1000
       );
 
-      if (this.minecraft.Application.config.minecraft.guildRequirements.enabled) {
+      if (this.minecraft.Application.config.minecraft.guild.requirements.enabled) {
         const uuid = await MowojangAPI.getUUID(username);
         if (!uuid) return;
         const requirementsCommand = new RequirementsCommand(this.minecraft.Application.discord);
         const data = await requirementsCommand.checkRequirements(uuid);
         this.minecraft.bot.chat(`/oc ${data.username} ${data.passed ? 'meets' : "Doesn't meet"} Requirements. More info in the guild logs channel`);
         await Delay(1000);
-        if (data.passed && this.minecraft.Application.config.minecraft.guildRequirements.autoAccept) this.minecraft.bot.chat(`/guild accept ${username}`);
+        if (data.passed && this.minecraft.Application.config.minecraft.guild.requirements.autoAccept) this.minecraft.bot.chat(`/guild accept ${username}`);
         const embed = requirementsCommand.generateEmbed(data);
         await logMessage.edit({ embeds: [...logMessage.embeds, embed] });
-        this.minecraft.Application.discord.client.channels.fetch(this.minecraft.Application.config.discord.channels.officerChannel).then((channel) => {
+        this.minecraft.Application.discord.client.channels.fetch(this.minecraft.Application.config.bridge.channels.officer.channel).then((channel) => {
           if (!channel || !channel.isSendable()) return;
           channel.send({ embeds: [embed] });
         });
@@ -114,29 +84,25 @@ class MessageHandler {
     }
 
     if (this.isLoginMessage(message)) {
-      if (this.minecraft.Application.config.discord.other.joinMessage === true) {
-        const username = ((message.split('>')?.[1] ?? '').trim().split('joined.')?.[0] ?? '').trim();
-        return this.minecraft.broadcastPlayerToggle({
-          fullMessage: colouredMessage,
-          username: username,
-          message: ReplaceVariables(this.minecraft.Application.messages.loginMessage, { username }),
-          color: 2067276,
-          chatType: 'Guild'
-        });
-      }
+      const username = ((message.split('>')?.[1] ?? '').trim().split('joined.')?.[0] ?? '').trim();
+      return this.minecraft.broadcastPlayerToggle({
+        fullMessage: colouredMessage,
+        username: username,
+        message: ReplaceVariables(this.minecraft.Application.messages.loginMessage, { username }),
+        color: 2067276,
+        chatType: 'Guild'
+      });
     }
 
     if (this.isLogoutMessage(message)) {
-      if (this.minecraft.Application.config.discord.other.joinMessage === true) {
-        const username = ((message.split('>')?.[1] ?? '').trim().split('left.')?.[0] ?? '').trim();
-        return this.minecraft.broadcastPlayerToggle({
-          fullMessage: colouredMessage,
-          username: username,
-          message: ReplaceVariables(this.minecraft.Application.messages.logoutMessage, { username }),
-          color: 15548997,
-          chatType: 'Guild'
-        });
-      }
+      const username = ((message.split('>')?.[1] ?? '').trim().split('left.')?.[0] ?? '').trim();
+      return this.minecraft.broadcastPlayerToggle({
+        fullMessage: colouredMessage,
+        username: username,
+        message: ReplaceVariables(this.minecraft.Application.messages.logoutMessage, { username }),
+        color: 15548997,
+        chatType: 'Guild'
+      });
     }
 
     if (this.isJoinMessage(message)) {
@@ -146,7 +112,7 @@ class MessageHandler {
       await Delay(1000);
       this.minecraft.bot.chat(
         `/gc ${ReplaceVariables(this.minecraft.Application.messages.guildJoinMessage, {
-          prefix: this.minecraft.Application.config.minecraft.bot.prefix
+          prefix: this.minecraft.Application.config.minecraft.commands.normal.prefix
         })} | by @duckysolucky`
       );
 
@@ -260,7 +226,7 @@ class MessageHandler {
 
     if (this.isRepeatMessage(message)) {
       if (!this.minecraft.Application.discord.isClientOnline()) return;
-      const channel = await this.minecraft.Application.discord.client.channels.fetch(this.minecraft.Application.config.discord.channels.guildChatChannel);
+      const channel = await this.minecraft.Application.discord.getChannel('Guild');
       if (!channel || !channel.isSendable()) return;
       return channel.send({ embeds: [{ color: 15548997, description: this.minecraft.Application.messages.repeatMessage }] });
     }
@@ -520,11 +486,11 @@ class MessageHandler {
     }*/
 
     const regex =
-      this.minecraft.Application.config.discord.other.messageMode === 'minecraft'
+      this.minecraft.Application.config.bridge.discord.mode === 'minecraft'
         ? /^(?<chatType>§[0-9a-fA-F](Guild|Officer)) > (?<rank>§[0-9a-fA-F](?:\[.*?\])?)?\s*(?<username>[^§\s]+)\s*(?:(?<guildRank>§[0-9a-fA-F](?:\[.*?\])?))?\s*§f: (?<message>.*)/
         : /^(?<chatType>\w+) > (?:(?:\[(?<rank>[^\]]+)\] )?(?:(?<username>\w+)(?: \[(?<guildRank>[^\]]+)\])?: )?)?(?<message>.+)$/;
 
-    const match = (this.minecraft.Application.config.discord.other.messageMode === 'minecraft' ? colouredMessage : message).match(regex);
+    const match = (this.minecraft.Application.config.bridge.discord.mode === 'minecraft' ? colouredMessage : message).match(regex);
     if (!match || !match?.groups || !match.groups.message || !match.groups.chatType || !match.groups.username) return;
 
     if (this.isDiscordMessage(match.groups.message) === false) {
@@ -567,7 +533,10 @@ class MessageHandler {
   }
 
   isCommand(message: string): boolean {
-    const regex = new RegExp(`^(?<prefix>[${this.minecraft.Application.config.minecraft.bot.prefix}-])(?<command>\\S+)(?:\\s+(?<args>.+))?\\s*$`);
+    const regex = new RegExp(
+      // eslint-disable-next-line @stylistic/max-len
+      `^(?<prefix>[${this.minecraft.Application.config.minecraft.commands.normal.prefix}${this.minecraft.Application.config.minecraft.commands.soopy.prefix}])(?<command>\\S+)(?:\\s+(?<args>.+))?\\s*$`
+    );
 
     if (regex.test(message) === false) {
       const getMessage = /^(?<username>(?!https?:\/\/)[^\s»:>]+)\s*[»:>]\s*(?<message>.*)/;

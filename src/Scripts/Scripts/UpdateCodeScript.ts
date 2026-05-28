@@ -1,20 +1,19 @@
 import Script from '../Private/Script.js';
+import { displayBigMessage } from '../../Private/Logger.js';
 import { exec } from 'node:child_process';
-import { updateMessage } from '../../Private/Logger.js';
 import type ScriptManager from '../ScriptsManager.js';
 
 class UpdateCodeScript extends Script {
   constructor(scripts: ScriptManager) {
     super(scripts, {
-      enabled: scripts.Application.config.other.autoUpdater,
+      enabled: scripts.Application.config.codeUpdater.enabled,
       id: 'updateCode',
-      interval: scripts.Application.config.other.autoUpdaterInterval * 60 * 60 * 1000
+      interval: scripts.Application.config.codeUpdater.interval * 60 * 60 * 1000
     });
-    this.execute();
+    if (this.enabled) this.execute();
   }
 
   override execute(): void {
-    if (this.scripts.Application.config.other.autoUpdater === false) return;
     exec('git pull', (error, stdout, stderr) => {
       if (error) return console.error(error);
 
@@ -22,7 +21,7 @@ class UpdateCodeScript extends Script {
 
       if (stdout === 'Already up to date.\n') return;
 
-      updateMessage();
+      displayBigMessage('Bot has been updated, please restart the bot to apply changes!');
     });
   }
 }
