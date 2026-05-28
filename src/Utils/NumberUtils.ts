@@ -1,5 +1,6 @@
 // eslint-disable-next-line import/prefer-default-export
-export function FormatNumber(number: number, decimals: number = 2) {
+export function FormatNumber(number: number | string, decimals: number = 2) {
+  if (typeof number === 'string') return number;
   if (number === undefined || number === 0) return 0;
 
   const isNegative = number < 0;

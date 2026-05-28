@@ -3,6 +3,7 @@ import CommandData from '../Private/Commands/CommandData.js';
 import Embed from '../Private/Embed.js';
 import HypixelDiscordChatBridgeError from '../../Private/Error.js';
 import MowojangAPI from '../../Private/MowojangAPI.js';
+import { FormatNumber } from '../../Utils/NumberUtils.js';
 import { TitleCaseCamel } from '../../Utils/StringUtils.js';
 import type { ChatInputCommandInteraction } from 'discord.js';
 import type { DiscordManagerWithClient, Requirement, Requirements } from '../../Types/Discord.js';
@@ -43,7 +44,7 @@ class RequirementsCommand extends Command {
       .addFields(
         requirements.map(({ key, has, required, passed }) => ({
           name: TitleCaseCamel(key),
-          value: `${passed ? ':white_check_mark:' : ':x:'} ${has}/${required}`,
+          value: `${passed ? ':white_check_mark:' : ':x:'} ${FormatNumber(has, 2)}/${required}`,
           inline: true
         }))
       )

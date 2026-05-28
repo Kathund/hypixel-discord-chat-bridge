@@ -76,14 +76,25 @@ class MessageHandler {
       }
       const logChannel = await this.minecraft.Application.discord.client.channels.fetch(`${this.minecraft.Application.config.discord.channels.loggingChannel}`);
       if (!logChannel || !logChannel.isSendable()) return;
+      const joinRequestButton = new ButtonBuilder().setCustomId('joinRequestAccept').setLabel('Accept Request').setStyle(ButtonStyle.Success);
       const logMessage = await logChannel.send({
         embeds: [{ color: 2067276, description: ReplaceVariables(this.minecraft.Application.messages.requestMessage, { username }) }],
-        components: [
-          new ActionRowBuilder<ButtonBuilder>().addComponents(
-            new ButtonBuilder().setCustomId('joinRequestAccept').setLabel('Accept Request').setStyle(ButtonStyle.Success)
-          )
-        ]
+        components: [new ActionRowBuilder<ButtonBuilder>().addComponents(joinRequestButton)]
       });
+
+      setTimeout(
+        async () => {
+          await logMessage.edit({
+            components: [
+              new ActionRowBuilder<ButtonBuilder>().addComponents(
+                joinRequestButton.setDisabled(true),
+                new ButtonBuilder().setCustomId('inviteUserFromRequest').setLabel('Invite').setStyle(ButtonStyle.Success)
+              )
+            ]
+          });
+        },
+        5 * 60 * 1000
+      );
 
       if (this.minecraft.Application.config.minecraft.guildRequirements.enabled) {
         const uuid = await MowojangAPI.getUUID(username);
