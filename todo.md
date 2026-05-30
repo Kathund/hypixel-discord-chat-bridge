@@ -45,4 +45,3 @@
     - Having one backend meaning people verified in one server will be verified to the same account in multiple
     - Shared cache for api requests
     - People who use same hypixel api key across bots won't face issues of requesting the same person with in 30 seconds as it's a shared cache
-
