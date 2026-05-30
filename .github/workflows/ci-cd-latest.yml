@@ -1,4 +1,4 @@
-name: 'CI/CD (Latest)'
+name: "CI/CD (Latest)"
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 env:
-  NODE_VERSION: 'latest'
+  NODE_VERSION: "latest"
 
 jobs:
   pnpm:
@@ -25,7 +25,7 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'pnpm'
+          cache: "pnpm"
 
       - name: Install node dependencies
         run: pnpm install --frozen-lockfile
@@ -47,7 +47,7 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'pnpm'
+          cache: "pnpm"
 
       - name: Install node dependencies
         run: pnpm install --frozen-lockfile
@@ -72,7 +72,7 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'pnpm'
+          cache: "pnpm"
 
       - name: Install node dependencies
         run: pnpm install --frozen-lockfile
@@ -100,7 +100,7 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'pnpm'
+          cache: "pnpm"
 
       - name: Install node dependencies
         run: pnpm install --frozen-lockfile

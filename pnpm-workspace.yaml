@@ -4,4 +4,4 @@ allowBuilds:
   unrs-resolver: true
   hypixel-api-reborn: true
 onlyBuiltDependencies:
-  - 'hypixel-api-reborn'
+  - "hypixel-api-reborn"

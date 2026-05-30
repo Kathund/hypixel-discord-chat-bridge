@@ -1,7 +1,7 @@
-import HypixelDiscordChatBridgeError from './Private/Error.js';
-import { ConfigChangeType, type MigrationMap } from './Types/Config.js';
-import { displayBigMessage } from './Private/Logger.js';
-import { readFileSync, writeFileSync } from 'node:fs';
+import HypixelDiscordChatBridgeError from "./private/error.js";
+import { ConfigChangeType, type MigrationMap } from "./types/config.js";
+import { displayBigMessage } from "./private/logger.js";
+import { readFileSync, writeFileSync } from "node:fs";
 
 class ConfigManager {
   private versions: Record<number, MigrationMap>;
@@ -9,65 +9,65 @@ class ConfigManager {
   constructor() {
     this.versions = {
       2: {
-        'discord.bot.serverID': { key: 'discord.serverId', change: ConfigChangeType.Move },
-        'discord.bot.token': { key: 'discord.token', change: ConfigChangeType.Move },
-        'discord.channels.allowedBots': { key: 'bridge.discord.allowedBots', change: ConfigChangeType.Move },
-        'discord.channels.debugChannel': { key: 'bridge.channels.debug.channel', change: ConfigChangeType.Move },
-        'discord.channels.debugChannelMessageMode': { key: 'bridge.channels.debug.mode', change: ConfigChangeType.Move },
-        'discord.channels.debugMode': { key: 'bridge.channels.debug.enabled', change: ConfigChangeType.Move },
-        'discord.channels.guildChatChannel': { key: 'bridge.channels.guild.channel', change: ConfigChangeType.Move },
-        'discord.channels.officerChannel': { key: 'bridge.channels.officer.channel', change: ConfigChangeType.Move },
-        'discord.channels.loggingChannel': { key: 'bridge.channels.logging.channel', change: ConfigChangeType.Move },
-        'discord.commands.checkPerms': { key: 'discord.commands.checkPermissions', change: ConfigChangeType.Move },
-        'discord.commands.commandRole': { key: 'discord.commands.staffRole', change: ConfigChangeType.Move },
-        'discord.commands.users': { key: 'discord.commands.adminUsers', change: ConfigChangeType.Move },
-        'discord.commands.blacklistRoles': { change: ConfigChangeType.Delete },
-        'discord.other.autoLimbo': { key: 'minecraft.autoLimbo', change: ConfigChangeType.Move },
-        'discord.other.filterMessages': { key: 'bridge.filter.enabled', change: ConfigChangeType.Move },
-        'discord.other.filterWords': { key: 'bridge.filter.customWords', change: ConfigChangeType.Move },
-        'discord.other.messageMode': { key: 'bridge.discord.mode', change: ConfigChangeType.Move },
-        'discord.other.messageFormat': { key: 'bridge.discord.format', change: ConfigChangeType.Move },
-        'discord.other.stripEmojisFromUsernames': { key: 'bridge.stripEmojisFromUsernames', change: ConfigChangeType.Move },
-        'discord.other.joinMessage': { change: ConfigChangeType.Delete },
-        'minecraft.fragBot': { change: ConfigChangeType.Delete },
-        'minecraft.API.hypixelAPIkey': { key: 'API.hypixel.key', change: ConfigChangeType.Move },
-        'minecraft.API.imgurAPIkey': { change: ConfigChangeType.Delete },
-        'minecraft.bot.messageFormat': { key: 'bridge.minecraft.format', change: ConfigChangeType.Move },
-        'minecraft.bot.messageRepeatBypassLength': { key: 'minecraft.commands.messageRepeatBypassLength', change: ConfigChangeType.Move },
-        'minecraft.commands.normal': { key: 'minecraft.commands.normal.enabled', change: ConfigChangeType.Move },
-        'minecraft.commands.soopy': { key: 'minecraft.commands.soopy.enabled', change: ConfigChangeType.Move },
-        'minecraft.bot.prefix': { key: 'minecraft.commands.normal.prefix', change: ConfigChangeType.Move },
-        'minecraft.hypixelUpdates': { change: ConfigChangeType.Delete },
-        'minecraft.skyblockEventsNotifications': { change: ConfigChangeType.Delete },
-        'minecraft.guildRequirements': { key: 'minecraft.guild.requirements', change: ConfigChangeType.Move },
-        'web': { change: ConfigChangeType.Delete },
-        'other.autoUpdater': { key: 'codeUpdater.enabled', change: ConfigChangeType.Move },
-        'other.autoUpdaterInterval': { key: 'codeUpdater.interval', change: ConfigChangeType.Move },
-        'other.logToFiles': { change: ConfigChangeType.Delete },
-        'other.timezone': { change: ConfigChangeType.Delete }
+        "discord.bot.serverID": { key: "discord.serverId", change: ConfigChangeType.Move },
+        "discord.bot.token": { key: "discord.token", change: ConfigChangeType.Move },
+        "discord.channels.allowedBots": { key: "bridge.discord.allowedBots", change: ConfigChangeType.Move },
+        "discord.channels.debugChannel": { key: "bridge.channels.debug.channel", change: ConfigChangeType.Move },
+        "discord.channels.debugChannelMessageMode": { key: "bridge.channels.debug.mode", change: ConfigChangeType.Move },
+        "discord.channels.debugMode": { key: "bridge.channels.debug.enabled", change: ConfigChangeType.Move },
+        "discord.channels.guildChatChannel": { key: "bridge.channels.guild.channel", change: ConfigChangeType.Move },
+        "discord.channels.officerChannel": { key: "bridge.channels.officer.channel", change: ConfigChangeType.Move },
+        "discord.channels.loggingChannel": { key: "bridge.channels.logging.channel", change: ConfigChangeType.Move },
+        "discord.commands.checkPerms": { key: "discord.commands.checkPermissions", change: ConfigChangeType.Move },
+        "discord.commands.commandRole": { key: "discord.commands.staffRole", change: ConfigChangeType.Move },
+        "discord.commands.users": { key: "discord.commands.adminUsers", change: ConfigChangeType.Move },
+        "discord.commands.blacklistRoles": { change: ConfigChangeType.Delete },
+        "discord.other.autoLimbo": { key: "minecraft.autoLimbo", change: ConfigChangeType.Move },
+        "discord.other.filterMessages": { key: "bridge.filter.enabled", change: ConfigChangeType.Move },
+        "discord.other.filterWords": { key: "bridge.filter.customWords", change: ConfigChangeType.Move },
+        "discord.other.messageMode": { key: "bridge.discord.mode", change: ConfigChangeType.Move },
+        "discord.other.messageFormat": { key: "bridge.discord.format", change: ConfigChangeType.Move },
+        "discord.other.stripEmojisFromUsernames": { key: "bridge.stripEmojisFromUsernames", change: ConfigChangeType.Move },
+        "discord.other.joinMessage": { change: ConfigChangeType.Delete },
+        "minecraft.fragBot": { change: ConfigChangeType.Delete },
+        "minecraft.API.hypixelAPIkey": { key: "API.hypixel.key", change: ConfigChangeType.Move },
+        "minecraft.API.imgurAPIkey": { change: ConfigChangeType.Delete },
+        "minecraft.bot.messageFormat": { key: "bridge.minecraft.format", change: ConfigChangeType.Move },
+        "minecraft.bot.messageRepeatBypassLength": { key: "minecraft.commands.messageRepeatBypassLength", change: ConfigChangeType.Move },
+        "minecraft.commands.normal": { key: "minecraft.commands.normal.enabled", change: ConfigChangeType.Move },
+        "minecraft.commands.soopy": { key: "minecraft.commands.soopy.enabled", change: ConfigChangeType.Move },
+        "minecraft.bot.prefix": { key: "minecraft.commands.normal.prefix", change: ConfigChangeType.Move },
+        "minecraft.hypixelUpdates": { change: ConfigChangeType.Delete },
+        "minecraft.skyblockEventsNotifications": { change: ConfigChangeType.Delete },
+        "minecraft.guildRequirements": { key: "minecraft.guild.requirements", change: ConfigChangeType.Move },
+        "web": { change: ConfigChangeType.Delete },
+        "other.autoUpdater": { key: "codeUpdater.enabled", change: ConfigChangeType.Move },
+        "other.autoUpdaterInterval": { key: "codeUpdater.interval", change: ConfigChangeType.Move },
+        "other.logToFiles": { change: ConfigChangeType.Delete },
+        "other.timezone": { change: ConfigChangeType.Delete }
       }
     };
     this.hasConfigChanged = false;
 
-    console.other('Checking config');
+    console.other("Checking config");
     this.migrate();
   }
 
   private getConfigFile(): any {
-    return JSON.parse(readFileSync('config.json', 'utf-8'));
+    return JSON.parse(readFileSync("config.json", "utf-8"));
   }
 
   private saveConfigFile(config: any) {
     if (!this.hasConfigChanged) return;
-    writeFileSync('config.json', JSON.stringify(config, null, 2));
-    displayBigMessage('Config updated! Restarting');
+    writeFileSync("config.json", JSON.stringify(config, null, 2));
+    displayBigMessage("Config updated! Restarting");
     process.exit(1);
   }
 
   getConfigVersion(): number {
     const version = this.getConfigFile().configVersion;
     if (version === undefined) {
-      console.error('Config Version not found. Please manually update your config');
+      console.error("Config Version not found. Please manually update your config");
       process.exitCode = 0;
     }
     return version;
@@ -89,7 +89,7 @@ class ConfigManager {
       currentVersion = nextVersion;
     }
 
-    const exampleConfig = JSON.parse(readFileSync('config.example.json', 'utf-8'));
+    const exampleConfig = JSON.parse(readFileSync("config.example.json", "utf-8"));
     this.mergeMissingKeys(config, exampleConfig);
     this.saveConfigFile(config);
   }
@@ -125,16 +125,16 @@ class ConfigManager {
   }
 
   private getNestedValue(obj: any, path: string): any {
-    return path.split('.').reduce((o, key) => o?.[key], obj);
+    return path.split(".").reduce((o, key) => o?.[key], obj);
   }
 
   private setNestedValue(obj: any, path: string, value: any) {
-    const keys = path.split('.');
+    const keys = path.split(".");
     const lastKey = keys.pop()!;
 
     let current = obj;
     for (const key of keys) {
-      if (!current[key] || typeof current[key] !== 'object') {
+      if (!current[key] || typeof current[key] !== "object") {
         current[key] = {};
         this.hasConfigChanged = true;
       }
@@ -149,7 +149,7 @@ class ConfigManager {
   }
 
   private deleteNestedValue(obj: any, path: string) {
-    const keys = path.split('.');
+    const keys = path.split(".");
     const lastKey = keys.pop()!;
     const parent = keys.reduce((o, key) => o?.[key], obj);
     if (parent && lastKey in parent) {
@@ -161,7 +161,7 @@ class ConfigManager {
 
   private cleanupEmptyObjects(obj: any) {
     for (const key of Object.keys(obj)) {
-      if (typeof obj[key] === 'object' && obj[key] !== null && !Array.isArray(obj[key])) {
+      if (typeof obj[key] === "object" && obj[key] !== null && !Array.isArray(obj[key])) {
         this.cleanupEmptyObjects(obj[key]);
         if (Object.keys(obj[key]).length === 0) {
           delete obj[key];
@@ -187,7 +187,7 @@ class ConfigManager {
   }
 
   private isObject(value: any): boolean {
-    return typeof value === 'object' && value !== null && !Array.isArray(value);
+    return typeof value === "object" && value !== null && !Array.isArray(value);
   }
 }
 

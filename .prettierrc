@@ -6,7 +6,7 @@
   "arrowParens": "always",
   "bracketSpacing": true,
   "proseWrap": "always",
-  "singleQuote": true,
+  "singleQuote": false,
   "printWidth": 170,
   "endOfLine": "lf",
   "useTabs": false,

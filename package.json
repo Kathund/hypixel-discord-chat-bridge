@@ -10,7 +10,8 @@
     "prettier": "pnpm exec prettier --write .",
     "prettier:check": "pnpm exec prettier --check .",
     "build": "pnpm exec tsc --build",
-    "nodemon": "pnpm exec nodemon"
+    "dev": "pnpm exec nodemon",
+    "check": "pnpm install --frozen-lockfile && pnpm prettier && pnpm eslint && pnpm build"
   },
   "repository": {
     "type": "git",
@@ -29,7 +30,7 @@
   },
   "homepage": "https://github.com/DuckySoLucky/hypixel-discord-chat-bridge#readme",
   "engines": {
-    "node": ">=22.0.0",
+    "node": ">=22.22.3",
     "pnpm": ">=10.0.0",
     "npm": "forbidden, use pnpm instead",
     "yarn": "forbidden, use pnpm instead",
