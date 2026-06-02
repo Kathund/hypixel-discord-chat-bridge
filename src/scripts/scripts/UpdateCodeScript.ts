@@ -1,13 +1,13 @@
-import Script from "../private/script.js";
+import BasicScript from "../private/BasicScript.js";
 import { displayBigMessage } from "../../private/logger.js";
 import { exec } from "node:child_process";
 import type ScriptManager from "../ScriptsManager.js";
 
-class UpdateCodeScript extends Script {
+class UpdateCodeScript extends BasicScript {
   constructor(scripts: ScriptManager) {
     super(scripts, {
-      enabled: scripts.application.config.codeUpdater.enabled,
       id: "updateCode",
+      enabled: scripts.application.config.codeUpdater.enabled,
       interval: scripts.application.config.codeUpdater.interval * 60 * 60 * 1000
     });
     if (this.enabled) this.execute();

@@ -74,6 +74,26 @@
         "requiredToHave": 1,
         "requirements": {}
       }
+    },
+    "hypixelAlerts": {
+      "hypixelNews": {
+        "enabled": true,
+        "interval": 5
+      },
+      "statusUpdates": {
+        "enabled": true,
+        "interval": 5
+      },
+      "skyblockVersion": {
+        "enabled": true,
+        "interval": 5
+      },
+      "alphaPlayerCountTracker": {
+        "enabled": true,
+        "interval": 15,
+        "messageCooldown": 60,
+        "playerThreshold": 10
+      }
     }
   },
   "discord": {
@@ -118,7 +138,10 @@
   },
   "statsChannels": {
     "enabled": false,
-    "autoUpdaterInterval": 5,
+    "autoUpdater": {
+      "enabled": true,
+      "interval": 10
+    },
     "channels": []
   },
   "codeUpdater": {

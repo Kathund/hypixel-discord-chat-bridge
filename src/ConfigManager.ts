@@ -37,14 +37,19 @@ class ConfigManager {
         "minecraft.commands.normal": { key: "minecraft.commands.normal.enabled", change: ConfigChangeType.Move },
         "minecraft.commands.soopy": { key: "minecraft.commands.soopy.enabled", change: ConfigChangeType.Move },
         "minecraft.bot.prefix": { key: "minecraft.commands.normal.prefix", change: ConfigChangeType.Move },
-        "minecraft.hypixelUpdates": { change: ConfigChangeType.Delete },
+        "minecraft.hypixelUpdates.enabled": { change: ConfigChangeType.Delete },
+        "minecraft.hypixelAlerts.hypixelNews": { key: "minecraft.hypixelAlerts.hypixelNews.enabled", change: ConfigChangeType.Move },
+        "minecraft.hypixelAlerts.statusUpdates": { key: "minecraft.hypixelAlerts.hypixelNews.enabled", change: ConfigChangeType.Move },
+        "minecraft.hypixelAlerts.skyblockVersion": { key: "minecraft.hypixelAlerts.skyblockVersion.enabled", change: ConfigChangeType.Move },
+        "minecraft.hypixelAlerts.alphaPlayerCountTracker": { key: "minecraft.hypixelAlerts.alphaPlayerCountTracker.enabled", change: ConfigChangeType.Move },
         "minecraft.skyblockEventsNotifications": { change: ConfigChangeType.Delete },
         "minecraft.guildRequirements": { key: "minecraft.guild.requirements", change: ConfigChangeType.Move },
         "web": { change: ConfigChangeType.Delete },
         "other.autoUpdater": { key: "codeUpdater.enabled", change: ConfigChangeType.Move },
         "other.autoUpdaterInterval": { key: "codeUpdater.interval", change: ConfigChangeType.Move },
         "other.logToFiles": { change: ConfigChangeType.Delete },
-        "other.timezone": { change: ConfigChangeType.Delete }
+        "other.timezone": { change: ConfigChangeType.Delete },
+        "statsChannels.autoUpdaterInterval": { key: "statsChannels.autoUpdater.interval", change: ConfigChangeType.Move }
       }
     };
     this.hasConfigChanged = false;

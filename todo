@@ -2,8 +2,6 @@
   - Things still to be ported
     - Tests
     - Inactivity
-    - Hypixel Event Alerts
-    - Skyblock Event Alerts
   - Broken Things
     - Minecraft Duels Command Doesn't work with modes
   - Features to add
@@ -11,6 +9,9 @@
       - Linked Command buttons time out after 2 minutes of last use
       - Guild Management commands (/kick) have responses as follow up
     - Config
+      - Refactor Intervals
+        - Instead of being something like `1` it should be `1m` so the enduser can better understand the type and or
+          have more control over it
       - Schema
         - Validation based of the schema with type checking
   - Things that should be improved

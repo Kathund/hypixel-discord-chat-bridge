@@ -1,6 +1,6 @@
 export interface ScriptOptions {
-  enabled: boolean;
   id: string;
+  enabled: boolean;
   cron?: string;
   interval?: number;
 }

@@ -1,12 +1,12 @@
+import BasicScript from "../private/BasicScript.js";
 import HypixelDiscordChatBridgeError from "../../private/error.js";
-import Script from "../private/script.js";
 import type ScriptManager from "../ScriptsManager.js";
 
-class UpdateLinkedUsersScript extends Script {
+class UpdateLinkedUsersScript extends BasicScript {
   constructor(scripts: ScriptManager) {
     super(scripts, {
-      enabled: scripts.application.config.verification.autoRoleUpdater.enabled,
       id: "updateLinkedUsers",
+      enabled: scripts.application.config.verification.autoRoleUpdater.enabled,
       interval: scripts.application.config.verification.autoRoleUpdater.interval * 60 * 60 * 1000
     });
   }

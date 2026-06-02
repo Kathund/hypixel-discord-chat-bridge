@@ -4,18 +4,18 @@ import { schedule } from "node-cron";
 import type ScriptManager from "../ScriptsManager.js";
 import type { ScriptOptions } from "../../types/scripts.js";
 
-class Script {
-  enabled: boolean;
+class BasicScript {
   id: string;
+  enabled: boolean;
   cron?: string;
   interval?: number;
   constructor(
     protected readonly scripts: ScriptManager,
     options: ScriptOptions
   ) {
-    const { enabled, id, cron, interval } = options;
-    this.enabled = enabled;
+    const { id, enabled, cron, interval } = options;
     this.id = id;
+    this.enabled = enabled;
     if (!cron && !interval) throw new HypixelDiscordChatBridgeError("You must specify a cron or an interval.");
     if (cron && interval) throw new HypixelDiscordChatBridgeError("You cannot specify both cron and an interval.");
     this.cron = cron;
@@ -28,8 +28,12 @@ class Script {
   }
 
   private run() {
-    console.scripts(`Executing the \`${this.id}\` script.`);
-    this.execute();
+    try {
+      console.scripts(`Executing the \`${this.id}\` script.`);
+      this.execute();
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   private init() {
@@ -47,4 +51,4 @@ class Script {
   }
 }
 
-export default Script;
+export default BasicScript;

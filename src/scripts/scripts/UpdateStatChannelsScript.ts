@@ -1,14 +1,14 @@
+import BasicScript from "../private/BasicScript.js";
 import HypixelDiscordChatBridgeError from "../../private/error.js";
-import Script from "../private/script.js";
 import { replaceVariables } from "../../utils/stringUtils.js";
 import type ScriptManager from "../ScriptsManager.js";
 
-class UpdateStatChannelsScript extends Script {
+class UpdateStatChannelsScript extends BasicScript {
   constructor(scripts: ScriptManager) {
     super(scripts, {
-      enabled: scripts.application.config.statsChannels.enabled,
       id: "updateStatChannels",
-      interval: scripts.application.config.statsChannels.autoUpdaterInterval * 60 * 1000
+      enabled: scripts.application.config.statsChannels.autoUpdater.enabled,
+      interval: scripts.application.config.statsChannels.autoUpdater.interval * 60 * 1000
     });
   }
 
