@@ -6,8 +6,12 @@ import type MinecraftCommand from "../private/commands/MinecraftCommand.js";
 import type MinecraftManager from "../MinecraftManager.js";
 
 class CommandHandler {
-  private readonly commands: Collection<string, MinecraftCommand> = new Collection<string, MinecraftCommand>();
+  readonly commands: Collection<string, MinecraftCommand> = new Collection<string, MinecraftCommand>();
   constructor(private readonly minecraft: MinecraftManager) {}
+
+  findNormalCommand(name: string): MinecraftCommand | undefined {
+    return this.commands.get(name) ?? this.commands.find((cmd) => cmd.data.aliases && cmd.data.aliases.includes(name));
+  }
 
   async handle(player: string, message: string, officer: boolean) {
     if (!this.minecraft.isBotOnline()) return;
@@ -23,9 +27,9 @@ class CommandHandler {
       const args = message.slice(this.minecraft.application.config.minecraft.commands.normal.prefix.length).trim().split(/ +/);
       if (!args) return;
       const commandName = args.shift() ?? "".toLowerCase();
-      const command = this.commands.get(commandName) ?? this.commands.find((cmd) => cmd.data.getAliases() && cmd.data.getAliases().includes(commandName));
+      const command = this.findNormalCommand(commandName);
       if (command === undefined) return;
-      console.minecraft(`${player} - [${command.data.getName()}] ${message}`);
+      console.minecraft(`${player} - [${command.data.name}] ${message}`);
       command.officer = officer;
       try {
         await command.execute(player, message);
@@ -77,8 +81,8 @@ class CommandHandler {
     const commandFiles = readdirSync("./src/minecraft/commands/", { recursive: true, encoding: "utf-8" }).filter((file) => file.endsWith(".ts"));
     for (const file of commandFiles) {
       const command: MinecraftCommand = new (await import(`../commands/${file}`)).default(this.minecraft);
-      if (!command.data.getName()) continue;
-      this.commands.set(command.data.getName(), command);
+      if (!command.data.name) continue;
+      this.commands.set(command.data.name, command);
     }
     console.minecraft(`Successfully reloaded ${this.commands.size} minecraft command(s).`);
   }

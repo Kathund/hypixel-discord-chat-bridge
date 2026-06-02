@@ -2,49 +2,49 @@ import type MinecraftCommandDataOption from "./MinecraftCommandDataOption.js";
 import type { CommandDataJSON } from "../../../types/minecraft.js";
 
 class MinecraftCommandData {
-  private name: string = "";
-  private description: string | null = null;
-  private aliases: string[] = [];
-  private options: MinecraftCommandDataOption[] = [];
+  #name: string = "";
+  #description: string | null = null;
+  #aliases: string[] = [];
+  #options: MinecraftCommandDataOption[] = [];
 
   setName(name: string): this {
-    this.name = name;
+    this.#name = name;
     return this;
   }
 
-  getName(): string {
-    return this.name;
+  get name(): string {
+    return this.#name;
   }
 
   setDescription(description: string | null): this {
-    this.description = description;
+    this.#description = description;
     return this;
   }
 
-  getDescription(): string | null {
-    return this.description;
+  get description(): string | null {
+    return this.#description;
   }
 
   setAliases(aliases: string[]): this {
-    this.aliases = aliases;
+    this.#aliases = [...aliases];
     return this;
   }
 
-  getAliases(): string[] {
-    return this.aliases;
+  get aliases(): string[] {
+    return [...this.#aliases];
   }
 
   setOptions(options: MinecraftCommandDataOption[]): this {
-    this.options = options;
+    this.#options = [...options];
     return this;
   }
 
-  getOptions(): MinecraftCommandDataOption[] {
-    return this.options;
+  get options(): MinecraftCommandDataOption[] {
+    return [...this.#options];
   }
 
   toJSON(): CommandDataJSON {
-    return { name: this.getName(), description: this.getDescription(), aliases: this.getAliases(), options: this.getOptions().map((option) => option.toJSON()) };
+    return { name: this.name, description: this.description, aliases: this.aliases, options: this.options.map((option) => option.toJSON()) };
   }
 }
 

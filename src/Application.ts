@@ -7,12 +7,14 @@ import MowojangAPI from "./private/MowojangAPI.js";
 import ScriptManager from "./scripts/ScriptsManager.js";
 import config from "../config.json" with { type: "json" };
 import messages from "../messages.json" with { type: "json" };
+import packageJson from "../package.json" with { type: "json" };
 import { Filter } from "bad-words";
 import type { Guild } from "hypixel-api-reborn";
 import type { ParsedSession } from "./types/MowojangAPI.js";
 
 class Application {
   readonly config: typeof config;
+  readonly package: typeof packageJson;
   readonly messages: typeof messages;
   readonly discord: DiscordManager;
   readonly linked: LinkedManager;
@@ -23,6 +25,7 @@ class Application {
   botGuildMembers?: ParsedSession[];
   constructor() {
     this.config = config;
+    this.package = packageJson;
     this.messages = messages;
     this.discord = new DiscordManager(this);
     this.linked = new LinkedManager(this);

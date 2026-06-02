@@ -38,7 +38,7 @@ export enum ButtonResponse {
 }
 
 export type ChannelNames = "Guild" | "Officer" | "Logger" | "Debug";
-export type DiscordManagerWithClient = DiscordManager & { client: Client };
+export type DiscordManagerWithClient = DiscordManager & { client: Client<true> };
 export type DiscordManagerWithGuild = DiscordManagerWithClient & { guild: Guild };
 export type DiscordManagerWithBot = DiscordManagerWithClient & { application: { minecraft: MinecraftManagerWithBot } };
 
@@ -74,4 +74,10 @@ export interface Requirements {
 export interface AutoComplateOption {
   name: string;
   value?: string;
+}
+
+export interface Information {
+  name: string;
+  value: string;
+  format?: boolean;
 }
