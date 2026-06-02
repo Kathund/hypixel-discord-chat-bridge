@@ -23,8 +23,7 @@
     "channels": {
       "debug": {
         "enabled": true,
-        "channel": "DEBUG_CHANNEL_ID",
-        "mode": "text"
+        "channel": "DEBUG_CHANNEL_ID"
       },
       "guild": {
         "enabled": true,

@@ -95,21 +95,20 @@ class DiscordManager extends CommunicationBridge {
 
   override async onBroadcast(event: BroadcastEvent) {
     let { fullMessage, chatType, username, rank, guildRank, message, color = 1752220 } = event;
+    if (fullMessage === undefined || chatType === undefined || message === undefined) return;
 
-    const mode = chatType === "Debug" ? this.application.config.bridge.channels.debug.mode : this.application.config.bridge.discord.mode;
+    const mode = chatType === "Debug" ? "text" : this.application.config.bridge.discord.mode;
     message = ["text"].includes(mode) ? fullMessage : message;
+    if (message.trim().length === 0) return;
 
-    if (fullMessage === undefined || chatType === undefined || username === undefined || rank === undefined || guildRank === undefined || message === undefined) {
-      return;
-    }
-
-    if (message !== undefined && chatType !== "Debug") {
-      console.broadcast(`${username} [${guildRank.replace(/§[0-9a-fk-or]/g, "").replace(/^\[|\]$/g, "")}]: ${message}`, "Discord");
-    }
-
-    if (mode === "minecraft") message = replaceVariables(this.application.config.bridge.discord.format, { chatType, username, rank, guildRank, message });
     const channel = await this.getChannel(chatType);
     if (channel === null || !channel.isSendable()) return console.error(`Channel "${chatType.replace(/§[0-9a-fk-or]/g, "").trim()}" not found!`);
+    if (chatType === "Debug") return await channel.send({ content: message });
+
+    if (username === undefined || rank === undefined || guildRank === undefined) return;
+    console.broadcast(`${username} [${guildRank.replace(/§[0-9a-fk-or]/g, "").replace(/^\[|\]$/g, "")}]: ${message}`, "Discord");
+
+    if (mode === "minecraft") message = replaceVariables(this.application.config.bridge.discord.format, { chatType, username, rank, guildRank, message });
 
     switch (mode) {
       case "bot": {
@@ -139,7 +138,6 @@ class DiscordManager extends CommunicationBridge {
         break;
       }
       case "minecraft": {
-        if (fullMessage.length === 0) return;
         await channel.send({ files: [new AttachmentBuilder(await messageToImage(message, username), { name: `${username}.png` })] });
         if (message.includes("https://")) {
           const links = message.match(/https?:\/\/[^\s]+/g);
@@ -148,7 +146,6 @@ class DiscordManager extends CommunicationBridge {
         break;
       }
       case "text": {
-        if (message.trim().length === 0) return;
         await channel.send({ content: message });
         break;
       }

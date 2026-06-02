@@ -31,7 +31,7 @@ class MessageHandler {
     // NOTE: fixes "100/100❤     100/100✎ Mana" spam in the debug channel
     if (message.includes("✎ Mana") && message.includes("❤") && message.includes("/")) return;
 
-    if (this.minecraft.application.config.bridge.channels.debug.enabled === true) {
+    if (this.minecraft.application.config.bridge.channels.debug.enabled) {
       this.minecraft.broadcastMessage({ fullMessage: colouredMessage, message, chatType: "Debug" });
     }
 
