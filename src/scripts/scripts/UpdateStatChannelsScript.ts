@@ -8,7 +8,7 @@ class UpdateStatChannelsScript extends BasicScript {
     super(scripts, {
       id: "updateStatChannels",
       enabled: scripts.application.config.statsChannels.autoUpdater.enabled,
-      interval: scripts.application.config.statsChannels.autoUpdater.interval * 60 * 1000
+      interval: scripts.application.config.statsChannels.autoUpdater.interval
     });
   }
 

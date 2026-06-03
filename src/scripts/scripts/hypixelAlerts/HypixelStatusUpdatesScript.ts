@@ -15,7 +15,7 @@ class HypixelStatusUpdatesScript extends BasicScript {
     super(scripts, {
       id: "hypixelStatusUpdates",
       enabled: scripts.application.config.minecraft.hypixelAlerts.statusUpdates.enabled,
-      interval: scripts.application.config.minecraft.hypixelAlerts.statusUpdates.interval * 60 * 1000
+      interval: scripts.application.config.minecraft.hypixelAlerts.statusUpdates.interval
     });
   }
 

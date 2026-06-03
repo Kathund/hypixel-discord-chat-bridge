@@ -13,7 +13,7 @@ class HypixelNewsScript extends BasicScript {
     super(scripts, {
       id: "hypixelNews",
       enabled: scripts.application.config.minecraft.hypixelAlerts.hypixelNews.enabled,
-      interval: scripts.application.config.minecraft.hypixelAlerts.hypixelNews.interval * 60 * 1000
+      interval: scripts.application.config.minecraft.hypixelAlerts.hypixelNews.interval
     });
     if (this.enabled) this.execute();
   }

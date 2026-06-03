@@ -6,8 +6,8 @@ class UpdateLinkedUsersScript extends BasicScript {
   constructor(scripts: ScriptManager) {
     super(scripts, {
       id: "updateLinkedUsers",
-      enabled: scripts.application.config.verification.autoRoleUpdater.enabled,
-      interval: scripts.application.config.verification.autoRoleUpdater.interval * 60 * 60 * 1000
+      enabled: scripts.application.config.verification.roles.autoUpdater.enabled,
+      interval: scripts.application.config.verification.roles.autoUpdater.interval
     });
   }
 

@@ -46,10 +46,21 @@ class ConfigManager {
         "minecraft.guildRequirements": { key: "minecraft.guild.requirements", change: ConfigChangeType.Move },
         "web": { change: ConfigChangeType.Delete },
         "other.autoUpdater": { key: "codeUpdater.enabled", change: ConfigChangeType.Move },
-        "other.autoUpdaterInterval": { key: "codeUpdater.interval", change: ConfigChangeType.Move },
+        "other.autoUpdaterInterval": { key: "codeUpdater.interval", change: ConfigChangeType.Transform, transform: (value: any): any => `${value}h` },
         "other.logToFiles": { change: ConfigChangeType.Delete },
         "other.timezone": { change: ConfigChangeType.Delete },
-        "statsChannels.autoUpdaterInterval": { key: "statsChannels.autoUpdater.interval", change: ConfigChangeType.Move }
+        "statsChannels.autoUpdaterInterval": {
+          key: "statsChannels.autoUpdater.interval",
+          change: ConfigChangeType.Transform,
+          transform: (value: any): any => `${value}m`
+        },
+        "verification.inactivity": { change: ConfigChangeType.Delete },
+        "verification.autoRoleUpdater.enabled": { key: "verification.roles.autoUpdater.enabled", change: ConfigChangeType.Move },
+        "verification.autoRoleUpdater.interval": {
+          key: "verification.roles.autoUpdater.interval",
+          change: ConfigChangeType.Transform,
+          transform: (value: any): any => `${value}h`
+        }
       }
     };
     this.hasConfigChanged = false;

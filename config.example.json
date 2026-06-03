@@ -78,20 +78,20 @@
     "hypixelAlerts": {
       "hypixelNews": {
         "enabled": true,
-        "interval": 5
+        "interval": "5m"
       },
       "statusUpdates": {
         "enabled": true,
-        "interval": 5
+        "interval": "5m"
       },
       "skyblockVersion": {
         "enabled": true,
-        "interval": 5
+        "interval": "5m"
       },
       "alphaPlayerCountTracker": {
         "enabled": true,
-        "interval": 15,
-        "messageCooldown": 60,
+        "interval": "15m",
+        "messageCooldown": "1h",
         "playerThreshold": 10
       }
     }
@@ -124,28 +124,23 @@
         "enabled": false,
         "roleId": ""
       },
-      "custom": []
-    },
-    "autoRoleUpdater": {
-      "enabled": false,
-      "interval": 24
-    },
-    "inactivity": {
-      "enabled": false,
-      "channel": "INACTIVITY_LOG_CHANNEL",
-      "maxInactivityTime": 30
+      "custom": [],
+      "autoUpdater": {
+        "enabled": false,
+        "interval": "24h"
+      }
     }
   },
   "statsChannels": {
     "enabled": false,
     "autoUpdater": {
       "enabled": true,
-      "interval": 10
+      "interval": "10m"
     },
     "channels": []
   },
   "codeUpdater": {
     "enabled": true,
-    "interval": 12
+    "interval": "12h"
   }
 }

@@ -7,7 +7,7 @@ class SkyBlockVersionScript extends BasicScript {
     super(scripts, {
       id: "skyBlockVersion",
       enabled: scripts.application.config.minecraft.hypixelAlerts.skyblockVersion.enabled,
-      interval: scripts.application.config.minecraft.hypixelAlerts.skyblockVersion.interval * 60 * 1000
+      interval: scripts.application.config.minecraft.hypixelAlerts.skyblockVersion.interval
     });
   }
 

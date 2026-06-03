@@ -1,4 +1,5 @@
 import HypixelDiscordChatBridgeError from "../../private/error.js";
+import ms, { type StringValue } from "ms";
 import prettyMilliseconds from "pretty-ms";
 import { schedule } from "node-cron";
 import type ScriptManager from "../ScriptsManager.js";
@@ -19,7 +20,7 @@ class BasicScript {
     if (!cron && !interval) throw new HypixelDiscordChatBridgeError("You must specify a cron or an interval.");
     if (cron && interval) throw new HypixelDiscordChatBridgeError("You cannot specify both cron and an interval.");
     this.cron = cron;
-    this.interval = interval;
+    this.interval = interval ? ms(interval as StringValue) : undefined;
     this.init();
   }
 

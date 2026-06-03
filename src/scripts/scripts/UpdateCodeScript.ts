@@ -5,11 +5,7 @@ import type ScriptManager from "../ScriptsManager.js";
 
 class UpdateCodeScript extends BasicScript {
   constructor(scripts: ScriptManager) {
-    super(scripts, {
-      id: "updateCode",
-      enabled: scripts.application.config.codeUpdater.enabled,
-      interval: scripts.application.config.codeUpdater.interval * 60 * 60 * 1000
-    });
+    super(scripts, { id: "updateCode", enabled: scripts.application.config.codeUpdater.enabled, interval: scripts.application.config.codeUpdater.interval });
     if (this.enabled) this.execute();
   }
 
