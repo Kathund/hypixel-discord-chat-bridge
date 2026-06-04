@@ -20,7 +20,7 @@ class PlayerCommand extends MinecraftCommand {
     const { formattedNickname, karma, level, guild, achievements } = hypixelPlayer;
     const guildName = guild ? guild.name : "None";
     this.send(
-      `${formattedNickname}'s level: ${level} | Karma: ${formatNumber(karma, 0)} | Achievement Points: ${formatNumber(achievements.points, 0)} Guild: ${guildName}`
+      `${formattedNickname}'s level: ${level.level} | Karma: ${formatNumber(karma, 0)} | Achievement Points: ${formatNumber(achievements.points, 0)} Guild: ${guildName}`
     );
   }
 }

@@ -1,7 +1,7 @@
 import HypixelDiscordChatBridgeError from "./private/error.js";
-import { ConfigChangeType, type MigrationMap } from "./types/config.js";
+import { Config, ConfigChangeType, type MigrationMap } from "./types/config.js";
 import { displayBigMessage } from "./private/logger.js";
-import { readFileSync, writeFileSync } from "node:fs";
+import { readFile, writeFile } from "node:fs/promises";
 
 class ConfigManager {
   private versions: Record<number, MigrationMap>;
@@ -64,24 +64,34 @@ class ConfigManager {
       }
     };
     this.hasConfigChanged = false;
+  }
 
+  async init(): Promise<Config> {
     console.other("Checking config");
-    this.migrate();
+    await this.migrate();
+    return await this.validate();
   }
 
-  private getConfigFile(): any {
-    return JSON.parse(readFileSync("config.json", "utf-8"));
+  private async getExampleConfigFile(): Promise<Record<string, any>> {
+    const file = await readFile("config.example.json", "utf-8");
+    return JSON.parse(file);
   }
 
-  private saveConfigFile(config: any) {
+  private async getConfigFile(): Promise<Record<string, any>> {
+    const file = await readFile("config.json", "utf-8");
+    return JSON.parse(file);
+  }
+
+  private async saveConfigFile(config: Record<string, any>) {
     if (!this.hasConfigChanged) return;
-    writeFileSync("config.json", JSON.stringify(config, null, 2));
+    await writeFile("config.json", JSON.stringify(config, null, 2), "utf-8");
     displayBigMessage("Config updated! Restarting");
     process.exit(1);
   }
 
-  getConfigVersion(): number {
-    const version = this.getConfigFile().configVersion;
+  async getConfigVersion(): Promise<number> {
+    const configFile = await this.getConfigFile();
+    const version = configFile.configVersion;
     if (version === undefined) {
       console.error("Config Version not found. Please manually update your config");
       process.exitCode = 0;
@@ -89,8 +99,8 @@ class ConfigManager {
     return version;
   }
 
-  private migrate() {
-    const config = this.getConfigFile();
+  private async migrate() {
+    const config = await this.getConfigFile();
     let currentVersion = config.configVersion;
     const latestVersion = Math.max(...Object.keys(this.versions).map(Number));
 
@@ -98,46 +108,48 @@ class ConfigManager {
       const nextVersion = currentVersion + 1;
       const migration = this.versions[nextVersion];
       if (!migration) throw new HypixelDiscordChatBridgeError(`Missing migration for config version ${nextVersion}`);
-      console.other(`Migrating config v${currentVersion} -> v${nextVersion}`);
-      this.applyMigration(config, migration);
-      console.other(`Migrated config v${currentVersion} -> v${nextVersion}`);
+      console.other(`Attempting to migrate config v${currentVersion} to v${nextVersion}`);
+      await this.applyMigration(config, migration);
+      console.other(`Migrated config v${currentVersion} to v${nextVersion}`);
       config.configVersion = nextVersion;
       currentVersion = nextVersion;
     }
 
-    const exampleConfig = JSON.parse(readFileSync("config.example.json", "utf-8"));
+    const exampleConfig = await this.getExampleConfigFile();
     this.mergeMissingKeys(config, exampleConfig);
     this.saveConfigFile(config);
   }
 
-  private applyMigration(config: any, migration: MigrationMap) {
-    for (const [oldPath, rule] of Object.entries(migration)) {
-      const value = this.getNestedValue(config, oldPath);
-      if (value === undefined) continue;
-      switch (rule.change) {
-        case ConfigChangeType.Move: {
-          if (!rule.key) throw new HypixelDiscordChatBridgeError(`Move migration missing target key for "${oldPath}"`);
-          this.setNestedValue(config, rule.key, value);
-          this.deleteNestedValue(config, oldPath);
-          break;
-        }
-        case ConfigChangeType.Delete: {
-          this.deleteNestedValue(config, oldPath);
-          break;
-        }
-        case ConfigChangeType.Transform: {
-          if (!rule.transform) throw new HypixelDiscordChatBridgeError(`Transform migration missing transform function for "${oldPath}"`);
-          if (!rule.key) throw new HypixelDiscordChatBridgeError(`Transform migration missing target key for "${oldPath}"`);
-          const transformed = rule.transform(value, config);
-          this.setNestedValue(config, rule.key, transformed);
-          this.deleteNestedValue(config, oldPath);
-          break;
-        }
-        default: {
-          break;
+  private applyMigration(config: any, migration: MigrationMap): Promise<void> {
+    return new Promise<void>(() => {
+      for (const [oldPath, rule] of Object.entries(migration)) {
+        const value = this.getNestedValue(config, oldPath);
+        if (value === undefined) continue;
+        switch (rule.change) {
+          case ConfigChangeType.Move: {
+            if (!rule.key) throw new HypixelDiscordChatBridgeError(`Move migration missing target key for "${oldPath}"`);
+            this.setNestedValue(config, rule.key, value);
+            this.deleteNestedValue(config, oldPath);
+            break;
+          }
+          case ConfigChangeType.Delete: {
+            this.deleteNestedValue(config, oldPath);
+            break;
+          }
+          case ConfigChangeType.Transform: {
+            if (!rule.transform) throw new HypixelDiscordChatBridgeError(`Transform migration missing transform function for "${oldPath}"`);
+            if (!rule.key) throw new HypixelDiscordChatBridgeError(`Transform migration missing target key for "${oldPath}"`);
+            const transformed = rule.transform(value, config);
+            this.setNestedValue(config, rule.key, transformed);
+            this.deleteNestedValue(config, oldPath);
+            break;
+          }
+          default: {
+            break;
+          }
         }
       }
-    }
+    });
   }
 
   private getNestedValue(obj: any, path: string): any {
@@ -204,6 +216,21 @@ class ConfigManager {
 
   private isObject(value: any): boolean {
     return typeof value === "object" && value !== null && !Array.isArray(value);
+  }
+
+  async validate(): Promise<Config> {
+    console.other("Validating config");
+    const configFile = await this.getConfigFile();
+    const parse = await Config.safeParseAsync(configFile);
+    if (parse.success) {
+      console.other("Config is valid");
+      return parse.data;
+    }
+    parse.error.issues.forEach(({ path, message }) => {
+      const fullPath = path.join(".") || "<root>";
+      console.other(`[${fullPath}] ${message}`);
+    });
+    process.exit(1);
   }
 }
 

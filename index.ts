@@ -1,7 +1,8 @@
 import ConfigManager from "./src/ConfigManager.js";
 import "./src/private/logger.js";
 
-new ConfigManager();
+const configManager = new ConfigManager();
+const config = await configManager.init();
 
 const { default: Application } = await import("./src/Application.js");
-new Application().connect();
+new Application(config).connect();

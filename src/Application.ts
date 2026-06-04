@@ -5,15 +5,14 @@ import LinkedManager from "./linked/LinkedManager.js";
 import MinecraftManager from "./minecraft/MinecraftManager.js";
 import MowojangAPI from "./private/MowojangAPI.js";
 import ScriptManager from "./scripts/ScriptsManager.js";
-import config from "../config.json" with { type: "json" };
 import messages from "../messages.json" with { type: "json" };
 import packageJson from "../package.json" with { type: "json" };
 import { Filter } from "bad-words";
+import type { Config } from "./types/config.js";
 import type { Guild } from "hypixel-api-reborn";
 import type { ParsedSession } from "./types/MowojangAPI.js";
 
 class Application {
-  readonly config: typeof config;
   readonly package: typeof packageJson;
   readonly messages: typeof messages;
   readonly discord: DiscordManager;
@@ -23,8 +22,7 @@ class Application {
   readonly filter: Filter;
   botGuild?: Guild;
   botGuildMembers?: ParsedSession[];
-  constructor() {
-    this.config = config;
+  constructor(readonly config: Config) {
     this.package = packageJson;
     this.messages = messages;
     this.discord = new DiscordManager(this);

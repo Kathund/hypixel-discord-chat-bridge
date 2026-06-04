@@ -9,9 +9,6 @@
     - Discord
       - Linked Command buttons time out after 2 minutes of last use
       - Guild Management commands (/kick) have responses as follow up
-    - Config
-      - Schema
-        - Validation based of the schema with type checking
     - Scripts
       - Should have an discord execute command
         - Aka force run an script
