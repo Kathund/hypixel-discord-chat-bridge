@@ -8,11 +8,15 @@
   - Features to add
     - Discord
       - Linked Command buttons time out after 2 minutes of last use
-      - Guild Management commands (/kick) have responses as follow up
     - Scripts
       - Should have an discord execute command
         - Aka force run an script
   - Things that should be improved
+    - Blacklist system
+      - Add user by uuid or discord id
+        - features
+        - Alert users on member request to join
+        - block users from bridge (and bot overall)
     - Updater
       - Two Modes
         - Rolling - Uses latest git commit

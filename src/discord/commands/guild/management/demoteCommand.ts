@@ -1,7 +1,9 @@
 import DiscordCommand from "../../../private/commands/DiscordCommand.js";
 import DiscordCommandData from "../../../private/commands/DiscordCommandData.js";
-import { CommandFlags, type DiscordManagerWithBot } from "../../../../types/discord.js";
+import HypixelDiscordChatBridgeError from "../../../../private/error.js";
+import { CommandFlags, type DiscordManagerWithBot, GuildManagementAction } from "../../../../types/discord.js";
 import { SuccessEmbed } from "../../../private/Embed.js";
+import { replaceVariables } from "../../../../utils/stringUtils.js";
 import type { ChatInputCommandInteraction } from "discord.js";
 
 class DemoteCommand extends DiscordCommand<DiscordManagerWithBot> {
@@ -16,8 +18,31 @@ class DemoteCommand extends DiscordCommand<DiscordManagerWithBot> {
 
   override async execute(interaction: ChatInputCommandInteraction) {
     const username = interaction.options.getString("guild-member-username", true);
-    this.discord.application.minecraft.bot.chat(`/g demote ${username}`);
-    await interaction.followUp({ embeds: [new SuccessEmbed().setDescription(`Successfully demoted \`${username}\` by one guild rank.`)] });
+    const { action, message } = await this.handleGuildManagementAction("demote", username);
+    if (action === GuildManagementAction.NotInGuild) {
+      throw new HypixelDiscordChatBridgeError(replaceVariables(this.discord.application.messages.notInGuildMessage, { username }));
+    } else if (action === GuildManagementAction.NoPerms) {
+      throw new HypixelDiscordChatBridgeError("The bot doesn't have perms to demote");
+    } else if (action === GuildManagementAction.Timeout) {
+      throw new HypixelDiscordChatBridgeError("Command timed out. Please try again");
+    } else if (!message) {
+      throw new HypixelDiscordChatBridgeError("No response message received");
+    } else if (action === GuildManagementAction.Demote) {
+      const rank =
+        message
+          .replace(/\[(.*?)\]/g, "")
+          .trim()
+          .split(" to ")
+          .pop()
+          ?.trim() ?? "";
+      await interaction.followUp({
+        embeds: [
+          new SuccessEmbed()
+            .setDescription(replaceVariables(this.discord.application.messages.demotionMessage, { username, rank }))
+            .setAuthor({ name: "Member Demote", iconURL: `https://mc-heads.net/avatar/${username}` })
+        ]
+      });
+    }
   }
 }
 

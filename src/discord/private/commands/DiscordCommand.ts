@@ -6,7 +6,6 @@ import type DiscordManager from "../../DiscordManager.js";
 import type { AutocompleteInteraction, ChatInputCommandInteraction } from "discord.js";
 
 class DiscordCommand<T extends DiscordManager = DiscordManagerWithClient> extends BasicInteractionData<T> {
-  protected readonly commandTimeout: number = 5_000;
   data!: DiscordCommandData;
   response: BasicInteractionResponse;
   constructor(discord: T) {

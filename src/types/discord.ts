@@ -81,3 +81,23 @@ export interface Information {
   value: string;
   format?: boolean;
 }
+
+export enum GuildManagementAction {
+  Timeout,
+  NoPerms,
+  NotInGuild,
+  OnlineInvite,
+  OfflineInvite,
+  FailedInvite,
+  UserMute,
+  UserUnmute,
+  GuildMute,
+  GuildUnmute,
+  MuteTooLong,
+  AlreadyMuted,
+  Demote,
+  Promote,
+  Kick
+}
+
+export type GuildManagementActionResponse = { action: GuildManagementAction; message: string | null };

@@ -239,7 +239,6 @@ class MessageHandler {
       const formattedMessage = message.split(" ").slice(1).join(" ");
       this.minecraft.broadcastHeadedEmbed({
         message: formattedMessage.charAt(0).toUpperCase() + formattedMessage.slice(1),
-
         title: "Bot is currently muted for a Major Chat infraction.",
         color: 15548997,
         chatType: "Guild"
