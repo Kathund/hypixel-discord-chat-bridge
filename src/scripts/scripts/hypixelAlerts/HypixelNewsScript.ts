@@ -18,7 +18,7 @@ class HypixelNewsScript extends BasicScript {
     if (this.enabled) this.execute();
   }
 
-  override async execute(): Promise<void> {
+  override async execute() {
     if (!this.scripts.application.minecraft.isBotOnline()) return;
     const [{ items: news }, { items: skyblockNews }] = await Promise.all([
       this.parser.parseURL("https://hypixel.net/forums/news-and-announcements.4/index.rss"),

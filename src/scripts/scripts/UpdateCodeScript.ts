@@ -9,7 +9,7 @@ class UpdateCodeScript extends BasicScript {
     if (this.enabled) this.execute();
   }
 
-  override execute(): void {
+  override execute() {
     exec("git pull", (error, stdout, stderr) => {
       if (error) return console.error(error);
 

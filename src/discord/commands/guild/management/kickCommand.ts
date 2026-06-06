@@ -1,6 +1,5 @@
 import DiscordCommand from "../../../private/commands/DiscordCommand.js";
 import DiscordCommandData from "../../../private/commands/DiscordCommandData.js";
-import HypixelDiscordChatBridgeError from "../../../../private/error.js";
 import { CommandFlags, type DiscordManagerWithBot } from "../../../../types/discord.js";
 import { SuccessEmbed } from "../../../private/Embed.js";
 import type { ChatInputCommandInteraction } from "discord.js";
@@ -16,11 +15,9 @@ class KickCommand extends DiscordCommand<DiscordManagerWithBot> {
     this.flags = [CommandFlags.RequiresMinecraftBot, CommandFlags.StaffOnly];
   }
 
-  override async execute(interaction: ChatInputCommandInteraction): Promise<void> {
-    const username = interaction.options.getString("guild-member-username");
-    if (!username) throw new HypixelDiscordChatBridgeError("The `guild-member-username` option is missing?");
-    const reason = interaction.options.getString("reason");
-    if (!reason) throw new HypixelDiscordChatBridgeError("The `reason` option is missing?");
+  override async execute(interaction: ChatInputCommandInteraction) {
+    const username = interaction.options.getString("guild-member-username", true);
+    const reason = interaction.options.getString("reason", true);
     this.discord.application.minecraft.bot.chat(`/g kick ${username} ${reason}`);
     await interaction.followUp({ embeds: [new SuccessEmbed().setDescription(`Successfully kicked \`${username}\` from the guild.`)] });
   }

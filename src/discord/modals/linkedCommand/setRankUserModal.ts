@@ -13,10 +13,10 @@ class SetRankUserModal extends DiscordModal<DiscordManagerWithBot> {
     this.flags = [CommandFlags.RequiresMinecraftBot, CommandFlags.StaffOnly, CommandFlags.VerificationCommand];
   }
 
-  override async execute(interaction: ModalSubmitInteraction): Promise<void> {
+  override async execute(interaction: ModalSubmitInteraction) {
     const linkedCommand = new LinkedCommand(this.discord);
     if (!interaction.isFromMessage()) throw new HypixelDiscordChatBridgeError("Unable to find the linked user");
-    const linked = linkedCommand.getLinked(interaction.message);
+    const linked = linkedCommand.getLinkedFromLinkedEmbed(interaction.message);
     if (!linked) throw new HypixelDiscordChatBridgeError("Unable to find the linked user");
     const username = await linked.getUsername();
     const rank = interaction.fields.getStringSelectValues("setRankUserRank")[0] ?? interaction.fields.getTextInputValue("setRankUserRank");

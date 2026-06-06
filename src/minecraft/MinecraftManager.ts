@@ -21,11 +21,11 @@ class MinecraftManager extends CommunicationBridge {
     this.messageHandler = new MessageHandler(this);
   }
 
-  connect() {
+  async connect() {
     this.bot = this.createBotConnection();
 
     this.stateHandler.registerEvents();
-    this.commandHandler.deployCommands();
+    await this.commandHandler.deployCommands();
     this.messageHandler.registerEvents();
   }
 

@@ -50,9 +50,8 @@ class RequirementsCommand extends DiscordCommand {
       .setThumbnail(`https://www.mc-heads.net/avatar/${username}`);
   }
 
-  override async execute(interaction: ChatInputCommandInteraction): Promise<void> {
-    const username = interaction.options.getString("username");
-    if (username === null) throw new HypixelDiscordChatBridgeError("Please input a username");
+  override async execute(interaction: ChatInputCommandInteraction) {
+    const username = interaction.options.getString("username", true);
     const uuid = await MowojangAPI.getUUID(username);
     if (uuid === null) throw new HypixelDiscordChatBridgeError("Player does not exist");
     const data = await this.checkRequirements(uuid);

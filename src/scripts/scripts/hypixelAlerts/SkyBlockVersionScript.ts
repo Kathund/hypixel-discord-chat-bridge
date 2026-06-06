@@ -11,7 +11,7 @@ class SkyBlockVersionScript extends BasicScript {
     });
   }
 
-  override async execute(): Promise<void> {
+  override async execute() {
     if (!this.scripts.application.minecraft.isBotOnline()) return;
     const response = await fetch("https://api.hypixel.net/v2/resources/skyblock/skills");
     if (!response.ok) throw new Error(`Hypixel API returned ${response.status} ${response.statusText}`);

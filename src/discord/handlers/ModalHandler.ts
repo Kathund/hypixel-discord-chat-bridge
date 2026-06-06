@@ -8,7 +8,7 @@ import type DiscordModal from "../private/modals/DiscordModal.js";
 class ModalHandler {
   constructor(private readonly discord: DiscordManager) {}
 
-  async onSubmit(interaction: ModalSubmitInteraction): Promise<void> {
+  async onSubmit(interaction: ModalSubmitInteraction) {
     const modal = interaction.client.modals.get(interaction.customId);
     if (!modal) return;
 
@@ -26,7 +26,7 @@ class ModalHandler {
     }
   }
 
-  async loadModals(): Promise<void> {
+  async loadModals() {
     if (!this.discord.client) return;
     this.discord.client.modals = new Collection<string, DiscordModal>();
     const buttonFiles = readdirSync("./src/discord/modals/", { recursive: true, encoding: "utf-8" }).filter((file) => file.endsWith(".ts"));

@@ -18,7 +18,7 @@ class LinkedCommand extends DiscordCommand {
     this.response = BasicInteractionResponse.Ephemeral;
   }
 
-  getLinked(message: Message): LinkedUser | undefined {
+  getLinkedFromLinkedEmbed(message: Message): LinkedUser | undefined {
     const embed = message.embeds[0];
     if (embed === undefined) return undefined;
     const field = embed.fields.find((field) => field.name === "Discord ID");

@@ -1,6 +1,5 @@
 import DiscordCommand from "../../../private/commands/DiscordCommand.js";
 import DiscordCommandData from "../../../private/commands/DiscordCommandData.js";
-import HypixelDiscordChatBridgeError from "../../../../private/error.js";
 import { CommandFlags, type DiscordManagerWithBot } from "../../../../types/discord.js";
 import { SuccessEmbed } from "../../../private/Embed.js";
 import type { ChatInputCommandInteraction } from "discord.js";
@@ -16,11 +15,9 @@ class MuteCommand extends DiscordCommand<DiscordManagerWithBot> {
     this.flags = [CommandFlags.RequiresMinecraftBot, CommandFlags.StaffOnly];
   }
 
-  override async execute(interaction: ChatInputCommandInteraction): Promise<void> {
-    const username = interaction.options.getString("guild-member-username");
-    if (!username) throw new HypixelDiscordChatBridgeError("The `guild-member-username` option is missing?");
-    const time = interaction.options.getString("time");
-    if (!time) throw new HypixelDiscordChatBridgeError("The `time` option is missing?");
+  override async execute(interaction: ChatInputCommandInteraction) {
+    const username = interaction.options.getString("guild-member-username", true);
+    const time = interaction.options.getString("time", true);
     this.discord.application.minecraft.bot.chat(`/g mute ${username} ${time}`);
     await interaction.followUp({ embeds: [new SuccessEmbed().setDescription(`Successfully muted **${username}** for ${time}.`)] });
   }

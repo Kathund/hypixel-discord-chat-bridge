@@ -12,7 +12,7 @@ class CreditsCommand extends DiscordCommand {
     this.data = new DiscordCommandData().setName("credits").setDescription("Shows the credits of the people who make this possible");
   }
 
-  override async execute(interaction: ChatInputCommandInteraction): Promise<void> {
+  override async execute(interaction: ChatInputCommandInteraction) {
     const miscCredits = MiscCredits.map(({ name, description, link }) => `- **[${name}](<https://${link}>):** ${description}`).join("\n");
     const embed = new Embed()
       .setTitle("**Credits**")

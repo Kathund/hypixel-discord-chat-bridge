@@ -37,7 +37,7 @@ class LinkedUser {
     return [verificationRoles.verified.roleId, verificationRoles.guildMember.roleId, ...verificationRoles.custom.flatMap((r) => r.roleId)];
   }
 
-  async reset(): Promise<void> {
+  async reset() {
     if (!this.linked.application.minecraft.isBotOnline()) return;
     if (!this.linked.application.discord.isClientOnline()) return;
     if (!this.linked.application.discord.isGuildReady()) return this.linked.application.discord.stateHandler.loadGuild();

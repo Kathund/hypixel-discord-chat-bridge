@@ -12,7 +12,8 @@ class DiscordModal<T extends DiscordManager = DiscordManagerWithClient> extends 
     this.response = BasicInteractionResponse.Ephemeral;
   }
 
-  execute(interaction: ModalSubmitInteraction): Promise<void> | void {
+  // eslint-disable-next-line require-await
+  async execute(interaction: ModalSubmitInteraction): Promise<unknown> {
     throw new Error("Execute Method not implemented!");
   }
 }

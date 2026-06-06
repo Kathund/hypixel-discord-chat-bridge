@@ -1,6 +1,5 @@
 import DiscordCommand from "../../private/commands/DiscordCommand.js";
 import DiscordCommandData from "../../private/commands/DiscordCommandData.js";
-import HypixelDiscordChatBridgeError from "../../../private/error.js";
 import UnverifyCommand from "./unverifyCommand.js";
 import { CommandFlags, type DiscordManagerWithBot } from "../../../types/discord.js";
 import type { ChatInputCommandInteraction } from "discord.js";
@@ -15,9 +14,8 @@ class ForceUnverifyCommand extends DiscordCommand<DiscordManagerWithBot> {
     this.flags = [CommandFlags.RequiresMinecraftBot, CommandFlags.StaffOnly, CommandFlags.VerificationCommand];
   }
 
-  override async execute(interaction: ChatInputCommandInteraction): Promise<void> {
-    const user = interaction.options.getUser("user");
-    if (!user) throw new HypixelDiscordChatBridgeError("The `user` option is missing?");
+  override async execute(interaction: ChatInputCommandInteraction) {
+    const user = interaction.options.getUser("user", true);
     const unverifyCommand = new UnverifyCommand(this.discord);
     unverifyCommand.isSelf = false;
     unverifyCommand.discordId = user.id;

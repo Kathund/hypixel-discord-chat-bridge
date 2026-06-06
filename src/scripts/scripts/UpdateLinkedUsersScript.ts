@@ -11,7 +11,7 @@ class UpdateLinkedUsersScript extends BasicScript {
     });
   }
 
-  override async execute(): Promise<void> {
+  override async execute() {
     for (const linkedUser of this.scripts.application.linked.getLinkedUsers()) {
       const response = await linkedUser.updateRoles();
       if (response === null) throw new HypixelDiscordChatBridgeError("Something wen't wrong with updating");

@@ -35,7 +35,12 @@ export const ConfigBridge = zod.object({
 });
 
 export const ConfigMinecraftCommand = zod.object({ enabled: zod.boolean(), prefix: zod.string() });
-export const ConfigMinecraftCommands = zod.object({ messageRepeatBypassLength: zod.number(), normal: ConfigMinecraftCommand, soopy: ConfigMinecraftCommand });
+export const ConfigMinecraftCommands = zod.object({
+  messageRepeatBypassLength: zod.number(),
+  maxMessageLength: zod.number(),
+  normal: ConfigMinecraftCommand,
+  soopy: ConfigMinecraftCommand
+});
 export const ConfigMinecraftGuildRequirements = zod.object({
   enabled: zod.boolean(),
   autoAccept: zod.boolean(),

@@ -37,12 +37,12 @@ class Application {
     this.minecraft.setBridge(this.discord);
   }
 
-  connect() {
-    this.discord.connect();
-    this.minecraft.connect();
+  async connect() {
+    await this.discord.connect();
+    await this.minecraft.connect();
   }
 
-  async stop(): Promise<void> {
+  async stop() {
     if (this.discord.isClientOnline()) await this.discord.client.destroy();
     if (this.minecraft.isBotOnline()) this.minecraft.bot.end("Shutting Down");
   }

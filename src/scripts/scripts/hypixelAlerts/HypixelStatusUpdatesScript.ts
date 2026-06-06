@@ -19,7 +19,7 @@ class HypixelStatusUpdatesScript extends BasicScript {
     });
   }
 
-  override async execute(): Promise<void> {
+  override async execute() {
     if (!this.scripts.application.minecraft.isBotOnline()) return;
     const { items: status } = await this.parser.parseURL("https://status.hypixel.net/history.rss");
     const latestIncidents = status.filter(({ pubDate }) => pubDate !== undefined && new Date(pubDate).getTime() + 43200000 > Date.now());

@@ -120,7 +120,7 @@ class ConfigManager {
     this.saveConfigFile(config);
   }
 
-  private applyMigration(config: any, migration: MigrationMap): Promise<void> {
+  private applyMigration(config: any, migration: MigrationMap) {
     return new Promise<void>(() => {
       for (const [oldPath, rule] of Object.entries(migration)) {
         const value = this.getNestedValue(config, oldPath);

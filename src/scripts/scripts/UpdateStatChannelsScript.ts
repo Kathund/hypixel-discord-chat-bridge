@@ -12,7 +12,7 @@ class UpdateStatChannelsScript extends BasicScript {
     });
   }
 
-  override async execute(): Promise<void> {
+  override async execute() {
     if (!this.scripts.application.discord.isGuildReady()) {
       this.scripts.application.discord.stateHandler.loadGuild();
       throw new HypixelDiscordChatBridgeError("The discord server isn't ready. Please try again later");

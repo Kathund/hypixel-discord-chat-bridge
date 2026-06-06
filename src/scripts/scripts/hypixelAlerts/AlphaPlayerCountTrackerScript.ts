@@ -18,7 +18,7 @@ class AlphaPlayerCountTrackerScript extends BasicScript {
     this.playerThreshold = scripts.application.config.minecraft.hypixelAlerts.alphaPlayerCountTracker.playerThreshold;
   }
 
-  override async execute(): Promise<void> {
+  override async execute() {
     if (!this.scripts.application.minecraft.isBotOnline()) return;
     const response = await minecraftProtocol.ping({ host: "alpha.hypixel.net", port: 25565, version: "1.8.9" });
     const currentPlayerCount = ("playerCount" in response ? response.playerCount : response.players?.online) ?? 0;

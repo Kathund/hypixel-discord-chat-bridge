@@ -5,4 +5,5 @@ const configManager = new ConfigManager();
 const config = await configManager.init();
 
 const { default: Application } = await import("./src/Application.js");
-new Application(config).connect();
+const application = new Application(config);
+await application.connect();

@@ -11,12 +11,19 @@ class RestartCommand extends DiscordCommand {
     this.flags = [CommandFlags.StaffOnly];
   }
 
-  override async execute(interaction: ChatInputCommandInteraction): Promise<void> {
+  override async execute(interaction: ChatInputCommandInteraction) {
     await interaction.followUp({
       embeds: [new Embed().setTitle("Restarting...").setDescription("The bot is restarting. This might take few seconds.").setDevFooter("GeorgeFilos")]
     });
-    this.discord.application.stop().then(() => this.discord.application.connect());
-    await interaction.followUp({ embeds: [new Embed().setTitle("Success").setDescription("The bot has been restarted successfully.").setDevFooter("GeorgeFilos")] });
+    this.discord.application
+      .stop()
+      .then(() =>
+        this.discord.application
+          .connect()
+          .then(() =>
+            interaction.followUp({ embeds: [new Embed().setTitle("Success").setDescription("The bot has been restarted successfully.").setDevFooter("GeorgeFilos")] })
+          )
+      );
   }
 }
 

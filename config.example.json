@@ -58,6 +58,7 @@
     "autoLimbo": true,
     "commands": {
       "messageRepeatBypassLength": 24,
+      "maxMessageLength": 256,
       "normal": {
         "enabled": true,
         "prefix": "!"

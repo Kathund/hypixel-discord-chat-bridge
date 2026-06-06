@@ -10,7 +10,7 @@ class UptimeCommand extends DiscordCommand {
     this.data = new DiscordCommandData().setName("uptime").setDescription("Shows the uptime of the bot.");
   }
 
-  override async execute(interaction: ChatInputCommandInteraction): Promise<void> {
+  override async execute(interaction: ChatInputCommandInteraction) {
     await interaction.followUp({
       embeds: [new Embed().setDescription(`Online since <t:${Math.floor((Date.now() - interaction.client.uptime) / 1000)}:R>`).setTitle("🕐 Uptime!")]
     });

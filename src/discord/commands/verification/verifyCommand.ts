@@ -21,7 +21,7 @@ class VerifyCommand extends DiscordCommand<DiscordManagerWithBot> {
     this.flags = [CommandFlags.RequiresMinecraftBot, CommandFlags.VerificationCommand];
   }
 
-  override async execute(interaction: ChatInputCommandInteraction): Promise<void> {
+  override async execute(interaction: ChatInputCommandInteraction) {
     try {
       if (this.discordId === null) {
         this.isSelf = true;
@@ -34,12 +34,10 @@ class VerifyCommand extends DiscordCommand<DiscordManagerWithBot> {
 
       const linkedUser = this.discord.application.linked.getUserByDiscordId(this.discordId);
       if (linkedUser !== undefined) {
-        await interaction.followUp({ embeds: [new ErrorEmbed().setDescription("User is verified\nPlease use /unverify first").setDevFooter("Kathund")] });
-        return;
+        return await interaction.followUp({ embeds: [new ErrorEmbed().setDescription("User is verified\nPlease use /unverify first").setDevFooter("Kathund")] });
       }
 
-      const username = interaction.options.getString("username");
-      if (!username) throw new HypixelDiscordChatBridgeError("The `username` option is missing?");
+      const username = interaction.options.getString("username", true);
       const { socialMedia, nickname, uuid } = await getPlayer(username);
 
       if (this.isSelf) {

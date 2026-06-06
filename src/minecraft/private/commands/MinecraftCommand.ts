@@ -18,18 +18,9 @@ class SendError extends Error {
 class MinecraftCommand<T extends MinecraftManagerWithBot = MinecraftManagerWithBot> {
   data!: MinecraftCommandData;
   officer: boolean = false;
-  MAX_MESSAGE_LENGTH: number;
-  MAX_EXECUTION_TIME: number;
-  SEND_TIMEOUT: number;
-  RETRY_DELAY: number;
-  DUPLICATE_DELAY: number;
+  private readonly maxMessageLength: number;
   constructor(protected readonly minecraft: T) {
-    this.minecraft = minecraft;
-    this.MAX_MESSAGE_LENGTH = 256;
-    this.MAX_EXECUTION_TIME = 10_000;
-    this.SEND_TIMEOUT = 500;
-    this.RETRY_DELAY = 2_000;
-    this.DUPLICATE_DELAY = 100;
+    this.maxMessageLength = this.minecraft.application.config.minecraft.commands.maxMessageLength;
   }
 
   getArgs(message: string): string[] {
@@ -38,51 +29,46 @@ class MinecraftCommand<T extends MinecraftManagerWithBot = MinecraftManagerWithB
     return args;
   }
 
-  async send(message: string, maxRetries = 5, isErrorMessage = false): Promise<void> {
+  private hasCommandTimedOut(startTime: number): boolean {
+    return Date.now() - startTime > 10_000;
+  }
+
+  async send(message: string, maxRetries = 5, isErrorMessage = false) {
     const startTime = Date.now();
 
-    const hasTimedOut = () => Date.now() - startTime > this.MAX_EXECUTION_TIME;
-
-    // Split oversized messages
-    if (message.length > this.MAX_MESSAGE_LENGTH) {
-      const messages = splitMessage(message, this.MAX_MESSAGE_LENGTH);
-
-      for (const part of messages) {
-        if (hasTimedOut()) return console.error("Message sending timed out after 10 seconds");
+    if (message.length > this.maxMessageLength) {
+      const msg = splitMessage(message, this.maxMessageLength);
+      for (const part of msg) {
+        if (this.hasCommandTimedOut(startTime)) return console.error("Message sending timed out after 10 seconds");
         await delay(1000);
         await this.send(part, maxRetries, isErrorMessage);
       }
-
       return;
     }
 
     for (let attempt = 0; attempt < maxRetries; attempt++) {
       try {
-        await this.sendMessage(message);
-        return;
+        return await this.sendMessage(message);
       } catch (error) {
-        if (hasTimedOut()) return console.error("Message sending timed out after 10 seconds");
-
-        if (!(error instanceof SendError)) return console.error("Unexpected send error:", error);
+        if (this.hasCommandTimedOut(startTime)) return console.error("Message sending timed out after 10 seconds");
+        if (!(error instanceof SendError)) return console.error(error);
 
         switch (error.type) {
           case SendErrorType.RATE_LIMITED: {
-            const isLastAttempt = attempt === maxRetries - 1;
-
-            if (isLastAttempt) {
-              await this.send(`Command failed to send message after ${maxRetries} attempts. Please try again later.`, 1, true);
-              if (!isErrorMessage) console.error(`Failed to send message after ${maxRetries} attempts due to rate limiting.`);
+            if (attempt === maxRetries - 1) {
+              this.send(`Command failed to send message after ${maxRetries} attempts. Please try again later.`, 1);
+              if (!isErrorMessage) console.error(`Command failed to send message after ${maxRetries} attempts due to rate limiting.`);
               return;
             }
-
-            await delay(this.RETRY_DELAY);
+            await delay(2000);
             break;
           }
           case SendErrorType.DUPLICATE_MESSAGE: {
-            await delay(this.DUPLICATE_DELAY);
+            await delay(100);
             const randomId = generateId(this.minecraft.application.config.minecraft.commands.messageRepeatBypassLength);
-            const maxLength = this.MAX_MESSAGE_LENGTH - randomId.length - 3;
-            message = `${message.slice(0, maxLength)} - ${randomId}`;
+            // -3 for space
+            const maxLength = this.maxMessageLength - randomId.length - 3;
+            message = `${message.substring(0, maxLength)} - ${randomId}`;
             break;
           }
           default: {
@@ -93,38 +79,33 @@ class MinecraftCommand<T extends MinecraftManagerWithBot = MinecraftManagerWithB
     }
   }
 
-  private sendMessage(message: string): Promise<void> {
+  private sendMessage(message: string) {
     return new Promise<void>((resolve, reject) => {
       const listener = (rawMessage: ChatMessage) => {
         const message = rawMessage.toString();
 
-        if (message.includes("You are sending commands too fast!") && !message.includes(":")) {
-          // eslint-disable-next-line no-use-before-define
-          cleanup();
+        if (this.minecraft.messageHandler.isTooFast(message)) {
+          this.minecraft.bot.removeListener("message", listener);
           reject(new SendError(SendErrorType.RATE_LIMITED));
-          return;
         }
 
-        if (message.includes("You cannot say the same message twice!") && !message.includes(":")) {
-          // eslint-disable-next-line no-use-before-define
-          cleanup();
+        if (this.minecraft.messageHandler.isRepeatMessage(message)) {
+          this.minecraft.bot.removeListener("message", listener);
           reject(new SendError(SendErrorType.DUPLICATE_MESSAGE));
         }
       };
-
-      const cleanup = () => this.minecraft.bot.removeListener("message", listener);
 
       this.minecraft.bot.once("message", listener);
       this.minecraft.bot.chat(`/${this.officer ? "oc" : "gc"} ${message}`);
 
       setTimeout(() => {
-        cleanup();
+        this.minecraft.bot.removeListener("message", listener);
         resolve();
-      }, this.SEND_TIMEOUT);
+      }, 500);
     });
   }
 
-  execute(username: string, message: string): Promise<void> | void {
+  execute(username: string, message: string): unknown {
     throw new Error("Execute Method not implemented!");
   }
 }

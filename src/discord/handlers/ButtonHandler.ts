@@ -8,7 +8,7 @@ import type DiscordManager from "../DiscordManager.js";
 class ButtonHandler {
   constructor(private readonly discord: DiscordManager) {}
 
-  async onButton(interaction: ButtonInteraction): Promise<void> {
+  async onButton(interaction: ButtonInteraction) {
     const button = interaction.client.buttons.get(interaction.customId);
     if (!button) return;
 
@@ -27,7 +27,7 @@ class ButtonHandler {
     }
   }
 
-  async loadButtons(): Promise<void> {
+  async loadButtons() {
     if (!this.discord.client) return;
     this.discord.client.buttons = new Collection<string, DiscordButton>();
     const buttonFiles = readdirSync("./src/discord/buttons/", { recursive: true, encoding: "utf-8" }).filter((file) => file.endsWith(".ts"));

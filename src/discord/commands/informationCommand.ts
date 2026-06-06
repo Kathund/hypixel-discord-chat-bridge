@@ -83,7 +83,7 @@ class InformationCommand extends DiscordCommand<DiscordManagerWithBot> {
     return { discordInformation, minecraftInformation, generalInformation };
   }
 
-  override async execute(interaction: ChatInputCommandInteraction): Promise<void> {
+  override async execute(interaction: ChatInputCommandInteraction) {
     const { discordCommands, minecraftCommands } = InformationCommand.getCommands(this.discord);
     const { discordInformation, minecraftInformation, generalInformation } = InformationCommand.getInformation(this.discord);
 

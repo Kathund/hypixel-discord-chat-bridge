@@ -32,7 +32,7 @@ class OnlineCommand extends DiscordCommand<DiscordManagerWithBot> {
       setTimeout(() => {
         this.discord.application.minecraft.bot.removeListener("message", listener);
         resolve(cachedMessages);
-      }, 5000);
+      }, this.commandTimeout);
     });
   }
 

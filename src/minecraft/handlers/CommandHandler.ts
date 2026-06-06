@@ -75,7 +75,7 @@ class CommandHandler {
     }
   }
 
-  async deployCommands(): Promise<void> {
+  async deployCommands() {
     this.commands.clear();
 
     const commandFiles = readdirSync("./src/minecraft/commands/", { recursive: true, encoding: "utf-8" }).filter((file) => file.endsWith(".ts"));

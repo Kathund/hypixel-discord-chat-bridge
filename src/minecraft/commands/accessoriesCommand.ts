@@ -17,7 +17,7 @@ class AccessoriesCommand extends MinecraftCommand {
       .setOptions([new MinecraftCommandDataOption().setName("username").setDescription("Minecraft Username")]);
   }
 
-  private getAccessories(accessories: SkyBlockInventoryItem[]) {
+  static getAccessories(accessories: SkyBlockInventoryItem[]) {
     try {
       const output: { amount: number; recombed: number; enriched: number; rarities: { [key in Rarity]: number } } = {
         amount: 0,
@@ -51,7 +51,7 @@ class AccessoriesCommand extends MinecraftCommand {
 
     const decoded = await profile.me.inventory.bags.talisman.decodeData();
     if (!decoded) throw new HypixelDiscordChatBridgeError(`${username} has no SkyBlock profiles.`);
-    const talismans = this.getAccessories(decoded.items);
+    const talismans = AccessoriesCommand.getAccessories(decoded.items);
     if (!talismans) throw new HypixelDiscordChatBridgeError(replaceVariables("Couldn't parse {username}'s talismans", { username }));
 
     const { recombed, amount, enriched, rarities } = talismans;

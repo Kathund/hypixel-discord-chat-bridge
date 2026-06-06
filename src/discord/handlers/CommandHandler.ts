@@ -8,7 +8,7 @@ import type DiscordManager from "../DiscordManager.js";
 class CommandHandler {
   constructor(private readonly discord: DiscordManager) {}
 
-  async onCommand(interaction: ChatInputCommandInteraction): Promise<void> {
+  async onCommand(interaction: ChatInputCommandInteraction) {
     const command = interaction.client.commands.get(interaction.commandName);
     if (!command) return;
 
@@ -26,19 +26,17 @@ class CommandHandler {
     }
   }
 
-  async onAutoComplete(interaction: AutocompleteInteraction): Promise<void> {
+  async onAutoComplete(interaction: AutocompleteInteraction) {
     const command = interaction.client.commands.get(interaction.commandName);
     if (!command) return;
     try {
       await command.autocomplete(interaction);
     } catch (error: unknown) {
-      if (error instanceof Error || error instanceof HypixelDiscordChatBridgeError) {
-        this.discord.handleError(error, interaction);
-      }
+      if (error instanceof Error || error instanceof HypixelDiscordChatBridgeError) this.discord.handleError(error, interaction);
     }
   }
 
-  async deployCommands(): Promise<void> {
+  async deployCommands() {
     if (!this.discord.isClientOnline()) return;
     this.discord.client.commands = new Collection<string, DiscordCommand>();
     const commandFiles = readdirSync("./src/discord/commands/", { recursive: true, encoding: "utf-8" }).filter((file) => file.endsWith(".ts"));

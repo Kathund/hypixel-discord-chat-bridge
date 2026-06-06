@@ -52,7 +52,7 @@ class DiscordManager extends CommunicationBridge {
     this.modalHandler = new ModalHandler(this);
   }
 
-  async connect(): Promise<void> {
+  async connect() {
     this.client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMembers] });
     this.client.config = this.application.config;
     await this.commandHandler.deployCommands();
@@ -249,7 +249,7 @@ class DiscordManager extends CommunicationBridge {
     return new ErrorEmbed().setDescription(`\`\`\`${errorStack}\`\`\``);
   }
 
-  async logError(error: Error | HypixelDiscordChatBridgeError): Promise<void> {
+  async logError(error: Error | HypixelDiscordChatBridgeError) {
     if (error instanceof HypixelDiscordChatBridgeError) return;
     if (!this.isClientOnline()) return;
 
@@ -273,7 +273,7 @@ class DiscordManager extends CommunicationBridge {
   async handleError(
     error: Error | HypixelDiscordChatBridgeError,
     interaction: ChatInputCommandInteraction | ButtonInteraction | AutocompleteInteraction | ModalSubmitInteraction | null = null
-  ): Promise<void> {
+  ) {
     console.error(error);
     await this.logError(error);
     if (!interaction || interaction.isAutocomplete()) return;

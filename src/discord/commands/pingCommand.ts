@@ -10,7 +10,7 @@ class PingCommand extends DiscordCommand {
     this.data = new DiscordCommandData().setName("ping").setDescription("Show the latency of the bot.");
   }
 
-  override async execute(interaction: ChatInputCommandInteraction): Promise<void> {
+  override async execute(interaction: ChatInputCommandInteraction) {
     const clientLatency = Date.now() - interaction.createdTimestamp;
     const apiLatency = interaction.client.ws.ping;
 

@@ -12,7 +12,7 @@ class ForceUpdateStatsChannelsCommand extends DiscordCommand<DiscordManagerWithB
     this.flags = [CommandFlags.RequiresMinecraftBot, CommandFlags.StaffOnly, CommandFlags.StatChannelsCommand];
   }
 
-  override async execute(interaction: ChatInputCommandInteraction): Promise<void> {
+  override async execute(interaction: ChatInputCommandInteraction) {
     const script = this.discord.application.scripts.scripts.get("updateStatChannels");
     if (!script) throw new HypixelDiscordChatBridgeError("Unable to find the update stat channels script? Please restart the Application");
     await script.execute();

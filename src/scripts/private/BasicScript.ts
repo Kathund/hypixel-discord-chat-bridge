@@ -24,7 +24,7 @@ class BasicScript {
     this.init();
   }
 
-  execute(): Promise<void> | void {
+  execute(): unknown {
     throw new Error("Execute Method not implemented!");
   }
 

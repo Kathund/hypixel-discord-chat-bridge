@@ -14,7 +14,7 @@ class UnverifyCommand extends DiscordCommand<DiscordManagerWithBot> {
     this.flags = [CommandFlags.VerificationCommand];
   }
 
-  override async execute(interaction: ChatInputCommandInteraction | ButtonInteraction): Promise<void> {
+  override async execute(interaction: ChatInputCommandInteraction | ButtonInteraction) {
     if (this.discordId === null) {
       this.isSelf = true;
       this.discordId = interaction.user.id;

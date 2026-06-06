@@ -19,11 +19,9 @@ class BlacklistCommand extends DiscordCommand<DiscordManagerWithBot> {
     this.flags = [CommandFlags.RequiresMinecraftBot, CommandFlags.StaffOnly];
   }
 
-  override async execute(interaction: ChatInputCommandInteraction): Promise<void> {
-    const username = interaction.options.getString("username");
-    if (!username) throw new HypixelDiscordChatBridgeError("The `username` option is missing?");
-    const arg = interaction.options.getString("arg");
-    if (!arg) throw new HypixelDiscordChatBridgeError("The `arg` option is missing?");
+  override async execute(interaction: ChatInputCommandInteraction) {
+    const username = interaction.options.getString("username", true);
+    const arg = interaction.options.getString("arg", true);
     this.discord.application.minecraft.bot.chat("/lobby megawalls");
 
     await delay(250);

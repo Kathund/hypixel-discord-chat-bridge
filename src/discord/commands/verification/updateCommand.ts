@@ -17,7 +17,7 @@ class UpdateCommand extends DiscordCommand<DiscordManagerWithBot> {
     this.isSelf = false;
   }
 
-  override async execute(interaction: ChatInputCommandInteraction | ButtonInteraction): Promise<void> {
+  override async execute(interaction: ChatInputCommandInteraction | ButtonInteraction) {
     if (this.discordId === null) {
       this.isSelf = true;
       this.discordId = interaction.user.id;

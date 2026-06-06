@@ -1,6 +1,5 @@
 import DiscordCommand from "../private/commands/DiscordCommand.js";
 import DiscordCommandData from "../private/commands/DiscordCommandData.js";
-import HypixelDiscordChatBridgeError from "../../private/error.js";
 import { CommandFlags, type DiscordManagerWithBot } from "../../types/discord.js";
 import { SuccessEmbed } from "../private/Embed.js";
 import type { ChatInputCommandInteraction } from "discord.js";
@@ -15,9 +14,8 @@ class ExecuteCommand extends DiscordCommand<DiscordManagerWithBot> {
     this.flags = [CommandFlags.RequiresMinecraftBot, CommandFlags.StaffOnly];
   }
 
-  override async execute(interaction: ChatInputCommandInteraction): Promise<void> {
-    const command = interaction.options.getString("command");
-    if (!command) throw new HypixelDiscordChatBridgeError("The `command` option is missing?");
+  override async execute(interaction: ChatInputCommandInteraction) {
+    const command = interaction.options.getString("command", true);
     this.discord.application.minecraft.bot.chat(`/${command}`);
     await interaction.followUp({ embeds: [new SuccessEmbed().setDescription(`Successfully executed \`/${command}\``)] });
   }

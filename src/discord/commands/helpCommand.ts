@@ -16,7 +16,7 @@ class HelpCommand extends DiscordCommand {
     this.flags = [CommandFlags.RequiresMinecraftBot];
   }
 
-  override async execute(interaction: ChatInputCommandInteraction): Promise<void> {
+  override async execute(interaction: ChatInputCommandInteraction) {
     const commandName = interaction.options.getString("command") || undefined;
     const { discordCommands, minecraftCommands } = InformationCommand.getCommands(this.discord);
 
@@ -26,8 +26,7 @@ class HelpCommand extends DiscordCommand {
         .setDescription("`()` = **required** argument, `[]` = **optional** argument\n`u` = Minecraft Username")
         .addFields({ name: "**Discord**: ", value: `${discordCommands}`, inline: true }, { name: "**Minecraft**: ", value: `${minecraftCommands}`, inline: true });
 
-      await interaction.followUp({ embeds: [helpMenu] });
-      return;
+      return await interaction.followUp({ embeds: [helpMenu] });
     }
 
     const minecraftCommand = this.discord.application.minecraft.commandHandler.findNormalCommand(commandName);
