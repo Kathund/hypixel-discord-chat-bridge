@@ -15,7 +15,7 @@ class UnverifyUserButton extends DiscordButton<DiscordManagerWithBot> {
 
   override async execute(interaction: ButtonInteraction) {
     const linkedCommand = new LinkedCommand(this.discord);
-    const linked = linkedCommand.getLinkedFromLinkedEmbed(interaction.message);
+    const linked = await linkedCommand.getLinkedFromLinkedEmbed(interaction.message);
     if (!linked) throw new HypixelDiscordChatBridgeError("Unable to find the linked user");
     const unverifyCommand = new UnverifyCommand(this.discord);
     unverifyCommand.isSelf = false;

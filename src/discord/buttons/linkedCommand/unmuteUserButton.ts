@@ -16,7 +16,7 @@ class UnmuteUserButton extends DiscordButton<DiscordManagerWithBot> {
 
   override async execute(interaction: ButtonInteraction) {
     const linkedCommand = new LinkedCommand(this.discord);
-    const linked = linkedCommand.getLinkedFromLinkedEmbed(interaction.message);
+    const linked = await linkedCommand.getLinkedFromLinkedEmbed(interaction.message);
     if (!linked) throw new HypixelDiscordChatBridgeError("Unable to find the linked user");
     const username = await linked.getUsername();
     const { action } = await this.handleGuildManagementAction("unmute", username);

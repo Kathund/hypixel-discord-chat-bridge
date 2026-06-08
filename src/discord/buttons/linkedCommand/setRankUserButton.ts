@@ -14,7 +14,8 @@ class SetRankUserButton extends DiscordButton {
   }
 
   override async execute(interaction: ButtonInteraction) {
-    const linked = new LinkedCommand(this.discord).getLinkedFromLinkedEmbed(interaction.message);
+    const linkedCommand = new LinkedCommand(this.discord);
+    const linked = await linkedCommand.getLinkedFromLinkedEmbed(interaction.message);
     if (!linked) throw new HypixelDiscordChatBridgeError("Unable to find the linked user");
     const username = await linked.getUsername();
     const modal = new ModalBuilder().setCustomId("setRankUser").setTitle(`Set Rank ${username}`).addLabelComponents(this.createRankLabel());

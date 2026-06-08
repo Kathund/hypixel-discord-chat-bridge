@@ -1,7 +1,7 @@
 import HypixelDiscordChatBridgeError from "../../private/error.js";
 import { type AutocompleteInteraction, type ChatInputCommandInteraction, Collection, MessageFlags, REST, Routes } from "discord.js";
 import { BasicInteractionResponse, CommandFlags } from "../../types/discord.js";
-import { readdirSync } from "node:fs";
+import { readdir } from "node:fs/promises";
 import type DiscordCommand from "../private/commands/DiscordCommand.js";
 import type DiscordManager from "../DiscordManager.js";
 
@@ -39,7 +39,7 @@ class CommandHandler {
   async deployCommands() {
     if (!this.discord.isClientOnline()) return;
     this.discord.client.commands = new Collection<string, DiscordCommand>();
-    const commandFiles = readdirSync("./src/discord/commands/", { recursive: true, encoding: "utf-8" }).filter((file) => file.endsWith(".ts"));
+    const commandFiles = await readdir("./src/discord/commands/", { recursive: true, encoding: "utf-8" }).then((files) => files.filter((file) => file.endsWith(".ts")));
 
     const commands = [];
     for (const file of commandFiles) {

@@ -1,7 +1,7 @@
 import HypixelDiscordChatBridgeError from "./private/error.js";
 import { Config, ConfigChangeType, type MigrationMap } from "./types/config.js";
 import { displayBigMessage } from "./private/logger.js";
-import { readFile, writeFile } from "node:fs/promises";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 
 class ConfigManager {
   private versions: Record<number, MigrationMap>;
@@ -99,6 +99,13 @@ class ConfigManager {
     return version;
   }
 
+  private async backupConfig(config: Record<string, any>) {
+    await mkdir("./data/backup/configs", { recursive: true });
+    const currentTime = Date.now();
+    await writeFile(`./data/backup/configs/config_${currentTime}.json`, JSON.stringify(config, null, 2), "utf-8");
+    console.other("Save config backup");
+  }
+
   private async migrate() {
     const config = await this.getConfigFile();
     let currentVersion = config.configVersion;
@@ -109,6 +116,7 @@ class ConfigManager {
       const migration = this.versions[nextVersion];
       if (!migration) throw new HypixelDiscordChatBridgeError(`Missing migration for config version ${nextVersion}`);
       console.other(`Attempting to migrate config v${currentVersion} to v${nextVersion}`);
+      await this.backupConfig(config);
       await this.applyMigration(config, migration);
       console.other(`Migrated config v${currentVersion} to v${nextVersion}`);
       config.configVersion = nextVersion;

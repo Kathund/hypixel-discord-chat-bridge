@@ -24,12 +24,12 @@ class LinkedUser {
     return username;
   }
 
-  save(): LinkedUser[] {
-    const linked = this.linked.getLinkedUsers();
-    const user = this.linked.getUser(this);
-    if (user) return this.linked.getLinkedUsers();
+  async save(): Promise<LinkedUser[]> {
+    const linked = await this.linked.getLinkedUsers();
+    const user = await this.linked.getUser(this);
+    if (user) return await this.linked.getLinkedUsers();
     linked.push(this);
-    return this.linked.writeLinkedUsersParsed(linked);
+    return await this.linked.writeLinkedUsersParsed(linked);
   }
 
   private getLinkedRoles(): string[] {
@@ -52,10 +52,10 @@ class LinkedUser {
     }
   }
 
-  delete(): LinkedUser[] {
-    const linked = this.linked.getLinkedUsers();
+  async delete(): Promise<LinkedUser[]> {
+    const linked = await this.linked.getLinkedUsers();
     const updated = linked.filter((u) => u.uuid !== this.uuid && u.discordId !== this.discordId);
-    return this.linked.writeLinkedUsersParsed(updated);
+    return await this.linked.writeLinkedUsersParsed(updated);
   }
 
   async updateRoles(): Promise<this | null> {

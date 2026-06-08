@@ -1,7 +1,7 @@
 import HypixelDiscordChatBridgeError from "../../private/error.js";
 import { type ButtonInteraction, Collection, MessageFlags } from "discord.js";
 import { ButtonResponse } from "../../types/discord.js";
-import { readdirSync } from "node:fs";
+import { readdir } from "node:fs/promises";
 import type DiscordButton from "../private/buttons/DiscordButton.js";
 import type DiscordManager from "../DiscordManager.js";
 
@@ -30,7 +30,7 @@ class ButtonHandler {
   async loadButtons() {
     if (!this.discord.client) return;
     this.discord.client.buttons = new Collection<string, DiscordButton>();
-    const buttonFiles = readdirSync("./src/discord/buttons/", { recursive: true, encoding: "utf-8" }).filter((file) => file.endsWith(".ts"));
+    const buttonFiles = await readdir("./src/discord/buttons/", { recursive: true, encoding: "utf-8" }).then((files) => files.filter((file) => file.endsWith(".ts")));
     for (const file of buttonFiles) {
       const button: DiscordButton = new (await import(`../buttons/${file}`)).default(this.discord);
       this.discord.client.buttons.set(button.data.id, button);

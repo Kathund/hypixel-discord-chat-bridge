@@ -17,7 +17,7 @@ class KickUserModal extends DiscordModal<DiscordManagerWithBot> {
   override async execute(interaction: ModalSubmitInteraction) {
     const linkedCommand = new LinkedCommand(this.discord);
     if (!interaction.isFromMessage()) throw new HypixelDiscordChatBridgeError("Unable to find the linked user");
-    const linked = linkedCommand.getLinkedFromLinkedEmbed(interaction.message);
+    const linked = await linkedCommand.getLinkedFromLinkedEmbed(interaction.message);
     if (!linked) throw new HypixelDiscordChatBridgeError("Unable to find the linked user");
     const username = await linked.getUsername();
     const reason = interaction.fields.getTextInputValue("kickUserReason");

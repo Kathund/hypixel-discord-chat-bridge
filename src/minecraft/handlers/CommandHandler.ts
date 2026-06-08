@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Collection } from "discord.js";
 import { formatError } from "../../utils/miscUtils.js";
-import { readdirSync } from "node:fs";
+import { readdir } from "node:fs/promises";
 import type MinecraftCommand from "../private/commands/MinecraftCommand.js";
 import type MinecraftManager from "../MinecraftManager.js";
 
@@ -77,8 +77,7 @@ class CommandHandler {
 
   async deployCommands() {
     this.commands.clear();
-
-    const commandFiles = readdirSync("./src/minecraft/commands/", { recursive: true, encoding: "utf-8" }).filter((file) => file.endsWith(".ts"));
+    const commandFiles = await readdir("./src/minecraft/commands/", { recursive: true, encoding: "utf-8" }).then((files) => files.filter((file) => file.endsWith(".ts")));
     for (const file of commandFiles) {
       const command: MinecraftCommand = new (await import(`../commands/${file}`)).default(this.minecraft);
       if (!command.data.name) continue;

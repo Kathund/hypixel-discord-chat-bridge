@@ -794,7 +794,7 @@ class MessageHandler {
       if (this.minecraft.application.config.verification.enabled === false) return;
       if (isUuid(uuid) === false) uuid = await MowojangAPI.getUUID(uuid);
       if (!uuid) return;
-      const linkedUser = this.minecraft.application.linked.getUserByUUID(uuid);
+      const linkedUser = await this.minecraft.application.linked.getUserByUUID(uuid);
       if (!linkedUser) return;
       await linkedUser.updateRoles();
       console.log(`Updated roles for ${uuid}`);

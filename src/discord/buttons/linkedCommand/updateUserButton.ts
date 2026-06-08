@@ -15,7 +15,7 @@ class UpdateUserButton extends DiscordButton<DiscordManagerWithBot> {
 
   override async execute(interaction: ButtonInteraction) {
     const linkedCommand = new LinkedCommand(this.discord);
-    const linked = linkedCommand.getLinkedFromLinkedEmbed(interaction.message);
+    const linked = await linkedCommand.getLinkedFromLinkedEmbed(interaction.message);
     if (!linked) throw new HypixelDiscordChatBridgeError("Unable to find the linked user");
     const updateCommand = new UpdateCommand(this.discord);
     updateCommand.isSelf = false;

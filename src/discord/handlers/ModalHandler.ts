@@ -1,7 +1,7 @@
 import HypixelDiscordChatBridgeError from "../../private/error.js";
 import { BasicInteractionResponse } from "../../types/discord.js";
 import { Collection, MessageFlags, type ModalSubmitInteraction } from "discord.js";
-import { readdirSync } from "node:fs";
+import { readdir } from "node:fs/promises";
 import type DiscordManager from "../DiscordManager.js";
 import type DiscordModal from "../private/modals/DiscordModal.js";
 
@@ -29,8 +29,8 @@ class ModalHandler {
   async loadModals() {
     if (!this.discord.client) return;
     this.discord.client.modals = new Collection<string, DiscordModal>();
-    const buttonFiles = readdirSync("./src/discord/modals/", { recursive: true, encoding: "utf-8" }).filter((file) => file.endsWith(".ts"));
-    for (const file of buttonFiles) {
+    const modalFiles = await readdir("./src/discord/modals/", { recursive: true, encoding: "utf-8" }).then((files) => files.filter((file) => file.endsWith(".ts")));
+    for (const file of modalFiles) {
       const modal: DiscordModal = new (await import(`../modals/${file}`)).default(this.discord);
       this.discord.client.modals.set(modal.data.id, modal);
     }

@@ -19,10 +19,10 @@ class UnverifyCommand extends DiscordCommand<DiscordManagerWithBot> {
       this.isSelf = true;
       this.discordId = interaction.user.id;
     }
-    const linkedUser = this.discord.application.linked.getUserByDiscordId(this.discordId);
+    const linkedUser = await this.discord.application.linked.getUserByDiscordId(this.discordId);
     if (linkedUser === undefined) throw new HypixelDiscordChatBridgeError("User is not verified");
     await linkedUser.reset();
-    linkedUser.delete();
+    await linkedUser.delete();
     await interaction.followUp({
       embeds: [new SuccessEmbed().setDescription(`${this.isSelf ? "Your" : `<@${this.discordId}>'s`} account has been successfully unlinked`).setDevFooter("Kathund")]
     });
