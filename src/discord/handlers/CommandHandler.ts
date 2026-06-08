@@ -45,7 +45,6 @@ class CommandHandler {
     for (const file of commandFiles) {
       const command: DiscordCommand = new (await import(`../commands/${file}`)).default(this.discord);
       if (command.data.name) {
-        if (command.flags.includes(CommandFlags.StatChannelsCommand) && !this.discord.application.config.statsChannels.enabled) continue;
         if (command.flags.includes(CommandFlags.VerificationCommand) && !this.discord.application.config.verification.enabled) continue;
 
         commands.push(command.data.toJSON());

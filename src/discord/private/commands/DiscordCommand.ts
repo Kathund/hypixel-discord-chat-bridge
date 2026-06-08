@@ -1,6 +1,7 @@
 import BasicInteractionData from "../BasicInteractionData.js";
 import { type AutoComplateOption, BasicInteractionResponse, type DiscordManagerWithClient } from "../../../types/discord.js";
 import { ParseAutoComplete } from "../../../utils/discordUtils.js";
+import { titleCaseCamel } from "../../../utils/stringUtils.js";
 import type DiscordCommandData from "./DiscordCommandData.js";
 import type DiscordManager from "../../DiscordManager.js";
 import type { AutocompleteInteraction, ChatInputCommandInteraction } from "discord.js";
@@ -33,6 +34,10 @@ class DiscordCommand<T extends DiscordManager = DiscordManagerWithClient> extend
           break;
         }
         choices = ranks.sort((a, b) => a.name.localeCompare(b.name)).map(({ name }) => ({ name }));
+        break;
+      }
+      case "script-name": {
+        choices = this.discord.application.scripts.scripts.map(({ id }) => ({ value: id, name: titleCaseCamel(id) })).sort((a, b) => a.name.localeCompare(b.name));
         break;
       }
       default: {

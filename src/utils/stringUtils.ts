@@ -8,11 +8,9 @@ export function titleCase(string: string): string {
     .join(" ");
 }
 
-export function titleCaseCamel(str: string): string {
-  if (!str || typeof str !== "string") return "";
-
-  const withUnderscores = str.replace(/([a-z])([A-Z])/g, "$1_$2");
-
+export function titleCaseCamel(string: string): string {
+  if (!string || typeof string !== "string") return "";
+  const withUnderscores = string.replace(/([a-z])([A-Z])/g, "$1_$2");
   return titleCase(withUnderscores);
 }
 

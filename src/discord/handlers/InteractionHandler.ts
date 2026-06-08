@@ -24,7 +24,6 @@ class InteractionHandler {
     const checks: Array<[boolean, string]> = [
       [data.flags.includes(CommandFlags.GuildMemberOnly) && !isGuildMemberCheck, "You don't have permission to use this command."],
       [data.flags.includes(CommandFlags.StaffOnly) && !isStaffMemberCheck, "You don't have permission to use this command."],
-      [data.flags.includes(CommandFlags.StatChannelsCommand) && !this.discord.application.config.statsChannels.enabled, "Stat Channel Commands are disbled."],
       [data.flags.includes(CommandFlags.VerifiedOnly) && !isVerifiedMemberCheck, "This command requires you to be verified. Please use /verify to verify."],
       [data.flags.includes(CommandFlags.VerificationCommand) && !this.discord.application.config.verification.enabled, "Verification commands are disabled."],
       [data.flags.includes(CommandFlags.RequiresMinecraftBot) && !this.discord.application.minecraft.isBotOnline(), this.discord.application.messages.minecraftBotOffline]

@@ -8,9 +8,6 @@
   - Features to add
     - Discord
       - Linked Command buttons time out after 2 minutes of last use
-    - Scripts
-      - Should have an discord execute command
-        - Aka force run an script
   - Things that should be improved
     - Blacklist system
       - Add user by uuid or discord id
