@@ -69,7 +69,9 @@ class ConfigManager {
   async init(): Promise<Config> {
     console.other("Checking config");
     await this.migrate();
-    return await this.validate();
+    const config = await this.validate();
+    await this.backupConfig(config);
+    return config;
   }
 
   private async getExampleConfigFile(): Promise<Record<string, any>> {
@@ -100,10 +102,10 @@ class ConfigManager {
   }
 
   private async backupConfig(config: Record<string, any>) {
-    await mkdir("./data/backup/configs", { recursive: true });
+    await mkdir("./data/backup/config", { recursive: true });
     const currentTime = Date.now();
-    await writeFile(`./data/backup/configs/config_${currentTime}.json`, JSON.stringify(config, null, 2), "utf-8");
-    console.other("Save config backup");
+    await writeFile(`./data/backup/config/config_${currentTime}.json`, JSON.stringify(config, null, 2), "utf-8");
+    console.other("Saved config backup");
   }
 
   private async migrate() {
