@@ -23,7 +23,7 @@ class UpdateCommand extends DiscordCommand<DiscordManagerWithBot> {
       this.discordId = interaction.user.id;
     }
 
-    const linkedUser = await this.discord.application.linked.getUserByDiscordId(this.discordId);
+    const linkedUser = await this.discord.application.data.linked.getUserByDiscordId(this.discordId);
     if (linkedUser === undefined) throw new HypixelDiscordChatBridgeError("User is not verified");
 
     const response = await linkedUser.updateRoles();

@@ -2,7 +2,7 @@ import DiscordCommand from "../../private/commands/DiscordCommand.js";
 import DiscordCommandData from "../../private/commands/DiscordCommandData.js";
 import Embed, { ErrorEmbed, SuccessEmbed } from "../../private/Embed.js";
 import HypixelDiscordChatBridgeError from "../../../private/error.js";
-import LinkedUser from "../../../linked/private/LinkedUser.js";
+import LinkedUser from "../../../data/linked/LinkedUser.js";
 import UpdateCommand from "./updateCommand.js";
 import { type ChatInputCommandInteraction, MessageFlags } from "discord.js";
 import { CommandFlags, type DiscordManagerWithBot } from "../../../types/discord.js";
@@ -32,7 +32,7 @@ class VerifyCommand extends DiscordCommand<DiscordManagerWithBot> {
       const discordUser = await interaction.guild.members.fetch(this.discordId).catch((e) => console.error(e));
       if (!discordUser) throw new HypixelDiscordChatBridgeError("This discord user doesn't exist");
 
-      const linkedUser = this.discord.application.linked.getUserByDiscordId(this.discordId);
+      const linkedUser = this.discord.application.data.linked.getUserByDiscordId(this.discordId);
       if (linkedUser !== undefined) {
         return await interaction.followUp({ embeds: [new ErrorEmbed().setDescription("User is verified\nPlease use /unverify first").setDevFooter("Kathund")] });
       }
@@ -53,7 +53,7 @@ class VerifyCommand extends DiscordCommand<DiscordManagerWithBot> {
         }
       }
 
-      new LinkedUser({ discordId: this.discordId, uuid }, this.discord.application.linked).save();
+      new LinkedUser({ discordId: this.discordId, uuid }, this.discord.application.data.linked).save();
 
       await interaction.followUp({
         embeds: [

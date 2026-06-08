@@ -4,7 +4,7 @@ import HypixelDiscordChatBridgeError from "../../../private/error.js";
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, type ChatInputCommandInteraction, Message } from "discord.js";
 import { BasicInteractionResponse, CommandFlags, type DiscordManagerWithClient } from "../../../types/discord.js";
 import { SuccessEmbed } from "../../private/Embed.js";
-import type LinkedUser from "../../../linked/private/LinkedUser.js";
+import type LinkedUser from "../../../data/linked/LinkedUser.js";
 
 class LinkedCommand extends DiscordCommand {
   constructor(discord: DiscordManagerWithClient) {
@@ -23,7 +23,7 @@ class LinkedCommand extends DiscordCommand {
     if (embed === undefined) return undefined;
     const field = embed.fields.find((field) => field.name === "Discord ID");
     if (field === undefined) return undefined;
-    return await this.discord.application.linked.getUserByDiscordId(field.value.replaceAll("`", ""));
+    return await this.discord.application.data.linked.getUserByDiscordId(field.value.replaceAll("`", ""));
   }
 
   override async execute(interaction: ChatInputCommandInteraction) {
@@ -31,7 +31,9 @@ class LinkedCommand extends DiscordCommand {
     const username = interaction.options.getString("username");
     if (!user && !username) throw new HypixelDiscordChatBridgeError("You must specify a user or username.");
     if (user && username) throw new HypixelDiscordChatBridgeError("You cannot specify both user and username.");
-    const linkedUser = username ? await this.discord.application.linked.getUserByUsername(username) : await this.discord.application.linked.getUserByDiscordId(user!.id);
+    const linkedUser = username
+      ? await this.discord.application.data.linked.getUserByUsername(username)
+      : await this.discord.application.data.linked.getUserByDiscordId(user!.id);
     if (!linkedUser) throw new HypixelDiscordChatBridgeError("User is not verified");
     const [{ uuid, nickname, formattedNickname }, guildMember] = await Promise.all([linkedUser.getHypixelPlayer(), linkedUser.isUserInHypixelGuild()]);
 

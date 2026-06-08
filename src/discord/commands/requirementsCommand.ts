@@ -17,7 +17,7 @@ class RequirementsCommand extends DiscordCommand {
   }
 
   async checkRequirements(uuid: string): Promise<Requirements> {
-    const stats = await this.discord.application.linked.getPlayerVariableStats(uuid);
+    const stats = await this.discord.application.data.linked.getPlayerVariableStats(uuid);
     const { requirements: configRequirements, requiredToHave } = this.discord.application.config.minecraft.guild.requirements;
 
     const requirements: Requirement[] = Object.entries(configRequirements).map(([key, required]) => {

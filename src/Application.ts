@@ -1,7 +1,7 @@
+import DataManager from "./data/DataManager.js";
 import DiscordManager from "./discord/DiscordManager.js";
 import HypixelAPIReborn from "./private/HypixelAPIReborn.js";
 import HypixelDiscordChatBridgeError from "./private/error.js";
-import LinkedManager from "./linked/LinkedManager.js";
 import MinecraftManager from "./minecraft/MinecraftManager.js";
 import MowojangAPI from "./private/MowojangAPI.js";
 import ScriptManager from "./scripts/ScriptsManager.js";
@@ -15,8 +15,8 @@ import type { ParsedSession } from "./types/MowojangAPI.js";
 class Application {
   readonly package: typeof packageJson;
   readonly messages: typeof messages;
+  readonly data: DataManager;
   readonly discord: DiscordManager;
-  readonly linked: LinkedManager;
   readonly minecraft: MinecraftManager;
   readonly scripts: ScriptManager;
   readonly filter: Filter;
@@ -25,8 +25,8 @@ class Application {
   constructor(readonly config: Config) {
     this.package = packageJson;
     this.messages = messages;
+    this.data = new DataManager(this);
     this.discord = new DiscordManager(this);
-    this.linked = new LinkedManager(this);
     this.minecraft = new MinecraftManager(this);
     this.scripts = new ScriptManager(this);
 

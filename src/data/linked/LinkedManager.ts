@@ -1,14 +1,14 @@
-import HypixelDiscordChatBridgeError from "../private/error.js";
-import LinkedUser from "./private/LinkedUser.js";
-import MowojangAPI from "../private/MowojangAPI.js";
+import HypixelDiscordChatBridgeError from "../../private/error.js";
+import LinkedUser from "./LinkedUser.js";
+import MowojangAPI from "../../private/MowojangAPI.js";
 import { access, mkdir, readFile, writeFile } from "node:fs/promises";
-import { getNetWorth, getPlayer, getSelectedProfile } from "../utils/hypixelUtils.js";
-import type Application from "../Application.js";
+import { getNetWorth, getPlayer, getSelectedProfile } from "../../utils/hypixelUtils.js";
+import type DataManager from "../DataManager.js";
 import type { Guild, Player, SkyBlockMember, SkyblockProfileWithMe } from "hypixel-api-reborn";
-import type { LinkedData } from "../types/linked.js";
+import type { LinkedData } from "../../types/linked.js";
 
 class LinkedManager {
-  constructor(readonly application: Application) {
+  constructor(readonly data: DataManager) {
     this.init();
   }
 
@@ -82,10 +82,10 @@ class LinkedManager {
     player: Player | null = null,
     skyblock: SkyblockProfileWithMe | null = null
   ): Promise<Record<string, string | number>> {
-    if (!this.application.minecraft.isBotOnline()) throw new HypixelDiscordChatBridgeError(this.application.messages.minecraftBotOffline);
+    if (!this.data.application.minecraft.isBotOnline()) throw new HypixelDiscordChatBridgeError(this.data.application.messages.minecraftBotOffline);
     const fetches = [];
 
-    if (!hypixelGuild) fetches.push(this.application.getBotGuild().then((guild) => (hypixelGuild = guild)));
+    if (!hypixelGuild) fetches.push(this.data.application.getBotGuild().then((guild) => (hypixelGuild = guild)));
     if (!player) fetches.push(getPlayer(uuid).then((playerData) => (player = playerData)));
     if (!skyblock) fetches.push(getSelectedProfile(uuid).then((s) => (skyblock = s.profile)));
 
