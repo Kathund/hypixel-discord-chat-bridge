@@ -1,7 +1,7 @@
 import DiscordCommand from "../../private/commands/DiscordCommand.js";
 import DiscordCommandData from "../../private/commands/DiscordCommandData.js";
 import HypixelDiscordChatBridgeError from "../../../private/error.js";
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, type ChatInputCommandInteraction, Message } from "discord.js";
+import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, ButtonStyle, type ChatInputCommandInteraction, Message } from "discord.js";
 import { BasicInteractionResponse, CommandFlags, type DiscordManagerWithClient } from "../../../types/discord.js";
 import { SuccessEmbed } from "../../private/Embed.js";
 import type LinkedUser from "../../../data/linked/LinkedUser.js";
@@ -26,16 +26,8 @@ class LinkedCommand extends DiscordCommand {
     return await this.discord.application.data.linked.getUserByDiscordId(field.value.replaceAll("`", ""));
   }
 
-  override async execute(interaction: ChatInputCommandInteraction) {
-    const user = interaction.options.getUser("user");
-    const username = interaction.options.getString("username");
-    if (!user && !username) throw new HypixelDiscordChatBridgeError("You must specify a user or username.");
-    if (user && username) throw new HypixelDiscordChatBridgeError("You cannot specify both user and username.");
-    const linkedUser = username
-      ? await this.discord.application.data.linked.getUserByUsername(username)
-      : await this.discord.application.data.linked.getUserByDiscordId(user!.id);
-    if (!linkedUser) throw new HypixelDiscordChatBridgeError("User is not verified");
-    const [{ uuid, nickname, formattedNickname }, guildMember] = await Promise.all([linkedUser.getHypixelPlayer(), linkedUser.isUserInHypixelGuild()]);
+  async followUp(interaction: ChatInputCommandInteraction | ButtonInteraction, linked: LinkedUser) {
+    const [{ uuid, nickname, formattedNickname }, guildMember] = await Promise.all([linked.getHypixelPlayer(), linked.isUserInHypixelGuild()]);
 
     let buttons: ButtonBuilder[];
     if (guildMember) {
@@ -56,9 +48,9 @@ class LinkedCommand extends DiscordCommand {
     await interaction.followUp({
       embeds: [
         new SuccessEmbed()
-          .setDescription(`\`${nickname}\` (\`${uuid}\`) is linked to <@${linkedUser.discordId}>.`)
+          .setDescription(`\`${nickname}\` (\`${uuid}\`) is linked to <@${linked.discordId}>.`)
           .setFields(
-            { name: "Discord ID", value: `\`\`\`${linkedUser.discordId}\`\`\`` },
+            { name: "Discord ID", value: `\`\`\`${linked.discordId}\`\`\`` },
             { name: "UUID", value: `\`\`\`${uuid}\`\`\`` },
             { name: "Username", value: `\`\`\`${nickname}\`\`\`` },
             { name: "Formatted Username", value: `\`\`\`${formattedNickname}\`\`\`` },
@@ -74,6 +66,18 @@ class LinkedCommand extends DiscordCommand {
         )
       ]
     });
+  }
+
+  override async execute(interaction: ChatInputCommandInteraction) {
+    const user = interaction.options.getUser("user");
+    const username = interaction.options.getString("username");
+    if (!user && !username) throw new HypixelDiscordChatBridgeError("You must specify a user or username.");
+    if (user && username) throw new HypixelDiscordChatBridgeError("You cannot specify both user and username.");
+    const linkedUser = username
+      ? await this.discord.application.data.linked.getUserByUsername(username)
+      : await this.discord.application.data.linked.getUserByDiscordId(user!.id);
+    if (!linkedUser) throw new HypixelDiscordChatBridgeError("User is not verified");
+    await this.followUp(interaction, linkedUser);
   }
 }
 

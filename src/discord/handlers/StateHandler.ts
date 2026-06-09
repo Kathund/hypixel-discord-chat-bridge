@@ -1,3 +1,4 @@
+import Embed from "../private/Embed.js";
 import HypixelDiscordChatBridgeError from "../../private/error.js";
 import type DiscordManager from "../DiscordManager.js";
 
@@ -21,7 +22,7 @@ class StateHandler {
 
     const channel = await this.discord.getChannel("Guild");
     if (channel === null || !channel.isSendable()) return console.error('Channel "Guild" not found!');
-    channel.send({ embeds: [{ author: { name: "Chat Bridge is Online" }, color: 2067276 }] });
+    await channel.send({ embeds: [new Embed().setAuthor({ name: "Chat Bridge is Online" }).setColor("Green")] });
 
     console.discord("Client is fully ready!");
   }
@@ -29,7 +30,7 @@ class StateHandler {
   async onClose() {
     const channel = await this.discord.getChannel("Guild");
     if (channel === null || !channel.isSendable()) return console.error('Channel "Guild" not found!');
-    await channel.send({ embeds: [{ author: { name: "Chat Bridge is Offline" }, color: 15548997 }] });
+    await channel.send({ embeds: [new Embed().setAuthor({ name: "Chat Bridge is Offline" }).setColor("Red")] });
   }
 }
 

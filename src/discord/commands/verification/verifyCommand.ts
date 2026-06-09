@@ -53,7 +53,7 @@ class VerifyCommand extends DiscordCommand<DiscordManagerWithBot> {
         }
       }
 
-      new LinkedUser({ discordId: this.discordId, uuid }, this.discord.application.data.linked).save();
+      await new LinkedUser({ discordId: this.discordId, uuid }, this.discord.application.data.linked).save();
 
       await interaction.followUp({
         embeds: [

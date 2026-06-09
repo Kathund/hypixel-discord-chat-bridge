@@ -51,9 +51,3 @@ export function replaceAllRanks(input: string): string {
   input = input.replaceAll("[VIP] ", "");
   return input;
 }
-
-export function hexToDecimal(hex: string | number | undefined): number {
-  if (hex === undefined) return 1752220;
-  if (typeof hex === "number") return hex;
-  return parseInt(hex.replace("#", ""), 16);
-}

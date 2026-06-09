@@ -1,5 +1,6 @@
 import type { ChannelNames } from "./discord.js";
-import type { Message, User } from "discord.js";
+import type { ColorResolvable, Message, User } from "discord.js";
+import type { ConfigOtherColors } from "./config.js";
 
 export interface BroadcastEvent {
   fullMessage?: string;
@@ -9,7 +10,7 @@ export interface BroadcastEvent {
   rank?: string | null;
   guildRank?: string;
   message?: string;
-  color?: number;
+  color?: ConfigOtherColors | ColorResolvable;
   title?: string;
   icon?: string;
   discordUser?: User;

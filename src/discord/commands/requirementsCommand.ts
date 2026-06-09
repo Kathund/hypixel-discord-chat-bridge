@@ -33,7 +33,7 @@ class RequirementsCommand extends DiscordCommand {
 
   generateEmbed({ passed, username, guildName, requirements, requirementsPassed }: Requirements): Embed {
     return new Embed()
-      .setColor(passed ? 2067276 : 15548997)
+      .setColor(passed ? "Green" : "Red")
       .setTitle(`${username} **${passed ? "has" : "hasn't"}** got the requirements to join ${guildName}!`)
       .setDescription(
         `${username} meets **${requirementsPassed} requirement(s)** out of the required **${

@@ -45,8 +45,8 @@ class ConfigManager {
         "minecraft.skyblockEventsNotifications": { change: ConfigChangeType.Delete },
         "minecraft.guildRequirements": { key: "minecraft.guild.requirements", change: ConfigChangeType.Move },
         "web": { change: ConfigChangeType.Delete },
-        "other.autoUpdater": { key: "codeUpdater.enabled", change: ConfigChangeType.Move },
-        "other.autoUpdaterInterval": { key: "codeUpdater.interval", change: ConfigChangeType.Transform, transform: (value: any): any => `${value}h` },
+        "other.autoUpdater": { key: "other.codeUpdater.enabled", change: ConfigChangeType.Move },
+        "other.autoUpdaterInterval": { key: "other.codeUpdater.interval", change: ConfigChangeType.Transform, transform: (value: any): any => `${value}h` },
         "other.logToFiles": { change: ConfigChangeType.Delete },
         "other.timezone": { change: ConfigChangeType.Delete },
         "statsChannels.autoUpdaterInterval": {

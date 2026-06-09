@@ -23,9 +23,6 @@
   "lowestRankMessage": "{username} is already the lowest guild rank!",
   "alreadyHasRankMessage": "They already have that rank!",
   "playerNotFoundMessage": "Player {username} not found.",
-  "blacklistMessage": "{username} has been successfully blacklisted.",
-  "blacklistRemoveMessage": "{username} has been successfully removed from the blacklist.",
-  "alreadyBlacklistedMessage": "Player is already blacklisted.",
   "guildLevelUpMessage": "The guild has reached level {level}",
   "requestMessage": "{username} requested to join the guild.",
   "minecraftBotOffline": "Bot doesn't seem to be connected to Hypixel. Please try again."

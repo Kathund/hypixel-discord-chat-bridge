@@ -96,7 +96,10 @@ export const ConfigStatsChannelsAutoUpdater = zod.object({ enabled: zod.boolean(
 export const ConfigStatsChannelsChannel = zod.object({ id: zod.string(), name: zod.string() });
 export const ConfigStatsChannels = zod.object({ enabled: zod.boolean(), autoUpdater: ConfigStatsChannelsAutoUpdater, channels: zod.array(ConfigStatsChannelsChannel) });
 
-export const ConfigCodeUpdater = zod.object({ enabled: zod.boolean(), interval: zod.string() });
+export const ConfigOtherColors = zod.enum(["Blue", "Red", "Green", "Yellow"]);
+export type ConfigOtherColors = zod.infer<typeof ConfigOtherColors>;
+export const ConfigOtherCodeUpdater = zod.object({ enabled: zod.boolean(), interval: zod.string() });
+export const ConfigOther = zod.object({ codeUpdater: ConfigOtherCodeUpdater, colors: zod.record(ConfigOtherColors, zod.string()) });
 
 export const Config = zod.object({
   configVersion: zod.number().int().positive(),
@@ -106,6 +109,6 @@ export const Config = zod.object({
   discord: ConfigDiscord,
   verification: ConfigVerification,
   statsChannels: ConfigStatsChannels,
-  codeUpdater: ConfigCodeUpdater
+  other: ConfigOther
 });
 export type Config = zod.infer<typeof Config>;

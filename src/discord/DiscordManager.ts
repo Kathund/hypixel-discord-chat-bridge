@@ -1,7 +1,7 @@
 import ButtonHandler from "./handlers/ButtonHandler.js";
 import CommandHandler from "./handlers/CommandHandler.js";
 import CommunicationBridge from "../private/CommunicationBridge.js";
-import Embed, { BasicEmbed, ErrorEmbed } from "./private/Embed.js";
+import Embed, { ErrorEmbed } from "./private/Embed.js";
 import EventHandler from "./handlers/EventHandler.js";
 import HypixelDiscordChatBridgeError from "../private/error.js";
 import InteractionHandler from "./handlers/InteractionHandler.js";
@@ -24,7 +24,6 @@ import {
   Webhook
 } from "discord.js";
 import { canSendMessages, getApplicationOwners } from "../utils/discordUtils.js";
-import { hexToDecimal } from "../utils/miscUtils.js";
 import { messageToImage } from "../utils/messageToImage.js";
 import { replaceVariables } from "../utils/stringUtils.js";
 import type Application from "../Application.js";
@@ -94,7 +93,7 @@ class DiscordManager extends CommunicationBridge {
   }
 
   override async onBroadcast(event: BroadcastEvent) {
-    let { fullMessage, chatType, username, rank, guildRank, message, color = 1752220 } = event;
+    let { fullMessage, chatType, username, rank, guildRank, message, color = "Green" } = event;
     if (fullMessage === undefined || chatType === undefined || message === undefined) return;
 
     const mode = chatType === "Debug" ? "text" : this.application.config.bridge.discord.mode;
@@ -115,8 +114,8 @@ class DiscordManager extends CommunicationBridge {
         await channel.send({
           embeds: [
             new Embed()
+              .setColor(color)
               .setDescription(message)
-              .setColor(hexToDecimal(color))
               .setFooter({ text: guildRank })
               .setAuthor({ name: username, iconURL: `https://www.mc-heads.net/avatar/${username}` })
           ]
@@ -162,8 +161,7 @@ class DiscordManager extends CommunicationBridge {
 
     const channel = await this.getChannel(chatType);
     if (channel === null || !channel.isSendable()) return console.error(`Channel "${chatType.replace(/§[0-9a-fk-or]/g, "").trim()}" not found!`);
-    channel.send({ embeds: [new BasicEmbed().setColor(color).setDescription(message)] });
-    channel.send({ embeds: [{ color: color, description: message }] });
+    await channel.send({ embeds: [new Embed().setColor(color).setDescription(message)] });
   }
 
   override async onBroadcastHeadedEmbed(event: BroadcastEvent) {
@@ -173,7 +171,7 @@ class DiscordManager extends CommunicationBridge {
 
     const channel = await this.getChannel(chatType);
     if (channel === null || !channel.isSendable()) return console.error(`Channel "${chatType.replace(/§[0-9a-fk-or]/g, "").trim()}" not found!`);
-    channel.send({ embeds: [new BasicEmbed().setColor(color).setDescription(message).setAuthor({ name: title, iconURL: icon })] });
+    await channel.send({ embeds: [new Embed().setColor(color).setDescription(message).setAuthor({ name: title, iconURL: icon })] });
   }
 
   override async onPlayerToggle(event: BroadcastEvent) {
@@ -192,10 +190,10 @@ class DiscordManager extends CommunicationBridge {
         if (message.length === 0) return;
         const webhook = await this.getWebhook("Guild");
         if (webhook === null) return;
-        webhook.send({
+        await webhook.send({
           username: username,
           avatarURL: `https://www.mc-heads.net/avatar/${username}`,
-          embeds: [new BasicEmbed().setColor(color).setDescription(message)]
+          embeds: [new Embed().setColor(color).setDescription(message)]
         });
         break;
       case "minecraft":

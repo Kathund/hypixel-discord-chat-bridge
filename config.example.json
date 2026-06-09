@@ -140,8 +140,16 @@
     },
     "channels": []
   },
-  "codeUpdater": {
-    "enabled": true,
-    "interval": "12h"
+  "other": {
+    "codeUpdater": {
+      "enabled": true,
+      "interval": "12h"
+    },
+    "colors": {
+      "Blue": "#3498DB",
+      "Red": "#ED4245",
+      "Green": "#57F287",
+      "Yellow": "#FFD700"
+    }
   }
 }

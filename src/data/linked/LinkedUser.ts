@@ -24,12 +24,13 @@ class LinkedUser {
     return username;
   }
 
-  async save(): Promise<LinkedUser[]> {
+  async save(): Promise<LinkedUser> {
     const linked = await this.linked.getLinkedUsers();
     const user = await this.linked.getUser(this);
-    if (user) return await this.linked.getLinkedUsers();
+    if (user) return user;
     linked.push(this);
-    return await this.linked.writeLinkedUsersParsed(linked);
+    await this.linked.writeLinkedUsersParsed(linked);
+    return this;
   }
 
   private getLinkedRoles(): string[] {

@@ -5,7 +5,7 @@ import HypixelDiscordChatBridgeError from "./private/error.js";
 import MinecraftManager from "./minecraft/MinecraftManager.js";
 import MowojangAPI from "./private/MowojangAPI.js";
 import ScriptManager from "./scripts/ScriptsManager.js";
-import messages from "../messages.json" with { type: "json" };
+import messages from "./messages.json" with { type: "json" };
 import packageJson from "../package.json" with { type: "json" };
 import { Filter } from "bad-words";
 import type { Config } from "./types/config.js";
