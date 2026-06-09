@@ -2,8 +2,8 @@ node_modules/
 config.json
 config.example.json
 Dockerfile
-auth-cache/
-logs/
-data/
-build/
+/auth-cache/
+/logs/
+/data/
+/build/
 pnpm-lock.yaml

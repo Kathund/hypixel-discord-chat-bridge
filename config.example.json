@@ -132,6 +132,24 @@
       }
     }
   },
+  "blacklist": {
+    "enabled": false,
+    "notifications": {
+      "onBlacklistChange": {
+        "enabled": true,
+        "shareBlacklister": true
+      },
+      "onJoinRequest": true,
+      "onUserJoinDiscord": true
+    },
+    "actions": {
+      "blockBotAccess": false,
+      "kickFromGuild": {
+        "enabled": false,
+        "reason": "Blacklisted from the guild"
+      }
+    }
+  },
   "statsChannels": {
     "enabled": false,
     "autoUpdater": {

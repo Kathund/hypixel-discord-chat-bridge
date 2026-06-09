@@ -1,6 +1,6 @@
 import DiscordCommand from "../../private/commands/DiscordCommand.js";
 import DiscordCommandData from "../../private/commands/DiscordCommandData.js";
-import Embed, { ErrorEmbed, SuccessEmbed } from "../../private/Embed.js";
+import Embed, { SuccessEmbed } from "../../private/Embed.js";
 import HypixelDiscordChatBridgeError from "../../../private/error.js";
 import LinkedUser from "../../../data/linked/LinkedUser.js";
 import UpdateCommand from "./updateCommand.js";
@@ -32,10 +32,8 @@ class VerifyCommand extends DiscordCommand<DiscordManagerWithBot> {
       const discordUser = await interaction.guild.members.fetch(this.discordId).catch((e) => console.error(e));
       if (!discordUser) throw new HypixelDiscordChatBridgeError("This discord user doesn't exist");
 
-      const linkedUser = this.discord.application.data.linked.getUserByDiscordId(this.discordId);
-      if (linkedUser !== undefined) {
-        return await interaction.followUp({ embeds: [new ErrorEmbed().setDescription("User is verified\nPlease use /unverify first").setDevFooter("Kathund")] });
-      }
+      const linkedUser = await this.discord.application.data.linked.getUserByDiscordId(this.discordId);
+      if (linkedUser !== undefined) throw new HypixelDiscordChatBridgeError("User is verified. Please use /unverify first");
 
       const username = interaction.options.getString("username", true);
       const { socialMedia, nickname, uuid } = await getPlayer(username);

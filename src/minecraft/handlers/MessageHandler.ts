@@ -1,10 +1,11 @@
+import BlacklistUser from "../../data/blacklist/BlacklistUser.js";
 import Embed from "../../discord/private/Embed.js";
 import HypixelDiscordChatBridgeError from "../../private/error.js";
 import MowojangAPI from "../../private/MowojangAPI.js";
 import RequirementsCommand from "../../discord/commands/requirementsCommand.js";
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle } from "discord.js";
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType } from "discord.js";
 import { delay, isUuid, replaceAllRanks } from "../../utils/miscUtils.js";
-import { replaceVariables } from "../../utils/stringUtils.js";
+import { replaceVariables, truncateString } from "../../utils/stringUtils.js";
 import type MinecraftManager from "../MinecraftManager.js";
 import type { BroadcastEvent } from "../../types/bridge.js";
 import type { ChannelNames } from "../../types/discord.js";
@@ -42,34 +43,48 @@ class MessageHandler {
 
     if (this.isRequestMessage(message)) {
       const username = replaceAllRanks((message.split("has")?.[0] ?? "").replaceAll("-----------------------------------------------------\n", "")).trim();
+      const uuid = await MowojangAPI.getUUID(username);
+      if (!uuid) return;
       if (!this.minecraft.application.discord.isClientOnline()) {
         throw new HypixelDiscordChatBridgeError("The discord bot doesn't seam to be online? Please restart the application");
       }
-      const logChannel = await this.minecraft.application.discord.client.channels.fetch(`${this.minecraft.application.config.bridge.channels.logging.channel}`);
+
+      let blacklistUser: BlacklistUser | undefined;
+      if (this.minecraft.application.config.blacklist.enabled) blacklistUser = await this.minecraft.application.data.blacklist.getUserByUUID(uuid);
+
+      const logChannel = await this.minecraft.application.discord.getChannel("Logger");
       if (!logChannel || !logChannel.isSendable()) return;
-      const joinRequestButton = new ButtonBuilder().setCustomId("joinRequestAccept").setLabel("Accept Request").setStyle(ButtonStyle.Success);
-      const logMessage = await logChannel.send({
-        embeds: [new Embed().setColor("Green").setDescription(replaceVariables(this.minecraft.application.messages.requestMessage, { username }))],
-        components: [new ActionRowBuilder<ButtonBuilder>().addComponents(joinRequestButton)]
-      });
+      const requestEmbed = new Embed().setColor("Green").setDescription(replaceVariables(this.minecraft.application.messages.requestMessage, { username }));
+      const buttons: ButtonBuilder[] = [new ButtonBuilder().setCustomId("joinRequestAccept").setLabel("Accept Request").setStyle(ButtonStyle.Success)];
+      if (this.minecraft.application.config.blacklist.notifications.onJoinRequest && blacklistUser) {
+        requestEmbed.setTitle(":warning: User is blacklisted");
+        buttons.push(new ButtonBuilder().setCustomId("joinRequestViewBlacklist").setLabel("View Blacklist").setStyle(ButtonStyle.Secondary));
+      }
+      const logMessage = await logChannel.send({ embeds: [requestEmbed], components: [new ActionRowBuilder<ButtonBuilder>().addComponents(buttons)] });
 
       setTimeout(
         async () => {
-          await logMessage.edit({
-            components: [
-              new ActionRowBuilder<ButtonBuilder>().addComponents(
-                joinRequestButton.setDisabled(true),
-                new ButtonBuilder().setCustomId("inviteUserFromRequest").setLabel("Invite").setStyle(ButtonStyle.Success)
-              )
-            ]
+          const component = logMessage.components[0];
+          if (!component || component.type !== ComponentType.ActionRow) return;
+          let found = false;
+          const fixedButtons = component.components.flatMap((compontent) => {
+            if (compontent.type !== ComponentType.Button) return [];
+            if (compontent.customId === "joinRequestAccept") found = true;
+            return [
+              new ButtonBuilder()
+                .setCustomId(compontent.customId!)
+                .setLabel(compontent.label!)
+                .setStyle(compontent.style)
+                .setDisabled(compontent.customId === "joinRequestAccept")
+            ];
           });
+          if (!found) return;
+          await logMessage.edit({ components: [new ActionRowBuilder<ButtonBuilder>().addComponents(fixedButtons)] });
         },
         5 * 60 * 1000
       );
 
       if (this.minecraft.application.config.minecraft.guild.requirements.enabled) {
-        const uuid = await MowojangAPI.getUUID(username);
-        if (!uuid) return;
         const requirementsCommand = new RequirementsCommand(this.minecraft.application.discord);
         const data = await requirementsCommand.checkRequirements(uuid);
         this.minecraft.bot.chat(`/oc ${data.username} ${data.passed ? "meets" : "Doesn't meet"} Requirements. More info in the guild logs channel`);
@@ -77,10 +92,17 @@ class MessageHandler {
         if (data.passed && this.minecraft.application.config.minecraft.guild.requirements.autoAccept) this.minecraft.bot.chat(`/guild accept ${username}`);
         const embed = requirementsCommand.generateEmbed(data);
         await logMessage.edit({ embeds: [...logMessage.embeds, embed] });
-        this.minecraft.application.discord.client.channels.fetch(this.minecraft.application.config.bridge.channels.officer.channel).then((channel) => {
+        this.minecraft.application.discord.getChannel("Officer").then((channel) => {
           if (!channel || !channel.isSendable()) return;
           channel.send({ embeds: [embed] });
         });
+      }
+
+      if (this.minecraft.application.config.blacklist.enabled && this.minecraft.application.config.blacklist.notifications.onJoinRequest) {
+        if (!blacklistUser) return;
+        this.minecraft.bot.chat(`/oc [WARNING!] ${username} is blacklisted`);
+        await delay(500);
+        this.minecraft.bot.chat(`/oc Reason: ${truncateString(blacklistUser.reason, 128)}`);
       }
     }
 

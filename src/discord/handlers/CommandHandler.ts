@@ -46,6 +46,7 @@ class CommandHandler {
       const command: DiscordCommand = new (await import(`../commands/${file}`)).default(this.discord);
       if (command.data.name) {
         if (command.flags.includes(CommandFlags.VerificationCommand) && !this.discord.application.config.verification.enabled) continue;
+        if (command.flags.includes(CommandFlags.BlacklistCommand) && !this.discord.application.config.blacklist.enabled) continue;
 
         commands.push(command.data.toJSON());
         this.discord.client.commands.set(command.data.name, command);

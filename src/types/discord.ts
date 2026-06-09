@@ -20,6 +20,7 @@ export enum CommandFlags {
   RequiresMinecraftBot,
   StaffOnly,
   VerificationCommand,
+  BlacklistCommand,
   VerifiedOnly
 }
 

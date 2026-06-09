@@ -49,3 +49,8 @@ export function formatNumber(number: number | string, decimals: number = 2) {
 export function removeColorCodes(input: string): string {
   return input.replace(/§[0-9a-fk-or]/g, "");
 }
+
+export function truncateString(str: string, maxLength: number): string {
+  if (str.length <= maxLength) return str;
+  return str.slice(0, maxLength - 3) + "...";
+}

@@ -92,6 +92,16 @@ export const ConfigVerificationRoles = zod.object({
 export const ConfigVerificationNickname = zod.object({ enabled: zod.boolean(), nickname: zod.string(), removeCommas: zod.boolean() });
 export const ConfigVerification = zod.object({ enabled: zod.boolean(), nickname: ConfigVerificationNickname, roles: ConfigVerificationRoles });
 
+export const ConfigBlacklistNotificationsOnBlacklistChange = zod.object({ enabled: zod.boolean(), shareBlacklister: zod.boolean() });
+export const ConfigBlacklistNotifications = zod.object({
+  onBlacklistChange: ConfigBlacklistNotificationsOnBlacklistChange,
+  onJoinRequest: zod.boolean(),
+  onUserJoinDiscord: zod.boolean()
+});
+export const ConfigBlacklistActionsKickFromGuild = zod.object({ enabled: zod.boolean(), reason: zod.string() });
+export const ConfigBlacklistActions = zod.object({ blockBotAccess: zod.boolean(), kickFromGuild: ConfigBlacklistActionsKickFromGuild });
+export const ConfigBlacklist = zod.object({ enabled: zod.boolean(), notifications: ConfigBlacklistNotifications, actions: ConfigBlacklistActions });
+
 export const ConfigStatsChannelsAutoUpdater = zod.object({ enabled: zod.boolean(), interval: zod.string() });
 export const ConfigStatsChannelsChannel = zod.object({ id: zod.string(), name: zod.string() });
 export const ConfigStatsChannels = zod.object({ enabled: zod.boolean(), autoUpdater: ConfigStatsChannelsAutoUpdater, channels: zod.array(ConfigStatsChannelsChannel) });
@@ -108,6 +118,7 @@ export const Config = zod.object({
   minecraft: ConfigMinecraft,
   discord: ConfigDiscord,
   verification: ConfigVerification,
+  blacklist: ConfigBlacklist,
   statsChannels: ConfigStatsChannels,
   other: ConfigOther
 });

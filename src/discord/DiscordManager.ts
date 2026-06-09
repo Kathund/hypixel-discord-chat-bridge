@@ -58,6 +58,7 @@ class DiscordManager extends CommunicationBridge {
     this.client.on(Events.ClientReady, () => this.stateHandler.onReady());
     this.client.on(Events.MessageCreate, (message) => this.messageHandler.onMessage(message));
     this.client.on(Events.InteractionCreate, (interaction) => this.interactionHandler.onInteraction(interaction));
+    this.client.on(Events.GuildMemberAdd, (member) => this.eventHandler.onGuildMemberAdd(member));
     this.client.on(Events.GuildMemberRemove, (member) => this.eventHandler.onGuildMemberRemove(member));
     this.client.login(this.application.config.discord.token).catch((e) => console.error(e));
 
@@ -85,7 +86,7 @@ class DiscordManager extends CommunicationBridge {
       return hook;
     } catch (error) {
       console.error(error);
-      channel.send({
+      await channel.send({
         embeds: [new ErrorEmbed().setDescription("An error occurred while trying to fetch the webhooks. Please make sure the bot has the `MANAGE_WEBHOOKS` permission.")]
       });
       return null;
@@ -161,7 +162,7 @@ class DiscordManager extends CommunicationBridge {
 
     const channel = await this.getChannel(chatType);
     if (channel === null || !channel.isSendable()) return console.error(`Channel "${chatType.replace(/§[0-9a-fk-or]/g, "").trim()}" not found!`);
-    await channel.send({ embeds: [new Embed().setColor(color).setDescription(message)] });
+    await channel.send({ embeds: [new Embed().setColor(color).setDescription(message).setFooter(null)] });
   }
 
   override async onBroadcastHeadedEmbed(event: BroadcastEvent) {
@@ -171,7 +172,7 @@ class DiscordManager extends CommunicationBridge {
 
     const channel = await this.getChannel(chatType);
     if (channel === null || !channel.isSendable()) return console.error(`Channel "${chatType.replace(/§[0-9a-fk-or]/g, "").trim()}" not found!`);
-    await channel.send({ embeds: [new Embed().setColor(color).setDescription(message).setAuthor({ name: title, iconURL: icon })] });
+    await channel.send({ embeds: [new Embed().setColor(color).setDescription(message).setAuthor({ name: title, iconURL: icon }).setFooter(null)] });
   }
 
   override async onPlayerToggle(event: BroadcastEvent) {
@@ -183,7 +184,14 @@ class DiscordManager extends CommunicationBridge {
 
     switch (this.application.config.bridge.discord.mode) {
       case "bot":
-        await channel.send({ embeds: [new Embed().setColor(color).setAuthor({ name: message, iconURL: `https://www.mc-heads.net/avatar/${username}` })] });
+        await channel.send({
+          embeds: [
+            new Embed()
+              .setColor(color)
+              .setAuthor({ name: message, iconURL: `https://www.mc-heads.net/avatar/${username}` })
+              .setFooter(null)
+          ]
+        });
         break;
       case "webhook":
         message = this.cleanMessage(message);
@@ -193,7 +201,7 @@ class DiscordManager extends CommunicationBridge {
         await webhook.send({
           username: username,
           avatarURL: `https://www.mc-heads.net/avatar/${username}`,
-          embeds: [new Embed().setColor(color).setDescription(message)]
+          embeds: [new Embed().setColor(color).setDescription(message).setFooter(null)]
         });
         break;
       case "minecraft":

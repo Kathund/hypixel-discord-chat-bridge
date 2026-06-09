@@ -58,6 +58,13 @@ class Application {
       if (data.data === null) return undefined;
       return data.data.map(({ UUID, username }) => ({ UUID, username }));
     });
+    if (this.config.blacklist.enabled && this.config.blacklist.actions.kickFromGuild.enabled) {
+      this.botGuild.members.forEach(async (user) => {
+        if (!this.minecraft.isBotOnline()) return;
+        const blacklistUser = await this.data.blacklist.getUserByUUID(user.uuid);
+        if (blacklistUser) this.minecraft.bot.chat(`/g kick ${await blacklistUser.getUsername()} ${this.config.blacklist.actions.kickFromGuild.reason}`);
+      });
+    }
     return this.botGuild;
   }
 }

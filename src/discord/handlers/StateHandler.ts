@@ -22,15 +22,14 @@ class StateHandler {
 
     const channel = await this.discord.getChannel("Guild");
     if (channel === null || !channel.isSendable()) return console.error('Channel "Guild" not found!');
-    await channel.send({ embeds: [new Embed().setAuthor({ name: "Chat Bridge is Online" }).setColor("Green")] });
-
+    await channel.send({ embeds: [new Embed().setAuthor({ name: "Chat Bridge is Online" }).setColor("Green").setFooter(null)] });
     console.discord("Client is fully ready!");
   }
 
   async onClose() {
     const channel = await this.discord.getChannel("Guild");
     if (channel === null || !channel.isSendable()) return console.error('Channel "Guild" not found!');
-    await channel.send({ embeds: [new Embed().setAuthor({ name: "Chat Bridge is Offline" }).setColor("Red")] });
+    await channel.send({ embeds: [new Embed().setAuthor({ name: "Chat Bridge is Offline" }).setColor("Red").setFooter(null)] });
   }
 }
 
