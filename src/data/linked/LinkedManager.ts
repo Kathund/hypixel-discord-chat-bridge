@@ -3,13 +3,53 @@ import HypixelDiscordChatBridgeError from "../../private/error.js";
 import LinkedUser from "./LinkedUser.js";
 import MowojangAPI from "../../private/MowojangAPI.js";
 import { getNetWorth, getPlayer, getSelectedProfile } from "../../utils/hypixelUtils.js";
+import { readFile, writeFile } from "node:fs/promises";
 import type DataManager from "../DataManager.js";
 import type { Guild, Player, SkyBlockMember, SkyblockProfileWithMe } from "hypixel-api-reborn";
-import type { LinkedData, LinkedUserData } from "../../types/linked.js";
+import type { LinkedData, LinkedUserData, OldFormat } from "../../types/linked.js";
 
 class LinkedManager extends GenericManager<LinkedUserData, LinkedData, LinkedUser> {
   constructor(data: DataManager) {
     super(data, "linked.json", "linked", []);
+    this.checkData();
+  }
+
+  private isNewFormat(data: unknown): data is LinkedUserData[] {
+    return (
+      Array.isArray(data) &&
+      data.every((item) => typeof item === "object" && item !== null && typeof (item as any).uuid === "string" && typeof (item as any).discordId === "string")
+    );
+  }
+
+  private isOldFormat(data: unknown): data is OldFormat {
+    return typeof data === "object" && data !== null && !Array.isArray(data) && Object.values(data).every((value) => typeof value === "string");
+  }
+
+  private convertOldFormat(data: OldFormat): LinkedUserData[] {
+    const seenDiscordIds = new Set<string>();
+    const result: LinkedUserData[] = [];
+
+    for (const [uuid, discordId] of Object.entries(data)) {
+      if (seenDiscordIds.has(discordId)) continue;
+      seenDiscordIds.add(discordId);
+      result.push({ uuid, discordId });
+    }
+
+    return result;
+  }
+
+  private async checkData(): Promise<LinkedUserData[]> {
+    const file = await readFile("data/linked.json");
+    const data = JSON.parse(file.toString());
+    if (this.isNewFormat(data)) return data;
+
+    if (this.isOldFormat(data)) {
+      const converted = this.convertOldFormat(data);
+      await writeFile("data/linked.json", JSON.stringify(converted, null, 2), "utf-8");
+      return converted;
+    }
+
+    throw new Error("data/linked.json is not a recognized format.");
   }
 
   override parseData(data: LinkedData): LinkedUser[] {
