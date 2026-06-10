@@ -119,7 +119,7 @@ class ConfigManager {
       if (!migration) throw new HypixelDiscordChatBridgeError(`Missing migration for config version ${nextVersion}`);
       console.other(`Attempting to migrate config v${currentVersion} to v${nextVersion}`);
       await this.backupConfig(config);
-      await this.applyMigration(config, migration);
+      this.applyMigration(config, migration);
       console.other(`Migrated config v${currentVersion} to v${nextVersion}`);
       config.configVersion = nextVersion;
       currentVersion = nextVersion;
@@ -131,35 +131,33 @@ class ConfigManager {
   }
 
   private applyMigration(config: any, migration: MigrationMap) {
-    return new Promise<void>(() => {
-      for (const [oldPath, rule] of Object.entries(migration)) {
-        const value = this.getNestedValue(config, oldPath);
-        if (value === undefined) continue;
-        switch (rule.change) {
-          case ConfigChangeType.Move: {
-            if (!rule.key) throw new HypixelDiscordChatBridgeError(`Move migration missing target key for "${oldPath}"`);
-            this.setNestedValue(config, rule.key, value);
-            this.deleteNestedValue(config, oldPath);
-            break;
-          }
-          case ConfigChangeType.Delete: {
-            this.deleteNestedValue(config, oldPath);
-            break;
-          }
-          case ConfigChangeType.Transform: {
-            if (!rule.transform) throw new HypixelDiscordChatBridgeError(`Transform migration missing transform function for "${oldPath}"`);
-            if (!rule.key) throw new HypixelDiscordChatBridgeError(`Transform migration missing target key for "${oldPath}"`);
-            const transformed = rule.transform(value, config);
-            this.setNestedValue(config, rule.key, transformed);
-            this.deleteNestedValue(config, oldPath);
-            break;
-          }
-          default: {
-            break;
-          }
+    for (const [oldPath, rule] of Object.entries(migration)) {
+      const value = this.getNestedValue(config, oldPath);
+      if (value === undefined) continue;
+      switch (rule.change) {
+        case ConfigChangeType.Move: {
+          if (!rule.key) throw new HypixelDiscordChatBridgeError(`Move migration missing target key for "${oldPath}"`);
+          this.setNestedValue(config, rule.key, value);
+          this.deleteNestedValue(config, oldPath);
+          break;
+        }
+        case ConfigChangeType.Delete: {
+          this.deleteNestedValue(config, oldPath);
+          break;
+        }
+        case ConfigChangeType.Transform: {
+          if (!rule.transform) throw new HypixelDiscordChatBridgeError(`Transform migration missing transform function for "${oldPath}"`);
+          if (!rule.key) throw new HypixelDiscordChatBridgeError(`Transform migration missing target key for "${oldPath}"`);
+          const transformed = rule.transform(value, config);
+          this.setNestedValue(config, rule.key, transformed);
+          this.deleteNestedValue(config, oldPath);
+          break;
+        }
+        default: {
+          break;
         }
       }
-    });
+    }
   }
 
   private getNestedValue(obj: any, path: string): any {
