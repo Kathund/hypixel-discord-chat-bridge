@@ -8,7 +8,7 @@ import { delay, isUuid, replaceAllRanks } from "../../utils/miscUtils.js";
 import { replaceVariables, truncateString } from "../../utils/stringUtils.js";
 import type MinecraftManager from "../MinecraftManager.js";
 import type { BroadcastEvent } from "../../types/bridge.js";
-import type { ChannelNames } from "../../types/discord.js";
+import type { ChannelName } from "../../types/discord.js";
 import type { ChatMessage } from "prismarine-chat";
 
 class MessageHandler {
@@ -52,7 +52,7 @@ class MessageHandler {
       let blacklistUser: BlacklistUser | undefined;
       if (this.minecraft.application.config.blacklist.enabled) blacklistUser = await this.minecraft.application.data.blacklist.getUserByUUID(uuid);
 
-      const logChannel = await this.minecraft.application.discord.getChannel("Logger");
+      const logChannel = await this.minecraft.application.discord.getChannel("Logger-Guild");
       if (!logChannel || !logChannel.isSendable()) return;
       const requestEmbed = new Embed().setColor("Green").setDescription(replaceVariables(this.minecraft.application.messages.requestMessage, { username }));
       const buttons: ButtonBuilder[] = [new ButtonBuilder().setCustomId("joinRequestAccept").setLabel("Accept Request").setStyle(ButtonStyle.Success)];
@@ -147,7 +147,7 @@ class MessageHandler {
       };
 
       return [
-        this.minecraft.broadcastHeadedEmbed({ ...broadcastMessage, chatType: "Logger" }),
+        this.minecraft.broadcastHeadedEmbed({ ...broadcastMessage, chatType: "Logger-Guild" }),
         this.minecraft.broadcastHeadedEmbed({ ...broadcastMessage, chatType: "Guild" })
       ];
     }
@@ -164,7 +164,7 @@ class MessageHandler {
       };
 
       return [
-        this.minecraft.broadcastHeadedEmbed({ ...broadcastMessage, chatType: "Logger" }),
+        this.minecraft.broadcastHeadedEmbed({ ...broadcastMessage, chatType: "Logger-Guild" }),
         this.minecraft.broadcastHeadedEmbed({ ...broadcastMessage, chatType: "Guild" })
       ];
     }
@@ -181,7 +181,7 @@ class MessageHandler {
       };
 
       return [
-        this.minecraft.broadcastHeadedEmbed({ ...broadcastMessage, chatType: "Logger" }),
+        this.minecraft.broadcastHeadedEmbed({ ...broadcastMessage, chatType: "Logger-Guild" }),
         this.minecraft.broadcastHeadedEmbed({ ...broadcastMessage, chatType: "Guild" })
       ];
     }
@@ -207,7 +207,7 @@ class MessageHandler {
 
       return [
         this.minecraft.broadcastCleanEmbed({ ...broadcastMessage, chatType: "Guild" }),
-        this.minecraft.broadcastCleanEmbed({ ...broadcastMessage, chatType: "Logger" })
+        this.minecraft.broadcastCleanEmbed({ ...broadcastMessage, chatType: "Logger-Guild" })
       ];
     }
 
@@ -230,7 +230,7 @@ class MessageHandler {
 
       return [
         this.minecraft.broadcastCleanEmbed({ ...broadcastMessage, chatType: "Guild" }),
-        this.minecraft.broadcastCleanEmbed({ ...broadcastMessage, chatType: "Logger" })
+        this.minecraft.broadcastCleanEmbed({ ...broadcastMessage, chatType: "Logger-Guild" })
       ];
     }
 
@@ -283,7 +283,7 @@ class MessageHandler {
         this.minecraft.broadcastCleanEmbed({
           message: replaceVariables(this.minecraft.application.messages.onlineInvite, { username }),
           color: "Green",
-          chatType: "Logger"
+          chatType: "Logger-Guild"
         })
       ];
     }
@@ -303,7 +303,7 @@ class MessageHandler {
         this.minecraft.broadcastCleanEmbed({
           message: replaceVariables(this.minecraft.application.messages.offlineInvite, { username }),
           color: "Green",
-          chatType: "Logger"
+          chatType: "Logger-Guild"
         })
       ];
     }
@@ -311,7 +311,7 @@ class MessageHandler {
     if (this.isFailedInvite(message)) {
       return [
         this.minecraft.broadcastCleanEmbed({ message: message.replace(/\[(.*?)\]/g, "").trim(), color: "Red", chatType: "Guild" }),
-        this.minecraft.broadcastCleanEmbed({ message: message.replace(/\[(.*?)\]/g, "").trim(), color: "Red", chatType: "Logger" })
+        this.minecraft.broadcastCleanEmbed({ message: message.replace(/\[(.*?)\]/g, "").trim(), color: "Red", chatType: "Logger-Guild" })
       ];
     }
 
@@ -329,7 +329,7 @@ class MessageHandler {
         this.minecraft.broadcastCleanEmbed({
           message: replaceVariables(this.minecraft.application.messages.guildMuteMessage, { time }),
           color: "Red",
-          chatType: "Logger"
+          chatType: "Logger-Guild"
         })
       ];
     }
@@ -337,7 +337,7 @@ class MessageHandler {
     if (this.isGuildUnmuteMessage(message)) {
       return [
         this.minecraft.broadcastCleanEmbed({ message: this.minecraft.application.messages.guildUnmuteMessage, color: "Green", chatType: "Guild" }),
-        this.minecraft.broadcastCleanEmbed({ message: this.minecraft.application.messages.guildUnmuteMessage, color: "Green", chatType: "Logger" })
+        this.minecraft.broadcastCleanEmbed({ message: this.minecraft.application.messages.guildUnmuteMessage, color: "Green", chatType: "Logger-Guild" })
       ];
     }
 
@@ -361,7 +361,7 @@ class MessageHandler {
         this.minecraft.broadcastCleanEmbed({
           message: replaceVariables(this.minecraft.application.messages.userMuteMessage, { username, time }),
           color: "Red",
-          chatType: "Logger"
+          chatType: "Logger-Guild"
         })
       ];
     }
@@ -380,7 +380,7 @@ class MessageHandler {
         this.minecraft.broadcastCleanEmbed({
           message: replaceVariables(this.minecraft.application.messages.userUnmuteMessage, { username }),
           color: "Green",
-          chatType: "Logger"
+          chatType: "Logger-Guild"
         })
       ];
     }
@@ -466,7 +466,7 @@ class MessageHandler {
 
       this.minecraft.broadcastMessage({
         fullMessage: colouredMessage,
-        chatType: chatType as ChannelNames,
+        chatType: chatType as ChannelName,
         username,
         rank,
         guildRank,

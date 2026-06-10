@@ -4,10 +4,10 @@ import type DiscordButtonData from "./DiscordButtonData.js";
 import type DiscordManager from "../../DiscordManager.js";
 import type { ButtonInteraction, Message } from "discord.js";
 
-class DiscordButton<T extends DiscordManager = DiscordManagerWithClient> extends BasicInteractionData<T> {
+class DiscordButton<Manager extends DiscordManager = DiscordManagerWithClient> extends BasicInteractionData<Manager> {
   data!: DiscordButtonData;
   response: ButtonResponse;
-  constructor(discord: T) {
+  constructor(discord: Manager) {
     super(discord);
     this.response = ButtonResponse.Ephemeral;
   }

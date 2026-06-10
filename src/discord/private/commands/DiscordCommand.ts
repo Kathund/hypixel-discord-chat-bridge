@@ -6,10 +6,10 @@ import type DiscordCommandData from "./DiscordCommandData.js";
 import type DiscordManager from "../../DiscordManager.js";
 import type { AutocompleteInteraction, ChatInputCommandInteraction } from "discord.js";
 
-class DiscordCommand<T extends DiscordManager = DiscordManagerWithClient> extends BasicInteractionData<T> {
+class DiscordCommand<Manager extends DiscordManager = DiscordManagerWithClient> extends BasicInteractionData<Manager> {
   data!: DiscordCommandData;
   response: BasicInteractionResponse;
-  constructor(discord: T) {
+  constructor(discord: Manager) {
     super(discord);
     this.response = BasicInteractionResponse.Public;
   }

@@ -1,4 +1,4 @@
-import BasicScript from "../../private/BasicScript.js";
+import BasicScript from "../../BasicScript.js";
 import minecraftProtocol from "minecraft-protocol";
 import ms, { type StringValue } from "ms";
 import type ScriptManager from "../../ScriptsManager.js";

@@ -1,4 +1,4 @@
-import BasicScript from "../private/BasicScript.js";
+import BasicScript from "../BasicScript.js";
 import HypixelDiscordChatBridgeError from "../../private/error.js";
 import { replaceVariables } from "../../utils/stringUtils.js";
 import type ScriptManager from "../ScriptsManager.js";

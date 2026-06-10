@@ -17,14 +17,27 @@ export interface MigrationRule {
 
 export type MigrationMap = Record<string, MigrationRule>;
 
-export const ConfigAPIHypixel = zod.object({ key: zod.string(), baseURL: zod.url().nullish() });
-export const ConfigAPIMowojang = zod.object({ baseURL: zod.url().nullish() });
+export const ConfigAPIHypixel = zod.object({ key: zod.string(), baseURL: zod.url().nullable() });
+export const ConfigAPIMowojang = zod.object({ baseURL: zod.url().nullable() });
 export const ConfigAPI = zod.object({ hypixel: ConfigAPIHypixel, mowojang: ConfigAPIMowojang });
 
 export const ConfigBridgeMinecraft = zod.object({ format: zod.string() });
 export const ConfigBridgeDiscord = zod.object({ allowedBots: zod.array(zod.string()), mode: zod.string(), format: zod.string() });
+export const ConfigBridgeChannelLoggingChannels = zod.object({
+  guild: zod.string().nullable(),
+  event: zod.string().nullable(),
+  error: zod.string().nullable(),
+  blacklist: zod.string().nullable()
+});
+export const ConfigBridgeChannelLogging = zod.object({ enabled: zod.boolean(), channel: zod.string(), channels: ConfigBridgeChannelLoggingChannels });
 export const ConfigBridgeChannel = zod.object({ enabled: zod.boolean(), channel: zod.string() });
-export const ConfigBridgeChannels = zod.object({ debug: ConfigBridgeChannel, guild: ConfigBridgeChannel, officer: ConfigBridgeChannel, logging: ConfigBridgeChannel });
+export type ConfigBridgeChannel = zod.infer<typeof ConfigBridgeChannel>;
+export const ConfigBridgeChannels = zod.object({
+  debug: ConfigBridgeChannel,
+  guild: ConfigBridgeChannel,
+  officer: ConfigBridgeChannel,
+  logging: ConfigBridgeChannelLogging
+});
 export const ConfigBridgeFilter = zod.object({ enabled: zod.boolean(), customWords: zod.array(zod.string()) });
 export const ConfigBridge = zod.object({
   minecraft: ConfigBridgeMinecraft,

@@ -1,9 +1,9 @@
-import HypixelDiscordChatBridgeError from "../../private/error.js";
+import HypixelDiscordChatBridgeError from "../private/error.js";
 import ms, { type StringValue } from "ms";
 import prettyMilliseconds from "pretty-ms";
 import { schedule } from "node-cron";
-import type ScriptManager from "../ScriptsManager.js";
-import type { ScriptOptions } from "../../types/scripts.js";
+import type ScriptManager from "./ScriptsManager.js";
+import type { ScriptOptions } from "../types/scripts.js";
 
 class BasicScript {
   id: string;

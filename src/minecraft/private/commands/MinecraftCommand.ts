@@ -15,11 +15,11 @@ class SendError extends Error {
   }
 }
 
-class MinecraftCommand<T extends MinecraftManagerWithBot = MinecraftManagerWithBot> {
+class MinecraftCommand<Manager extends MinecraftManagerWithBot = MinecraftManagerWithBot> {
   data!: MinecraftCommandData;
   officer: boolean = false;
   private readonly maxMessageLength: number;
-  constructor(protected readonly minecraft: T) {
+  constructor(protected readonly minecraft: Manager) {
     this.maxMessageLength = this.minecraft.application.config.minecraft.commands.maxMessageLength;
   }
 

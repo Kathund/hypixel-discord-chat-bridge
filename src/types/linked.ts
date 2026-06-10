@@ -1,4 +1,4 @@
-export type LinkedData = Record<string, string>;
+export type LinkedData = LinkedUserData[];
 
 export interface LinkedUserData {
   discordId: string;

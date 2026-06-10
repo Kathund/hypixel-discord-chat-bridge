@@ -1,67 +1,27 @@
+import GenericManager from "../GenericManager.js";
 import HypixelDiscordChatBridgeError from "../../private/error.js";
 import LinkedUser from "./LinkedUser.js";
 import MowojangAPI from "../../private/MowojangAPI.js";
-import { access, mkdir, readFile, writeFile } from "node:fs/promises";
 import { getNetWorth, getPlayer, getSelectedProfile } from "../../utils/hypixelUtils.js";
 import type DataManager from "../DataManager.js";
 import type { Guild, Player, SkyBlockMember, SkyblockProfileWithMe } from "hypixel-api-reborn";
-import type { LinkedData } from "../../types/linked.js";
+import type { LinkedData, LinkedUserData } from "../../types/linked.js";
 
-class LinkedManager {
-  constructor(readonly data: DataManager) {
-    this.init();
+class LinkedManager extends GenericManager<LinkedUserData, LinkedData, LinkedUser> {
+  constructor(data: DataManager) {
+    super(data, "linked.json", "linked", []);
   }
 
-  private async init() {
-    try {
-      await mkdir("./data/", { recursive: true });
-      await access("./data/linked.json");
-    } catch {
-      await writeFile("./data/linked.json", JSON.stringify({}));
-    }
+  override parseData(data: LinkedData): LinkedUser[] {
+    return data.map((user) => new LinkedUser(user, this));
   }
 
-  async getLinkedFile(): Promise<LinkedData> {
-    const linkedData = await readFile("data/linked.json");
-    if (!linkedData) throw new HypixelDiscordChatBridgeError("The linked data file does not exist. Please contact an administrator.");
-    const linked = JSON.parse(linkedData.toString());
-    if (!linked) throw new HypixelDiscordChatBridgeError("The linked data file is malformed. Please contact an administrator.");
-    return linked;
-  }
-
-  unparseLinkedData(data: LinkedUser[]): LinkedData {
-    return data
-      .map((user) => user.toJSON())
-      .reduce<LinkedData>((acc, user) => {
-        acc[user.uuid] = user.discordId;
-        return acc;
-      }, {});
-  }
-
-  parseLinkedData(data: LinkedData): LinkedUser[] {
-    return Object.entries(data).map(([uuid, discordId]) => new LinkedUser({ uuid, discordId }, this));
-  }
-
-  async getLinkedUsers(): Promise<LinkedUser[]> {
-    return this.parseLinkedData(await this.getLinkedFile());
-  }
-
-  async writeLinkedUsers(data: LinkedData): Promise<LinkedUser[]> {
-    await writeFile("data/linked.json", JSON.stringify(data, null, 2), "utf-8");
-    return this.parseLinkedData(data);
-  }
-
-  async writeLinkedUsersParsed(users: LinkedUser[]): Promise<LinkedUser[]> {
-    return await this.writeLinkedUsers(this.unparseLinkedData(users));
-  }
-
-  async getUser(linkedUser: LinkedUser): Promise<LinkedUser | undefined> {
-    const users = await this.getLinkedUsers();
-    return users.find((user) => user === linkedUser);
+  async writeUsersParsed(users: LinkedUser[]): Promise<LinkedUser[]> {
+    return await this.writeData(users.map((user) => user.toJSON()));
   }
 
   async getUserByDiscordId(discordId: string): Promise<LinkedUser | undefined> {
-    const users = await this.getLinkedUsers();
+    const users = await this.getFullData();
     return users.find((user) => user.discordId === discordId);
   }
 
@@ -72,7 +32,7 @@ class LinkedManager {
   }
 
   async getUserByUUID(UUID: string): Promise<LinkedUser | undefined> {
-    const users = await this.getLinkedUsers();
+    const users = await this.getFullData();
     return users.find((user) => user.uuid === UUID);
   }
 

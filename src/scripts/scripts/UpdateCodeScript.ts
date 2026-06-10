@@ -1,4 +1,4 @@
-import BasicScript from "../private/BasicScript.js";
+import BasicScript from "../BasicScript.js";
 import { displayBigMessage } from "../../private/logger.js";
 import { exec } from "node:child_process";
 import type ScriptManager from "../ScriptsManager.js";

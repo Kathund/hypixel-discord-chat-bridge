@@ -4,10 +4,10 @@ import type DiscordManager from "../../DiscordManager.js";
 import type DiscordModalData from "./DiscordModalData.js";
 import type { ModalSubmitInteraction } from "discord.js";
 
-class DiscordModal<T extends DiscordManager = DiscordManagerWithClient> extends BasicInteractionData<T> {
+class DiscordModal<Manager extends DiscordManager = DiscordManagerWithClient> extends BasicInteractionData<Manager> {
   data!: DiscordModalData;
   response: BasicInteractionResponse;
-  constructor(discord: T) {
+  constructor(discord: Manager) {
     super(discord);
     this.response = BasicInteractionResponse.Ephemeral;
   }

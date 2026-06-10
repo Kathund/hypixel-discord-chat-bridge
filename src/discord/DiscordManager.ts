@@ -23,12 +23,21 @@ import {
   ModalSubmitInteraction,
   Webhook
 } from "discord.js";
+import {
+  type ChannelName,
+  type DiscordManagerWithClient,
+  type DiscordManagerWithGuild,
+  type GenericChannelName,
+  type LoggerChannelName,
+  LoggerChannelNames
+} from "../types/discord.js";
 import { canSendMessages, getApplicationOwners } from "../utils/discordUtils.js";
 import { messageToImage } from "../utils/messageToImage.js";
-import { replaceVariables } from "../utils/stringUtils.js";
+import { removeColorCodes, replaceVariables } from "../utils/stringUtils.js";
+import { writeFile } from "node:fs/promises";
 import type Application from "../Application.js";
 import type { BroadcastEvent } from "../types/bridge.js";
-import type { ChannelNames, DiscordManagerWithClient, DiscordManagerWithGuild } from "../types/discord.js";
+import type { ConfigBridgeChannel } from "../types/config.js";
 
 class DiscordManager extends CommunicationBridge {
   readonly buttonHandler: ButtonHandler;
@@ -68,7 +77,7 @@ class DiscordManager extends CommunicationBridge {
     });
   }
 
-  async getWebhook(type: ChannelNames): Promise<Webhook | null> {
+  async getWebhook(type: ChannelName): Promise<Webhook | null> {
     const channel = await this.getChannel(type);
     if (channel === null || !channel.isSendable() || channel.type !== ChannelType.GuildText) throw new HypixelDiscordChatBridgeError(`Channel "${type}" not found!`);
     try {
@@ -234,20 +243,52 @@ class DiscordManager extends CommunicationBridge {
     return this.client?.isReady() !== undefined;
   }
 
-  async getChannel(type: ChannelNames): Promise<Channel | null> {
+  async getChannel(type: ChannelName): Promise<Channel | null> {
     if (!this.isClientOnline()) return null;
-    const cleanType = type.replace(/§[0-9a-fk-or]/g, "").trim();
+    const cleanType = removeColorCodes(type);
+    if ((LoggerChannelNames as readonly string[]).includes(cleanType)) return await this.getLoggerChannel(cleanType as LoggerChannelName);
 
-    const channelMap = {
+    const channelMap: Record<GenericChannelName, ConfigBridgeChannel> = {
       Guild: this.application.config.bridge.channels.guild,
       Officer: this.application.config.bridge.channels.officer,
-      Logger: this.application.config.bridge.channels.logging,
       Debug: this.application.config.bridge.channels.debug
-    } as const;
+    };
 
-    const config = channelMap[cleanType as keyof typeof channelMap];
+    const config = channelMap[cleanType as GenericChannelName];
     if (!config || !config.enabled) return null;
     return await this.client.channels.fetch(config.channel);
+  }
+
+  private async getLoggerChannel(type: LoggerChannelName): Promise<Channel | null> {
+    if (!this.isClientOnline()) return null;
+    const cleanType = removeColorCodes(type);
+
+    const channelMap: Record<LoggerChannelName, string | null> = {
+      "Logger-Guild": this.application.config.bridge.channels.logging.channels.guild,
+      "Logger-Event": this.application.config.bridge.channels.logging.channels.event,
+      "Logger-Error": this.application.config.bridge.channels.logging.channels.error,
+      "Logger-Blacklist": this.application.config.bridge.channels.logging.channels.blacklist
+    };
+
+    const config = channelMap[cleanType as keyof typeof channelMap];
+    if (config === null) {
+      const basicChannel = await this.client.channels.fetch(this.application.config.bridge.channels.logging.channel);
+      if (!basicChannel || !basicChannel.isSendable() || basicChannel.type !== ChannelType.GuildText) return null;
+      const thread = await basicChannel.threads.create({ name: cleanType });
+      const configKeyMap: Record<LoggerChannelName, keyof typeof this.application.config.bridge.channels.logging.channels> = {
+        "Logger-Guild": "guild",
+        "Logger-Event": "event",
+        "Logger-Error": "error",
+        "Logger-Blacklist": "blacklist"
+      };
+
+      this.application.config.bridge.channels.logging.channels[configKeyMap[cleanType as keyof typeof configKeyMap]] = thread.id;
+      this.client.config = this.application.config;
+      await writeFile("config.json", JSON.stringify(this.application.config, null, 2), "utf-8");
+      return thread;
+    }
+
+    return await this.client.channels.fetch(config);
   }
 
   getErrorEmbed(error: Error | HypixelDiscordChatBridgeError): ErrorEmbed {
@@ -260,7 +301,7 @@ class DiscordManager extends CommunicationBridge {
     if (!this.isClientOnline()) return;
 
     try {
-      const channel = await this.getChannel("Logger");
+      const channel = await this.getChannel("Logger-Error");
       if (!channel || !channel.isSendable()) return;
 
       const hasPermission = await canSendMessages(channel);

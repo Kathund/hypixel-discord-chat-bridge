@@ -1,4 +1,4 @@
-import BasicScript from "../private/BasicScript.js";
+import BasicScript from "../BasicScript.js";
 import HypixelDiscordChatBridgeError from "../../private/error.js";
 import type ScriptManager from "../ScriptsManager.js";
 
@@ -12,7 +12,7 @@ class UpdateLinkedUsersScript extends BasicScript {
   }
 
   override async execute() {
-    const linkedUsers = await this.scripts.application.data.linked.getLinkedUsers();
+    const linkedUsers = await this.scripts.application.data.linked.getFullData();
     for (const linkedUser of linkedUsers) {
       const response = await linkedUser.updateRoles();
       if (response === null) throw new HypixelDiscordChatBridgeError("Something wen't wrong with updating");

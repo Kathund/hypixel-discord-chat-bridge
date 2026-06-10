@@ -1,4 +1,4 @@
-import BasicScript from "../../private/BasicScript.js";
+import BasicScript from "../../BasicScript.js";
 import Parser from "rss-parser";
 import axios from "axios";
 import { delay } from "../../../utils/miscUtils.js";

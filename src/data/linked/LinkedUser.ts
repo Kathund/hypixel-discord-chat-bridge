@@ -1,3 +1,4 @@
+import GenericData from "../GenericData.js";
 import HypixelDiscordChatBridgeError from "../../private/error.js";
 import MowojangAPI from "../../private/MowojangAPI.js";
 import { formatNumber, replaceVariables } from "../../utils/stringUtils.js";
@@ -5,15 +6,13 @@ import { getPlayer } from "../../utils/hypixelUtils.js";
 import type LinkedManager from "./LinkedManager.js";
 import type { Guild, GuildMember as HypixelGuildMember, Player } from "hypixel-api-reborn";
 import type { GuildMember } from "discord.js";
-import type { LinkedUserData } from "../../types/linked.js";
+import type { LinkedData, LinkedUserData } from "../../types/linked.js";
 
-class LinkedUser {
+class LinkedUser extends GenericData<LinkedUserData, LinkedData, LinkedManager> {
   readonly discordId: string;
   readonly uuid: string;
-  constructor(
-    data: LinkedUserData,
-    private readonly linked: LinkedManager
-  ) {
+  constructor(data: LinkedUserData, manager: LinkedManager) {
+    super(manager);
     this.discordId = data.discordId;
     this.uuid = data.uuid;
   }
@@ -24,48 +23,48 @@ class LinkedUser {
     return username;
   }
 
-  async save(): Promise<LinkedUser> {
-    const linked = await this.linked.getLinkedUsers();
-    const user = await this.linked.getUser(this);
+  override async save(): Promise<typeof this> {
+    const linked = await this.manager.getFullData();
+    const user = await this.manager.getData(this);
     if (user) return user;
     linked.push(this);
-    await this.linked.writeLinkedUsersParsed(linked);
+    await this.manager.writeUsersParsed(linked);
     return this;
   }
 
   private getLinkedRoles(): string[] {
-    const verificationRoles = this.linked.data.application.config.verification.roles;
+    const verificationRoles = this.manager.data.application.config.verification.roles;
     return [verificationRoles.verified.roleId, verificationRoles.guildMember.roleId, ...verificationRoles.custom.flatMap((r) => r.roleId)];
   }
 
   async reset() {
-    if (!this.linked.data.application.minecraft.isBotOnline()) return;
-    if (!this.linked.data.application.discord.isClientOnline()) return;
-    if (!this.linked.data.application.discord.isGuildReady()) return this.linked.data.application.discord.stateHandler.loadGuild();
+    if (!this.manager.data.application.minecraft.isBotOnline()) return;
+    if (!this.manager.data.application.discord.isClientOnline()) return;
+    if (!this.manager.data.application.discord.isGuildReady()) return this.manager.data.application.discord.stateHandler.loadGuild();
 
     try {
-      const member = await this.linked.data.application.discord.guild.members.fetch(this.discordId);
+      const member = await this.manager.data.application.discord.guild.members.fetch(this.discordId);
       if (!member) return;
-      if (this.linked.data.application.config.verification.nickname.enabled && member.nickname) await member.setNickname(null);
+      if (this.manager.data.application.config.verification.nickname.enabled && member.nickname) await member.setNickname(null);
       await member.roles.remove(this.getLinkedRoles(), "Updated Roles");
     } catch (error) {
       console.error(`Failed to completely clean up roles for ${this.discordId}:`, error);
     }
   }
 
-  async delete(): Promise<LinkedUser[]> {
-    const linked = await this.linked.getLinkedUsers();
+  override async delete(): Promise<LinkedUser[]> {
+    const linked = await this.manager.getFullData();
     const updated = linked.filter((u) => u.uuid !== this.uuid && u.discordId !== this.discordId);
-    return await this.linked.writeLinkedUsersParsed(updated);
+    return await this.manager.writeUsersParsed(updated);
   }
 
   async updateRoles(): Promise<this | null> {
-    if (!this.linked.data.application.minecraft.isBotOnline()) throw new HypixelDiscordChatBridgeError(this.linked.data.application.messages.minecraftBotOffline);
-    if (!this.linked.data.application.discord.isClientOnline()) {
+    if (!this.manager.data.application.minecraft.isBotOnline()) throw new HypixelDiscordChatBridgeError(this.manager.data.application.messages.minecraftBotOffline);
+    if (!this.manager.data.application.discord.isClientOnline()) {
       throw new HypixelDiscordChatBridgeError("The discord bot doesn't seam to be online? Please restart the application");
     }
-    if (!this.linked.data.application.discord.isGuildReady()) {
-      this.linked.data.application.discord.stateHandler.loadGuild();
+    if (!this.manager.data.application.discord.isGuildReady()) {
+      this.manager.data.application.discord.stateHandler.loadGuild();
       throw new HypixelDiscordChatBridgeError("The discord server isn't ready. Please try again later");
     }
 
@@ -75,16 +74,16 @@ class LinkedUser {
       return null;
     }
 
-    if (this.linked.data.application.discord.guild.ownerId === member.user.id) {
+    if (this.manager.data.application.discord.guild.ownerId === member.user.id) {
       throw new HypixelDiscordChatBridgeError("This user owns the server thus no one can edit their roles");
     }
 
-    const verificationRoles = this.linked.data.application.config.verification.roles;
+    const verificationRoles = this.manager.data.application.config.verification.roles;
     const rolesToAdd: string[] = [];
 
     if (verificationRoles.verified.enabled) rolesToAdd.push(verificationRoles.verified.roleId);
-    const hypixelGuild = await this.linked.data.application.getBotGuild();
-    const stats = await this.linked.getPlayerVariableStats(this.uuid, hypixelGuild);
+    const hypixelGuild = await this.manager.data.application.getBotGuild();
+    const stats = await this.manager.getPlayerVariableStats(this.uuid, hypixelGuild);
     const guildMember = await this.isUserInHypixelGuild(hypixelGuild);
     if (guildMember) {
       if (verificationRoles.guildMember.enabled) rolesToAdd.push(verificationRoles.guildMember.roleId);
@@ -106,12 +105,12 @@ class LinkedUser {
       }
     }
 
-    if (this.linked.data.application.config.verification.nickname.enabled) {
+    if (this.manager.data.application.config.verification.nickname.enabled) {
       member.setNickname(
         replaceVariables(
-          this.linked.data.application.config.verification.nickname.nickname,
+          this.manager.data.application.config.verification.nickname.nickname,
           Object.fromEntries(Object.entries(stats).map(([key, value]) => [key, typeof value === "number" ? formatNumber(value) : value]))
-        ).replace(/,/g, this.linked.data.application.config.verification.nickname.removeCommas ? "" : ","),
+        ).replace(/,/g, this.manager.data.application.config.verification.nickname.removeCommas ? "" : ","),
         "Updated Roles"
       );
     }
@@ -125,15 +124,15 @@ class LinkedUser {
   }
 
   async getDiscordUser(): Promise<GuildMember | null> {
-    if (!this.linked.data.application.discord.isClientOnline()) {
+    if (!this.manager.data.application.discord.isClientOnline()) {
       throw new HypixelDiscordChatBridgeError("The discord bot doesn't seam to be online? Please restart the application");
     }
-    if (!this.linked.data.application.discord.isGuildReady()) {
-      this.linked.data.application.discord.stateHandler.loadGuild();
+    if (!this.manager.data.application.discord.isGuildReady()) {
+      this.manager.data.application.discord.stateHandler.loadGuild();
       throw new HypixelDiscordChatBridgeError("The discord server isn't ready. Please try again later");
     }
 
-    return await this.linked.data.application.discord.guild.members.fetch(this.discordId).catch((e) => {
+    return await this.manager.data.application.discord.guild.members.fetch(this.discordId).catch((e) => {
       console.error(e);
       return null;
     });
@@ -144,7 +143,7 @@ class LinkedUser {
   }
 
   async isUserInHypixelGuild(hypixelGuild: Guild | null = null): Promise<HypixelGuildMember | undefined> {
-    const guild = hypixelGuild ?? (await this.linked.data.application.getBotGuild());
+    const guild = hypixelGuild ?? (await this.manager.data.application.getBotGuild());
     return guild.members.find((member) => member.uuid === this.uuid);
   }
 

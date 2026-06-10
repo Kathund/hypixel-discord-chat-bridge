@@ -1,4 +1,4 @@
-import BasicScript from "../../private/BasicScript.js";
+import BasicScript from "../../BasicScript.js";
 import type ScriptManager from "../../ScriptsManager.js";
 
 class SkyBlockVersionScript extends BasicScript {

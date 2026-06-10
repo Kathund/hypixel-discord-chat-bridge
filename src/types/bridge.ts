@@ -1,11 +1,11 @@
-import type { ChannelNames } from "./discord.js";
+import type { ChannelName } from "./discord.js";
 import type { ColorResolvable, Message, User } from "discord.js";
 import type { ConfigOtherColors } from "./config.js";
 
 export interface BroadcastEvent {
   fullMessage?: string;
   chat?: string;
-  chatType?: ChannelNames;
+  chatType?: ChannelName;
   username?: string;
   rank?: string | null;
   guildRank?: string;

@@ -36,7 +36,12 @@
       "logging": {
         "enabled": true,
         "channel": "LOGGING_CHANNEL_ID",
-        "events": {}
+        "channels": {
+          "guild": null,
+          "event": null,
+          "error": null,
+          "blacklist": null
+        }
       }
     },
     "filter": {

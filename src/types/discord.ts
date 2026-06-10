@@ -37,7 +37,13 @@ export enum ButtonResponse {
   Update
 }
 
-export type ChannelNames = "Guild" | "Officer" | "Logger" | "Debug";
+export const GenericChannelNames = ["Guild", "Officer", "Debug"];
+export type GenericChannelName = (typeof GenericChannelNames)[number];
+export const LoggerChannelNames = ["Logger-Guild", "Logger-Event", "Logger-Error", "Logger-Blacklist"] as const;
+export type LoggerChannelName = (typeof LoggerChannelNames)[number];
+export const ChannelNames = [...GenericChannelNames, ...LoggerChannelNames];
+export type ChannelName = (typeof ChannelNames)[number];
+
 export type DiscordManagerWithClient = DiscordManager & { client: Client<true> };
 export type DiscordManagerWithGuild = DiscordManagerWithClient & { guild: Guild };
 export type DiscordManagerWithBot = DiscordManagerWithClient & { application: { minecraft: MinecraftManagerWithBot } };

@@ -3,10 +3,10 @@ import { type CommandFlags, type DiscordManagerWithClient, GuildManagementAction
 import type DiscordManager from "../DiscordManager.js";
 import type { ChatMessage } from "prismarine-chat";
 
-class BasicInteractionData<T extends DiscordManager = DiscordManagerWithClient> {
+class BasicInteractionData<Manager extends DiscordManager = DiscordManagerWithClient> {
   protected readonly commandTimeout: number = 5_000;
   flags: CommandFlags[];
-  constructor(protected readonly discord: T) {
+  constructor(protected readonly discord: Manager) {
     this.flags = [];
   }
 
