@@ -5,7 +5,7 @@ import MowojangAPI from "../../private/MowojangAPI.js";
 import { getNetWorth, getPlayer, getSelectedProfile } from "../../utils/hypixelUtils.js";
 import { readFile, writeFile } from "node:fs/promises";
 import type DataManager from "../DataManager.js";
-import type { Guild, Player, SkyBlockMember, SkyblockProfileWithMe } from "hypixel-api-reborn";
+import type { Guild, Player, SkyblockProfileWithMe } from "hypixel-api-reborn";
 import type { LinkedData, LinkedUserData, OldFormat } from "../../types/linked.js";
 
 class LinkedManager extends GenericManager<LinkedUserData, LinkedData, LinkedUser> {
@@ -87,15 +87,20 @@ class LinkedManager extends GenericManager<LinkedUserData, LinkedData, LinkedUse
 
     if (!hypixelGuild) fetches.push(this.data.application.getBotGuild().then((guild) => (hypixelGuild = guild)));
     if (!player) fetches.push(getPlayer(uuid).then((playerData) => (player = playerData)));
-    if (!skyblock) fetches.push(getSelectedProfile(uuid).then((s) => (skyblock = s.profile)));
+    if (!skyblock) {
+      fetches.push(
+        getSelectedProfile(uuid)
+          .then((s) => (skyblock = s.profile))
+          .catch(() => (skyblock = null))
+      );
+    }
 
     await Promise.all(fetches);
     if (!hypixelGuild) throw new HypixelDiscordChatBridgeError("In game Hypixel Guild not found.");
     if (!player) throw new HypixelDiscordChatBridgeError("Failed to fetch Player data");
-    if (!skyblock) throw new HypixelDiscordChatBridgeError("Failed to fetch SkyBlock data");
 
-    const networth = await getNetWorth(skyblock).catch(() => null);
-    const profile: SkyBlockMember = skyblock.me;
+    const networth = skyblock ? await getNetWorth(skyblock).catch(() => null) : null;
+    const profile = skyblock?.me;
     const guildMember = hypixelGuild.members.find((m) => m.uuid === uuid);
 
     return {
@@ -216,82 +221,82 @@ class LinkedManager extends GenericManager<LinkedUserData, LinkedData, LinkedUse
 
       skyblockBank: networth?.bank ?? 0,
       skyblockPurse: networth?.purse ?? 0,
-      skyblockLevel: profile.leveling.level,
+      skyblockLevel: profile?.leveling?.level ?? 0,
 
-      skyblockSkillsAverageLevel: profile.playerData.skills.average,
-      skyblockSkillsNonCosmeticAverageLevel: profile.playerData.skills.nonCosmeticAverage,
-      skyblockSkillsFarmingLevel: profile.playerData.skills.farming.level,
-      skyblockSkillsMiningLevel: profile.playerData.skills.mining.level,
-      skyblockSkillsCombatLevel: profile.playerData.skills.combat.level,
-      skyblockSkillsForagingLevel: profile.playerData.skills.foraging.level,
-      skyblockSkillsFishingLevel: profile.playerData.skills.fishing.level,
-      skyblockSkillsEnchantingLevel: profile.playerData.skills.enchanting.level,
-      skyblockSkillsAlchemyLevel: profile.playerData.skills.alchemy.level,
-      skyblockSkillsCarpentryLevel: profile.playerData.skills.carpentry.level,
-      skyblockSkillsRunecraftingLevel: profile.playerData.skills.runecrafting.level,
-      skyblockSkillsSocialLevel: profile.playerData.skills.social.level,
-      skyblockSkillsTamingLevel: profile.playerData.skills.taming.level,
+      skyblockSkillsAverageLevel: profile?.playerData?.skills?.average ?? 0,
+      skyblockSkillsNonCosmeticAverageLevel: profile?.playerData?.skills?.nonCosmeticAverage ?? 0,
+      skyblockSkillsFarmingLevel: profile?.playerData?.skills?.farming?.level ?? 0,
+      skyblockSkillsMiningLevel: profile?.playerData?.skills?.mining?.level ?? 0,
+      skyblockSkillsCombatLevel: profile?.playerData?.skills?.combat?.level ?? 0,
+      skyblockSkillsForagingLevel: profile?.playerData?.skills?.foraging?.level ?? 0,
+      skyblockSkillsFishingLevel: profile?.playerData?.skills?.fishing?.level ?? 0,
+      skyblockSkillsEnchantingLevel: profile?.playerData?.skills?.enchanting?.level ?? 0,
+      skyblockSkillsAlchemyLevel: profile?.playerData?.skills?.alchemy?.level ?? 0,
+      skyblockSkillsCarpentryLevel: profile?.playerData?.skills?.carpentry?.level ?? 0,
+      skyblockSkillsRunecraftingLevel: profile?.playerData?.skills?.runecrafting?.level ?? 0,
+      skyblockSkillsSocialLevel: profile?.playerData?.skills?.social?.level ?? 0,
+      skyblockSkillsTamingLevel: profile?.playerData?.skills?.taming?.level ?? 0,
 
-      skyblockSkillsFarmingXp: profile.playerData.skills.farming.xp,
-      skyblockSkillsMiningXp: profile.playerData.skills.mining.xp,
-      skyblockSkillsCombatXp: profile.playerData.skills.combat.xp,
-      skyblockSkillsForagingXp: profile.playerData.skills.foraging.xp,
-      skyblockSkillsFishingXp: profile.playerData.skills.fishing.xp,
-      skyblockSkillsEnchantingXp: profile.playerData.skills.enchanting.xp,
-      skyblockSkillsAlchemyXp: profile.playerData.skills.alchemy.xp,
-      skyblockSkillsCarpentryXp: profile.playerData.skills.carpentry.xp,
-      skyblockSkillsRunecraftingXp: profile.playerData.skills.runecrafting.xp,
-      skyblockSkillsSocialXp: profile.playerData.skills.social.xp,
-      skyblockSkillsTamingXp: profile.playerData.skills.taming.xp,
+      skyblockSkillsFarmingXp: profile?.playerData?.skills?.farming?.xp ?? 0,
+      skyblockSkillsMiningXp: profile?.playerData?.skills?.mining?.xp ?? 0,
+      skyblockSkillsCombatXp: profile?.playerData?.skills?.combat?.xp ?? 0,
+      skyblockSkillsForagingXp: profile?.playerData?.skills?.foraging?.xp ?? 0,
+      skyblockSkillsFishingXp: profile?.playerData?.skills?.fishing?.xp ?? 0,
+      skyblockSkillsEnchantingXp: profile?.playerData?.skills?.enchanting?.xp ?? 0,
+      skyblockSkillsAlchemyXp: profile?.playerData?.skills?.alchemy?.xp ?? 0,
+      skyblockSkillsCarpentryXp: profile?.playerData?.skills?.carpentry?.xp ?? 0,
+      skyblockSkillsRunecraftingXp: profile?.playerData?.skills?.runecrafting?.xp ?? 0,
+      skyblockSkillsSocialXp: profile?.playerData?.skills?.social?.xp ?? 0,
+      skyblockSkillsTamingXp: profile?.playerData?.skills?.taming?.xp ?? 0,
 
-      skyblockSlayerZombieLevel: profile.slayers.zombie.level.level,
-      skyblockSlayerSpiderLevel: profile.slayers.spider.level.level,
-      skyblockSlayerWolfLevel: profile.slayers.wolf.level.level,
-      skyblockSlayerEndermanLevel: profile.slayers.enderman.level.level,
-      skyblockSlayerBlazeLevel: profile.slayers.blaze.level.level,
-      skyblockSlayerVampireLevel: profile.slayers.vampire.level.level,
+      skyblockSlayerZombieLevel: profile?.slayers?.zombie?.level?.level ?? 0,
+      skyblockSlayerSpiderLevel: profile?.slayers?.spider?.level?.level ?? 0,
+      skyblockSlayerWolfLevel: profile?.slayers?.wolf?.level?.level ?? 0,
+      skyblockSlayerEndermanLevel: profile?.slayers?.enderman?.level?.level ?? 0,
+      skyblockSlayerBlazeLevel: profile?.slayers?.blaze?.level?.level ?? 0,
+      skyblockSlayerVampireLevel: profile?.slayers?.vampire?.level?.level ?? 0,
 
-      skyblockSlayerZombieXp: profile.slayers.zombie.level.xp,
-      skyblockSlayerSpiderXp: profile.slayers.spider.level.xp,
-      skyblockSlayerWolfXp: profile.slayers.wolf.level.xp,
-      skyblockSlayerEndermanXp: profile.slayers.enderman.level.xp,
-      skyblockSlayerBlazeXp: profile.slayers.blaze.level.xp,
-      skyblockSlayerVampireXp: profile.slayers.vampire.level.xp,
+      skyblockSlayerZombieXp: profile?.slayers?.zombie?.level?.xp ?? 0,
+      skyblockSlayerSpiderXp: profile?.slayers?.spider?.level?.xp ?? 0,
+      skyblockSlayerWolfXp: profile?.slayers?.wolf?.level?.xp ?? 0,
+      skyblockSlayerEndermanXp: profile?.slayers?.enderman?.level?.xp ?? 0,
+      skyblockSlayerBlazeXp: profile?.slayers?.blaze?.level?.xp ?? 0,
+      skyblockSlayerVampireXp: profile?.slayers?.vampire?.level?.xp ?? 0,
 
-      skyblockDungeonsSecrets: profile.dungeons.secrets,
-      skyblockDungeonsXp: profile.dungeons.level.xp,
-      skyblockDungeonsLevel: profile.dungeons.level.level,
+      skyblockDungeonsSecrets: profile?.dungeons?.secrets ?? 0,
+      skyblockDungeonsXp: profile?.dungeons?.level?.xp ?? 0,
+      skyblockDungeonsLevel: profile?.dungeons?.level?.level ?? 0,
 
-      skyblockDungeonsClassAverageLevel: profile.dungeons.classes.average,
-      skyblockDungeonsClassHealerLevel: profile.dungeons.classes.healer.level,
-      skyblockDungeonsClassMageLevel: profile.dungeons.classes.mage.level,
-      skyblockDungeonsClassBerserkLevel: profile.dungeons.classes.berserk.level,
-      skyblockDungeonsClassArcherLevel: profile.dungeons.classes.archer.level,
-      skyblockDungeonsClassTankLevel: profile.dungeons.classes.tank.level,
+      skyblockDungeonsClassAverageLevel: profile?.dungeons?.classes?.average ?? 0,
+      skyblockDungeonsClassHealerLevel: profile?.dungeons?.classes?.healer?.level ?? 0,
+      skyblockDungeonsClassMageLevel: profile?.dungeons?.classes?.mage?.level ?? 0,
+      skyblockDungeonsClassBerserkLevel: profile?.dungeons?.classes?.berserk?.level ?? 0,
+      skyblockDungeonsClassArcherLevel: profile?.dungeons?.classes?.archer?.level ?? 0,
+      skyblockDungeonsClassTankLevel: profile?.dungeons?.classes?.tank?.level ?? 0,
 
-      skyblockDungeonsClassHealerXp: profile.dungeons.classes.healer.xp,
-      skyblockDungeonsClassMageXp: profile.dungeons.classes.mage.xp,
-      skyblockDungeonsClassBerserkXp: profile.dungeons.classes.berserk.xp,
-      skyblockDungeonsClassArcherXp: profile.dungeons.classes.archer.xp,
-      skyblockDungeonsClassTankXp: profile.dungeons.classes.tank.xp,
+      skyblockDungeonsClassHealerXp: profile?.dungeons?.classes?.healer?.xp ?? 0,
+      skyblockDungeonsClassMageXp: profile?.dungeons?.classes?.mage?.xp ?? 0,
+      skyblockDungeonsClassBerserkXp: profile?.dungeons?.classes?.berserk?.xp ?? 0,
+      skyblockDungeonsClassArcherXp: profile?.dungeons?.classes?.archer?.xp ?? 0,
+      skyblockDungeonsClassTankXp: profile?.dungeons?.classes?.tank?.xp ?? 0,
 
-      skyblockDungeonsEssenceDiamond: profile.currencies.diamondEssence,
-      skyblockDungeonsEssenceDragon: profile.currencies.dragonEssence,
-      skyblockDungeonsEssenceSpider: profile.currencies.spiderEssence,
-      skyblockDungeonsEssenceWither: profile.currencies.witherEssence,
-      skyblockDungeonsEssenceUndead: profile.currencies.undeadEssence,
-      skyblockDungeonsEssenceGold: profile.currencies.goldEssence,
-      skyblockDungeonsEssenceIce: profile.currencies.iceEssence,
-      skyblockDungeonsEssenceCrimson: profile.currencies.crimsonEssence,
+      skyblockDungeonsEssenceDiamond: profile?.currencies?.diamondEssence ?? 0,
+      skyblockDungeonsEssenceDragon: profile?.currencies?.dragonEssence ?? 0,
+      skyblockDungeonsEssenceSpider: profile?.currencies?.spiderEssence ?? 0,
+      skyblockDungeonsEssenceWither: profile?.currencies?.witherEssence ?? 0,
+      skyblockDungeonsEssenceUndead: profile?.currencies?.undeadEssence ?? 0,
+      skyblockDungeonsEssenceGold: profile?.currencies?.goldEssence ?? 0,
+      skyblockDungeonsEssenceIce: profile?.currencies?.iceEssence ?? 0,
+      skyblockDungeonsEssenceCrimson: profile?.currencies?.crimsonEssence ?? 0,
 
-      skyblockCrimsonIsleReputationBarbarian: profile.crimsonIsle.barbariansReputation,
-      skyblockCrimsonIsleReputationMage: profile.crimsonIsle.magesReputation,
+      skyblockCrimsonIsleReputationBarbarian: profile?.crimsonIsle?.barbariansReputation ?? 0,
+      skyblockCrimsonIsleReputationMage: profile?.crimsonIsle?.magesReputation ?? 0,
 
-      skyblockCrimsonIsleKuudraBasic: profile.crimsonIsle.kuudra.basicCompletions,
-      skyblockCrimsonIsleKuudraHot: profile.crimsonIsle.kuudra.hotCompletions,
-      skyblockCrimsonIsleKuudraBurning: profile.crimsonIsle.kuudra.burningCompletions,
-      skyblockCrimsonIsleKuudraFiery: profile.crimsonIsle.kuudra.fieryCompletions,
-      skyblockCrimsonIsleKuudraInfernal: profile.crimsonIsle.kuudra.infernalCompletions,
+      skyblockCrimsonIsleKuudraBasic: profile?.crimsonIsle?.kuudra?.basicCompletions ?? 0,
+      skyblockCrimsonIsleKuudraHot: profile?.crimsonIsle?.kuudra?.hotCompletions ?? 0,
+      skyblockCrimsonIsleKuudraBurning: profile?.crimsonIsle?.kuudra?.burningCompletions ?? 0,
+      skyblockCrimsonIsleKuudraFiery: profile?.crimsonIsle?.kuudra?.fieryCompletions ?? 0,
+      skyblockCrimsonIsleKuudraInfernal: profile?.crimsonIsle?.kuudra?.infernalCompletions ?? 0,
 
       skyblockNetworth: networth?.networth ?? 0,
       skyblockNetwrothArmor: networth?.types?.armor?.total ?? 0,
@@ -323,36 +328,36 @@ class LinkedManager extends GenericManager<LinkedUserData, LinkedData, LinkedUse
       skyblockNetwrothEssenceUnsoulbound: networth?.types?.essence?.unsoulboundTotal ?? 0,
       skyblockNetwrothPetsUnsoulbound: networth?.types?.pets?.unsoulboundTotal ?? 0,
 
-      skyblockChocolateFactoryLevel: profile.chocolateFactory.prestige,
-      skyblockChocolateFactoryChocolateCurrent: profile.chocolateFactory.currentChocolate,
-      skyblockChocolateFactoryChocolateSincePrestige: profile.chocolateFactory.chocolateSincePrestige,
-      skyblockChocolateFactoryChocolateTotal: profile.chocolateFactory.totalChocolate,
+      skyblockChocolateFactoryLevel: profile?.chocolateFactory?.prestige ?? 0,
+      skyblockChocolateFactoryChocolateCurrent: profile?.chocolateFactory?.currentChocolate ?? 0,
+      skyblockChocolateFactoryChocolateSincePrestige: profile?.chocolateFactory?.chocolateSincePrestige ?? 0,
+      skyblockChocolateFactoryChocolateTotal: profile?.chocolateFactory?.totalChocolate ?? 0,
 
-      skyblockChocolateFactoryEmployeeBro: profile.chocolateFactory.employees.bro,
-      skyblockChocolateFactoryEmployeeCousin: profile.chocolateFactory.employees.cousin,
-      skyblockChocolateFactoryEmployeeSis: profile.chocolateFactory.employees.sis,
-      skyblockChocolateFactoryEmployeeFather: profile.chocolateFactory.employees.father,
-      skyblockChocolateFactoryEmployeeGrandma: profile.chocolateFactory.employees.grandma,
-      skyblockChocolateFactoryEmployeeUncle: profile.chocolateFactory.employees.uncle,
-      skyblockChocolateFactoryEmployeeDog: profile.chocolateFactory.employees.dog,
+      skyblockChocolateFactoryEmployeeBro: profile?.chocolateFactory?.employees?.bro ?? 0,
+      skyblockChocolateFactoryEmployeeCousin: profile?.chocolateFactory?.employees?.cousin ?? 0,
+      skyblockChocolateFactoryEmployeeSis: profile?.chocolateFactory?.employees?.sis ?? 0,
+      skyblockChocolateFactoryEmployeeFather: profile?.chocolateFactory?.employees?.father ?? 0,
+      skyblockChocolateFactoryEmployeeGrandma: profile?.chocolateFactory?.employees?.grandma ?? 0,
+      skyblockChocolateFactoryEmployeeUncle: profile?.chocolateFactory?.employees?.uncle ?? 0,
+      skyblockChocolateFactoryEmployeeDog: profile?.chocolateFactory?.employees?.dog ?? 0,
 
-      skyblockJacobMedalsGold: profile.jacobContests.medals.gold,
-      skyblockJacobMedalsSilver: profile.jacobContests.medals.silver,
-      skyblockJacobMedalsBronze: profile.jacobContests.medals.bronze,
+      skyblockJacobMedalsGold: profile?.jacobContests?.medals?.gold ?? 0,
+      skyblockJacobMedalsSilver: profile?.jacobContests?.medals?.silver ?? 0,
+      skyblockJacobMedalsBronze: profile?.jacobContests?.medals?.bronze ?? 0,
 
-      skyblockJacobPerksLevelCap: profile.jacobContests.perks?.farmingLevelCap,
-      skyblockJacobPerksDoubleDrops: profile.jacobContests.perks?.doubleDrops,
+      skyblockJacobPerksLevelCap: profile?.jacobContests?.perks?.farmingLevelCap ?? 0,
+      skyblockJacobPerksDoubleDrops: profile?.jacobContests?.perks?.doubleDrops ?? 0,
 
-      skyblockJacobPersonalBestNetherWart: profile.jacobContests.personalBests.NETHER_STALK ?? 0,
-      skyblockJacobPersonalBestCocoBeans: profile.jacobContests.personalBests["INK_SACK:3"] ?? 0,
-      skyblockJacobPersonalBestMushroom: profile.jacobContests.personalBests?.MUSHROOM_COLLECTION ?? 0,
-      skyblockJacobPersonalBestWheat: profile.jacobContests.personalBests?.WHEAT ?? 0,
-      skyblockJacobPersonalBestPotato: profile.jacobContests.personalBests?.POTATO_ITEM ?? 0,
-      skyblockJacobPersonalBestPumpkin: profile.jacobContests.personalBests?.PUMPKIN ?? 0,
-      skyblockJacobPersonalBestCarrot: profile.jacobContests.personalBests?.CARROT_ITEM ?? 0,
-      skyblockJacobPersonalBestCactus: profile.jacobContests.personalBests?.CACTUS ?? 0,
-      skyblockJacobPersonalBestMelon: profile.jacobContests.personalBests?.MELON ?? 0,
-      skyblockJacobPersonalBestSugarCane: profile.jacobContests.personalBests?.SUGAR_CANE ?? 0
+      skyblockJacobPersonalBestNetherWart: profile?.jacobContests?.personalBests?.NETHER_STALK ?? 0,
+      skyblockJacobPersonalBestCocoBeans: profile?.jacobContests?.personalBests["INK_SACK:3"] ?? 0,
+      skyblockJacobPersonalBestMushroom: profile?.jacobContests?.personalBests?.MUSHROOM_COLLECTION ?? 0,
+      skyblockJacobPersonalBestWheat: profile?.jacobContests?.personalBests?.WHEAT ?? 0,
+      skyblockJacobPersonalBestPotato: profile?.jacobContests?.personalBests?.POTATO_ITEM ?? 0,
+      skyblockJacobPersonalBestPumpkin: profile?.jacobContests?.personalBests?.PUMPKIN ?? 0,
+      skyblockJacobPersonalBestCarrot: profile?.jacobContests?.personalBests?.CARROT_ITEM ?? 0,
+      skyblockJacobPersonalBestCactus: profile?.jacobContests?.personalBests?.CACTUS ?? 0,
+      skyblockJacobPersonalBestMelon: profile?.jacobContests?.personalBests?.MELON ?? 0,
+      skyblockJacobPersonalBestSugarCane: profile?.jacobContests?.personalBests?.SUGAR_CANE ?? 0
     };
   }
 }
