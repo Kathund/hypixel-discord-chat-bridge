@@ -13,7 +13,7 @@ class StateHandler {
 
   async onReady() {
     if (!this.discord.isClientOnline() || !this.discord.client.user) return;
-    console.discord(`Client ready, logged in as ${this.discord.client.user?.username} (${this.discord.client.user?.id})!`);
+    console.discord(`Discord client ready, logged in as ${this.discord.client.user?.username} (${this.discord.client.user?.id})!`);
     this.discord.client.user.setPresence({ activities: [{ name: "/help | by @duckysolucky" }] });
 
     await this.loadGuild();
@@ -23,6 +23,10 @@ class StateHandler {
     const channel = await this.discord.getChannel("Guild");
     if (channel === null || !channel.isSendable()) return console.error('Channel "Guild" not found!');
     await channel.send({ embeds: [new Embed().setAuthor({ name: "Chat Bridge is Online" }).setColor("Green").setFooter(null)] });
+
+    const loggerChannel = await this.discord.getChannel("Logger-Event");
+    if (loggerChannel === null || !loggerChannel.isSendable()) return console.error('Channel "Logger-Event" not found!');
+    await loggerChannel.send({ embeds: [new Embed().setDescription("Discord bot is fully ready and online").setColor("Green")] });
     console.discord("Client is fully ready!");
   }
 
@@ -30,6 +34,10 @@ class StateHandler {
     const channel = await this.discord.getChannel("Guild");
     if (channel === null || !channel.isSendable()) return console.error('Channel "Guild" not found!');
     await channel.send({ embeds: [new Embed().setAuthor({ name: "Chat Bridge is Offline" }).setColor("Red").setFooter(null)] });
+
+    const loggerChannel = await this.discord.getChannel("Logger-Event");
+    if (loggerChannel === null || !loggerChannel.isSendable()) return console.error('Channel "Logger-Event" not found!');
+    await loggerChannel.send({ embeds: [new Embed().setDescription("Discord bot is shutting down").setColor("Red")] });
   }
 }
 

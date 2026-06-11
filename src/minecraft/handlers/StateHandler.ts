@@ -1,3 +1,4 @@
+import Embed, { WarningEmbed } from "../../discord/private/Embed.js";
 import type MinecraftManager from "../MinecraftManager.js";
 
 class StateHandler {
@@ -14,21 +15,33 @@ class StateHandler {
 
   async onLogin() {
     if (!this.minecraft.isBotOnline()) return;
-    console.minecraft(`Client ready, logged in as ${this.minecraft.bot.username}`);
+    console.minecraft(`Minecraft client ready, logged in as ${this.minecraft.bot.username}`);
     this.loginAttempts = 0;
     if (this.minecraft.application.botGuild === undefined) await this.minecraft.application.getBotGuild();
+
+    const loggerChannel = await this.minecraft.application.discord.getChannel("Logger-Event");
+    if (loggerChannel === null || !loggerChannel.isSendable()) return console.error('Channel "Logger-Event" not found!');
+    await loggerChannel.send({ embeds: [new Embed().setDescription(`Minecraft client ready, logged in as ${this.minecraft.bot.username}`).setColor("Green")] });
   }
 
-  onEnd(reason: string) {
+  async onEnd(reason: string) {
     if (reason && reason === "restart") return;
     const loginDelay = (this.loginAttempts + 1) * 5000;
     console.warn(`Minecraft bot has disconnected! Attempting reconnect in ${loginDelay / 1000} seconds`);
     setTimeout(() => this.minecraft.connect(), loginDelay);
+
+    const loggerChannel = await this.minecraft.application.discord.getChannel("Logger-Event");
+    if (loggerChannel === null || !loggerChannel.isSendable()) return console.error('Channel "Logger-Event" not found!');
+    await loggerChannel.send({ embeds: [new WarningEmbed().setDescription(`Minecraft bot has disconnected! Attempting reconnect in ${loginDelay / 1000} seconds`)] });
   }
 
-  onKicked(reason: string, loggedIn: boolean) {
+  async onKicked(reason: string, loggedIn: boolean) {
     console.warn(`Minecraft bot has been kicked from the server for "${reason}"`);
     this.loginAttempts++;
+
+    const loggerChannel = await this.minecraft.application.discord.getChannel("Logger-Event");
+    if (loggerChannel === null || !loggerChannel.isSendable()) return console.error('Channel "Logger-Event" not found!');
+    await loggerChannel.send({ embeds: [new WarningEmbed().setDescription(`Minecraft bot has been kicked from the server for "${reason}"`)] });
   }
 
   onError(error: Error) {

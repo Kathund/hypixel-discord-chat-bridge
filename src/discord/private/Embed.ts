@@ -24,6 +24,14 @@ export default class Embed extends EmbedBuilder {
   }
 }
 
+export class WarningEmbed extends Embed {
+  constructor() {
+    super();
+    this.setColor("Yellow");
+    this.setAuthor({ name: "An Warning has occurred" });
+  }
+}
+
 export class ErrorEmbed extends Embed {
   constructor() {
     super();
