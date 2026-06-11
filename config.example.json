@@ -101,6 +101,12 @@
         "messageCooldown": "1h",
         "playerThreshold": 10
       }
+    },
+    "bot": {
+      "server": "mc.hypixel.net",
+      "port": 25565,
+      "version": "1.8.9",
+      "accountsLocation": "./auth-cache"
     }
   },
   "discord": {

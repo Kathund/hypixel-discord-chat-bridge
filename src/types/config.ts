@@ -77,11 +77,18 @@ export const ConfigMinecraftHypixelAlerts = zod.object({
   skyblockVersion: ConfigMinecraftHypixelAlertsAlert,
   alphaPlayerCountTracker: ConfigMinecraftHypixelAlertsAlphaPlayerCountTracker
 });
+export const ConfigMinecraftBot = zod.object({
+  server: zod.string(),
+  port: zod.number().positive().max(65535).min(1),
+  version: zod.string(),
+  accountsLocation: zod.string()
+});
 export const ConfigMinecraft = zod.object({
   autoLimbo: zod.boolean(),
   commands: ConfigMinecraftCommands,
   guild: ConfigMinecraftGuild,
-  hypixelAlerts: ConfigMinecraftHypixelAlerts
+  hypixelAlerts: ConfigMinecraftHypixelAlerts,
+  bot: ConfigMinecraftBot
 });
 
 export const ConfigDiscordCommands = zod.object({ checkPermissions: zod.boolean(), staffRole: zod.string(), adminUsers: zod.array(zod.string()) });

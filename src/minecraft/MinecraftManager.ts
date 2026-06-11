@@ -10,6 +10,21 @@ import type { ChatMessage } from "prismarine-chat";
 import type { MinecraftManagerWithBot } from "../types/minecraft.js";
 
 class MinecraftManager extends CommunicationBridge {
+  readonly supportedVersions: string[] = ["1.8.9"];
+  readonly unsupportedVersions: Record<string, { reason: string; disable: boolean }> = {
+    "1.21.11": { reason: "Has known issues and cannot connect to hypixel. See https://github.com/DuckySoLucky/hypixel-discord-chat-bridge/issues/360", disable: true },
+    "1.21.10": { reason: "Has known issues and cannot connect to hypixel. See https://github.com/DuckySoLucky/hypixel-discord-chat-bridge/issues/360", disable: true },
+    "1.21.9": { reason: "Has known issues and cannot connect to hypixel. See https://github.com/DuckySoLucky/hypixel-discord-chat-bridge/issues/360", disable: true },
+    "1.21.8": { reason: "Has known issues and cannot connect to hypixel. See https://github.com/DuckySoLucky/hypixel-discord-chat-bridge/issues/360", disable: true },
+    "1.21.7": { reason: "Has known issues and cannot connect to hypixel. See https://github.com/DuckySoLucky/hypixel-discord-chat-bridge/issues/360", disable: true },
+    "1.21.6": { reason: "Has known issues and cannot connect to hypixel. See https://github.com/DuckySoLucky/hypixel-discord-chat-bridge/issues/360", disable: true },
+    "1.21.5": { reason: "Has known issues and cannot connect to hypixel. See https://github.com/DuckySoLucky/hypixel-discord-chat-bridge/issues/360", disable: true },
+    "1.21.4": { reason: "Has known issues and cannot connect to hypixel. See https://github.com/DuckySoLucky/hypixel-discord-chat-bridge/issues/360", disable: true },
+    "1.21.3": { reason: "Has known issues and cannot connect to hypixel. See https://github.com/DuckySoLucky/hypixel-discord-chat-bridge/issues/360", disable: true },
+    "1.21.2": { reason: "Has known issues and cannot connect to hypixel. See https://github.com/DuckySoLucky/hypixel-discord-chat-bridge/issues/360", disable: true },
+    "1.21.1": { reason: "Has known issues and cannot connect to hypixel. See https://github.com/DuckySoLucky/hypixel-discord-chat-bridge/issues/360", disable: true },
+    "1.21": { reason: "Has known issues and cannot connect to hypixel. See https://github.com/DuckySoLucky/hypixel-discord-chat-bridge/issues/360", disable: true }
+  };
   readonly stateHandler: StateHandler;
   readonly commandHandler: CommandHandler;
   readonly messageHandler: MessageHandler;
@@ -30,15 +45,30 @@ class MinecraftManager extends CommunicationBridge {
   }
 
   private createBotConnection() {
+    const version = this.unsupportedVersions[this.application.config.minecraft.bot.version];
+    if (version) {
+      console.warn(`[minecraft.bot.version] You currently have an unsupported version selected (${this.application.config.minecraft.bot.version})`);
+      console.warn(`[minecraft.bot.version] ${version.reason}`);
+      console.warn(`[minecraft.bot.version] The currently supported versions are ${this.supportedVersions.join(", ")}`);
+      if (version.disable) process.exit(1);
+    }
+
+    if (!this.supportedVersions.includes(this.application.config.minecraft.bot.version)) {
+      console.warn(`[minecraft.bot.version] You currently have an unsupported version selected (${this.application.config.minecraft.bot.version})`);
+      console.warn("[minecraft.bot.version] While it may work we cannot guarantee it to work");
+      console.warn(`[minecraft.bot.version] The currently supported versions are ${this.supportedVersions.join(", ")}`);
+    }
+
     return createBot({
-      host: "mc.hypixel.net",
-      port: 25565,
+      host: this.application.config.minecraft.bot.server,
+      port: this.application.config.minecraft.bot.port,
       username: "DuckySoLucky",
       auth: "microsoft",
-      version: "1.8.9",
+      version: this.application.config.minecraft.bot.version,
       viewDistance: "tiny",
       chatLengthLimit: 256,
-      profilesFolder: "./auth-cache"
+      profilesFolder: this.application.config.minecraft.bot.accountsLocation,
+      logErrors: true
     });
   }
 
