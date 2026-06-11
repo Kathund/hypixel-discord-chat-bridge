@@ -47,7 +47,6 @@ class ConfigManager {
         "web": { change: ConfigChangeType.Delete },
         "other.autoUpdater": { key: "other.codeUpdater.enabled", change: ConfigChangeType.Move },
         "other.autoUpdaterInterval": { key: "other.codeUpdater.interval", change: ConfigChangeType.Transform, transform: (value: any): any => `${value}h` },
-        "other.logToFiles": { change: ConfigChangeType.Delete },
         "other.timezone": { change: ConfigChangeType.Delete },
         "statsChannels.autoUpdaterInterval": {
           key: "statsChannels.autoUpdater.interval",
