@@ -181,6 +181,7 @@
       "Green": "#57F287",
       "Yellow": "#FFD700"
     },
-    "backupConfigs": true
+    "backupConfigs": true,
+    "logToFiles": true
   }
 }

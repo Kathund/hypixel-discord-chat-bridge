@@ -1,4 +1,5 @@
 import chalk from "chalk";
+import config from "../../config.json" with { type: "json" };
 import { Logger, createLogger, format, transports } from "winston";
 import { titleCase } from "../utils/stringUtils.js";
 import type { LogData } from "../types/misc.js";
@@ -40,7 +41,8 @@ function logSomething(message: string, log: LogData): void {
   console.log(log.background(`[${getCurrentTime()}] ${titleCase(log.level)} >${log.color(` ${message}`)}`));
 }
 
-const combinedTransport = new transports.File({ level: "max", filename: "./logs/combined.log" });
+const fileLoggingEnabled = config.other.logToFiles;
+const combinedTransport = fileLoggingEnabled ? new transports.File({ level: "max", filename: "./logs/combined.log" }) : undefined;
 const loggers: { [key: string]: Logger } = {};
 logs.forEach((log) => {
   loggers[log.level] = createLogger({
@@ -57,7 +59,9 @@ logs.forEach((log) => {
         return `[${getCurrentTime()}] ${titleCase(log.level)} > ${message}`;
       })
     ),
-    transports: [new transports.File({ level: log.level, filename: `./logs/${log.level}.log` }), combinedTransport]
+    transports: fileLoggingEnabled
+      ? [new transports.File({ level: log.level, filename: `./logs/${log.level}.log` }), combinedTransport as transports.FileTransportInstance]
+      : []
   });
 });
 
@@ -65,21 +69,21 @@ console.discord = (message: string): void => {
   const log = logs.find((log) => log.level === "discord") || otherLog;
   logSomething(message, log);
   const logger = loggers[log.level];
-  if (logger) logger.log(log.level, message);
+  if (logger && fileLoggingEnabled) logger.log(log.level, message);
 };
 
 console.minecraft = (message: string): void => {
   const log = logs.find((log) => log.level === "minecraft") || otherLog;
   logSomething(message, log);
   const logger = loggers[log.level];
-  if (logger) logger.log(log.level, message);
+  if (logger && fileLoggingEnabled) logger.log(log.level, message);
 };
 
 console.scripts = (message: string): void => {
   const log = logs.find((log) => log.level === "scripts") || otherLog;
   logSomething(message, log);
   const logger = loggers[log.level];
-  if (logger) logger.log(log.level, message);
+  if (logger && fileLoggingEnabled) logger.log(log.level, message);
 };
 
 console.broadcast = (message: string, location: string): void => {
@@ -87,21 +91,21 @@ console.broadcast = (message: string, location: string): void => {
   const log = logs.find((log) => log.level === "broadcast") || otherLog;
   logSomething(message, log);
   const logger = loggers[log.level];
-  if (logger) logger.log(log.level, message);
+  if (logger && fileLoggingEnabled) logger.log(log.level, message);
 };
 
 console.other = (message: string): void => {
   const log = logs.find((log) => log.level === "other") || otherLog;
   logSomething(message, log);
   const logger = loggers[log.level];
-  if (logger) logger.log(log.level, message);
+  if (logger && fileLoggingEnabled) logger.log(log.level, message);
 };
 
 console.warn = (message: string): void => {
   const log = logs.find((log) => log.level === "warn") || otherLog;
   logSomething(message, log);
   const logger = loggers[log.level];
-  if (logger) logger.log(log.level, message);
+  if (logger && fileLoggingEnabled) logger.log(log.level, message);
 };
 
 console.error = (message: Error): void => {
@@ -109,7 +113,7 @@ console.error = (message: Error): void => {
   const errorString = getErrorString(message);
   logSomething(errorString, log);
   const logger = loggers[log.level];
-  if (logger) logger.log(log.level, errorString);
+  if (logger && fileLoggingEnabled) logger.log(log.level, errorString);
 };
 
 // eslint-disable-next-line import/prefer-default-export
