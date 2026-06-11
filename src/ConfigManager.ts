@@ -103,8 +103,7 @@ class ConfigManager {
   private async backupConfig(config: Record<string, any>) {
     if (config.other.backupConfigs === false) return console.warn("Config backup is disabled");
     await mkdir("./data/backup/config", { recursive: true });
-    const currentTime = Date.now();
-    await writeFile(`./data/backup/config/config_${currentTime}.json`, JSON.stringify(config, null, 2), "utf-8");
+    await writeFile(`./data/backup/config/config_${new Date().toISOString()}.json`, JSON.stringify(config, null, 2), "utf-8");
     console.other("Saved config backup");
   }
 
