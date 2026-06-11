@@ -267,7 +267,8 @@ class DiscordManager extends CommunicationBridge {
       "Logger-Guild": this.application.config.bridge.channels.logging.channels.guild,
       "Logger-Event": this.application.config.bridge.channels.logging.channels.event,
       "Logger-Error": this.application.config.bridge.channels.logging.channels.error,
-      "Logger-Blacklist": this.application.config.bridge.channels.logging.channels.blacklist
+      "Logger-Blacklist": this.application.config.bridge.channels.logging.channels.blacklist,
+      "Logger-Scripts": this.application.config.bridge.channels.logging.channels.scripts
     };
 
     const config = channelMap[cleanType as keyof typeof channelMap];
@@ -279,7 +280,8 @@ class DiscordManager extends CommunicationBridge {
         "Logger-Guild": "guild",
         "Logger-Event": "event",
         "Logger-Error": "error",
-        "Logger-Blacklist": "blacklist"
+        "Logger-Blacklist": "blacklist",
+        "Logger-Scripts": "scripts"
       };
 
       this.application.config.bridge.channels.logging.channels[configKeyMap[cleanType as keyof typeof configKeyMap]] = thread.id;

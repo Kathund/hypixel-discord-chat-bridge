@@ -1,5 +1,5 @@
 import BasicScript from "../BasicScript.js";
-import HypixelDiscordChatBridgeError from "../../private/error.js";
+import { ScriptLogState } from "../../types/scripts.js";
 import type ScriptManager from "../ScriptsManager.js";
 
 class UpdateLinkedUsersScript extends BasicScript {
@@ -15,8 +15,14 @@ class UpdateLinkedUsersScript extends BasicScript {
     const linkedUsers = await this.scripts.application.data.linked.getFullData();
     for (const linkedUser of linkedUsers) {
       const response = await linkedUser.updateRoles();
-      if (response === null) throw new HypixelDiscordChatBridgeError("Something wen't wrong with updating");
-      console.scripts(`Updated roles for ${linkedUser.discordId} (${linkedUser.uuid})`);
+      if (response === null) {
+        this.log(
+          `Unable to update roles for <@${linkedUser.discordId}> (${linkedUser.discordId} - ${linkedUser.uuid}). Removing them from linked users`,
+          ScriptLogState.Bad
+        );
+        continue;
+      }
+      this.log(`Updated roles for <@${linkedUser.discordId}> (${linkedUser.discordId} - ${linkedUser.uuid})`);
     }
   }
 }

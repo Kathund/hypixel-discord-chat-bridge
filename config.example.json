@@ -40,7 +40,8 @@
           "guild": null,
           "event": null,
           "error": null,
-          "blacklist": null
+          "blacklist": null,
+          "scripts": null
         }
       }
     },

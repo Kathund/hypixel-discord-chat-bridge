@@ -27,7 +27,8 @@ export const ConfigBridgeChannelLoggingChannels = zod.object({
   guild: zod.string().nullable(),
   event: zod.string().nullable(),
   error: zod.string().nullable(),
-  blacklist: zod.string().nullable()
+  blacklist: zod.string().nullable(),
+  scripts: zod.string().nullable()
 });
 export const ConfigBridgeChannelLogging = zod.object({ enabled: zod.boolean(), channel: zod.string(), channels: ConfigBridgeChannelLoggingChannels });
 export const ConfigBridgeChannel = zod.object({ enabled: zod.boolean(), channel: zod.string() });

@@ -4,3 +4,9 @@ export interface ScriptOptions {
   cron?: string;
   interval?: string;
 }
+
+export enum ScriptLogState {
+  Good,
+  Bad,
+  Misc
+}

@@ -1,9 +1,11 @@
+import Embed from "../discord/private/Embed.js";
 import HypixelDiscordChatBridgeError from "../private/error.js";
 import ms, { type StringValue } from "ms";
 import prettyMilliseconds from "pretty-ms";
+import { ScriptLogState, type ScriptOptions } from "../types/scripts.js";
+import { performance } from "node:perf_hooks";
 import { schedule } from "node-cron";
 import type ScriptManager from "./ScriptsManager.js";
-import type { ScriptOptions } from "../types/scripts.js";
 
 class BasicScript {
   id: string;
@@ -28,12 +30,17 @@ class BasicScript {
     throw new Error("Execute Method not implemented!");
   }
 
-  private run() {
+  private async run() {
+    const start = performance.now();
     try {
-      console.scripts(`Executing the \`${this.id}\` script.`);
-      this.execute();
+      this.log(`Executing the \`${this.id}\` script.`);
+      await this.execute();
+      this.log(`Finished executing the \`${this.id}\` script.`);
     } catch (error) {
       console.error(error);
+    } finally {
+      const durationMs = performance.now() - start;
+      this.log(`Duration: ${durationMs.toFixed(2)}ms (${prettyMilliseconds(durationMs)})`);
     }
   }
 
@@ -49,6 +56,17 @@ class BasicScript {
       console.scripts(`Loaded script \`${this.id}\` - executing with cron: ${this.cron}.`);
       schedule(this.cron, () => this.run());
     }
+  }
+
+  protected async log(message: string, state: ScriptLogState = ScriptLogState.Misc): Promise<void> {
+    console.scripts(message);
+    const channel = await this.scripts.application.discord.getChannel("Logger-Scripts");
+    if (!channel || !channel.isSendable()) return;
+    const embed = new Embed().setDescription(message).setDevFooter("Kathund");
+    if (state === ScriptLogState.Good) embed.setColor("Green");
+    else if (state === ScriptLogState.Bad) embed.setColor("Red");
+    else if (state === ScriptLogState.Misc) embed.setColor("Blue");
+    await channel.send({ content: `Log from script: \`${this.id}\``, embeds: [embed] });
   }
 }
 
