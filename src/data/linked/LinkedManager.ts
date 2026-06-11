@@ -2,15 +2,15 @@ import GenericManager from "../GenericManager.js";
 import HypixelDiscordChatBridgeError from "../../private/error.js";
 import LinkedUser from "./LinkedUser.js";
 import MowojangAPI from "../../private/MowojangAPI.js";
+import { access, readFile, writeFile } from "node:fs/promises";
 import { getNetWorth, getPlayer, getSelectedProfile } from "../../utils/hypixelUtils.js";
-import { readFile, writeFile } from "node:fs/promises";
 import type DataManager from "../DataManager.js";
 import type { Guild, Player, SkyblockProfileWithMe } from "hypixel-api-reborn";
 import type { LinkedData, LinkedUserData, OldFormat } from "../../types/linked.js";
 
 class LinkedManager extends GenericManager<LinkedUserData, LinkedData, LinkedUser> {
   constructor(data: DataManager) {
-    super(data, "linked.json", "linked", []);
+    super(data, "data/linked.json", "linked", []);
     this.checkData();
   }
 
@@ -38,15 +38,19 @@ class LinkedManager extends GenericManager<LinkedUserData, LinkedData, LinkedUse
     return result;
   }
 
-  private async checkData(): Promise<LinkedUserData[]> {
+  private async checkData() {
+    const a = await access("./data/linked.json")
+      .then(() => true)
+      .catch(() => null);
+    if (a === null) return;
     const file = await readFile("data/linked.json");
     const data = JSON.parse(file.toString());
-    if (this.isNewFormat(data)) return data;
+    if (this.isNewFormat(data)) return;
 
     if (this.isOldFormat(data)) {
       const converted = this.convertOldFormat(data);
       await writeFile("data/linked.json", JSON.stringify(converted, null, 2), "utf-8");
-      return converted;
+      return;
     }
 
     throw new Error("data/linked.json is not a recognized format.");

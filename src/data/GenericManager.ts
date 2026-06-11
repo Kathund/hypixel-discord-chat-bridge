@@ -1,12 +1,12 @@
 import HypixelDiscordChatBridgeError from "../private/error.js";
-import { access, mkdir, readFile, writeFile } from "node:fs/promises";
+import { access, readFile, writeFile } from "node:fs/promises";
 import type DataManager from "./DataManager.js";
 import type GenericData from "./GenericData.js";
 
 abstract class GenericManager<JSONData, Data, ParsedData extends GenericData<JSONData, Data, any>> {
   constructor(
     readonly data: DataManager,
-    private readonly fileName: string,
+    private readonly filePath: string,
     private readonly name: string,
     basicData: Data
   ) {
@@ -15,15 +15,14 @@ abstract class GenericManager<JSONData, Data, ParsedData extends GenericData<JSO
 
   private async init(basicData: Data) {
     try {
-      await mkdir("./data/", { recursive: true });
-      await access(`./data/${this.fileName}`);
+      await access(this.filePath);
     } catch {
-      await writeFile(`./data/${this.fileName}`, JSON.stringify(basicData));
+      await writeFile(this.filePath, JSON.stringify(basicData));
     }
   }
 
   protected async getFile(): Promise<Data> {
-    const data = await readFile(`data/${this.fileName}`);
+    const data = await readFile(this.filePath);
     if (!data) throw new HypixelDiscordChatBridgeError(`The ${this.name} data file does not exist. Please contact an administrator.`);
     const parsed = JSON.parse(data.toString());
     if (!parsed) throw new HypixelDiscordChatBridgeError(`The ${this.name} data file is malformed. Please contact an administrator.`);
@@ -37,7 +36,7 @@ abstract class GenericManager<JSONData, Data, ParsedData extends GenericData<JSO
   }
 
   async writeData(data: Data): Promise<ParsedData[]> {
-    await writeFile(`data/${this.fileName}`, JSON.stringify(data, null, 2), "utf-8");
+    await writeFile(this.filePath, JSON.stringify(data, null, 2), "utf-8");
     return this.parseData(data);
   }
 

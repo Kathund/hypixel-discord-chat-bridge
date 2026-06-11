@@ -10,7 +10,7 @@ import type { BlacklistData, BlacklistedUserData } from "../../types/blacklist.j
 
 class BlacklistManager extends GenericManager<BlacklistedUserData, BlacklistData, BlacklistUser> {
   constructor(data: DataManager) {
-    super(data, "blacklist.json", "blacklist", []);
+    super(data, "data/blacklist.json", "blacklist", []);
   }
 
   override parseData(data: BlacklistData): BlacklistUser[] {
