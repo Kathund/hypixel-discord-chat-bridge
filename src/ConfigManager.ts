@@ -60,7 +60,8 @@ class ConfigManager {
           change: ConfigChangeType.Transform,
           transform: (value: any): any => `${value}h`
         }
-      }
+      },
+      3: { "minecraft.guild.requirements.requiredToHave": { key: "minecraft.guild.requirements.requirementsNeededToPass", change: ConfigChangeType.Move } }
     };
     this.hasConfigChanged = false;
   }

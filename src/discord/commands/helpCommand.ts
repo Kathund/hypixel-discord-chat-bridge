@@ -31,7 +31,7 @@ class HelpCommand extends DiscordCommand {
 
     const minecraftCommand = this.discord.application.minecraft.commandHandler.findNormalCommand(commandName);
     const isMinecraftCommand = Boolean(minecraftCommand);
-    const command = interaction.client.commands.get(commandName) ?? minecraftCommand ?? undefined;
+    const command = this.discord.commandHandler.commands.get(commandName) ?? minecraftCommand ?? undefined;
     if (command === undefined) throw new HypixelDiscordChatBridgeError(`Command ${commandName} not found.`);
     const prefix = isMinecraftCommand ? this.discord.application.config.minecraft.commands.normal.prefix : "/";
 

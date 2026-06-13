@@ -24,6 +24,16 @@ export async function getRoles(member: GuildMember): Promise<Role[]> {
   return member.roles.cache.map((role) => role);
 }
 
+export async function isAdminMember(member: GuildMember): Promise<boolean> {
+  const adminUsers = await getApplicationOwners(member.client);
+
+  if (member.client.config.discord.commands.checkPermissions === true && adminUsers.includes(member.user.id)) {
+    return false;
+  }
+
+  return true;
+}
+
 export async function isStaffMember(member: GuildMember): Promise<boolean> {
   const userRoles = await getRoles(member).then((roles) => roles.map((role) => role.id));
   const adminUsers = await getApplicationOwners(member.client);

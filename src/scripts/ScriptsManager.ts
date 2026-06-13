@@ -5,8 +5,11 @@ import type BasicScript from "./BasicScript.js";
 
 class ScriptManager {
   readonly scripts: Collection<string, BasicScript> = new Collection<string, BasicScript>();
-  constructor(readonly application: Application) {
-    this.init();
+  constructor(
+    readonly application: Application,
+    deployScripts: boolean
+  ) {
+    if (deployScripts) this.init();
   }
 
   private async init() {

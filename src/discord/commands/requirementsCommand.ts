@@ -18,7 +18,7 @@ class RequirementsCommand extends DiscordCommand {
 
   async checkRequirements(uuid: string): Promise<Requirements> {
     const stats = await this.discord.application.data.linked.getPlayerVariableStats(uuid);
-    const { requirements: configRequirements, requiredToHave } = this.discord.application.config.minecraft.guild.requirements;
+    const { requirements: configRequirements, requirementsNeededToPass } = this.discord.application.config.minecraft.guild.requirements;
 
     const requirements: Requirement[] = Object.entries(configRequirements).map(([key, required]) => {
       const has = stats[key] ?? 0;
@@ -26,7 +26,7 @@ class RequirementsCommand extends DiscordCommand {
     });
 
     const requirementsPassed = requirements.filter((requirement) => requirement.passed).length;
-    const passed = requirementsPassed >= requiredToHave;
+    const passed = requirementsPassed >= requirementsNeededToPass;
 
     return { username: stats.username as string, uuid, guildName: stats.guildName as string, passed, requirementsPassed, requirements };
   }
@@ -37,7 +37,7 @@ class RequirementsCommand extends DiscordCommand {
       .setTitle(`${username} **${passed ? "has" : "hasn't"}** got the requirements to join ${guildName}!`)
       .setDescription(
         `${username} meets **${requirementsPassed} requirement(s)** out of the required **${
-          this.discord.application.config.minecraft.guild.requirements.requiredToHave
+          this.discord.application.config.minecraft.guild.requirements.requirementsNeededToPass
         } requirement(s)** needed to join ${guildName}`
       )
       .addFields(

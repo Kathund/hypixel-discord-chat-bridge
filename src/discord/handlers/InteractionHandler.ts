@@ -1,7 +1,7 @@
 import HypixelDiscordChatBridgeError from "../../private/error.js";
 import { type BaseInteraction, type ButtonInteraction, type ChatInputCommandInteraction, GuildMember, type ModalSubmitInteraction } from "discord.js";
 import { CommandFlags } from "../../types/discord.js";
-import { isGuildMember, isStaffMember, isVerifiedMember } from "../../utils/discordUtils.js";
+import { isAdminMember, isGuildMember, isStaffMember, isVerifiedMember } from "../../utils/discordUtils.js";
 import type BasicInteractionData from "../private/BasicInteractionData.js";
 import type DiscordManager from "../DiscordManager.js";
 
@@ -19,11 +19,17 @@ class InteractionHandler {
     if (!interaction.guild || !interaction.member) throw new HypixelDiscordChatBridgeError("Please run this command inside of a guild");
     const member = interaction.member instanceof GuildMember ? interaction.member : await interaction.guild.members.fetch(interaction.user.id);
 
-    const [isGuildMemberCheck, isStaffMemberCheck, isVerifiedMemberCheck] = await Promise.all([isGuildMember(member), isStaffMember(member), isVerifiedMember(member)]);
+    const [isGuildMemberCheck, isStaffMemberCheck, isAdminMemberCheck, isVerifiedMemberCheck] = await Promise.all([
+      isGuildMember(member),
+      isStaffMember(member),
+      isAdminMember(member),
+      isVerifiedMember(member)
+    ]);
 
     const checks: Array<[boolean, string]> = [
       [data.flags.includes(CommandFlags.GuildMemberOnly) && !isGuildMemberCheck, "You don't have permission to use this command."],
       [data.flags.includes(CommandFlags.StaffOnly) && !isStaffMemberCheck, "You don't have permission to use this command."],
+      [data.flags.includes(CommandFlags.AdminOnly) && !isAdminMemberCheck, "You don't have permission to use this command."],
       [data.flags.includes(CommandFlags.VerifiedOnly) && !isVerifiedMemberCheck, "This command requires you to be verified. Please use /verify to verify."],
       [data.flags.includes(CommandFlags.VerificationCommand) && !this.discord.application.config.verification.enabled, "Verification commands are disabled."],
       [data.flags.includes(CommandFlags.BlacklistCommand) && !this.discord.application.config.blacklist.enabled, "Blacklist commands are disabled."],

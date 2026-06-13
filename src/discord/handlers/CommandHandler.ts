@@ -6,10 +6,11 @@ import type DiscordCommand from "../private/commands/DiscordCommand.js";
 import type DiscordManager from "../DiscordManager.js";
 
 class CommandHandler {
+  readonly commands: Collection<string, DiscordCommand> = new Collection<string, DiscordCommand>();
   constructor(private readonly discord: DiscordManager) {}
 
   async onCommand(interaction: ChatInputCommandInteraction) {
-    const command = interaction.client.commands.get(interaction.commandName);
+    const command = this.commands.get(interaction.commandName);
     if (!command) return;
 
     try {
@@ -27,7 +28,7 @@ class CommandHandler {
   }
 
   async onAutoComplete(interaction: AutocompleteInteraction) {
-    const command = interaction.client.commands.get(interaction.commandName);
+    const command = this.commands.get(interaction.commandName);
     if (!command) return;
     try {
       await command.autocomplete(interaction);
@@ -36,22 +37,25 @@ class CommandHandler {
     }
   }
 
-  async deployCommands() {
-    if (!this.discord.isClientOnline()) return;
-    this.discord.client.commands = new Collection<string, DiscordCommand>();
+  async deployCommands(silent: boolean = false, skipChecks: boolean = false) {
+    this.commands.clear();
     const commandFiles = await readdir("./src/discord/commands/", { recursive: true, encoding: "utf-8" }).then((files) => files.filter((file) => file.endsWith(".ts")));
 
     const commands = [];
     for (const file of commandFiles) {
       const command: DiscordCommand = new (await import(`../commands/${file}`)).default(this.discord);
       if (command.data.name) {
-        if (command.flags.includes(CommandFlags.VerificationCommand) && !this.discord.application.config.verification.enabled) continue;
-        if (command.flags.includes(CommandFlags.BlacklistCommand) && !this.discord.application.config.blacklist.enabled) continue;
+        if (!skipChecks) {
+          if (command.flags.includes(CommandFlags.VerificationCommand) && !this.discord.application.config.verification.enabled) continue;
+          if (command.flags.includes(CommandFlags.BlacklistCommand) && !this.discord.application.config.blacklist.enabled) continue;
+        }
 
         commands.push(command.data.toJSON());
-        this.discord.client.commands.set(command.data.name, command);
+        this.commands.set(command.data.name, command);
       }
     }
+
+    if (silent) return;
 
     const rest = new REST({ version: "10" }).setToken(this.discord.application.config.discord.token);
     const clientId = Buffer.from(this.discord.application.config.discord.token.split(".")?.[0] || "UNKNOWN", "base64").toString("ascii");

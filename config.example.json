@@ -1,5 +1,5 @@
 {
-  "configVersion": 2,
+  "configVersion": 3,
   "API": {
     "hypixel": {
       "key": "HYPIXEL_API_KEY",
@@ -78,7 +78,7 @@
       "requirements": {
         "enabled": false,
         "autoAccept": false,
-        "requiredToHave": 1,
+        "requirementsNeededToPass": 1,
         "requirements": {}
       }
     },

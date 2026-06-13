@@ -6,10 +6,11 @@ import type DiscordButton from "../private/buttons/DiscordButton.js";
 import type DiscordManager from "../DiscordManager.js";
 
 class ButtonHandler {
+  readonly buttons: Collection<string, DiscordButton> = new Collection<string, DiscordButton>();
   constructor(private readonly discord: DiscordManager) {}
 
   async onButton(interaction: ButtonInteraction) {
-    const button = interaction.client.buttons.get(interaction.customId);
+    const button = this.buttons.get(interaction.customId);
     if (!button) return;
 
     try {
@@ -28,14 +29,13 @@ class ButtonHandler {
   }
 
   async loadButtons() {
-    if (!this.discord.client) return;
-    this.discord.client.buttons = new Collection<string, DiscordButton>();
+    this.buttons.clear();
     const buttonFiles = await readdir("./src/discord/buttons/", { recursive: true, encoding: "utf-8" }).then((files) => files.filter((file) => file.endsWith(".ts")));
     for (const file of buttonFiles) {
       const button: DiscordButton = new (await import(`../buttons/${file}`)).default(this.discord);
-      this.discord.client.buttons.set(button.data.id, button);
+      this.buttons.set(button.data.id, button);
     }
-    console.discord(`Successfully loaded ${this.discord.client.buttons.size} button(s).`);
+    console.discord(`Successfully loaded ${this.buttons.size} button(s).`);
   }
 }
 

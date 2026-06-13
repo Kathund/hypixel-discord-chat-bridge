@@ -58,7 +58,7 @@ export const ConfigMinecraftCommands = zod.object({
 export const ConfigMinecraftGuildRequirements = zod.object({
   enabled: zod.boolean(),
   autoAccept: zod.boolean(),
-  requiredToHave: zod.number(),
+  requirementsNeededToPass: zod.number(),
   requirements: zod
     .record(zod.string(), zod.number().int().positive())
     .refine((obj) => Object.keys(obj).every((key) => PlayerVariableStatsKeysNumber.includes(key as any)), { message: "Invalid requirement key" })

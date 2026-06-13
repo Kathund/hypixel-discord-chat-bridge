@@ -1,8 +1,9 @@
 import DiscordCommand from "../private/commands/DiscordCommand.js";
 import DiscordCommandData from "../private/commands/DiscordCommandData.js";
 import Embed from "../private/Embed.js";
-import { CommandFlags, type DiscordManagerWithBot, type DiscordManagerWithClient, type Information } from "../../types/discord.js";
+import { CommandFlags, type DiscordManagerWithBot, type Information } from "../../types/discord.js";
 import { replaceVariables, titleCase } from "../../utils/stringUtils.js";
+import type DiscordManager from "../DiscordManager.js";
 import type { ChatInputCommandInteraction } from "discord.js";
 
 class InformationCommand extends DiscordCommand<DiscordManagerWithBot> {
@@ -20,8 +21,8 @@ class InformationCommand extends DiscordCommand<DiscordManagerWithBot> {
       .replaceAll("guild-rank", "rank");
   }
 
-  static getCommands(discord: DiscordManagerWithClient) {
-    const discordCommands = discord.client.commands
+  static getCommands(discord: DiscordManager) {
+    const discordCommands = discord.commandHandler.commands
       .map(({ data }) => {
         const { name, options } = data.toJSON();
         const optionsString = options?.map(({ name, required }) => this.FormatCommandOptions(name, required)).join("");

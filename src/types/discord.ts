@@ -1,16 +1,10 @@
-import { Client, Collection, Guild } from "discord.js";
-import type DiscordButton from "../discord/private/buttons/DiscordButton.js";
-import type DiscordCommand from "../discord/private/commands/DiscordCommand.js";
+import { Client, Guild } from "discord.js";
 import type DiscordManager from "../discord/DiscordManager.js";
-import type DiscordModal from "../discord/private/modals/DiscordModal.js";
 import type { Config } from "./config.js";
 import type { MinecraftManagerWithBot } from "./minecraft.js";
 
 declare module "discord.js" {
   export interface Client {
-    commands: Collection<string, DiscordCommand>;
-    buttons: Collection<string, DiscordButton>;
-    modals: Collection<string, DiscordModal>;
     config: Config;
   }
 }
@@ -19,6 +13,7 @@ export enum CommandFlags {
   GuildMemberOnly,
   RequiresMinecraftBot,
   StaffOnly,
+  AdminOnly,
   VerificationCommand,
   BlacklistCommand,
   VerifiedOnly

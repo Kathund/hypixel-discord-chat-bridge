@@ -41,8 +41,9 @@ function logSomething(message: string, log: LogData): void {
   console.log(log.background(`[${getCurrentTime()}] ${titleCase(log.level)} >${log.color(` ${message}`)}`));
 }
 
+const defaultPath = `./logs/${new Date().toISOString()}`;
 const fileLoggingEnabled = config.other.logToFiles;
-const combinedTransport = fileLoggingEnabled ? new transports.File({ level: "max", filename: "./logs/combined.log" }) : undefined;
+const fullTransport = fileLoggingEnabled ? new transports.File({ level: "max", filename: `${defaultPath}/full.log` }) : undefined;
 const loggers: { [key: string]: Logger } = {};
 logs.forEach((log) => {
   loggers[log.level] = createLogger({
@@ -60,7 +61,7 @@ logs.forEach((log) => {
       })
     ),
     transports: fileLoggingEnabled
-      ? [new transports.File({ level: log.level, filename: `./logs/${log.level}.log` }), combinedTransport as transports.FileTransportInstance]
+      ? [new transports.File({ level: log.level, filename: `${defaultPath}/${log.level}.log` }), fullTransport as transports.FileTransportInstance]
       : []
   });
 });

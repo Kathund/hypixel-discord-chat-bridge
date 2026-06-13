@@ -75,7 +75,7 @@ class CommandHandler {
     }
   }
 
-  async deployCommands() {
+  async deployCommands(silent: boolean = false) {
     this.commands.clear();
     const commandFiles = await readdir("./src/minecraft/commands/", { recursive: true, encoding: "utf-8" }).then((files) => files.filter((file) => file.endsWith(".ts")));
     for (const file of commandFiles) {
@@ -83,7 +83,7 @@ class CommandHandler {
       if (!command.data.name) continue;
       this.commands.set(command.data.name, command);
     }
-    console.minecraft(`Successfully reloaded ${this.commands.size} minecraft command(s).`);
+    if (!silent) console.minecraft(`Successfully reloaded ${this.commands.size} minecraft command(s).`);
   }
 }
 

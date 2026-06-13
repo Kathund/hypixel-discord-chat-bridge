@@ -6,10 +6,11 @@ import type DiscordManager from "../DiscordManager.js";
 import type DiscordModal from "../private/modals/DiscordModal.js";
 
 class ModalHandler {
+  readonly modals: Collection<string, DiscordModal> = new Collection<string, DiscordModal>();
   constructor(private readonly discord: DiscordManager) {}
 
   async onSubmit(interaction: ModalSubmitInteraction) {
-    const modal = interaction.client.modals.get(interaction.customId);
+    const modal = this.modals.get(interaction.customId);
     if (!modal) return;
 
     try {
@@ -27,14 +28,13 @@ class ModalHandler {
   }
 
   async loadModals() {
-    if (!this.discord.client) return;
-    this.discord.client.modals = new Collection<string, DiscordModal>();
+    this.modals.clear();
     const modalFiles = await readdir("./src/discord/modals/", { recursive: true, encoding: "utf-8" }).then((files) => files.filter((file) => file.endsWith(".ts")));
     for (const file of modalFiles) {
       const modal: DiscordModal = new (await import(`../modals/${file}`)).default(this.discord);
-      this.discord.client.modals.set(modal.data.id, modal);
+      this.modals.set(modal.data.id, modal);
     }
-    console.discord(`Successfully loaded ${this.discord.client.modals.size} modal(s).`);
+    console.discord(`Successfully loaded ${this.modals.size} modal(s).`);
   }
 }
 

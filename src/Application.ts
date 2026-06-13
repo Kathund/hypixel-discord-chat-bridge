@@ -22,13 +22,16 @@ class Application {
   readonly filter: Filter;
   botGuild?: Guild;
   botGuildMembers?: ParsedSession[];
-  constructor(readonly config: Config) {
+  constructor(
+    readonly config: Config,
+    deployScripts: boolean = true
+  ) {
     this.package = packageJson;
     this.messages = messages;
     this.data = new DataManager(this);
     this.discord = new DiscordManager(this);
     this.minecraft = new MinecraftManager(this);
-    this.scripts = new ScriptManager(this);
+    this.scripts = new ScriptManager(this, deployScripts);
 
     this.filter = new Filter();
     this.filter.addWords(...(this.config.bridge.filter.customWords ?? []));

@@ -59,68 +59,73 @@ class LinkedUser extends GenericData<LinkedUserData, LinkedData, LinkedManager> 
   }
 
   async updateRoles(): Promise<this | null> {
-    if (!this.manager.data.application.minecraft.isBotOnline()) throw new HypixelDiscordChatBridgeError(this.manager.data.application.messages.minecraftBotOffline);
-    if (!this.manager.data.application.discord.isClientOnline()) {
-      throw new HypixelDiscordChatBridgeError("The discord bot doesn't seam to be online? Please restart the application");
-    }
-    if (!this.manager.data.application.discord.isGuildReady()) {
-      this.manager.data.application.discord.stateHandler.loadGuild();
-      throw new HypixelDiscordChatBridgeError("The discord server isn't ready. Please try again later");
-    }
-
-    const member = await this.getDiscordUser();
-    if (!member) {
-      this.delete();
-      return null;
-    }
-
-    if (this.manager.data.application.discord.guild.ownerId === member.user.id) {
-      throw new HypixelDiscordChatBridgeError("This user owns the server thus no one can edit their roles");
-    }
-
-    const verificationRoles = this.manager.data.application.config.verification.roles;
-    const rolesToAdd: string[] = [];
-
-    if (verificationRoles.verified.enabled) rolesToAdd.push(verificationRoles.verified.roleId);
-    const hypixelGuild = await this.manager.data.application.getBotGuild();
-    const stats = await this.manager.getPlayerVariableStats(this.uuid, hypixelGuild);
-    const guildMember = await this.isUserInHypixelGuild(hypixelGuild);
-    if (guildMember) {
-      if (verificationRoles.guildMember.enabled) rolesToAdd.push(verificationRoles.guildMember.roleId);
-
-      const guildRank = verificationRoles.custom.find((r) =>
-        r.requirements
-          .filter((req) => r.enabled !== false && req.type === "guildRank")
-          .map((req) => req.value)
-          .includes(guildMember.rank)
-      );
-      if (guildRank && guildRank.enabled !== false) rolesToAdd.push(guildRank.roleId);
-    }
-
-    if (verificationRoles.custom.length > 0) {
-      for (const role of verificationRoles.custom.filter((r) => r.requirements.some((req) => req.type !== "guildRank"))) {
-        if (role.enabled === false) continue;
-        const meetsRequirements = role.requirements.every((req) => req.value <= (stats[req.type] ?? 0));
-        if (meetsRequirements) rolesToAdd.push(role.roleId);
+    try {
+      if (!this.manager.data.application.minecraft.isBotOnline()) throw new HypixelDiscordChatBridgeError(this.manager.data.application.messages.minecraftBotOffline);
+      if (!this.manager.data.application.discord.isClientOnline()) {
+        throw new HypixelDiscordChatBridgeError("The discord bot doesn't seam to be online? Please restart the application");
       }
-    }
+      if (!this.manager.data.application.discord.isGuildReady()) {
+        this.manager.data.application.discord.stateHandler.loadGuild();
+        throw new HypixelDiscordChatBridgeError("The discord server isn't ready. Please try again later");
+      }
 
-    if (this.manager.data.application.config.verification.nickname.enabled) {
-      member.setNickname(
-        replaceVariables(
-          this.manager.data.application.config.verification.nickname.nickname,
-          Object.fromEntries(Object.entries(stats).map(([key, value]) => [key, typeof value === "number" ? formatNumber(value) : value]))
-        ).replace(/,/g, this.manager.data.application.config.verification.nickname.removeCommas ? "" : ","),
+      const member = await this.getDiscordUser();
+      if (!member) {
+        this.delete();
+        return null;
+      }
+
+      if (this.manager.data.application.discord.guild.ownerId === member.user.id) {
+        throw new HypixelDiscordChatBridgeError("This user owns the server thus no one can edit their roles");
+      }
+
+      const verificationRoles = this.manager.data.application.config.verification.roles;
+      const rolesToAdd: string[] = [];
+
+      if (verificationRoles.verified.enabled) rolesToAdd.push(verificationRoles.verified.roleId);
+      const hypixelGuild = await this.manager.data.application.getBotGuild();
+      const stats = await this.manager.getPlayerVariableStats(this.uuid, hypixelGuild);
+      const guildMember = await this.isUserInHypixelGuild(hypixelGuild);
+      if (guildMember) {
+        if (verificationRoles.guildMember.enabled) rolesToAdd.push(verificationRoles.guildMember.roleId);
+
+        const guildRank = verificationRoles.custom.find((r) =>
+          r.requirements
+            .filter((req) => r.enabled !== false && req.type === "guildRank")
+            .map((req) => req.value)
+            .includes(guildMember.rank)
+        );
+        if (guildRank && guildRank.enabled !== false) rolesToAdd.push(guildRank.roleId);
+      }
+
+      if (verificationRoles.custom.length > 0) {
+        for (const role of verificationRoles.custom.filter((r) => r.requirements.some((req) => req.type !== "guildRank"))) {
+          if (role.enabled === false) continue;
+          const meetsRequirements = role.requirements.every((req) => req.value <= (stats[req.type] ?? 0));
+          if (meetsRequirements) rolesToAdd.push(role.roleId);
+        }
+      }
+
+      if (this.manager.data.application.config.verification.nickname.enabled) {
+        member.setNickname(
+          replaceVariables(
+            this.manager.data.application.config.verification.nickname.nickname,
+            Object.fromEntries(Object.entries(stats).map(([key, value]) => [key, typeof value === "number" ? formatNumber(value) : value]))
+          ).replace(/,/g, this.manager.data.application.config.verification.nickname.removeCommas ? "" : ","),
+          "Updated Roles"
+        );
+      }
+
+      await member.roles.add(rolesToAdd, "Updated Roles");
+      await member.roles.remove(
+        this.getLinkedRoles().filter((role) => !rolesToAdd.includes(role)),
         "Updated Roles"
       );
+      return this;
+    } catch (error) {
+      console.error(error);
+      return null;
     }
-
-    await member.roles.add(rolesToAdd, "Updated Roles");
-    await member.roles.remove(
-      this.getLinkedRoles().filter((role) => !rolesToAdd.includes(role)),
-      "Updated Roles"
-    );
-    return this;
   }
 
   async getDiscordUser(): Promise<GuildMember | null> {

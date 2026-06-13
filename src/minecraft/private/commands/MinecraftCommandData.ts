@@ -3,7 +3,7 @@ import type { CommandDataJSON } from "../../../types/minecraft.js";
 
 class MinecraftCommandData {
   #name: string = "";
-  #description: string | null = null;
+  #description: string = "";
   #aliases: string[] = [];
   #options: MinecraftCommandDataOption[] = [];
 
@@ -16,12 +16,12 @@ class MinecraftCommandData {
     return this.#name;
   }
 
-  setDescription(description: string | null): this {
+  setDescription(description: string): this {
     this.#description = description;
     return this;
   }
 
-  get description(): string | null {
+  get description(): string {
     return this.#description;
   }
 

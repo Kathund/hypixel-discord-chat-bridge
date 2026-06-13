@@ -11,7 +11,7 @@ class BooCommand extends MinecraftCommand {
   constructor(minecraft: MinecraftManagerWithBot) {
     super(minecraft);
     this.data = new MinecraftCommandData()
-      .setName("boop")
+      .setName("boo")
       .setDescription("Boo someone!")
       .setOptions([new MinecraftCommandDataOption().setName("username").setRequired(true)]);
 
