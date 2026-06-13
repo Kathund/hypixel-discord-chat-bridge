@@ -91,6 +91,9 @@ class VerifyCommand extends DiscordCommand<DiscordManagerWithBot> {
         flags: MessageFlags.Ephemeral
       });
     }
+
+    this.discordId = null;
+    this.isSelf = false;
   }
 }
 

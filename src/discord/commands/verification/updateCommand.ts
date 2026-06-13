@@ -7,14 +7,12 @@ import { SuccessEmbed } from "../../private/Embed.js";
 import type { ButtonInteraction, ChatInputCommandInteraction } from "discord.js";
 
 class UpdateCommand extends DiscordCommand<DiscordManagerWithBot> {
-  discordId: string | null;
-  isSelf: boolean;
+  discordId: string | null = null;
+  isSelf: boolean = false;
   constructor(discord: DiscordManagerWithBot) {
     super(discord);
     this.data = new DiscordCommandData().setName("update").setDescription("Update your current roles");
     this.flags = [CommandFlags.RequiresMinecraftBot, CommandFlags.VerificationCommand];
-    this.discordId = null;
-    this.isSelf = false;
   }
 
   override async execute(interaction: ChatInputCommandInteraction | ButtonInteraction) {
@@ -38,6 +36,9 @@ class UpdateCommand extends DiscordCommand<DiscordManagerWithBot> {
           .setDevFooter("Kathund")
       ]
     });
+
+    this.discordId = null;
+    this.isSelf = false;
   }
 }
 

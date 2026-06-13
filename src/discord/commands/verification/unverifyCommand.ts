@@ -26,6 +26,9 @@ class UnverifyCommand extends DiscordCommand<DiscordManagerWithBot> {
     await interaction.followUp({
       embeds: [new SuccessEmbed().setDescription(`${this.isSelf ? "Your" : `<@${this.discordId}>'s`} account has been successfully unlinked`).setDevFooter("Kathund")]
     });
+
+    this.discordId = null;
+    this.isSelf = false;
   }
 }
 
