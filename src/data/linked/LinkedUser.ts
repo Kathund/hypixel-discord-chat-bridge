@@ -107,7 +107,7 @@ class LinkedUser extends GenericData<LinkedUserData, LinkedData, LinkedManager> 
       }
 
       if (this.manager.data.application.config.verification.nickname.enabled) {
-        member.setNickname(
+        await member.setNickname(
           replaceVariables(
             this.manager.data.application.config.verification.nickname.nickname,
             Object.fromEntries(Object.entries(stats).map(([key, value]) => [key, typeof value === "number" ? formatNumber(value) : value]))
