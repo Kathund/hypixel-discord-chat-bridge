@@ -1,13 +1,10 @@
 import MinecraftCommand from "../private/commands/MinecraftCommand.js";
 import MinecraftCommandData from "../private/commands/MinecraftCommandData.js";
 import MinecraftCommandDataOption from "../private/commands/MinecraftCommandDataOption.js";
+import { type BedWarsInternalName, type BedWarsModeName, type MinecraftManagerWithBot, isBedWarsModeName } from "../../types/minecraft.js";
 import { formatNumber } from "../../utils/stringUtils.js";
 import { getPlayer } from "../../utils/hypixelUtils.js";
 import type { BedWarsMode, Player } from "hypixel-api-reborn";
-import type { MinecraftManagerWithBot } from "../../types/minecraft.js";
-
-type BedWarsModeNames = "solo" | "doubles" | "threes" | "fours" | "4v4" | "overall";
-type BedWarsInternalName = "eightOne" | "eightTwo" | "fourThree" | "fourFour" | "twoFour";
 
 class BedwarsCommand extends MinecraftCommand {
   constructor(minecraft: MinecraftManagerWithBot) {
@@ -19,7 +16,7 @@ class BedwarsCommand extends MinecraftCommand {
       .setOptions([new MinecraftCommandDataOption().setName("username").setDescription("Minecraft username")]);
   }
 
-  convertMode(mode: BedWarsModeNames): BedWarsInternalName {
+  convertMode(mode: BedWarsModeName): BedWarsInternalName {
     switch (mode) {
       case "solo":
         return "eightOne";
@@ -36,7 +33,7 @@ class BedwarsCommand extends MinecraftCommand {
     }
   }
 
-  getStats(hypixelPlayer: Player, mode: BedWarsModeNames) {
+  getStats(hypixelPlayer: Player, mode: BedWarsModeName) {
     let stats: BedWarsMode;
     if (mode === "overall") stats = hypixelPlayer.stats.BedWars;
     else stats = hypixelPlayer.stats.BedWars[this.convertMode(mode)];
@@ -47,17 +44,26 @@ class BedwarsCommand extends MinecraftCommand {
 
   override async execute(player: string, message: string) {
     const msg = this.getArgs(message).map((arg) => arg.replaceAll("/", ""));
-    const modes = ["solo", "doubles", "threes", "fours", "4v4"];
 
-    const mode: BedWarsModeNames = (msg[0] ? (modes.includes(msg[0]) ? msg[0] : "overall") : "overall") as BedWarsModeNames;
-    player = msg[0] ? (modes.includes(msg[0]) ? (msg[1] ? msg[1] : player) : msg[0] || player) : player;
+    const arg0 = msg[0];
+    const arg1 = msg[1];
+
+    let mode: BedWarsModeName = "overall";
+
+    if (arg0 && isBedWarsModeName(arg0)) {
+      mode = arg0;
+      if (arg1) player = arg1;
+    } else if (arg0) {
+      player = arg0;
+    }
 
     const hypixelPlayer = await getPlayer(player);
     const { finalKills, FKDR, wins, winstreak, broken, BLRatio } = this.getStats(hypixelPlayer, mode);
+
     this.send(
-      `[${Math.floor(hypixelPlayer.stats.BedWars.level)}✫] ${hypixelPlayer.nickname} ${mode} FK: ${formatNumber(finalKills)} FKDR: ${FKDR} W: ${formatNumber(
-        wins
-      )} BB: ${formatNumber(broken)} BLR: ${BLRatio} WS: ${winstreak}`
+      `[${Math.floor(hypixelPlayer.stats.BedWars.level)}✫] ${hypixelPlayer.nickname} ${mode} FK: ${formatNumber(
+        finalKills
+      )} FKDR: ${FKDR} W: ${formatNumber(wins)} BB: ${formatNumber(broken)} BLR: ${BLRatio} WS: ${winstreak}`
     );
   }
 }
