@@ -55,6 +55,35 @@ jobs:
       - name: Check prettier
         run: pnpm prettier:check
 
+  check-docs:
+    name: check docs
+    needs: [pnpm]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "pnpm"
+
+      - name: Install node dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate Default Config
+        run: cp config.example.json config.json
+
+      - name: Run docgen
+        run: pnpm docgen
+
+      - name: Ensure a clean working directory
+        run: git diff --exit-code
+
   eslint:
     name: check linting (eslint)
     needs: [pnpm]
@@ -85,7 +114,7 @@ jobs:
 
   build:
     name: build
-    needs: [pnpm]
+    needs: [pnpm, prettier, eslint]
     runs-on: ubuntu-latest
     steps:
       - name: Git checkout

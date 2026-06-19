@@ -97,3 +97,5 @@ Minecraft commands can be executed from any chat channel that the bot can see. T
 ---
 
 This document is [auto generated](../scripts/generateCommandsDocs.ts).
+
+To update this please use `pnpm docgen`

@@ -11,7 +11,8 @@
     "prettier:check": "pnpm exec prettier --check .",
     "build": "pnpm exec tsc --build",
     "dev": "pnpm exec nodemon",
-    "check": "pnpm install --frozen-lockfile && pnpm prettier && pnpm eslint && pnpm build"
+    "check": "pnpm install --frozen-lockfile && pnpm prettier && pnpm eslint && pnpm build",
+    "docgen": "pnpm exec tsx scripts/generateCommandsDocs.ts"
   },
   "repository": {
     "type": "git",
