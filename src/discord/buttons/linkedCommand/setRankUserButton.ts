@@ -2,8 +2,10 @@ import DiscordButton from "../../private/buttons/DiscordButton.js";
 import DiscordButtonData from "../../private/buttons/DiscordButtonData.js";
 import HypixelDiscordChatBridgeError from "../../../private/error.js";
 import LinkedCommand from "../../commands/verification/linkedCommand.js";
-import { type ButtonInteraction, LabelBuilder, ModalBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, TextInputBuilder, TextInputStyle } from "discord.js";
+import { type ButtonInteraction, LabelBuilder, ModalBuilder, RadioGroupBuilder } from "discord.js";
 import { ButtonResponse, CommandFlags, type DiscordManagerWithClient } from "../../../types/discord.js";
+import { RadioGroupOptionBuilder } from "discord.js";
+import type LinkedUser from "../../../data/linked/LinkedUser.js";
 
 class SetRankUserButton extends DiscordButton {
   constructor(discord: DiscordManagerWithClient) {
@@ -18,25 +20,29 @@ class SetRankUserButton extends DiscordButton {
     const linked = await linkedCommand.getLinkedFromLinkedEmbed(interaction.message);
     if (!linked) throw new HypixelDiscordChatBridgeError("Unable to find the linked user");
     const username = await linked.getUsername();
-    const modal = new ModalBuilder().setCustomId("setRankUser").setTitle(`Set Rank ${username}`).addLabelComponents(this.createRankLabel());
+    const modal = new ModalBuilder()
+      .setCustomId("setRankUser")
+      .setTitle(`Set Rank ${username}`)
+      .addLabelComponents(await this.createRankLabel(linked));
     await interaction.showModal(modal);
   }
 
-  private createRankLabel(): LabelBuilder {
-    const ranks = this.discord.application.botGuild?.ranks;
+  private async createRankLabel(linked: LinkedUser): Promise<LabelBuilder> {
+    const guild = this.discord.application.botGuild ? this.discord.application.botGuild : await this.discord.application.getBotGuild();
+    const guildMember = await linked.isUserInHypixelGuild();
 
-    if (!ranks?.length) {
-      return new LabelBuilder()
-        .setLabel("Rank")
-        .setTextInputComponent(new TextInputBuilder().setCustomId("setRankUserRank").setStyle(TextInputStyle.Short).setPlaceholder("Rank").setRequired(true));
-    }
-
-    return new LabelBuilder().setLabel("Rank").setStringSelectMenuComponent(
-      new StringSelectMenuBuilder()
+    return new LabelBuilder().setLabel("Rank").setRadioGroupComponent(
+      new RadioGroupBuilder()
         .setCustomId("setRankUserRank")
-        .setPlaceholder("Rank")
         .setRequired(true)
-        .addOptions(ranks.map(({ name }) => new StringSelectMenuOptionBuilder().setLabel(name).setValue(name)))
+        .addOptions(
+          guild.ranks.map(({ name }) =>
+            new RadioGroupOptionBuilder()
+              .setLabel(name)
+              .setValue(name)
+              .setDefault(guildMember?.rank === name)
+          )
+        )
     );
   }
 }

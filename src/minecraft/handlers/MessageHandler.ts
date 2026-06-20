@@ -742,7 +742,6 @@ class MessageHandler {
       const linkedUser = await this.minecraft.application.data.linked.getUserByUUID(uuid);
       if (!linkedUser) return;
       await linkedUser.updateRoles();
-      console.log(`Updated roles for ${uuid}`);
     } catch {
       //
     }

@@ -33,7 +33,7 @@ class ButtonHandler {
     const buttonFiles = await readdir("./src/discord/buttons/", { recursive: true, encoding: "utf-8" }).then((files) => files.filter((file) => file.endsWith(".ts")));
     for (const file of buttonFiles) {
       const button: DiscordButton = new (await import(`../buttons/${file}`)).default(this.discord);
-      this.buttons.set(button.data.id, button);
+      button.data.ids.forEach((id) => this.buttons.set(id, button));
     }
     console.discord(`Successfully loaded ${this.buttons.size} button(s).`);
   }

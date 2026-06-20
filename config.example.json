@@ -145,7 +145,7 @@
     }
   },
   "blacklist": {
-    "enabled": false,
+    "enabled": true,
     "notifications": {
       "onBlacklistChange": {
         "enabled": true,

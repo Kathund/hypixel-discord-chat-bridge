@@ -3,12 +3,13 @@ import DiscordButton from "../../private/buttons/DiscordButton.js";
 import DiscordButtonData from "../../private/buttons/DiscordButtonData.js";
 import HypixelDiscordChatBridgeError from "../../../private/error.js";
 import { type ButtonInteraction, LabelBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } from "discord.js";
-import { CommandFlags, type DiscordManagerWithClient } from "../../../types/discord.js";
+import { ButtonResponse, CommandFlags, type DiscordManagerWithClient } from "../../../types/discord.js";
 
 class UnblacklistButton extends DiscordButton {
   constructor(discord: DiscordManagerWithClient) {
     super(discord);
     this.data = new DiscordButtonData("unblacklist");
+    this.response = ButtonResponse.None;
     this.flags = [CommandFlags.StaffOnly, CommandFlags.BlacklistCommand];
   }
 
@@ -24,7 +25,9 @@ class UnblacklistButton extends DiscordButton {
         .addLabelComponents(
           new LabelBuilder()
             .setLabel("Reason for removing from the blacklist")
-            .setTextInputComponent(new TextInputBuilder().setCustomId("unblacklistReason").setStyle(TextInputStyle.Paragraph).setPlaceholder("No reason provided"))
+            .setTextInputComponent(
+              new TextInputBuilder().setCustomId("unblacklistReason").setStyle(TextInputStyle.Paragraph).setPlaceholder("No reason provided").setRequired(false)
+            )
         )
     );
   }

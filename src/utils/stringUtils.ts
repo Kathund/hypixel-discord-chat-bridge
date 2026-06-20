@@ -54,3 +54,8 @@ export function truncateString(str: string, maxLength: number): string {
   if (str.length <= maxLength) return str;
   return str.slice(0, maxLength - 3) + "...";
 }
+
+export function sanitizeString(string: string): string {
+  if (!string) return "";
+  return string.replaceAll("_", "\\_").replaceAll("*", "\\*").replaceAll("~", "\\~").replaceAll(">", "\\>").replaceAll("`", "\\`").replaceAll("|", "\\|");
+}

@@ -1,12 +1,13 @@
 import config from "../../../config.json" with { type: "json" };
-import { type ColorResolvable, EmbedBuilder } from "discord.js";
+import { type APIEmbed, type ColorResolvable, EmbedBuilder, type EmbedData } from "discord.js";
 import { CommonDevs } from "../../private/constants.js";
 import { ConfigOtherColors } from "../../types/config.js";
 import type { Devs } from "../../types/misc.js";
 
 export default class Embed extends EmbedBuilder {
-  constructor() {
-    super();
+  constructor(data?: EmbedData | APIEmbed) {
+    super(data);
+    if (data) return;
     this.setTimestamp();
     this.setColor("Blue");
     this.setDevFooter("DuckySoLucky");

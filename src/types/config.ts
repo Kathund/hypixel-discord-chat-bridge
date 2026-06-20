@@ -130,7 +130,12 @@ export const ConfigStatsChannels = zod.object({ enabled: zod.boolean(), autoUpda
 export const ConfigOtherColors = zod.enum(["Blue", "Red", "Green", "Yellow"]);
 export type ConfigOtherColors = zod.infer<typeof ConfigOtherColors>;
 export const ConfigOtherCodeUpdater = zod.object({ enabled: zod.boolean(), interval: zod.string() });
-export const ConfigOther = zod.object({ codeUpdater: ConfigOtherCodeUpdater, colors: zod.record(ConfigOtherColors, zod.string()), backupConfigs: zod.boolean() });
+export const ConfigOther = zod.object({
+  codeUpdater: ConfigOtherCodeUpdater,
+  colors: zod.record(ConfigOtherColors, zod.string()),
+  backupConfigs: zod.boolean(),
+  logToFiles: zod.boolean()
+});
 
 export const Config = zod.object({
   configVersion: zod.number().int().positive(),

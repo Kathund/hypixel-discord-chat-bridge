@@ -51,9 +51,9 @@ class LinkedCommand extends DiscordCommand {
           .setDescription(`\`${nickname}\` (\`${uuid}\`) is linked to <@${linked.discordId}>.`)
           .setFields(
             { name: "Discord ID", value: `\`\`\`${linked.discordId}\`\`\`` },
-            { name: "UUID", value: `\`\`\`${uuid}\`\`\`` },
-            { name: "Username", value: `\`\`\`${nickname}\`\`\`` },
             { name: "Formatted Username", value: `\`\`\`${formattedNickname}\`\`\`` },
+            { name: "Username", value: `\`\`\`${nickname}\`\`\`` },
+            { name: "UUID", value: `\`\`\`${uuid}\`\`\`` },
             { name: "Is in Guild", value: guildMember ? ":white_check_mark: Yes" : ":x: No" }
           )
           .setDevFooter("Kathund")

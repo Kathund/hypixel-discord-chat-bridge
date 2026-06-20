@@ -1,7 +1,8 @@
 class DiscordButtonData {
-  id: string;
-  constructor(id: string) {
-    this.id = id;
+  ids: string[] = [];
+  constructor(id: string | string[]) {
+    if (Array.isArray(id)) this.ids = id;
+    else this.ids.push(id);
   }
 }
 

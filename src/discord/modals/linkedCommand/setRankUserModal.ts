@@ -20,7 +20,7 @@ class SetRankUserModal extends DiscordModal<DiscordManagerWithBot> {
     const linked = await linkedCommand.getLinkedFromLinkedEmbed(interaction.message);
     if (!linked) throw new HypixelDiscordChatBridgeError("Unable to find the linked user");
     const username = await linked.getUsername();
-    const rank = interaction.fields.getStringSelectValues("setRankUserRank")[0] ?? interaction.fields.getTextInputValue("setRankUserRank");
+    const rank = interaction.fields.getRadioGroup("setRankUserRank", true);
     const { action, message } = await this.handleGuildManagementAction("setrank", username, rank);
     if (action === GuildManagementAction.NotInGuild) {
       throw new HypixelDiscordChatBridgeError(replaceVariables(this.discord.application.messages.notInGuildMessage, { username }));
