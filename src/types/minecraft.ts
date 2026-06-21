@@ -23,7 +23,6 @@ export interface ParsedForgeSlot {
   item: string;
   slot: number;
   finished: boolean;
-  end: number;
   timeLeft: string;
 }
 

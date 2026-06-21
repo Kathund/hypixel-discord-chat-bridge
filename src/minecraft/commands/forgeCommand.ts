@@ -24,7 +24,7 @@ class ForgeCommand extends MinecraftCommand {
     Object.values(profile.me.mining.hotm.forge)
       .filter((slot: SkyBlockMemberMiningHotmForgeItem | null) => slot !== null)
       .forEach((slot: SkyBlockMemberMiningHotmForgeItem) =>
-        slots.push({ item: slot.name, slot: slot.slot, finished: Date.now() > slot.endTime, end: slot.endTime, timeLeft: prettyMilliseconds(Date.now() - slot.endTime) })
+        slots.push({ item: slot.name, slot: slot.slot, finished: Date.now() > slot.endTime, timeLeft: prettyMilliseconds(slot.endTime - Date.now()) })
       );
 
     if (slots.length === 0) throw new HypixelDiscordChatBridgeError(`${username} has no items in their forge.`);
