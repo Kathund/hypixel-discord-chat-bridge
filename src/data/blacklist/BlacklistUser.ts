@@ -2,14 +2,15 @@ import Embed, { SuccessEmbed } from "../../discord/private/Embed.js";
 import GenericData from "../GenericData.js";
 import HypixelDiscordChatBridgeError from "../../private/error.js";
 import MowojangAPI from "../../private/MowojangAPI.js";
+import { ActionRowBuilder, ButtonBuilder, ComponentType, type GuildMember, type User } from "discord.js";
 import { getPlayer } from "../../utils/hypixelUtils.js";
 import type BlacklistManager from "./BlacklistManager.js";
 import type { BasicBlacklistedUserData, BlacklistData, BlacklistedUserData } from "../../types/blacklist.js";
 import type { Guild, GuildMember as HypixelGuildMember, Player } from "hypixel-api-reborn";
-import type { GuildMember, User } from "discord.js";
 
 class BlacklistUser extends GenericData<BlacklistedUserData, BlacklistData, BlacklistManager> {
   readonly blacklistId: string;
+  messageId?: string;
   readonly discordId: string | null;
   readonly uuid: string | null;
   readonly reason: string;
@@ -18,6 +19,7 @@ class BlacklistUser extends GenericData<BlacklistedUserData, BlacklistData, Blac
   constructor(data: BasicBlacklistedUserData, manager: BlacklistManager) {
     super(manager);
     this.blacklistId = data.blacklistId ?? crypto.randomUUID();
+    this.messageId = data.messageId;
     this.discordId = data.discordId;
     this.uuid = data.uuid;
     this.reason = data.reason;
@@ -29,9 +31,10 @@ class BlacklistUser extends GenericData<BlacklistedUserData, BlacklistData, Blac
     const blacklisted = await this.manager.getFullData();
     const user = await this.manager.getData(this);
     if (user) return user;
+    await this.handleSave(data);
     blacklisted.push(this);
     await this.manager.writeUsersParsed(blacklisted);
-    return await this.handleSave(data);
+    return this;
   }
 
   private async handleSave({ alertUser, shareUser, user }: { alertUser: boolean; shareUser: boolean; user: User }): Promise<this> {
@@ -41,7 +44,7 @@ class BlacklistUser extends GenericData<BlacklistedUserData, BlacklistData, Blac
     const channel = await this.manager.data.application.discord.getChannel("Logger-Blacklist");
     if (!channel || !channel.isSendable()) return this;
     const blacklistData = await this.manager.getBlacklistDataResponse(this);
-    await channel.send({ ...blacklistData, content: "User has been blacklisted" });
+    const message = await channel.send({ ...blacklistData, content: "User has been blacklisted" });
     if (this.discordId && alertUser) {
       const embed = new Embed()
         .setColor("Red")
@@ -55,6 +58,7 @@ class BlacklistUser extends GenericData<BlacklistedUserData, BlacklistData, Blac
       });
       if (send === null) throw new HypixelDiscordChatBridgeError("User has DMs off. They have not be alerted about the blacklist");
     }
+    this.messageId = message.id;
     return this;
   }
 
@@ -71,24 +75,41 @@ class BlacklistUser extends GenericData<BlacklistedUserData, BlacklistData, Blac
     }
     const channel = await this.manager.data.application.discord.getChannel("Logger-Blacklist");
     if (!channel || !channel.isSendable()) return;
-    await channel.send({
+    if (!this.messageId) return;
+    const message = await channel.messages.fetch(this.messageId);
+    const component = message.components[0];
+    if (!component || component.type !== ComponentType.ActionRow) return;
+    const fixedButtons = component.components.flatMap((compontent) => {
+      if (compontent.type !== ComponentType.Button) return [];
+      return [
+        new ButtonBuilder()
+          .setCustomId(compontent.customId!)
+          .setLabel(compontent.label!)
+          .setStyle(compontent.style)
+          .setDisabled(compontent.customId !== "getLinked")
+      ];
+    });
+    await message.edit({
+      content: "",
       embeds: [
         new Embed()
+          .setAuthor({ name: "Found Blacklist" })
           .setFields(
             { name: "Discord", value: `<@${this.discordId ?? "UNKNOWN"}>` },
             { name: "Discord ID", value: `\`\`\`${this.discordId ?? "UNKNOWN"}\`\`\`` },
-            { name: "UUID", value: `\`\`\`${this.uuid ?? "UNKNOWN"}\`\`\`` },
             { name: "Username", value: `\`\`\`${(await this.getUsername()) ?? "UNKNOWN"}\`\`\`` },
+            { name: "UUID", value: `\`\`\`${this.uuid ?? "UNKNOWN"}\`\`\`` },
             { name: "\u200B", value: "\u200B" },
             { name: "Blacklisted Reason", value: `\`\`\`${this.reason}\`\`\`` },
             { name: "Blacklisted By", value: `<@${this.by}>` },
+            { name: "Blacklisted Timestamp", value: `<t:${this.timestamp}:F> (<t:${this.timestamp}:R>)` },
             { name: "\u200B", value: "\u200B" },
             { name: "Removed Reason", value: `\`\`\`${reason}\`\`\`` },
             { name: "Removed By", value: `<@${user.id}>` }
           )
           .setDevFooter("Kathund")
       ],
-      content: "User has removed from the blacklist"
+      components: [new ActionRowBuilder<ButtonBuilder>().addComponents(fixedButtons)]
     });
     if (this.discordId && alertUser) {
       const embed = new SuccessEmbed()
@@ -139,7 +160,15 @@ class BlacklistUser extends GenericData<BlacklistedUserData, BlacklistData, Blac
   }
 
   override toJSON(): BlacklistedUserData {
-    return { blacklistId: this.blacklistId, uuid: this.uuid, discordId: this.discordId, reason: this.reason, timestamp: this.timestamp, by: this.by };
+    return {
+      blacklistId: this.blacklistId,
+      messageId: this.messageId,
+      uuid: this.uuid,
+      discordId: this.discordId,
+      reason: this.reason,
+      timestamp: this.timestamp,
+      by: this.by
+    };
   }
 }
 

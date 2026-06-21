@@ -268,26 +268,28 @@ class DiscordManager extends CommunicationBridge {
       "Logger-Event": this.application.config.bridge.channels.logging.channels.event,
       "Logger-Error": this.application.config.bridge.channels.logging.channels.error,
       "Logger-Blacklist": this.application.config.bridge.channels.logging.channels.blacklist,
-      "Logger-Scripts": this.application.config.bridge.channels.logging.channels.scripts
+      "Logger-Scripts": this.application.config.bridge.channels.logging.channels.scripts,
+      "Logger-Inactivity": this.application.config.bridge.channels.logging.channels.inactivity
     };
 
     const config = channelMap[cleanType as keyof typeof channelMap];
     if (config === null) {
       const basicChannel = await this.client.channels.fetch(this.application.config.bridge.channels.logging.channel);
       if (!basicChannel || !basicChannel.isSendable() || basicChannel.type !== ChannelType.GuildText) return null;
-      const thread = await basicChannel.threads.create({ name: cleanType });
+      const thread = await basicChannel.threads.create({ name: cleanType }).then((channel) => channel.send(`<@&${this.application.config.discord.commands.staffRole}>`));
       const configKeyMap: Record<LoggerChannelName, keyof typeof this.application.config.bridge.channels.logging.channels> = {
         "Logger-Guild": "guild",
         "Logger-Event": "event",
         "Logger-Error": "error",
         "Logger-Blacklist": "blacklist",
-        "Logger-Scripts": "scripts"
+        "Logger-Scripts": "scripts",
+        "Logger-Inactivity": "inactivity"
       };
 
-      this.application.config.bridge.channels.logging.channels[configKeyMap[cleanType as keyof typeof configKeyMap]] = thread.id;
+      this.application.config.bridge.channels.logging.channels[configKeyMap[cleanType as keyof typeof configKeyMap]] = thread.channel.id;
       this.client.config = this.application.config;
       await writeFile("config.json", JSON.stringify(this.application.config, null, 2), "utf-8");
-      return thread;
+      return thread.channel;
     }
 
     return await this.client.channels.fetch(config);

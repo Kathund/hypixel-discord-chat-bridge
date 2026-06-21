@@ -31,6 +31,7 @@ class InteractionHandler {
       [data.flags.includes(CommandFlags.StaffOnly) && !isStaffMemberCheck, "You don't have permission to use this command."],
       [data.flags.includes(CommandFlags.AdminOnly) && !isAdminMemberCheck, "You don't have permission to use this command."],
       [data.flags.includes(CommandFlags.VerifiedOnly) && !isVerifiedMemberCheck, "This command requires you to be verified. Please use /verify to verify."],
+      [data.flags.includes(CommandFlags.InactivityCommand) && !this.discord.application.config.verification.inactivity.enabled, "Inactivity commands are disabled."],
       [data.flags.includes(CommandFlags.VerificationCommand) && !this.discord.application.config.verification.enabled, "Verification commands are disabled."],
       [data.flags.includes(CommandFlags.BlacklistCommand) && !this.discord.application.config.blacklist.enabled, "Blacklist commands are disabled."],
       [data.flags.includes(CommandFlags.RequiresMinecraftBot) && !this.discord.application.minecraft.isBotOnline(), this.discord.application.messages.minecraftBotOffline]

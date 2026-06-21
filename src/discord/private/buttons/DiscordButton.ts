@@ -13,6 +13,7 @@ class DiscordButton<Manager extends DiscordManager = DiscordManagerWithClient> e
   }
 
   getUsernameFromJoinRequest(message: Message): string | undefined {
+    if (message.author.id !== message.client.user.id) return undefined;
     const embed = message.embeds[0];
     if (embed === undefined) return undefined;
     const description = embed.description;

@@ -19,6 +19,7 @@ class LinkedCommand extends DiscordCommand {
   }
 
   async getLinkedFromLinkedEmbed(message: Message): Promise<LinkedUser | undefined> {
+    if (message.author.id !== message.client.user.id) return undefined;
     const embed = message.embeds[0];
     if (embed === undefined) return undefined;
     const field = embed.fields.find((field) => field.name === "Discord ID");

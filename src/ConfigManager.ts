@@ -53,7 +53,12 @@ class ConfigManager {
           change: ConfigChangeType.Transform,
           transform: (value: any): any => `${value}m`
         },
-        "verification.inactivity": { change: ConfigChangeType.Delete },
+        "verification.inactivity.channel": { change: ConfigChangeType.Delete },
+        "verification.inactivity.maxInactivityTime": {
+          key: "verification.inactivity.maxInactivityTime",
+          change: ConfigChangeType.Transform,
+          transform: (value: any): any => `${value}d`
+        },
         "verification.autoRoleUpdater.enabled": { key: "verification.roles.autoUpdater.enabled", change: ConfigChangeType.Move },
         "verification.autoRoleUpdater.interval": {
           key: "verification.roles.autoUpdater.interval",

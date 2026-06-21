@@ -41,7 +41,8 @@
           "event": null,
           "error": null,
           "blacklist": null,
-          "scripts": null
+          "scripts": null,
+          "inactivity": null
         }
       }
     },
@@ -142,6 +143,10 @@
         "enabled": false,
         "interval": "24h"
       }
+    },
+    "inactivity": {
+      "enabled": true,
+      "maxInactivityTime": "30d"
     }
   },
   "blacklist": {

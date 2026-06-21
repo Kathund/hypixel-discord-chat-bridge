@@ -28,7 +28,8 @@ export const ConfigBridgeChannelLoggingChannels = zod.object({
   event: zod.string().nullable(),
   error: zod.string().nullable(),
   blacklist: zod.string().nullable(),
-  scripts: zod.string().nullable()
+  scripts: zod.string().nullable(),
+  inactivity: zod.string().nullable()
 });
 export const ConfigBridgeChannelLogging = zod.object({ enabled: zod.boolean(), channel: zod.string(), channels: ConfigBridgeChannelLoggingChannels });
 export const ConfigBridgeChannel = zod.object({ enabled: zod.boolean(), channel: zod.string() });
@@ -111,7 +112,13 @@ export const ConfigVerificationRoles = zod.object({
   autoUpdater: ConfigVerificationRolesAutoUpdater
 });
 export const ConfigVerificationNickname = zod.object({ enabled: zod.boolean(), nickname: zod.string(), removeCommas: zod.boolean() });
-export const ConfigVerification = zod.object({ enabled: zod.boolean(), nickname: ConfigVerificationNickname, roles: ConfigVerificationRoles });
+export const ConfigVerificationInactivity = zod.object({ enabled: zod.boolean(), maxInactivityTime: zod.string() });
+export const ConfigVerification = zod.object({
+  enabled: zod.boolean(),
+  nickname: ConfigVerificationNickname,
+  roles: ConfigVerificationRoles,
+  inactivity: ConfigVerificationInactivity
+});
 
 export const ConfigBlacklistNotificationsOnBlacklistChange = zod.object({ enabled: zod.boolean(), shareBlacklister: zod.boolean() });
 export const ConfigBlacklistNotifications = zod.object({

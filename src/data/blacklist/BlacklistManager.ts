@@ -49,8 +49,8 @@ class BlacklistManager extends GenericManager<BlacklistedUserData, BlacklistData
             { name: "Timestamp", value: `<t:${user.timestamp}:F> (<t:${user.timestamp}:R>)` },
             { name: "Discord", value: `<@${user.discordId ?? "UNKNOWN"}>` },
             { name: "Discord ID", value: `\`\`\`${user.discordId ?? "UNKNOWN"}\`\`\`` },
-            { name: "UUID", value: `\`\`\`${player?.uuid ?? "UNKNOWN"}\`\`\`` },
             { name: "Username", value: `\`\`\`${player?.nickname ?? "UNKNOWN"}\`\`\`` },
+            { name: "UUID", value: `\`\`\`${player?.uuid ?? "UNKNOWN"}\`\`\`` },
             { name: "Formatted Username", value: `\`\`\`${player?.formattedNickname ?? "UNKNOWN"}\`\`\`` },
             { name: "Is in Guild", value: guildMember ? ":white_check_mark: Yes" : ":x: No" }
           )
@@ -58,9 +58,9 @@ class BlacklistManager extends GenericManager<BlacklistedUserData, BlacklistData
       ],
       components: [
         new ActionRowBuilder<ButtonBuilder>().addComponents(
-          new ButtonBuilder().setCustomId("editReason").setLabel("Edit Reason").setStyle(ButtonStyle.Secondary),
+          new ButtonBuilder().setCustomId("editBlacklistReason").setLabel("Edit Reason").setStyle(ButtonStyle.Secondary),
           new ButtonBuilder().setCustomId("getLinked").setLabel("Get Linked Data").setStyle(ButtonStyle.Secondary),
-          new ButtonBuilder().setCustomId("unblacklist").setLabel("Unblacklist").setStyle(ButtonStyle.Danger)
+          new ButtonBuilder().setCustomId("unblacklist").setLabel("Delete Blacklist").setStyle(ButtonStyle.Danger)
         )
       ]
     };
