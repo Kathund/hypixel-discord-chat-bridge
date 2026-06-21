@@ -78,7 +78,7 @@ export async function messageToImage(message: string, username: string | null = 
 
     // Credits to https://github.com/Pixelicc for an idea and code
     if (username !== null && currentMessage.trim() === "{skin}") {
-      ctx.drawImage(await loadImage(`https://www.mc-heads.net/avatar/${username}/35`), width, height - 35);
+      ctx.drawImage(await loadImage(`https://nmsr.nickac.dev/face/${username}`), width, height - 35, 35, 35);
       width += 55;
       continue;
     }
