@@ -7,6 +7,7 @@ import { getNetWorth, getPlayer, getSelectedProfile } from "../../utils/hypixelU
 import type DataManager from "../DataManager.js";
 import type { Guild, Player, SkyblockProfileWithMe } from "hypixel-api-reborn";
 import type { LinkedData, LinkedUserData, OldFormat } from "../../types/linked.js";
+import type { PlayerVariableStats } from "../../private/constants.js";
 
 class LinkedManager extends GenericManager<LinkedUserData, LinkedData, LinkedUser> {
   constructor(data: DataManager) {
@@ -85,7 +86,7 @@ class LinkedManager extends GenericManager<LinkedUserData, LinkedData, LinkedUse
     hypixelGuild: Guild | null = null,
     player: Player | null = null,
     skyblock: SkyblockProfileWithMe | null = null
-  ): Promise<Record<string, string | number>> {
+  ): Promise<PlayerVariableStats> {
     if (!this.data.application.minecraft.isBotOnline()) throw new HypixelDiscordChatBridgeError(this.data.application.messages.minecraftBotOffline);
     const fetches = [];
 
@@ -317,7 +318,7 @@ class LinkedManager extends GenericManager<LinkedUserData, LinkedData, LinkedUse
       skyblockNetwrothEssence: Math.floor(networth?.types?.essence?.total ?? 0),
       skyblockNetwrothPets: Math.floor(networth?.types?.pets?.total ?? 0),
 
-      skyblockNetworthNetworthUnsoulbound: Math.floor(networth?.unsoulboundNetworth ?? 0),
+      skyblockNetworthUnsoulbound: Math.floor(networth?.unsoulboundNetworth ?? 0),
       skyblockNetwrothArmorUnsoulbound: Math.floor(networth?.types?.armor?.unsoulboundTotal ?? 0),
       skyblockNetwrothEquipmentUnsoulbound: Math.floor(networth?.types?.equipment?.unsoulboundTotal ?? 0),
       skyblockNetwrothWardrobeUnsoulbound: Math.floor(networth?.types?.wardrobe?.unsoulboundTotal ?? 0),

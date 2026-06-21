@@ -1,6 +1,7 @@
 import { format } from "prettier";
 import { markdownTable } from "markdown-table";
 import { readFile, writeFile } from "node:fs/promises";
+import "../src/private/logger.js";
 
 export function addLines(content: string, lines: string[]): string[] {
   lines.push(...content.split("\n").map((line) => line.trim()));

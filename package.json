@@ -5,14 +5,16 @@
   "main": "index.ts",
   "scripts": {
     "start": "pnpm exec tsx index.ts",
-    "eslint": "pnpm exec eslint . --fix",
     "eslint:check": "pnpm exec eslint . ",
+    "eslint": "pnpm eslint:check --fix",
     "prettier": "pnpm exec prettier --write .",
     "prettier:check": "pnpm exec prettier --check .",
     "build": "pnpm exec tsc --build",
     "dev": "pnpm exec nodemon",
     "check": "pnpm install --frozen-lockfile && pnpm prettier && pnpm eslint && pnpm build",
-    "docgen": "pnpm exec tsx scripts/generateCommandsDocs.ts"
+    "docgen": "pnpm docgen:commands && pnpm docgen:player-vars",
+    "docgen:commands": "pnpm exec tsx scripts/generateCommandsDocs.ts",
+    "docgen:player-vars": "pnpm exec tsx scripts/generatePlayerStatVariablesDocs.ts"
   },
   "repository": {
     "type": "git",

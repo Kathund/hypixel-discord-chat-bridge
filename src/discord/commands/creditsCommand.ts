@@ -33,7 +33,8 @@ class CreditsCommand extends DiscordCommand {
         name: "**Support**",
         value: `If you need any support please reach out to the maintainers: ${Object.values(CommonDevs)
           .filter(({ type }) => type === "Maintainer")
-          .map(({ username }) => `@${username}`)}`
+          .map(({ username }) => `@${username}`)
+          .join(", ")}`
       });
 
     await interaction.followUp({ embeds: [embed] });

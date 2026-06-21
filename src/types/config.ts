@@ -1,5 +1,5 @@
 import zod from "zod";
-import { PlayerVariableStatsKeysNumber, PlayerVariableStatsKeysString } from "../private/constants.js";
+import { PlayerVariableStatsKeysNumbers, PlayerVariableStatsKeysStrings } from "../private/constants.js";
 
 export enum ConfigChangeType {
   Move,
@@ -62,7 +62,7 @@ export const ConfigMinecraftGuildRequirements = zod.object({
   requirementsNeededToPass: zod.number(),
   requirements: zod
     .record(zod.string(), zod.number().int().positive())
-    .refine((obj) => Object.keys(obj).every((key) => PlayerVariableStatsKeysNumber.includes(key as any)), { message: "Invalid requirement key" })
+    .refine((obj) => Object.keys(obj).every((key) => PlayerVariableStatsKeysNumbers.includes(key as any)), { message: "Invalid requirement key" })
 });
 export const ConfigMinecraftGuild = zod.object({ requirements: ConfigMinecraftGuildRequirements });
 export const ConfigMinecraftHypixelAlertsAlert = zod.object({ enabled: zod.boolean(), interval: zod.string() });
@@ -97,8 +97,8 @@ export const ConfigDiscord = zod.object({ serverId: zod.string(), token: zod.str
 
 export const ConfigVerificationRolesAutoUpdater = zod.object({ enabled: zod.boolean(), interval: zod.string() });
 export const ConfigVerificationRole = zod.object({ enabled: zod.boolean(), roleId: zod.string() });
-export const ConfigVerificationRolesCustomRequirementString = zod.object({ type: zod.enum(PlayerVariableStatsKeysString), value: zod.string() });
-export const ConfigVerificationRolesCustomRequirementNumber = zod.object({ type: zod.enum(PlayerVariableStatsKeysNumber), value: zod.number().int().positive() });
+export const ConfigVerificationRolesCustomRequirementString = zod.object({ type: zod.enum(PlayerVariableStatsKeysStrings), value: zod.string() });
+export const ConfigVerificationRolesCustomRequirementNumber = zod.object({ type: zod.enum(PlayerVariableStatsKeysNumbers), value: zod.number().int().positive() });
 export const ConfigVerificationRolesCustomRequirement = zod.union([ConfigVerificationRolesCustomRequirementString, ConfigVerificationRolesCustomRequirementNumber]);
 export const ConfigVerificationRolesCustom = zod.object({
   enabled: zod.boolean(),

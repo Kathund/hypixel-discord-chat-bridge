@@ -6,6 +6,7 @@ import MowojangAPI from "../../private/MowojangAPI.js";
 import { formatNumber, titleCaseCamel } from "../../utils/stringUtils.js";
 import type { ChatInputCommandInteraction } from "discord.js";
 import type { DiscordManagerWithClient, Requirement, Requirements } from "../../types/discord.js";
+import type { PlayerVariableStatsKeysNumber } from "../../private/constants.js";
 
 class RequirementsCommand extends DiscordCommand {
   constructor(discord: DiscordManagerWithClient) {
@@ -21,14 +22,14 @@ class RequirementsCommand extends DiscordCommand {
     const { requirements: configRequirements, requirementsNeededToPass } = this.discord.application.config.minecraft.guild.requirements;
 
     const requirements: Requirement[] = Object.entries(configRequirements).map(([key, required]) => {
-      const has = stats[key] ?? 0;
-      return { key, required, has, passed: (has as number) >= required };
+      const has = stats[key as PlayerVariableStatsKeysNumber] ?? 0;
+      return { key, required, has, passed: has >= required };
     });
 
     const requirementsPassed = requirements.filter((requirement) => requirement.passed).length;
     const passed = requirementsPassed >= requirementsNeededToPass;
 
-    return { username: stats.username as string, uuid, guildName: stats.guildName as string, passed, requirementsPassed, requirements };
+    return { username: stats.username, uuid, guildName: stats.guildName, passed, requirementsPassed, requirements };
   }
 
   generateEmbed({ passed, username, guildName, requirements, requirementsPassed }: Requirements): Embed {
