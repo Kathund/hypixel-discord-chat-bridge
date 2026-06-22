@@ -5,7 +5,6 @@ import HypixelDiscordChatBridgeError from "../../../private/error.js";
 import { CommandFlags, type DiscordManagerWithBot, type ListMembers, type ListMembersGroup } from "../../../types/discord.js";
 import { removeColorCodes } from "../../../utils/stringUtils.js";
 import type { ChatInputCommandInteraction } from "discord.js";
-import type { ChatMessage } from "prismarine-chat";
 
 class ListCommand extends DiscordCommand<DiscordManagerWithBot> {
   constructor(discord: DiscordManagerWithBot) {
@@ -17,21 +16,22 @@ class ListCommand extends DiscordCommand<DiscordManagerWithBot> {
   getMessages(): Promise<string[]> {
     return new Promise<string[]>((resolve) => {
       const cachedMessages: string[] = [];
-      const listener = (rawMessage: ChatMessage) => {
+      const listener = (data: { positionId: number; formattedMessage: string }) => {
+        const rawMessage = this.discord.application.minecraft.prismarineChat.fromNotch(data.formattedMessage);
         const message = rawMessage.toString();
         cachedMessages.push(rawMessage.toMotd());
 
         if (message.startsWith("Online Members")) {
-          this.discord.application.minecraft.bot.removeListener("message", listener);
+          this.discord.application.minecraft.bot.removeListener("systemChat", listener);
           resolve(cachedMessages);
         }
       };
 
-      this.discord.application.minecraft.bot.on("message", listener);
+      this.discord.application.minecraft.bot.on("systemChat", listener);
       this.discord.application.minecraft.bot.chat("/g list");
 
       setTimeout(() => {
-        this.discord.application.minecraft.bot.removeListener("message", listener);
+        this.discord.application.minecraft.bot.removeListener("systemChat", listener);
         resolve(cachedMessages);
       }, this.commandTimeout);
     });

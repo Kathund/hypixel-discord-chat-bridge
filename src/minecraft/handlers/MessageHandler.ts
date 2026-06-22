@@ -1,5 +1,6 @@
 import BlacklistUser from "../../data/blacklist/BlacklistUser.js";
 import Embed from "../../discord/private/Embed.js";
+import GetMinecraftData from "minecraft-data";
 import HypixelDiscordChatBridgeError from "../../private/error.js";
 import MowojangAPI from "../../private/MowojangAPI.js";
 import RequirementsCommand from "../../discord/commands/requirementsCommand.js";
@@ -13,7 +14,10 @@ import type { ChatMessage } from "prismarine-chat";
 
 class MessageHandler {
   private allowLimbo: boolean = true;
-  constructor(private readonly minecraft: MinecraftManager) {}
+  private readonly minecraftData;
+  constructor(private readonly minecraft: MinecraftManager) {
+    this.minecraftData = GetMinecraftData(this.minecraft.application.config.minecraft.bot.version);
+  }
 
   setAllowLimbo(state: boolean): this {
     this.allowLimbo = state;
@@ -22,13 +26,48 @@ class MessageHandler {
 
   registerEvents() {
     if (!this.minecraft.isBotOnline()) return;
-    this.minecraft.bot.on("message", (message) => this.onMessage(message));
+
+    this.minecraft.bot.on("systemChat", (data) => {
+      const chatMessage = this.minecraft.prismarineChat.fromNotch(data.formattedMessage);
+      this.onMessage(chatMessage.toString(), chatMessage.toMotd());
+    });
+    this.minecraft.bot.on("playerChat", (data: object) => this.onFormattedMessage(data));
   }
 
-  async onMessage(rawMessage: ChatMessage): Promise<any> {
+  private async onFormattedMessage(data: object): Promise<void> {
+    const message = (data as { formattedMessage?: string }).formattedMessage;
+    let resultMessage: ChatMessage & Partial<{ unsigned: ChatMessage }>;
+
+    if (this.minecraftData.supportFeature("clientsideChatFormatting")) {
+      const verifiedPacket = data as { senderName?: string; targetName?: string; plainMessage: string; unsignedContent?: string; type: number };
+      const rawContent = message ?? verifiedPacket.unsignedContent;
+      const parameters: { content: object; sender?: object; target?: object } = {
+        content: rawContent ? (JSON.parse(rawContent) as object) : { text: verifiedPacket.plainMessage }
+      };
+
+      if (verifiedPacket.senderName) {
+        Object.assign(parameters, { sender: JSON.parse(verifiedPacket.senderName) as object });
+      }
+      if (verifiedPacket.targetName) {
+        Object.assign(parameters, { target: JSON.parse(verifiedPacket.targetName) as object });
+      }
+      resultMessage = this.minecraft.prismarineChat.fromNetwork(verifiedPacket.type, parameters);
+
+      if (verifiedPacket.unsignedContent) {
+        resultMessage.unsigned = this.minecraft.prismarineChat.fromNetwork(verifiedPacket.type, {
+          sender: parameters.sender!,
+          target: parameters.target!,
+          content: JSON.parse(verifiedPacket.unsignedContent) as object
+        });
+      }
+    } else {
+      resultMessage = this.minecraft.prismarineChat.fromNotch(message!);
+    }
+    await this.onMessage(resultMessage.toString(), resultMessage.toMotd());
+  }
+
+  async onMessage(message: string, colouredMessage: string): Promise<any> {
     if (!this.minecraft.isBotOnline()) return;
-    const message = rawMessage.toString();
-    const colouredMessage = rawMessage.toMotd();
 
     // NOTE: fixes "100/100❤     100/100✎ Mana" spam in the debug channel
     if (message.includes("✎ Mana") && message.includes("❤") && message.includes("/")) return;

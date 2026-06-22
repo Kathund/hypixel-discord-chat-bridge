@@ -1,7 +1,6 @@
 import { delay, generateId } from "../../../utils/miscUtils.js";
 import { splitMessage } from "../../../utils/stringUtils.js";
 import type MinecraftCommandData from "./MinecraftCommandData.js";
-import type { ChatMessage } from "prismarine-chat";
 import type { MinecraftManagerWithBot } from "../../../types/minecraft.js";
 
 enum SendErrorType {
@@ -81,25 +80,26 @@ class MinecraftCommand<Manager extends MinecraftManagerWithBot = MinecraftManage
 
   private sendMessage(message: string) {
     return new Promise<void>((resolve, reject) => {
-      const listener = (rawMessage: ChatMessage) => {
+      const listener = (data: { positionId: number; formattedMessage: string }) => {
+        const rawMessage = this.minecraft.prismarineChat.fromNotch(data.formattedMessage);
         const message = rawMessage.toString();
 
         if (this.minecraft.messageHandler.isTooFast(message)) {
-          this.minecraft.bot.removeListener("message", listener);
+          this.minecraft.bot.removeListener("systemChat", listener);
           reject(new SendError(SendErrorType.RATE_LIMITED));
         }
 
         if (this.minecraft.messageHandler.isRepeatMessage(message)) {
-          this.minecraft.bot.removeListener("message", listener);
+          this.minecraft.bot.removeListener("systemChat", listener);
           reject(new SendError(SendErrorType.DUPLICATE_MESSAGE));
         }
       };
 
-      this.minecraft.bot.once("message", listener);
+      this.minecraft.bot.once("systemChat", listener);
       this.minecraft.bot.chat(`/${this.officer ? "oc" : "gc"} ${message}`);
 
       setTimeout(() => {
-        this.minecraft.bot.removeListener("message", listener);
+        this.minecraft.bot.removeListener("systemChat", listener);
         resolve();
       }, 500);
     });

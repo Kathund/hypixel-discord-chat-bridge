@@ -1,7 +1,6 @@
 import HypixelDiscordChatBridgeError from "../../private/error.js";
 import { type CommandFlags, type DiscordManagerWithClient, GuildManagementAction, type GuildManagementActionResponse } from "../../types/discord.js";
 import type DiscordManager from "../DiscordManager.js";
-import type { ChatMessage } from "prismarine-chat";
 
 class BasicInteractionData<Manager extends DiscordManager = DiscordManagerWithClient> {
   protected readonly commandTimeout: number = 5_000;
@@ -13,7 +12,8 @@ class BasicInteractionData<Manager extends DiscordManager = DiscordManagerWithCl
   handleGuildManagementAction(action: string, username: string, argument: string = ""): Promise<GuildManagementActionResponse> {
     return new Promise<GuildManagementActionResponse>((resolve) => {
       if (!this.discord.application.minecraft.isBotOnline()) throw new HypixelDiscordChatBridgeError(this.discord.application.messages.minecraftBotOffline);
-      const listener = (rawMessage: ChatMessage) => {
+      const listener = (data: { positionId: number; formattedMessage: string }) => {
+        const rawMessage = this.discord.application.minecraft.prismarineChat.fromNotch(data.formattedMessage);
         const message = rawMessage.toString();
         if (this.discord.application.minecraft.messageHandler.isKickMessage(message)) {
           const actionUsername = this.discord.application.minecraft.messageHandler.getUsernameFromEventMessage(message);
@@ -62,12 +62,12 @@ class BasicInteractionData<Manager extends DiscordManager = DiscordManagerWithCl
         }
       };
 
-      this.discord.application.minecraft.bot.on("message", listener);
+      this.discord.application.minecraft.bot.on("systemChat", listener);
       this.discord.application.minecraft.bot.chat(`/g ${action} ${username} ${argument}`);
 
       setTimeout(() => {
         if (!this.discord.application.minecraft.isBotOnline()) throw new HypixelDiscordChatBridgeError(this.discord.application.messages.minecraftBotOffline);
-        this.discord.application.minecraft.bot.removeListener("message", listener);
+        this.discord.application.minecraft.bot.removeListener("systemChat", listener);
         resolve({ action: GuildManagementAction.Timeout, message: null });
       }, this.commandTimeout);
     });

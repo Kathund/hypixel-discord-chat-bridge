@@ -106,7 +106,7 @@
     "bot": {
       "server": "mc.hypixel.net",
       "port": 25565,
-      "version": "1.8.9",
+      "version": "1.21.11",
       "accountsLocation": "./auth-cache"
     }
   },

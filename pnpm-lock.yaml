@@ -32,6 +32,9 @@ importers:
       hypixel-api-reborn:
         specifier: 12.0.0-26
         version: 12.0.0-26
+      minecraft-data:
+        specifier: ^3.111.0
+        version: 3.111.0
       minecraft-protocol:
         specifier: ^1.66.2
         version: 1.66.2
@@ -52,6 +55,12 @@ importers:
         version: 9.3.0
       prismarine-chat:
         specifier: 1.12.0
+        version: 1.12.0
+      prismarine-nbt:
+        specifier: ^2.8.0
+        version: 2.8.0
+      prismarine-registry:
+        specifier: ^1.12.0
         version: 1.12.0
       rss-parser:
         specifier: ^3.13.0
