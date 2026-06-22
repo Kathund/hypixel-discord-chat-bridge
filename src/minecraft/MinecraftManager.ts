@@ -2,7 +2,7 @@ import CommandHandler from "./handlers/CommandHandler.js";
 import CommunicationBridge from "../private/CommunicationBridge.js";
 import MessageHandler from "./handlers/MessageHandler.js";
 import StateHandler from "./handlers/StateHandler.js";
-import { type Bot, createBot } from "mineflayer";
+import { type Client, createClient } from "minecraft-protocol";
 import { replaceVariables } from "../utils/stringUtils.js";
 import type Application from "../Application.js";
 import type { BroadcastEvent } from "../types/bridge.js";
@@ -28,7 +28,7 @@ class MinecraftManager extends CommunicationBridge {
   readonly stateHandler: StateHandler;
   readonly commandHandler: CommandHandler;
   readonly messageHandler: MessageHandler;
-  bot?: Bot;
+  bot?: Client;
   constructor(readonly application: Application) {
     super();
     this.stateHandler = new StateHandler(this);
@@ -59,16 +59,13 @@ class MinecraftManager extends CommunicationBridge {
       console.warn(`[minecraft.bot.version] The currently supported versions are ${this.supportedVersions.join(", ")}`);
     }
 
-    return createBot({
+    return createClient({
       host: this.application.config.minecraft.bot.server,
       port: this.application.config.minecraft.bot.port,
       username: "DuckySoLucky",
       auth: "microsoft",
       version: this.application.config.minecraft.bot.version,
-      viewDistance: "tiny",
-      chatLengthLimit: 256,
-      profilesFolder: this.application.config.minecraft.bot.accountsLocation,
-      logErrors: true
+      profilesFolder: this.application.config.minecraft.bot.accountsLocation
     });
   }
 
@@ -81,7 +78,6 @@ class MinecraftManager extends CommunicationBridge {
     let { channelId, username, message, replyingTo, discordMessage } = event;
     if (channelId === undefined || username === undefined || message === undefined || replyingTo === undefined || discordMessage === undefined) return;
     console.broadcast(`${username}: ${message}`, "Minecraft");
-    if (this.bot.player === undefined) return;
 
     if (channelId === this.application.config.bridge.channels.debug.channel && this.application.config.bridge.channels.debug.enabled === true) {
       return this.bot.chat(message);

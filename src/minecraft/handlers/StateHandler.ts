@@ -1,5 +1,6 @@
 import Embed, { WarningEmbed } from "../../discord/private/Embed.js";
 import type MinecraftManager from "../MinecraftManager.js";
+import type { PacketMeta } from "minecraft-protocol";
 
 class StateHandler {
   private loginAttempts: number = 0;
@@ -13,7 +14,7 @@ class StateHandler {
     this.minecraft.bot.on("error", (...args) => this.onError(...args));
   }
 
-  async onLogin() {
+  async onLogin(data: any, packetMeta: PacketMeta) {
     if (!this.minecraft.isBotOnline()) return;
     console.minecraft(`Minecraft client ready, logged in as ${this.minecraft.bot.username}`);
     this.loginAttempts = 0;
@@ -35,7 +36,7 @@ class StateHandler {
     await loggerChannel.send({ embeds: [new WarningEmbed().setDescription(`Minecraft bot has disconnected! Attempting reconnect in ${loginDelay / 1000} seconds`)] });
   }
 
-  async onKicked(reason: string, loggedIn: boolean) {
+  async onKicked(reason: string, packetMeta: PacketMeta) {
     console.warn(`Minecraft bot has been kicked from the server for "${reason}"`);
     this.loginAttempts++;
 

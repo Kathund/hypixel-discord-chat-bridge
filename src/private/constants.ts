@@ -9,7 +9,7 @@ export const CommonDevs: Record<Devs, Dev> = {
 
 export const MiscCredits: MiscCredit[] = [
   { name: "discord.js", description: "Handles the discord part of this project", link: "discord.js.org" },
-  { name: "mineflayer", description: "Handles the minecraft part of this project", link: "prismarinejs.github.io/mineflayer" },
+  { name: "minecraft-protocol", description: "Handles the minecraft part of this project", link: "prismarinejs.github.io/node-minecraft-protocol" },
   { name: "Hypixel API", description: "It's the Hypixel API? What else would I say", link: "api.hypixel.net" },
   { name: "Hypixel-API-Reborn", description: "Handles all processing of the Hypixel API", link: "github.com/Hypixel-API-Reborn/hypixel-api-reborn" },
   { name: "Mowojang API", description: "Handles UUID <--> Username conversions", link: "mowojang.matdoes.dev" },
