@@ -7,6 +7,7 @@
   - [How do I add a Minecraft Account](#how-do-i-add-a-minecraft-account)
   - [How do I remove a Minecraft Account](#how-do-i-remove-an-minecraft-account)
   - [How do I manage the profanity filter](#how-do-i-manage-the-profanity-filter)
+  - [How do I get extra help](#how-do-i-get-extra-help)
 
 ## How to setup the Discord Bot
 
@@ -42,3 +43,8 @@ Delete the `auth-cache` folder
 ## How do I manage the profanity filter
 
 In the `config.json` under bridge there is the filter options. From there you can either fully disable it or add custom words to the filter
+
+## How do I get extra help
+
+You can get extra help by reaching out to the maintainers dirrectly on discord. [@duckysolucky](https://discord.com/users/486155512568741900) and
+[@.kathund](https://discord.com/users/1276524855445164098)
