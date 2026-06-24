@@ -16,21 +16,19 @@ const variableGroups = {
   SkyBlock: PlayerVariableStatsKeysSkyBlock
 };
 
-(async () => {
-  let lines: string[] = [];
-  lines = await addFile("./scripts/templates/playerStatVariables/header.md", lines);
+let lines: string[] = [];
+lines = await addFile("./scripts/templates/playerStatVariables/header.md", lines);
 
-  Object.entries(variableGroups).forEach(([title, items]) => {
-    lines.push(`## ${title}`);
+Object.entries(variableGroups).forEach(([title, items]) => {
+  lines.push(`## ${title}`);
+  lines.push("");
+  items.forEach((item) => {
+    lines.push(`\`{${item}}\` - ${PlayerVariableStatsKeyDescriptionMap[item] ?? "No Description Provided"}`);
     lines.push("");
-    items.forEach((item) => {
-      lines.push(`\`{${item}}\` - ${PlayerVariableStatsKeyDescriptionMap[item] ?? "No Description Provided"}`);
-      lines.push("");
-    });
   });
+});
 
-  lines = await addFile("./scripts/templates/playerStatVariables/footer.md", lines);
-  await saveFile("docs/PlayerStatVariables.md", lines);
+lines = await addFile("./scripts/templates/playerStatVariables/footer.md", lines);
+await saveFile("docs/PlayerStatVariables.md", lines);
 
-  process.exit(0);
-})();
+process.exit(0);

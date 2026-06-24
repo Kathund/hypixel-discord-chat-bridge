@@ -22,5 +22,5 @@ export async function saveFile(path: string, lines: string[]) {
   const prettierConfig = JSON.parse(prettierFile);
   const formatted = await format(lines.join("\n"), { ...prettierConfig, filepath: "docs/Commands.md" });
   await writeFile(path, formatted, "utf-8");
-  console.other("File Saved");
+  console.other(`File Saved - ${path}`);
 }
