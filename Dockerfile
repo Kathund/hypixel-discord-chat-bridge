@@ -1,4 +1,4 @@
-FROM node:22.22.3-alpine
+FROM node:22.22.3-bookworm
 ENV NODE_ENV=production
 RUN apt-get update && apt-get install -y \
     libcairo2-dev \
