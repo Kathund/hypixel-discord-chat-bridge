@@ -8,6 +8,5 @@ COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
 
 COPY . .
-COPY config.json ./config.json 2>/dev/null || true
 
 ENTRYPOINT ["pnpm", "start"]
