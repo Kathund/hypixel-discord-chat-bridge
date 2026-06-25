@@ -57,5 +57,8 @@ export async function saveMarkdownFile(path: string, lines: string[]) {
   const utilsFooter = await readFile("./scripts/templates/Utils/Footer.md", "utf-8");
   lines = addLines(replaceVariables(utilsFooter, { id }), lines);
 
+  const globalUtilsFooter = await readFile("./scripts/templates/Utils/GlobalFooter.md", "utf-8");
+  lines = addLines(replaceVariables(globalUtilsFooter, { id }), lines);
+
   await saveFile(path, lines.join("\n"));
 }

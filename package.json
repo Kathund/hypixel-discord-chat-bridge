@@ -12,10 +12,11 @@
     "build": "pnpm exec tsc --build",
     "dev": "pnpm exec nodemon",
     "check": "pnpm install --frozen-lockfile && pnpm prettier && pnpm eslint && pnpm build",
-    "docgen": "pnpm docgen:channel-vars && pnpm docgen:commands && pnpm docgen:config-schema && pnpm docgen:player-vars",
+    "docgen": "pnpm docgen:channel-vars && pnpm docgen:commands && pnpm docgen:config-schema && pnpm docgen:configuration && pnpm docgen:player-vars",
     "docgen:channel-vars": "pnpm exec tsx scripts/generateChannelStatVariablesDocs.ts",
     "docgen:commands": "pnpm exec tsx scripts/generateCommandsDocs.ts",
     "docgen:config-schema": "pnpm exec tsx scripts/generateConfigSchema.ts",
+    "docgen:configuration": "pnpm exec tsx scripts/generateConfigurationDocs.ts",
     "docgen:player-vars": "pnpm exec tsx scripts/generatePlayerStatVariablesDocs.ts"
   },
   "repository": {
