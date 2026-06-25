@@ -14,24 +14,25 @@
 1. Clone the repository:
 
 ```bash
-   git clone https://github.com/DuckySoLucky/hypixel-discord-chat-bridge.git
-   cd hypixel-discord-chat-bridge
+  git clone https://github.com/DuckySoLucky/hypixel-discord-chat-bridge.git
+  cd hypixel-discord-chat-bridge
 ```
 
 2. Install dependencies:
 
 ```bash
-   pnpm install --frozen-lockfile
+  pnpm install --frozen-lockfile
 ```
 
 3. Create your configuration:
-   - Copy `config.example.json` to `config.json`
-   - Edit `config.json` with your settings (see [Configuration](Configuration.md) for help)
+
+- Copy `config.example.json` to `config.json`
+- Edit `config.json` with your settings (see [Configuration](Configuration.md) for help)
 
 4. Start the bot:
 
 ```bash
-   pnpm start
+  pnpm start
 ```
 
 To sign into a minecraft account please see the [FAQ](./FAQ.md#how-do-i-add-a-minecraft-account) questio we have on it
@@ -49,40 +50,34 @@ To sign into a minecraft account please see the [FAQ](./FAQ.md#how-do-i-add-a-mi
 1. Clone the repository:
 
 ```bash
-   git clone https://github.com/DuckySoLucky/hypixel-discord-chat-bridge.git
-   cd hypixel-discord-chat-bridge
+  git clone https://github.com/DuckySoLucky/hypixel-discord-chat-bridge.git
+  cd hypixel-discord-chat-bridge
 ```
 
-2. Build the Docker image:
+2. Create your configuration:
+
+- Copy `config.example.json` to `config.json`
+- Edit `config.json` with your settings (see [Configuration](Configuration.md) for help)
+
+3. Run the container:
 
 ```bash
-   docker build . -t hypixel-discord-chat-bridge:latest
+  docker container run -it --rm -v ./config.json:/app/config.json ghcr.io/DuckySoLucky/hypixel-discord-chat-bridge:latest
 ```
 
-3. Run the container with mounted data and config:
-
-```bash
-   docker run -d \
-     -v "$PWD/config.json:/app/config.json" \
-     -v "$PWD/data:/app/data" \
-     -v "$PWD/auth-cache:/app/auth-cache" \
-     -v "$PWD/logs:/app/logs" \
-     --restart unless-stopped \
-     --name hypixel-discord-chat-bridge \
-     hypixel-discord-chat-bridge:latest
-```
+Note that the path of the configuration source file must either be relative (with the `./`) or absolute.
 
 4. Stop and remove the container when needed:
 
 ```bash
-   docker stop hypixel-discord-chat-bridge
-   docker rm hypixel-discord-chat-bridge
+  docker stop hypixel-discord-chat-bridge
+  docker rm hypixel-discord-chat-bridge
 ```
 
 5. Start it again:
 
 ```bash
-   docker start hypixel-discord-chat-bridge
+  docker start hypixel-discord-chat-bridge
 ```
 
 To sign into a Minecraft account please see the [FAQ](./FAQ.md#how-do-i-add-a-minecraft-account) question.
