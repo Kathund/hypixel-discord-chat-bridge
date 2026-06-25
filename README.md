@@ -9,12 +9,14 @@ with Hypixel.
 > This software allows access to Hypixel using Mineflayer, a non-standard Minecraft client. Using this application carries the risk of your Minecraft account
 > being banned from Hypixel. Therefore, use it at your own discretion. I hold no responsibility for any bans resulting from its usage.
 
-<hr>
+---
 
 ## Documentation And Tutorials
 
-- [Installation](docs/Installation.md)
+- [Commands](docs/Commands.md)
+- [Configuration](docs/Configuration.md)
 - [Frequently asked questions](docs/FAQ.md)
+- [Installation](docs/Installation.md)
 - [Contribute](CONTRIBUTING.md)
 - [Development Documentation](docs/DEVELOPMENT.md)
 
