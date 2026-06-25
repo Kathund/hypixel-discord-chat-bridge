@@ -6,7 +6,7 @@ import {
   PlayerVariableStatsKeysSkyBlock,
   PlayerVariableStatsKeysSkyWars
 } from "../src/private/constants.js";
-import { addFile, saveFile } from "./utils.js";
+import { initMarkdownFile, saveMarkdownFile } from "./utils.js";
 
 const variableGroups = {
   General: PlayerVariableStatsKeysGeneral,
@@ -16,8 +16,7 @@ const variableGroups = {
   SkyBlock: PlayerVariableStatsKeysSkyBlock
 };
 
-let lines: string[] = [];
-lines = await addFile("./scripts/templates/playerStatVariables/header.md", lines);
+const lines: string[] = await initMarkdownFile("docs/PlayerStatVariables.md");
 
 Object.entries(variableGroups).forEach(([title, items]) => {
   lines.push(`## ${title}`);
@@ -28,7 +27,4 @@ Object.entries(variableGroups).forEach(([title, items]) => {
   });
 });
 
-lines = await addFile("./scripts/templates/playerStatVariables/footer.md", lines);
-await saveFile("docs/PlayerStatVariables.md", lines);
-
-process.exit(0);
+await saveMarkdownFile("docs/PlayerStatVariables.md", lines);

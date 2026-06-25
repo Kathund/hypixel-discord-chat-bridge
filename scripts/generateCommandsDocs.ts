@@ -1,14 +1,12 @@
 import ConfigManager from "../src/ConfigManager.js";
 import InformationCommand from "../src/discord/commands/informationCommand.js";
-import { addFile, addTable, saveFile } from "./utils.js";
+import { addTable, initMarkdownFile, saveMarkdownFile } from "./utils.js";
 import { getDiscordCommandPermission } from "../src/utils/discordUtils.js";
 
-let lines: string[] = [];
+let lines = await initMarkdownFile("docs/Commands.md");
 const config = await new ConfigManager().init();
 const { default: Application } = await import("../src/Application.js");
 const application = new Application(config, false);
-
-lines = await addFile("./scripts/templates/commands/permissions.md", lines);
 
 lines.push(
   "",
@@ -62,7 +60,6 @@ lines = addTable(
 
 lines.push("");
 
-lines = await addFile("./scripts/templates/commands/footer.md", lines);
-await saveFile("docs/Commands.md", lines);
+await saveMarkdownFile("docs/Commands.md", lines);
 
 process.exit(0);
