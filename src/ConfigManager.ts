@@ -45,8 +45,6 @@ class ConfigManager {
         "minecraft.skyblockEventsNotifications": { change: ConfigChangeType.Delete },
         "minecraft.guildRequirements": { key: "minecraft.guild.requirements", change: ConfigChangeType.Move },
         "web": { change: ConfigChangeType.Delete },
-        "other.autoUpdater": { key: "other.codeUpdater.enabled", change: ConfigChangeType.Move },
-        "other.autoUpdaterInterval": { key: "other.codeUpdater.interval", change: ConfigChangeType.Transform, transform: (value: any): any => `${value}h` },
         "other.timezone": { change: ConfigChangeType.Delete },
         "statsChannels.autoUpdaterInterval": {
           key: "statsChannels.autoUpdater.interval",
@@ -66,7 +64,8 @@ class ConfigManager {
           transform: (value: any): any => `${value}h`
         }
       },
-      3: { "minecraft.guild.requirements.requiredToHave": { key: "minecraft.guild.requirements.requirementsNeededToPass", change: ConfigChangeType.Move } }
+      3: { "minecraft.guild.requirements.requiredToHave": { key: "minecraft.guild.requirements.requirementsNeededToPass", change: ConfigChangeType.Move } },
+      4: { "minecraft.autoLimbo": { change: ConfigChangeType.Delete }, "other.codeUpdater": { change: ConfigChangeType.Delete } }
     };
     this.hasConfigChanged = false;
   }

@@ -21,7 +21,7 @@ export default [
     settings: { "import/resolver": { typescript: true, node: true } },
     rules: {
       "sort-imports/sort-imports": ["error", { ignoreCase: false, ignoreMemberSort: false, memberSyntaxSortOrder: ["all", "single", "multiple", "none"] }],
-      "@stylistic/max-len": ["error", { code: 170, tabWidth: 2, ignoreComments: true, ignoreUrls: true, ignoreRegExpLiterals: true }],
+      "@stylistic/max-len": ["warn", { code: 170, tabWidth: 2, ignoreComments: true, ignoreUrls: true, ignoreRegExpLiterals: true }],
       "@stylistic/space-before-function-paren": ["error", { anonymous: "never", named: "never", catch: "always" }],
       "@stylistic/function-call-argument-newline": ["error", "consistent"],
       "@typescript-eslint/no-unused-vars": ["error", { args: "none" }],

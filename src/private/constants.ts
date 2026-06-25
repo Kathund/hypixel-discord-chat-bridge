@@ -512,3 +512,37 @@ export const PlayerVariableStatsKeyDescriptionMap: Record<PlayerVariableStatsKey
   skyblockJacobPersonalBestMelon: "Player's SkyBlock Jacob Person Best Melon In Contest",
   skyblockJacobPersonalBestSugarCane: "Player's SkyBlock Jacob Person Best Sugar Cane In Contest"
 };
+
+export const ChannelVariableStatsKeysStrings = ["guildName", "formattedGuildXP", "formattedGuildWeeklyXP", "formattedDiscordMembers"] as const;
+export type ChannelVariableStatsKeysString = (typeof ChannelVariableStatsKeysStrings)[number];
+export const ChannelVariableStatsKeysNumbers = [
+  "guildLevel",
+  "guildLevelWithProgress",
+  "guildXP",
+  "guildWeeklyXP",
+  "guildMembers",
+  "discordMembers",
+  "discordChannels",
+  "discordRoles"
+] as const;
+export type ChannelVariableStatsKeysNumber = (typeof ChannelVariableStatsKeysNumbers)[number];
+export const ChannelVariableStatsKeys = [...ChannelVariableStatsKeysStrings, ...ChannelVariableStatsKeysNumbers] as const;
+
+export type ChannelVariableStatsKey = ChannelVariableStatsKeysString | ChannelVariableStatsKeysNumber;
+export type ChannelVariableStatsValue<K extends ChannelVariableStatsKey> = K extends ChannelVariableStatsKeysString ? string : number;
+export type ChannelVariableStats = { [K in ChannelVariableStatsKeysString]: string } & { [K in ChannelVariableStatsKeysNumber]: number };
+
+export const ChannelVariableStatsKeyDescriptionMap: Record<ChannelVariableStatsKey, string> = {
+  guildName: "Guild Name",
+  guildLevel: "The guild level floored",
+  guildLevelWithProgress: "The guild level with 2dp",
+  guildXP: "The **RAW** amount of guild xp",
+  formattedGuildXP: "The **formattedf** amount of guild xp",
+  guildWeeklyXP: "The **RAW** amount of guild weekly xp",
+  formattedGuildWeeklyXP: "The **formattedf** amount of weekly guild xp",
+  guildMembers: "The amount of guild members",
+  discordMembers: "The **RAW** amount of discord members",
+  formattedDiscordMembers: "The **formatted** amount of discord members",
+  discordChannels: "The amount of discord channels",
+  discordRoles: "The amount of discord roles"
+};

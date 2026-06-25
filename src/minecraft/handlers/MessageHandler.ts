@@ -76,7 +76,7 @@ class MessageHandler {
       this.minecraft.broadcastMessage({ fullMessage: colouredMessage, message, chatType: "Debug" });
     }
 
-    if (this.isLobbyJoinMessage(message) && this.minecraft.application.config.minecraft.autoLimbo === true) {
+    if (this.isLobbyJoinMessage(message)) {
       if (this.allowLimbo) return this.minecraft.bot.chat("/limbo");
     }
 

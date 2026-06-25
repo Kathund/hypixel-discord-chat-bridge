@@ -17,22 +17,41 @@ export interface MigrationRule {
 
 export type MigrationMap = Record<string, MigrationRule>;
 
-export const ConfigAPIHypixel = zod.object({ key: zod.string(), baseURL: zod.url().nullable() });
-export const ConfigAPIMowojang = zod.object({ baseURL: zod.url().nullable() });
+export const ConfigAPIHypixel = zod.object({
+  key: zod.string(),
+  baseURL: zod.url().nullable().describe("The base URL for the Hypixel API. If null, the default Hypixel API URL will be used.")
+});
+export const ConfigAPIMowojang = zod.object({
+  baseURL: zod.url().nullable().describe("The base URL for the Mowojang API. If null, the default Mowojang API URL will be used.")
+});
 export const ConfigAPI = zod.object({ hypixel: ConfigAPIHypixel, mowojang: ConfigAPIMowojang });
 
-export const ConfigBridgeMinecraft = zod.object({ format: zod.string() });
-export const ConfigBridgeDiscord = zod.object({ allowedBots: zod.array(zod.string()), mode: zod.string(), format: zod.string() });
-export const ConfigBridgeChannelLoggingChannels = zod.object({
-  guild: zod.string().nullable(),
-  event: zod.string().nullable(),
-  error: zod.string().nullable(),
-  blacklist: zod.string().nullable(),
-  scripts: zod.string().nullable(),
-  inactivity: zod.string().nullable()
+export const ConfigBridgeMinecraft = zod.object({
+  format: zod.string().describe("The format for messages sent from Discord to Minecraft\nUse {username} for the player's username and {message} for the message content.")
 });
-export const ConfigBridgeChannelLogging = zod.object({ enabled: zod.boolean(), channel: zod.string(), channels: ConfigBridgeChannelLoggingChannels });
-export const ConfigBridgeChannel = zod.object({ enabled: zod.boolean(), channel: zod.string() });
+export const ConfigBridgeDiscord = zod.object({
+  allowedBots: zod.array(zod.string()).describe("Array of discord User Ids."),
+  mode: zod.enum(["bot", "webhook", "minecraft"]),
+  format: zod
+    .string()
+    .describe(
+      "The format for messages sent from Minecraft to Discord\nOnly used with `minecraft` mode\nSupported arguments: {chatType}, {username}, {rank}, {guildRank}, {username}"
+    )
+});
+export const ConfigBridgeChannelLoggingChannels = zod.object({
+  guild: zod.string().nullable().describe("Discord channel id. If null, an auto-generated thread will be used."),
+  event: zod.string().nullable().describe("Discord channel id. If null, an auto-generated thread will be used."),
+  error: zod.string().nullable().describe("Discord channel id. If null, an auto-generated thread will be used."),
+  blacklist: zod.string().nullable().describe("Discord channel id. If null, an auto-generated thread will be used."),
+  scripts: zod.string().nullable().describe("Discord channel id. If null, an auto-generated thread will be used."),
+  inactivity: zod.string().nullable().describe("Discord channel id. If null, an auto-generated thread will be used.")
+});
+export const ConfigBridgeChannelLogging = zod.object({
+  enabled: zod.boolean(),
+  channel: zod.string().describe("The default channel for logging messages."),
+  channels: ConfigBridgeChannelLoggingChannels
+});
+export const ConfigBridgeChannel = zod.object({ enabled: zod.boolean(), channel: zod.string().describe("Discord channel id.") });
 export type ConfigBridgeChannel = zod.infer<typeof ConfigBridgeChannel>;
 export const ConfigBridgeChannels = zod.object({
   debug: ConfigBridgeChannel,
@@ -40,7 +59,10 @@ export const ConfigBridgeChannels = zod.object({
   officer: ConfigBridgeChannel,
   logging: ConfigBridgeChannelLogging
 });
-export const ConfigBridgeFilter = zod.object({ enabled: zod.boolean(), customWords: zod.array(zod.string()) });
+export const ConfigBridgeFilter = zod.object({
+  enabled: zod.boolean(),
+  customWords: zod.array(zod.string()).describe("Custom words used for filtering bridge messages.")
+});
 export const ConfigBridge = zod.object({
   minecraft: ConfigBridgeMinecraft,
   discord: ConfigBridgeDiscord,
@@ -58,19 +80,19 @@ export const ConfigMinecraftCommands = zod.object({
 });
 export const ConfigMinecraftGuildRequirements = zod.object({
   enabled: zod.boolean(),
-  autoAccept: zod.boolean(),
-  requirementsNeededToPass: zod.number(),
+  autoAccept: zod.boolean().describe("Whether new guild members are automatically accepted if they have pass the requirements."),
+  requirementsNeededToPass: zod.number().describe("The number of requirements a player must meet to pass."),
   requirements: zod
     .record(zod.string(), zod.number().int().positive())
     .refine((obj) => Object.keys(obj).every((key) => PlayerVariableStatsKeysNumbers.includes(key as any)), { message: "Invalid requirement key" })
 });
 export const ConfigMinecraftGuild = zod.object({ requirements: ConfigMinecraftGuildRequirements });
-export const ConfigMinecraftHypixelAlertsAlert = zod.object({ enabled: zod.boolean(), interval: zod.string() });
+export const ConfigMinecraftHypixelAlertsAlert = zod.object({ enabled: zod.boolean(), interval: zod.string().describe("How often should the alert be ran (/checked)") });
 export const ConfigMinecraftHypixelAlertsAlphaPlayerCountTracker = zod.object({
   enabled: zod.boolean(),
-  interval: zod.string(),
-  messageCooldown: zod.string(),
-  playerThreshold: zod.number()
+  interval: zod.string().describe("How often should the alert be ran (/checked)"),
+  messageCooldown: zod.string().describe("The cooldown between alpha player count messages."),
+  playerThreshold: zod.number().describe("The player count threshold to trigger an alert.")
 });
 export const ConfigMinecraftHypixelAlerts = zod.object({
   hypixelNews: ConfigMinecraftHypixelAlertsAlert,
@@ -81,38 +103,61 @@ export const ConfigMinecraftHypixelAlerts = zod.object({
 export const ConfigMinecraftBot = zod.object({
   server: zod.string(),
   port: zod.number().positive().max(65535).min(1),
-  version: zod.string(),
-  accountsLocation: zod.string()
+  version: zod.string().describe("The Minecraft version."),
+  accountsLocation: zod.string().describe("The file path to Minecraft account credentials.")
 });
 export const ConfigMinecraft = zod.object({
-  autoLimbo: zod.boolean(),
   commands: ConfigMinecraftCommands,
   guild: ConfigMinecraftGuild,
   hypixelAlerts: ConfigMinecraftHypixelAlerts,
   bot: ConfigMinecraftBot
 });
 
-export const ConfigDiscordCommands = zod.object({ checkPermissions: zod.boolean(), staffRole: zod.string(), adminUsers: zod.array(zod.string()) });
-export const ConfigDiscord = zod.object({ serverId: zod.string(), token: zod.string(), commands: ConfigDiscordCommands });
+export const ConfigDiscordCommands = zod.object({
+  checkPermissions: zod.boolean(),
+  staffRole: zod.string().describe("The discord role Id of your staff members"),
+  adminUsers: zod.array(zod.string()).describe("The discord user Ids of any admins\nThe people who own the bot are automatically included")
+});
+export const ConfigDiscord = zod.object({
+  serverId: zod.string().describe("The Discord server (guild) ID."),
+  token: zod.string().describe("The Discord bot token used to authenticate."),
+  commands: ConfigDiscordCommands
+});
 
-export const ConfigVerificationRolesAutoUpdater = zod.object({ enabled: zod.boolean(), interval: zod.string() });
-export const ConfigVerificationRole = zod.object({ enabled: zod.boolean(), roleId: zod.string() });
-export const ConfigVerificationRolesCustomRequirementString = zod.object({ type: zod.enum(PlayerVariableStatsKeysStrings), value: zod.string() });
-export const ConfigVerificationRolesCustomRequirementNumber = zod.object({ type: zod.enum(PlayerVariableStatsKeysNumbers), value: zod.number().int().positive() });
+export const ConfigVerificationRolesAutoUpdater = zod.object({
+  enabled: zod.boolean(),
+  interval: zod.string().describe("How often should all linked users have there roles updated")
+});
+export const ConfigVerificationRole = zod.object({ enabled: zod.boolean(), roleId: zod.string().describe("Discord role id") });
+export const ConfigVerificationRolesCustomRequirementString = zod.object({
+  type: zod.enum(PlayerVariableStatsKeysStrings).describe("The player variable string type required for verification\nSee docs/PlayerStatVariables.md "),
+  value: zod.string().describe("The string value required for this custom verification requirement.")
+});
+export const ConfigVerificationRolesCustomRequirementNumber = zod.object({
+  type: zod.enum(PlayerVariableStatsKeysNumbers).describe("The player variable string type required for verification\nSee docs/PlayerStatVariables.md "),
+  value: zod.number().int().positive().describe("The numeric value required for this custom verification requirement.")
+});
 export const ConfigVerificationRolesCustomRequirement = zod.union([ConfigVerificationRolesCustomRequirementString, ConfigVerificationRolesCustomRequirementNumber]);
 export const ConfigVerificationRolesCustom = zod.object({
   enabled: zod.boolean(),
-  roleId: zod.string(),
+  roleId: zod.string().describe("Discord role id"),
   requirements: zod.array(ConfigVerificationRolesCustomRequirement)
 });
 export const ConfigVerificationRoles = zod.object({
   verified: ConfigVerificationRole,
   guildMember: ConfigVerificationRole,
-  custom: zod.array(ConfigVerificationRolesCustom),
+  custom: zod.array(ConfigVerificationRolesCustom).describe("Custom verification role configurations."),
   autoUpdater: ConfigVerificationRolesAutoUpdater
 });
-export const ConfigVerificationNickname = zod.object({ enabled: zod.boolean(), nickname: zod.string(), removeCommas: zod.boolean() });
-export const ConfigVerificationInactivity = zod.object({ enabled: zod.boolean(), maxInactivityTime: zod.string() });
+export const ConfigVerificationNickname = zod.object({
+  enabled: zod.boolean(),
+  nickname: zod.string().describe("The nickname format used for verified users.\nSee docs/PlayerStatVaribles.md for list of supported variables"),
+  removeCommas: zod.boolean().describe("Whether commas should be removed from generated nicknames.")
+});
+export const ConfigVerificationInactivity = zod.object({
+  enabled: zod.boolean(),
+  maxInactivityTime: zod.string().describe("The maximum allowed inactivity time before action is taken.")
+});
 export const ConfigVerification = zod.object({
   enabled: zod.boolean(),
   nickname: ConfigVerificationNickname,
@@ -120,32 +165,43 @@ export const ConfigVerification = zod.object({
   inactivity: ConfigVerificationInactivity
 });
 
-export const ConfigBlacklistNotificationsOnBlacklistChange = zod.object({ enabled: zod.boolean(), shareBlacklister: zod.boolean() });
+export const ConfigBlacklistNotificationsOnBlacklistChange = zod.object({
+  enabled: zod.boolean().describe("Whether the user being blacklisted with be notified of blacklist changes"),
+  shareBlacklister: zod.boolean().describe("Whether the user who blacklisted someone should be shared in notifications.")
+});
 export const ConfigBlacklistNotifications = zod.object({
   onBlacklistChange: ConfigBlacklistNotificationsOnBlacklistChange,
-  onJoinRequest: zod.boolean(),
-  onUserJoinDiscord: zod.boolean()
+  onJoinRequest: zod.boolean().describe("Whether join request notifications are enabled."),
+  onUserJoinDiscord: zod.boolean().describe("Whether Discord join notifications are enabled.")
 });
-export const ConfigBlacklistActionsKickFromGuild = zod.object({ enabled: zod.boolean(), reason: zod.string() });
-export const ConfigBlacklistActions = zod.object({ blockBotAccess: zod.boolean(), kickFromGuild: ConfigBlacklistActionsKickFromGuild });
+export const ConfigBlacklistActionsKickFromGuild = zod.object({
+  enabled: zod.boolean(),
+  reason: zod.string().describe("The reason used when kicking a player from the guild.")
+});
+export const ConfigBlacklistActions = zod.object({
+  blockBotAccess: zod.boolean().describe("Whether blacklisted users are blocked from bot access."),
+  kickFromGuild: ConfigBlacklistActionsKickFromGuild
+});
 export const ConfigBlacklist = zod.object({ enabled: zod.boolean(), notifications: ConfigBlacklistNotifications, actions: ConfigBlacklistActions });
 
-export const ConfigStatsChannelsAutoUpdater = zod.object({ enabled: zod.boolean(), interval: zod.string() });
-export const ConfigStatsChannelsChannel = zod.object({ id: zod.string(), name: zod.string() });
+export const ConfigStatsChannelsAutoUpdater = zod.object({ enabled: zod.boolean(), interval: zod.string().describe("How often stats channels are updated.") });
+export const ConfigStatsChannelsChannel = zod.object({
+  id: zod.string().describe("Discord channel id"),
+  name: zod.string().describe("What the channel should be named to\nSee docs/ChannelStatVariables.md")
+});
 export const ConfigStatsChannels = zod.object({ enabled: zod.boolean(), autoUpdater: ConfigStatsChannelsAutoUpdater, channels: zod.array(ConfigStatsChannelsChannel) });
 
 export const ConfigOtherColors = zod.enum(["Blue", "Red", "Green", "Yellow"]);
 export type ConfigOtherColors = zod.infer<typeof ConfigOtherColors>;
-export const ConfigOtherCodeUpdater = zod.object({ enabled: zod.boolean(), interval: zod.string() });
 export const ConfigOther = zod.object({
-  codeUpdater: ConfigOtherCodeUpdater,
   colors: zod.record(ConfigOtherColors, zod.string()),
-  backupConfigs: zod.boolean(),
-  logToFiles: zod.boolean()
+  backupConfigs: zod.boolean().describe("Whether backup copies of config files should be created."),
+  logToFiles: zod.boolean().describe("Whether log output should be written to files.")
 });
 
 export const Config = zod.object({
-  configVersion: zod.number().int().positive(),
+  $schema: zod.string(),
+  configVersion: zod.number().int().positive().describe("!IMPORTANT DO NOT TOUCH\nConfig format version number"),
   API: ConfigAPI,
   bridge: ConfigBridge,
   minecraft: ConfigMinecraft,

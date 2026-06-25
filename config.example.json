@@ -1,4 +1,5 @@
 {
+  "$schema": "./docs/config.schema.json",
   "configVersion": 3,
   "API": {
     "hypixel": {
@@ -62,7 +63,6 @@
     "stripEmojisFromUsernames": true
   },
   "minecraft": {
-    "autoLimbo": true,
     "commands": {
       "messageRepeatBypassLength": 24,
       "maxMessageLength": 256,
@@ -176,10 +176,6 @@
     "channels": []
   },
   "other": {
-    "codeUpdater": {
-      "enabled": true,
-      "interval": "12h"
-    },
     "colors": {
       "Blue": "#3498DB",
       "Red": "#ED4245",
