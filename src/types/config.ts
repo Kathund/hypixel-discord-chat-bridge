@@ -145,6 +145,7 @@ export const ConfigOther = zod.object({
 });
 
 export const Config = zod.object({
+  $schema: zod.string(),
   configVersion: zod.number().int().positive(),
   API: ConfigAPI,
   bridge: ConfigBridge,

@@ -63,6 +63,6 @@ lines = addTable(
 lines.push("");
 
 lines = await addFile("./scripts/templates/commands/footer.md", lines);
-await saveFile("docs/Commands.md", lines);
+await saveFile("docs/Commands.md", lines.join("\n"));
 
 process.exit(0);

@@ -29,6 +29,6 @@ Object.entries(variableGroups).forEach(([title, items]) => {
 });
 
 lines = await addFile("./scripts/templates/playerStatVariables/footer.md", lines);
-await saveFile("docs/PlayerStatVariables.md", lines);
+await saveFile("docs/PlayerStatVariables.md", lines.join("\n"));
 
 process.exit(0);

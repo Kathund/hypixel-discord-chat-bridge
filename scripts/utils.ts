@@ -17,10 +17,10 @@ export function addTable(table: string[][], lines: string[]): string[] {
   return addLines(markdownTable(table), lines);
 }
 
-export async function saveFile(path: string, lines: string[]) {
+export async function saveFile(path: string, data: string) {
   const prettierFile = await readFile("./.prettierrc", "utf-8");
   const prettierConfig = JSON.parse(prettierFile);
-  const formatted = await format(lines.join("\n"), { ...prettierConfig, filepath: "docs/Commands.md" });
+  const formatted = await format(data, { ...prettierConfig, filepath: path });
   await writeFile(path, formatted, "utf-8");
   console.other(`File Saved - ${path}`);
 }
