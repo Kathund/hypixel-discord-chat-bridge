@@ -4,7 +4,7 @@ import { addTable, initMarkdownFile, saveMarkdownFile } from "./utils.js";
 import { getDiscordCommandPermission } from "../src/utils/discordUtils.js";
 
 let lines = await initMarkdownFile("docs/Commands.md");
-const config = await new ConfigManager().init();
+const config = await new ConfigManager(false).init();
 const { default: Application } = await import("../src/Application.js");
 const application = new Application(config, false);
 

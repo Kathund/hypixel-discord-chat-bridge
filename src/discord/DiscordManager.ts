@@ -37,7 +37,6 @@ import { removeColorCodes, replaceVariables } from "../utils/stringUtils.js";
 import { writeFile } from "node:fs/promises";
 import type Application from "../Application.js";
 import type { BroadcastEvent } from "../types/bridge.js";
-import type { ConfigBridgeChannel } from "../types/config.js";
 
 class DiscordManager extends CommunicationBridge {
   readonly buttonHandler: ButtonHandler;
@@ -247,52 +246,58 @@ class DiscordManager extends CommunicationBridge {
     if (!this.isClientOnline()) return null;
     const cleanType = removeColorCodes(type);
     if ((LoggerChannelNames as readonly string[]).includes(cleanType)) return await this.getLoggerChannel(cleanType as LoggerChannelName);
+    const configKeyMap: Record<GenericChannelName, keyof typeof this.application.config.bridge.channels> = { Guild: "guild", Officer: "officer", Debug: "debug" };
+    if (!(cleanType in configKeyMap)) return null;
+    const configKey = configKeyMap[cleanType as GenericChannelName];
 
-    const channelMap: Record<GenericChannelName, ConfigBridgeChannel> = {
-      Guild: this.application.config.bridge.channels.guild,
-      Officer: this.application.config.bridge.channels.officer,
-      Debug: this.application.config.bridge.channels.debug
-    };
-
-    const config = channelMap[cleanType as GenericChannelName];
+    const config = this.application.config.bridge.channels[configKey];
     if (!config || !config.enabled) return null;
+    if (config.channel === null) {
+      if (!this.isGuildReady()) {
+        this.stateHandler.loadGuild();
+        throw new HypixelDiscordChatBridgeError("The discord server isn't ready. Please try again later");
+      }
+
+      const channel = await this.guild.channels.create({ name: cleanType });
+      this.application.config.bridge.channels[configKey].channel = channel.id;
+      this.client.config = this.application.config;
+      await writeFile("config.json", JSON.stringify(this.application.config, null, 2), "utf-8");
+      return channel;
+    }
+
     return await this.client.channels.fetch(config.channel);
   }
 
   private async getLoggerChannel(type: LoggerChannelName): Promise<Channel | null> {
     if (!this.isClientOnline()) return null;
     const cleanType = removeColorCodes(type);
-
-    const channelMap: Record<LoggerChannelName, string | null> = {
-      "Logger-Guild": this.application.config.bridge.channels.logging.channels.guild,
-      "Logger-Event": this.application.config.bridge.channels.logging.channels.event,
-      "Logger-Error": this.application.config.bridge.channels.logging.channels.error,
-      "Logger-Blacklist": this.application.config.bridge.channels.logging.channels.blacklist,
-      "Logger-Scripts": this.application.config.bridge.channels.logging.channels.scripts,
-      "Logger-Inactivity": this.application.config.bridge.channels.logging.channels.inactivity
+    const configKeyMap: Record<LoggerChannelName, keyof typeof this.application.config.bridge.channels.logging.channels> = {
+      "Logger-Guild": "guild",
+      "Logger-Event": "event",
+      "Logger-Error": "error",
+      "Logger-Blacklist": "blacklist",
+      "Logger-Scripts": "scripts",
+      "Logger-Inactivity": "inactivity"
     };
 
-    const config = channelMap[cleanType as keyof typeof channelMap];
-    if (config === null) {
-      const basicChannel = await this.client.channels.fetch(this.application.config.bridge.channels.logging.channel);
-      if (!basicChannel || !basicChannel.isSendable() || basicChannel.type !== ChannelType.GuildText) return null;
-      const thread = await basicChannel.threads.create({ name: cleanType }).then((channel) => channel.send(`<@&${this.application.config.discord.commands.staffRole}>`));
-      const configKeyMap: Record<LoggerChannelName, keyof typeof this.application.config.bridge.channels.logging.channels> = {
-        "Logger-Guild": "guild",
-        "Logger-Event": "event",
-        "Logger-Error": "error",
-        "Logger-Blacklist": "blacklist",
-        "Logger-Scripts": "scripts",
-        "Logger-Inactivity": "inactivity"
-      };
+    if (!(cleanType in configKeyMap)) return null;
+    const configKey = configKeyMap[cleanType as LoggerChannelName];
+    const currentChannelId = this.application.config.bridge.channels.logging.channels[configKey];
 
-      this.application.config.bridge.channels.logging.channels[configKeyMap[cleanType as keyof typeof configKeyMap]] = thread.channel.id;
+    if (currentChannelId === null) {
+      const parentChannelId = this.application.config.bridge.channels.logging.channel;
+      if (!parentChannelId) return null;
+      const basicChannel = await this.client.channels.fetch(parentChannelId);
+      if (!basicChannel || !basicChannel.isSendable() || basicChannel.type !== ChannelType.GuildText) return null;
+      const thread = await basicChannel.threads.create({ name: cleanType });
+      await thread.send(`<@&${this.application.config.discord.commands.staffRole}>`);
+      this.application.config.bridge.channels.logging.channels[configKey] = thread.id;
       this.client.config = this.application.config;
       await writeFile("config.json", JSON.stringify(this.application.config, null, 2), "utf-8");
-      return thread.channel;
+      return thread;
     }
 
-    return await this.client.channels.fetch(config);
+    return await this.client.channels.fetch(currentChannelId);
   }
 
   getErrorEmbed(error: Error | HypixelDiscordChatBridgeError): ErrorEmbed {

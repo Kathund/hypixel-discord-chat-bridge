@@ -26,16 +26,16 @@ This document is generated from the Zod config schema in `src/types/config.ts`
 
 ### hypixel
 
-| Key       | Type              | Required | Description                                                                          |
-| --------- | ----------------- | -------- | ------------------------------------------------------------------------------------ |
-| `key`     | `string`          | Yes      |                                                                                      |
-| `baseURL` | `UNKNOWN OR null` | Yes      | The base URL for the Hypixel API. If null, the default Hypixel API URL will be used. |
+| Key       | Type             | Required | Description                                                                         |
+| --------- | ---------------- | -------- | ----------------------------------------------------------------------------------- |
+| `key`     | `string`         | Yes      |                                                                                     |
+| `baseURL` | `string OR null` | Yes      | The base URL for the Hypixel API. If null, the default Hypixel API URL will be used |
 
 ### mowojang
 
-| Key       | Type              | Required | Description                                                                            |
-| --------- | ----------------- | -------- | -------------------------------------------------------------------------------------- |
-| `baseURL` | `UNKNOWN OR null` | Yes      | The base URL for the Mowojang API. If null, the default Mowojang API URL will be used. |
+| Key       | Type             | Required | Description                                                                           |
+| --------- | ---------------- | -------- | ------------------------------------------------------------------------------------- |
+| `baseURL` | `string OR null` | Yes      | The base URL for the Mowojang API. If null, the default Mowojang API URL will be used |
 
 ## bridge
 
@@ -49,15 +49,15 @@ This document is generated from the Zod config schema in `src/types/config.ts`
 
 ### minecraft
 
-| Key      | Type     | Required | Description                                                                                                                            |
-| -------- | -------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| `format` | `string` | Yes      | The format for messages sent from Discord to Minecraft Use {username} for the player's username and {message} for the message content. |
+| Key      | Type     | Required | Description                                                                                                                           |
+| -------- | -------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `format` | `string` | Yes      | The format for messages sent from Discord to Minecraft Use {username} for the player's username and {message} for the message content |
 
 ### discord
 
 | Key           | Type                            | Required | Description                                                                                                                                                         |
 | ------------- | ------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `allowedBots` | `array<string>`                 | Yes      | Array of discord User Ids.                                                                                                                                          |
+| `allowedBots` | `array<string>`                 | Yes      | Array of discord User Ids                                                                                                                                           |
 | `mode`        | `enum(bot, webhook, minecraft)` | Yes      |                                                                                                                                                                     |
 | `format`      | `string`                        | Yes      | The format for messages sent from Minecraft to Discord Only used with `minecraft` mode Supported arguments: {chatType}, {username}, {rank}, {guildRank}, {username} |
 
@@ -72,50 +72,50 @@ This document is generated from the Zod config schema in `src/types/config.ts`
 
 #### debug
 
-| Key       | Type      | Required | Description         |
-| --------- | --------- | -------- | ------------------- |
-| `enabled` | `boolean` | Yes      |                     |
-| `channel` | `string`  | Yes      | Discord channel id. |
+| Key       | Type             | Required | Description                                                         |
+| --------- | ---------------- | -------- | ------------------------------------------------------------------- |
+| `enabled` | `boolean`        | Yes      |                                                                     |
+| `channel` | `string OR null` | Yes      | Discord channel id. If null, an auto-generated channel will be used |
 
 #### guild
 
-| Key       | Type      | Required | Description         |
-| --------- | --------- | -------- | ------------------- |
-| `enabled` | `boolean` | Yes      |                     |
-| `channel` | `string`  | Yes      | Discord channel id. |
+| Key       | Type             | Required | Description                                                         |
+| --------- | ---------------- | -------- | ------------------------------------------------------------------- |
+| `enabled` | `boolean`        | Yes      |                                                                     |
+| `channel` | `string OR null` | Yes      | Discord channel id. If null, an auto-generated channel will be used |
 
 #### officer
 
-| Key       | Type      | Required | Description         |
-| --------- | --------- | -------- | ------------------- |
-| `enabled` | `boolean` | Yes      |                     |
-| `channel` | `string`  | Yes      | Discord channel id. |
+| Key       | Type             | Required | Description                                                         |
+| --------- | ---------------- | -------- | ------------------------------------------------------------------- |
+| `enabled` | `boolean`        | Yes      |                                                                     |
+| `channel` | `string OR null` | Yes      | Discord channel id. If null, an auto-generated channel will be used |
 
 #### logging
 
-| Key        | Type      | Required | Description                               |
-| ---------- | --------- | -------- | ----------------------------------------- |
-| `enabled`  | `boolean` | Yes      |                                           |
-| `channel`  | `string`  | Yes      | The default channel for logging messages. |
-| `channels` | `object`  | Yes      |                                           |
+| Key        | Type             | Required | Description                                                         |
+| ---------- | ---------------- | -------- | ------------------------------------------------------------------- |
+| `enabled`  | `boolean`        | Yes      |                                                                     |
+| `channel`  | `string OR null` | Yes      | Discord channel id. If null, an auto-generated channel will be used |
+| `channels` | `object`         | Yes      |                                                                     |
 
 ##### channels
 
-| Key          | Type             | Required | Description                                                         |
-| ------------ | ---------------- | -------- | ------------------------------------------------------------------- |
-| `guild`      | `string OR null` | Yes      | Discord channel id. If null, an auto-generated thread will be used. |
-| `event`      | `string OR null` | Yes      | Discord channel id. If null, an auto-generated thread will be used. |
-| `error`      | `string OR null` | Yes      | Discord channel id. If null, an auto-generated thread will be used. |
-| `blacklist`  | `string OR null` | Yes      | Discord channel id. If null, an auto-generated thread will be used. |
-| `scripts`    | `string OR null` | Yes      | Discord channel id. If null, an auto-generated thread will be used. |
-| `inactivity` | `string OR null` | Yes      | Discord channel id. If null, an auto-generated thread will be used. |
+| Key          | Type             | Required | Description                                                        |
+| ------------ | ---------------- | -------- | ------------------------------------------------------------------ |
+| `guild`      | `string OR null` | Yes      | Discord channel id. If null, an auto-generated thread will be used |
+| `event`      | `string OR null` | Yes      | Discord channel id. If null, an auto-generated thread will be used |
+| `error`      | `string OR null` | Yes      | Discord channel id. If null, an auto-generated thread will be used |
+| `blacklist`  | `string OR null` | Yes      | Discord channel id. If null, an auto-generated thread will be used |
+| `scripts`    | `string OR null` | Yes      | Discord channel id. If null, an auto-generated thread will be used |
+| `inactivity` | `string OR null` | Yes      | Discord channel id. If null, an auto-generated thread will be used |
 
 ### filter
 
-| Key           | Type            | Required | Description                                      |
-| ------------- | --------------- | -------- | ------------------------------------------------ |
-| `enabled`     | `boolean`       | Yes      |                                                  |
-| `customWords` | `array<string>` | Yes      | Custom words used for filtering bridge messages. |
+| Key           | Type            | Required | Description                                     |
+| ------------- | --------------- | -------- | ----------------------------------------------- |
+| `enabled`     | `boolean`       | Yes      |                                                 |
+| `customWords` | `array<string>` | Yes      | Custom words used for filtering bridge messages |
 
 ## minecraft
 
@@ -157,12 +157,12 @@ This document is generated from the Zod config schema in `src/types/config.ts`
 
 #### requirements
 
-| Key                        | Type                     | Required | Description                                                                              |
-| -------------------------- | ------------------------ | -------- | ---------------------------------------------------------------------------------------- |
-| `enabled`                  | `boolean`                | Yes      |                                                                                          |
-| `autoAccept`               | `boolean`                | Yes      | Whether new guild members are automatically accepted if they have pass the requirements. |
-| `requirementsNeededToPass` | `number`                 | Yes      | The number of requirements a player must meet to pass.                                   |
-| `requirements`             | `record<string, number>` | Yes      |                                                                                          |
+| Key                        | Type                     | Required | Description                                                                             |
+| -------------------------- | ------------------------ | -------- | --------------------------------------------------------------------------------------- |
+| `enabled`                  | `boolean`                | Yes      |                                                                                         |
+| `autoAccept`               | `boolean`                | Yes      | Whether new guild members are automatically accepted if they have pass the requirements |
+| `requirementsNeededToPass` | `number`                 | Yes      | The number of requirements a player must meet to pass                                   |
+| `requirements`             | `record<string, number>` | Yes      |                                                                                         |
 
 ### hypixelAlerts
 
@@ -196,29 +196,29 @@ This document is generated from the Zod config schema in `src/types/config.ts`
 
 #### alphaPlayerCountTracker
 
-| Key               | Type      | Required | Description                                       |
-| ----------------- | --------- | -------- | ------------------------------------------------- |
-| `enabled`         | `boolean` | Yes      |                                                   |
-| `interval`        | `string`  | Yes      | How often should the alert be ran (/checked)      |
-| `messageCooldown` | `string`  | Yes      | The cooldown between alpha player count messages. |
-| `playerThreshold` | `number`  | Yes      | The player count threshold to trigger an alert.   |
+| Key               | Type      | Required | Description                                      |
+| ----------------- | --------- | -------- | ------------------------------------------------ |
+| `enabled`         | `boolean` | Yes      |                                                  |
+| `interval`        | `string`  | Yes      | How often should the alert be ran (/checked)     |
+| `messageCooldown` | `string`  | Yes      | The cooldown between alpha player count messages |
+| `playerThreshold` | `number`  | Yes      | The player count threshold to trigger an alert   |
 
 ### bot
 
-| Key                | Type     | Required | Description                                     |
-| ------------------ | -------- | -------- | ----------------------------------------------- |
-| `server`           | `string` | Yes      |                                                 |
-| `port`             | `number` | Yes      |                                                 |
-| `version`          | `string` | Yes      | The Minecraft version.                          |
-| `accountsLocation` | `string` | Yes      | The file path to Minecraft account credentials. |
+| Key                | Type     | Required | Description                                    |
+| ------------------ | -------- | -------- | ---------------------------------------------- |
+| `server`           | `string` | Yes      |                                                |
+| `port`             | `number` | Yes      |                                                |
+| `version`          | `string` | Yes      | The Minecraft version                          |
+| `accountsLocation` | `string` | Yes      | The file path to Minecraft account credentials |
 
 ## discord
 
-| Key        | Type     | Required | Description                                 |
-| ---------- | -------- | -------- | ------------------------------------------- |
-| `serverId` | `string` | Yes      | The Discord server (guild) ID.              |
-| `token`    | `string` | Yes      | The Discord bot token used to authenticate. |
-| `commands` | `object` | Yes      |                                             |
+| Key        | Type     | Required | Description                                |
+| ---------- | -------- | -------- | ------------------------------------------ |
+| `serverId` | `string` | Yes      | The Discord server (guild) ID              |
+| `token`    | `string` | Yes      | The Discord bot token used to authenticate |
+| `commands` | `object` | Yes      |                                            |
 
 ### commands
 
@@ -243,30 +243,16 @@ This document is generated from the Zod config schema in `src/types/config.ts`
 | -------------- | --------- | -------- | ----------------------------------------------------------------------------------------------------------- |
 | `enabled`      | `boolean` | Yes      |                                                                                                             |
 | `nickname`     | `string`  | Yes      | The nickname format used for verified users. See docs/PlayerStatVaribles.md for list of supported variables |
-| `removeCommas` | `boolean` | Yes      | Whether commas should be removed from generated nicknames.                                                  |
+| `removeCommas` | `boolean` | Yes      | Whether commas should be removed from generated nicknames                                                   |
 
 ### roles
 
-| Key           | Type            | Required | Description                              |
-| ------------- | --------------- | -------- | ---------------------------------------- |
-| `verified`    | `object`        | Yes      |                                          |
-| `guildMember` | `object`        | Yes      |                                          |
-| `custom`      | `array<object>` | Yes      | Custom verification role configurations. |
-| `autoUpdater` | `object`        | Yes      |                                          |
-
-#### verified
-
-| Key       | Type      | Required | Description     |
-| --------- | --------- | -------- | --------------- |
-| `enabled` | `boolean` | Yes      |                 |
-| `roleId`  | `string`  | Yes      | Discord role id |
-
-#### guildMember
-
-| Key       | Type      | Required | Description     |
-| --------- | --------- | -------- | --------------- |
-| `enabled` | `boolean` | Yes      |                 |
-| `roleId`  | `string`  | Yes      | Discord role id |
+| Key           | Type                      | Required | Description |
+| ------------- | ------------------------- | -------- | ----------- |
+| `verified`    | `object OR object`        | Yes      |             |
+| `guildMember` | `object OR object`        | Yes      |             |
+| `custom`      | `array<object OR object>` | Yes      |             |
+| `autoUpdater` | `object`                  | Yes      |             |
 
 #### autoUpdater
 
@@ -277,10 +263,10 @@ This document is generated from the Zod config schema in `src/types/config.ts`
 
 ### inactivity
 
-| Key                 | Type      | Required | Description                                                 |
-| ------------------- | --------- | -------- | ----------------------------------------------------------- |
-| `enabled`           | `boolean` | Yes      |                                                             |
-| `maxInactivityTime` | `string`  | Yes      | The maximum allowed inactivity time before action is taken. |
+| Key                 | Type      | Required | Description                                                |
+| ------------------- | --------- | -------- | ---------------------------------------------------------- |
+| `enabled`           | `boolean` | Yes      |                                                            |
+| `maxInactivityTime` | `string`  | Yes      | The maximum allowed inactivity time before action is taken |
 
 ## blacklist
 
@@ -292,32 +278,32 @@ This document is generated from the Zod config schema in `src/types/config.ts`
 
 ### notifications
 
-| Key                 | Type      | Required | Description                                     |
-| ------------------- | --------- | -------- | ----------------------------------------------- |
-| `onBlacklistChange` | `object`  | Yes      |                                                 |
-| `onJoinRequest`     | `boolean` | Yes      | Whether join request notifications are enabled. |
-| `onUserJoinDiscord` | `boolean` | Yes      | Whether Discord join notifications are enabled. |
+| Key                 | Type      | Required | Description                                    |
+| ------------------- | --------- | -------- | ---------------------------------------------- |
+| `onBlacklistChange` | `object`  | Yes      |                                                |
+| `onJoinRequest`     | `boolean` | Yes      | Whether join request notifications are enabled |
+| `onUserJoinDiscord` | `boolean` | Yes      | Whether Discord join notifications are enabled |
 
 #### onBlacklistChange
 
-| Key                | Type      | Required | Description                                                                 |
-| ------------------ | --------- | -------- | --------------------------------------------------------------------------- |
-| `enabled`          | `boolean` | Yes      | Whether the user being blacklisted with be notified of blacklist changes    |
-| `shareBlacklister` | `boolean` | Yes      | Whether the user who blacklisted someone should be shared in notifications. |
+| Key                | Type      | Required | Description                                                                |
+| ------------------ | --------- | -------- | -------------------------------------------------------------------------- |
+| `enabled`          | `boolean` | Yes      | Whether the user being blacklisted with be notified of blacklist changes   |
+| `shareBlacklister` | `boolean` | Yes      | Whether the user who blacklisted someone should be shared in notifications |
 
 ### actions
 
-| Key              | Type      | Required | Description                                            |
-| ---------------- | --------- | -------- | ------------------------------------------------------ |
-| `blockBotAccess` | `boolean` | Yes      | Whether blacklisted users are blocked from bot access. |
-| `kickFromGuild`  | `object`  | Yes      |                                                        |
+| Key              | Type      | Required | Description                                           |
+| ---------------- | --------- | -------- | ----------------------------------------------------- |
+| `blockBotAccess` | `boolean` | Yes      | Whether blacklisted users are blocked from bot access |
+| `kickFromGuild`  | `object`  | Yes      |                                                       |
 
 #### kickFromGuild
 
-| Key       | Type      | Required | Description                                           |
-| --------- | --------- | -------- | ----------------------------------------------------- |
-| `enabled` | `boolean` | Yes      |                                                       |
-| `reason`  | `string`  | Yes      | The reason used when kicking a player from the guild. |
+| Key       | Type      | Required | Description                                          |
+| --------- | --------- | -------- | ---------------------------------------------------- |
+| `enabled` | `boolean` | Yes      |                                                      |
+| `reason`  | `string`  | Yes      | The reason used when kicking a player from the guild |
 
 ## statsChannels
 
@@ -329,18 +315,18 @@ This document is generated from the Zod config schema in `src/types/config.ts`
 
 ### autoUpdater
 
-| Key        | Type      | Required | Description                           |
-| ---------- | --------- | -------- | ------------------------------------- |
-| `enabled`  | `boolean` | Yes      |                                       |
-| `interval` | `string`  | Yes      | How often stats channels are updated. |
+| Key        | Type      | Required | Description                          |
+| ---------- | --------- | -------- | ------------------------------------ |
+| `enabled`  | `boolean` | Yes      |                                      |
+| `interval` | `string`  | Yes      | How often stats channels are updated |
 
 ## other
 
-| Key             | Type                     | Required | Description                                              |
-| --------------- | ------------------------ | -------- | -------------------------------------------------------- |
-| `colors`        | `record<string, string>` | Yes      |                                                          |
-| `backupConfigs` | `boolean`                | Yes      | Whether backup copies of config files should be created. |
-| `logToFiles`    | `boolean`                | Yes      | Whether log output should be written to files.           |
+| Key             | Type                     | Required | Description                                             |
+| --------------- | ------------------------ | -------- | ------------------------------------------------------- |
+| `colors`        | `record<string, string>` | Yes      |                                                         |
+| `backupConfigs` | `boolean`                | Yes      | Whether backup copies of config files should be created |
+| `logToFiles`    | `boolean`                | Yes      | Whether log output should be written to files           |
 
 ---
 

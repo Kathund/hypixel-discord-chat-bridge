@@ -15,28 +15,26 @@
       "format": "{username} » {message}"
     },
     "discord": {
-      "allowedBots": [
-        "BOT_USER_ID"
-      ],
+      "allowedBots": [],
       "mode": "bot",
       "format": "{chatType} > {skin} {rank} {username} {guildRank}§f: {message}"
     },
     "channels": {
       "debug": {
         "enabled": true,
-        "channel": "DEBUG_CHANNEL_ID"
+        "channel": null
       },
       "guild": {
         "enabled": true,
-        "channel": "GUILD_CHAT_CHANNEL_ID"
+        "channel": null
       },
       "officer": {
         "enabled": true,
-        "channel": "OFFICER_CHANNEL_ID"
+        "channel": null
       },
       "logging": {
         "enabled": true,
-        "channel": "LOGGING_CHANNEL_ID",
+        "channel": null,
         "channels": {
           "guild": null,
           "event": null,
@@ -132,11 +130,11 @@
     "roles": {
       "verified": {
         "enabled": false,
-        "roleId": ""
+        "roleId": null
       },
       "guildMember": {
         "enabled": false,
-        "roleId": ""
+        "roleId": null
       },
       "custom": [],
       "autoUpdater": {

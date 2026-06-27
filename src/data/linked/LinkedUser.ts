@@ -34,7 +34,9 @@ class LinkedUser extends GenericData<LinkedUserData, LinkedData, LinkedManager> 
 
   private getLinkedRoles(): string[] {
     const verificationRoles = this.manager.data.application.config.verification.roles;
-    return [verificationRoles.verified.roleId, verificationRoles.guildMember.roleId, ...verificationRoles.custom.flatMap((r) => r.roleId)];
+    return [verificationRoles.verified.roleId, verificationRoles.guildMember.roleId, ...verificationRoles.custom.flatMap((r) => r.roleId)].filter(
+      (role) => role !== null
+    );
   }
 
   async reset() {

@@ -1,8 +1,12 @@
+import ConfigManager from "../src/ConfigManager.js";
+import zod from "zod";
 import { access, readFile, writeFile } from "node:fs/promises";
 import { format } from "prettier";
+import { getNestedValue } from "../src/utils/miscUtils.js";
 import { markdownTable } from "markdown-table";
 import { replaceVariables } from "../src/utils/stringUtils.js";
 import "../src/private/logger.js";
+import type { ConfigMetadata, ConfigMetadataDescription, ConfigMetadataDotPathDescription, SchemaData, UnwrappedSchema } from "./types.js";
 
 export function addLines(content: string, lines: string[]): string[] {
   lines.push(...content.split("\n").map((line) => line.trim()));
@@ -61,4 +65,72 @@ export async function saveMarkdownFile(path: string, lines: string[]) {
   lines = addLines(replaceVariables(globalUtilsFooter, { id }), lines);
 
   await saveFile(path, lines.join("\n"));
+}
+
+export function unwrapSchema(schema: any): UnwrappedSchema {
+  let optional = false;
+  let nullable = false;
+
+  while (true) {
+    if (schema instanceof zod.ZodOptional) {
+      optional = true;
+      schema = schema.unwrap();
+      continue;
+    }
+
+    if (schema instanceof zod.ZodNullable) {
+      nullable = true;
+      schema = schema.unwrap();
+      continue;
+    }
+
+    if (schema instanceof zod.ZodDefault) {
+      schema = schema.unwrap();
+      continue;
+    }
+
+    break;
+  }
+
+  return { schema, optional, nullable };
+}
+
+export function getObjectShape(schema: any): Record<string, any> {
+  return schema instanceof zod.ZodObject ? schema.shape : {};
+}
+
+export function getDotPath(path: string[], key: string): string {
+  return [...path, key].join(".");
+}
+
+export function getMetadataDescription(schema: any): ConfigMetadataDescription {
+  const meta = schema.meta();
+  if (!meta) return { description: "", rawDescription: undefined };
+  return { description: (meta.description ?? "").replace(/\n/g, " "), rawDescription: meta.description };
+}
+
+export function getTitle({ formattedDotPath, description, rawDescription }: ConfigMetadataDotPathDescription): string {
+  return `${formattedDotPath}${rawDescription ? ` ${description}` : ""}:`;
+}
+
+export async function getMetadata({ schema, path, key }: SchemaData, shouldUseConfig: boolean = false): Promise<ConfigMetadata> {
+  const { description, rawDescription } = getMetadataDescription(schema);
+  const dotPath = getDotPath(path, key);
+  const config = shouldUseConfig ? await ConfigManager.getConfigFile() : await ConfigManager.getExampleConfigFile();
+  const value = getNestedValue(config, dotPath);
+  const smallMetadata: ConfigMetadataDotPathDescription = { dotPath, formattedDotPath: `[${dotPath}]`, description, rawDescription };
+  const metadata: ConfigMetadata = {
+    dotPath,
+    formattedDotPath: `[${dotPath}]`,
+    description,
+    rawDescription,
+    title: getTitle(smallMetadata),
+    skip: false,
+    default: value
+  };
+
+  const meta = schema.meta();
+  if (!meta) return metadata;
+  metadata.skip = meta.skip ?? false;
+  return metadata;
 }

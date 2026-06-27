@@ -54,7 +54,7 @@ export async function isGuildMember(member: GuildMember): Promise<boolean> {
 
   if (
     member.client.config.discord.commands.checkPermissions === true &&
-    !(userRoles.includes(member.client.config.verification.roles.guildMember.roleId) || adminUsers.includes(member.user.id))
+    !(userRoles.includes(member.client.config.verification.roles.guildMember.roleId ?? "") || adminUsers.includes(member.user.id))
   ) {
     return false;
   }
@@ -68,7 +68,7 @@ export async function isVerifiedMember(member: GuildMember): Promise<boolean> {
 
   if (
     member.client.config.discord.commands.checkPermissions === true &&
-    !(userRoles.includes(member.client.config.verification.roles.verified.roleId) || adminUsers.includes(member.user.id))
+    !(userRoles.includes(member.client.config.verification.roles.verified.roleId ?? "") || adminUsers.includes(member.user.id))
   ) {
     return false;
   }

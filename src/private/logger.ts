@@ -1,11 +1,10 @@
 import chalk from "chalk";
-import config from "../../config.json" with { type: "json" };
 import { Logger, createLogger, format, transports } from "winston";
-import { titleCase } from "../utils/stringUtils.js";
+import { access, readFile } from "node:fs/promises";
+import { getTimestamp, titleCase } from "../utils/stringUtils.js";
 import type { LogData } from "../types/misc.js";
 
 const otherLog = { level: "other", background: chalk.bgCyan.black, color: chalk.reset.cyan };
-
 const logs: LogData[] = [
   { level: "discord", background: chalk.bgMagenta.black, color: chalk.reset.magenta },
   { level: "minecraft", background: chalk.bgGreen.black, color: chalk.reset.green },
@@ -17,20 +16,6 @@ const logs: LogData[] = [
   { level: "max", background: chalk.bgBlack.black, color: chalk.reset.black }
 ];
 
-function getCurrentTime() {
-  return new Date().toLocaleString("en-US", {
-    year: "numeric",
-    month: "numeric",
-    day: "numeric",
-    hour: "numeric",
-    minute: "numeric",
-    second: "numeric",
-    hour12: false,
-    timeZoneName: "short",
-    timeZone: "UTC"
-  });
-}
-
 function getErrorString(error: Error): string {
   const message = error.toString();
   const stack = error.stack?.replaceAll(message, "").replaceAll("Hypixel Discord Guild Chat Bridge:", "\nHypixel Discord Guild Chat Bridge:");
@@ -38,8 +23,17 @@ function getErrorString(error: Error): string {
 }
 
 function logSomething(message: string, log: LogData): void {
-  console.log(log.background(`[${getCurrentTime()}] ${titleCase(log.level)} >${log.color(` ${message}`)}`));
+  console.log(log.background(`[${getTimestamp()}] ${titleCase(log.level)} >${log.color(` ${message}`)}`));
 }
+
+try {
+  await access("config.json");
+} catch {
+  const log = logs.find((log) => log.level === "error") || otherLog;
+  logSomething("`config.json` does not exist. Please use `pnpm generate:config` to generate a config", log);
+  process.exit(0);
+}
+const config = JSON.parse(await readFile("config.json", "utf-8"));
 
 const defaultPath = `./logs/${new Date().toISOString()}`;
 const fileLoggingEnabled = config.other.logToFiles;
@@ -57,7 +51,7 @@ logs.forEach((log) => {
     ),
     format: format.combine(
       format.printf(({ timestamp, level, message }) => {
-        return `[${getCurrentTime()}] ${titleCase(log.level)} > ${message}`;
+        return `[${getTimestamp()}] ${titleCase(log.level)} > ${message}`;
       })
     ),
     transports: fileLoggingEnabled

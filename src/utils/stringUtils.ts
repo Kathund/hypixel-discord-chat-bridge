@@ -59,3 +59,17 @@ export function sanitizeString(string: string): string {
   if (!string) return "";
   return string.replaceAll("_", "\\_").replaceAll("*", "\\*").replaceAll("~", "\\~").replaceAll(">", "\\>").replaceAll("`", "\\`").replaceAll("|", "\\|");
 }
+
+export function getTimestamp(time: number = Date.now()): string {
+  return new Date(time).toLocaleString("en-US", {
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+    hour12: false,
+    timeZoneName: "short",
+    timeZone: "UTC"
+  });
+}

@@ -17,7 +17,8 @@
     "docgen:commands": "pnpm exec tsx scripts/generateCommandsDocs.ts",
     "docgen:config-schema": "pnpm exec tsx scripts/generateConfigSchema.ts",
     "docgen:configuration": "pnpm exec tsx scripts/generateConfigurationDocs.ts",
-    "docgen:player-vars": "pnpm exec tsx scripts/generatePlayerStatVariablesDocs.ts"
+    "docgen:player-vars": "pnpm exec tsx scripts/generatePlayerStatVariablesDocs.ts",
+    "generate:config": "pnpm exec tsx scripts/generateConfig.ts"
   },
   "repository": {
     "type": "git",
@@ -44,6 +45,7 @@
   },
   "type": "module",
   "dependencies": {
+    "@inquirer/prompts": "^8.5.2",
     "axios": "^1.18.0",
     "bad-words": "^4.0.0",
     "canvas": "^3.2.3",

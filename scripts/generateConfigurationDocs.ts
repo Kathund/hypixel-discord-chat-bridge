@@ -1,43 +1,10 @@
 import zod from "zod";
 import { Config } from "../src/types/config.js";
-import { addTable, initMarkdownFile, saveMarkdownFile } from "./utils.js";
+import { addTable, getMetadataDescription, getObjectShape, initMarkdownFile, saveMarkdownFile, unwrapSchema } from "./utils.js";
 
 // TODO: One day I want to remove the use of `any` but i'm not smart enough to do this at the moment
 
-type UnwrappedSchema = { schema: any; optional: boolean; nullable: boolean };
 const lines = await initMarkdownFile("docs/Configuration.md");
-
-function unwrapSchema(schema: any): UnwrappedSchema {
-  let optional = false;
-  let nullable = false;
-
-  while (true) {
-    if (schema instanceof zod.ZodOptional) {
-      optional = true;
-      schema = schema.unwrap();
-      continue;
-    }
-
-    if (schema instanceof zod.ZodNullable) {
-      nullable = true;
-      schema = schema.unwrap();
-      continue;
-    }
-
-    if (schema instanceof zod.ZodDefault) {
-      schema = schema.unwrap();
-      continue;
-    }
-
-    break;
-  }
-
-  return { schema, optional, nullable };
-}
-
-function getDescription(schema: any): string {
-  return schema.meta()?.description ?? "";
-}
 
 function isOptionalSchema(schema: any): boolean {
   return unwrapSchema(schema).optional;
@@ -48,7 +15,7 @@ function getTypeLabel(schema: any): string {
 
   let type: string;
 
-  if (unwrapped instanceof zod.ZodString) {
+  if (unwrapped instanceof zod.ZodString || unwrapped instanceof zod.ZodURL) {
     type = "string";
   } else if (unwrapped instanceof zod.ZodNumber) {
     type = "number";
@@ -79,10 +46,6 @@ function getTypeLabel(schema: any): string {
   return type;
 }
 
-function getObjectShape(schema: any): Record<string, any> {
-  return schema instanceof zod.ZodObject ? schema.shape : {};
-}
-
 function getSectionHeading(path: string[]): string {
   if (path.length === 0) return "# <Root>";
   const headingLevel = Math.min(path.length + 1, 6);
@@ -102,7 +65,7 @@ function renderSchemaSection(schema: any, path: string[], lines: string[]): void
         `\`${key}\``,
         `\`${getTypeLabel(fieldSchema)}\``,
         isOptionalSchema(fieldSchema) ? "No" : "Yes",
-        getDescription(fieldSchema).replace(/\n/g, " ")
+        getMetadataDescription(fieldSchema).description
       ])
     ],
     lines

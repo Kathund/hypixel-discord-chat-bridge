@@ -51,3 +51,7 @@ export function replaceAllRanks(input: string): string {
   input = input.replaceAll("[VIP] ", "");
   return input;
 }
+
+export function getNestedValue(obj: any, path: string): any {
+  return path.split(".").reduce((o, key) => o?.[key], obj);
+}

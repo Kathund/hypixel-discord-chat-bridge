@@ -1,12 +1,13 @@
 import HypixelDiscordChatBridgeError from "./private/error.js";
 import { Config, ConfigChangeType, type MigrationMap } from "./types/config.js";
 import { displayBigMessage } from "./private/logger.js";
+import { getNestedValue } from "./utils/miscUtils.js";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 
 class ConfigManager {
   private versions: Record<number, MigrationMap>;
   private hasConfigChanged: boolean;
-  constructor() {
+  constructor(private shouldBackupConfig: boolean = true) {
     this.versions = {
       2: {
         "discord.bot.serverID": { key: "discord.serverId", change: ConfigChangeType.Move },
@@ -73,17 +74,17 @@ class ConfigManager {
   async init(): Promise<Config> {
     console.other("Checking config");
     await this.migrate();
-    const config = await this.validate();
-    await this.backupConfig(config);
+    const config = await ConfigManager.validate();
+    await this.handleBackupConfig(config);
     return config;
   }
 
-  private async getExampleConfigFile(): Promise<Record<string, any>> {
+  static async getExampleConfigFile(): Promise<Record<string, any>> {
     const file = await readFile("config.example.json", "utf-8");
     return JSON.parse(file);
   }
 
-  private async getConfigFile(): Promise<Record<string, any>> {
+  static async getConfigFile(): Promise<Record<string, any>> {
     const file = await readFile("config.json", "utf-8");
     return JSON.parse(file);
   }
@@ -95,7 +96,7 @@ class ConfigManager {
     process.exit(1);
   }
 
-  async getConfigVersion(): Promise<number> {
+  static async getConfigVersion(): Promise<number> {
     const configFile = await this.getConfigFile();
     const version = configFile.configVersion;
     if (version === undefined) {
@@ -105,15 +106,20 @@ class ConfigManager {
     return version;
   }
 
-  private async backupConfig(config: Record<string, any>) {
-    if (config.other.backupConfigs === false) return console.warn("Config backup is disabled");
+  private async handleBackupConfig(config: Record<string, any>) {
+    if (this.shouldBackupConfig === false) return console.warn("Config backup is disabled");
+    return await ConfigManager.backupConfig(config);
+  }
+
+  static async backupConfig(config: Record<string, any>, skipCheck: boolean = false) {
+    if (skipCheck === false && config.other.backupConfigs === false) return console.warn("Config backup is disabled");
     await mkdir("./data/backup/config", { recursive: true });
     await writeFile(`./data/backup/config/config_${new Date().toISOString()}.json`, JSON.stringify(config, null, 2), "utf-8");
     console.other("Saved config backup");
   }
 
   private async migrate() {
-    const config = await this.getConfigFile();
+    const config = await ConfigManager.getConfigFile();
     let currentVersion = config.configVersion;
     const latestVersion = Math.max(...Object.keys(this.versions).map(Number));
 
@@ -122,21 +128,21 @@ class ConfigManager {
       const migration = this.versions[nextVersion];
       if (!migration) throw new HypixelDiscordChatBridgeError(`Missing migration for config version ${nextVersion}`);
       console.other(`Attempting to migrate config v${currentVersion} to v${nextVersion}`);
-      await this.backupConfig(config);
+      await this.handleBackupConfig(config);
       this.applyMigration(config, migration);
       console.other(`Migrated config v${currentVersion} to v${nextVersion}`);
       config.configVersion = nextVersion;
       currentVersion = nextVersion;
     }
 
-    const exampleConfig = await this.getExampleConfigFile();
+    const exampleConfig = await ConfigManager.getExampleConfigFile();
     this.mergeMissingKeys(config, exampleConfig);
     this.saveConfigFile(config);
   }
 
   private applyMigration(config: any, migration: MigrationMap) {
     for (const [oldPath, rule] of Object.entries(migration)) {
-      const value = this.getNestedValue(config, oldPath);
+      const value = getNestedValue(config, oldPath);
       if (value === undefined) continue;
       switch (rule.change) {
         case ConfigChangeType.Move: {
@@ -162,10 +168,6 @@ class ConfigManager {
         }
       }
     }
-  }
-
-  private getNestedValue(obj: any, path: string): any {
-    return path.split(".").reduce((o, key) => o?.[key], obj);
   }
 
   private setNestedValue(obj: any, path: string, value: any) {
@@ -230,9 +232,9 @@ class ConfigManager {
     return typeof value === "object" && value !== null && !Array.isArray(value);
   }
 
-  async validate(): Promise<Config> {
+  static async validate(): Promise<Config> {
     console.other("Validating config");
-    const configFile = await this.getConfigFile();
+    const configFile = await ConfigManager.getConfigFile();
     const parse = await Config.safeParseAsync(configFile);
     if (parse.success) {
       console.other("Config is valid");

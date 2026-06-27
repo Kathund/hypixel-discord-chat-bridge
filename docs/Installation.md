@@ -26,6 +26,16 @@
 
 3. Create your configuration:
 
+To create a config there are two main ways
+
+Use the config generator script:
+
+```bash
+  pnpm generate:config
+```
+
+or manually set everything
+
 - Copy `config.example.json` to `config.json`
 - Edit `config.json` with your settings (see [Configuration](Configuration.md) for help)
 
@@ -55,6 +65,16 @@ To sign into a minecraft account please see the [FAQ](./FAQ.md#how-do-i-add-a-mi
 ```
 
 2. Create your configuration:
+
+To create a config there are two main ways
+
+Use the config generator script:
+
+```bash
+  pnpm generate:config
+```
+
+or manually set everything
 
 - Copy `config.example.json` to `config.json`
 - Edit `config.json` with your settings (see [Configuration](Configuration.md) for help)
