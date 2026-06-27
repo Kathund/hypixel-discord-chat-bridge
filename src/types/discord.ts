@@ -6,6 +6,7 @@ import type { MinecraftManagerWithBot } from "./minecraft.js";
 declare module "discord.js" {
   export interface Client {
     config: Config;
+    discordManager: DiscordManager;
   }
 }
 

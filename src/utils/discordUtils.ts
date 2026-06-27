@@ -16,7 +16,7 @@ export async function getApplicationOwners(client: Client): Promise<string[]> {
   const app = await client.application.fetch();
   if (app.owner instanceof Team) return app.owner.members.map((member) => member.id);
   const applicationOwners = app.owner?.id ? [app.owner.id] : [];
-  return [...new Set([...client.config.discord.commands.adminUsers, ...applicationOwners])];
+  return [...new Set([...client.config.discord.commands.adminUsers, ...applicationOwners, client.discordManager.guild?.ownerId ?? ""])];
 }
 
 export async function getRoles(member: GuildMember): Promise<Role[]> {

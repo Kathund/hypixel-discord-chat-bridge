@@ -62,6 +62,7 @@ class DiscordManager extends CommunicationBridge {
   async connect() {
     this.client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMembers] });
     this.client.config = this.application.config;
+    this.client.discordManager = this;
     await this.commandHandler.deployCommands();
     this.client.on(Events.ClientReady, () => this.stateHandler.onReady());
     this.client.on(Events.MessageCreate, (message) => this.messageHandler.onMessage(message));
