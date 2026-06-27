@@ -5,8 +5,8 @@ import {
   PlayerVariableStatsKeyDescriptionMap,
   PlayerVariableStatsKeys,
   PlayerVariableStatsKeysNumbers,
-  PlayerVariableStatsKeysStrings,
-  type PlayerVariableStatsKeysString
+  type PlayerVariableStatsKeysString,
+  PlayerVariableStatsKeysStrings
 } from "../src/private/constants.js";
 import { access } from "node:fs/promises";
 import { confirm, input, number, search, select } from "@inquirer/prompts";
