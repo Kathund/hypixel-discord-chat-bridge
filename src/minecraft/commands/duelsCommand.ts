@@ -1,7 +1,15 @@
 import MinecraftCommand from "../private/commands/MinecraftCommand.js";
 import MinecraftCommandData from "../private/commands/MinecraftCommandData.js";
 import MinecraftCommandDataOption from "../private/commands/MinecraftCommandDataOption.js";
-import { type DuelsInternalName, type DuelsModeName, type MinecraftManagerWithBot, type ParsedDuelsStats, isDuelsModeName } from "../../types/minecraft.js";
+import {
+  DuelsAliasToInternalMap,
+  type DuelsInternalName,
+  type DuelsSearchMode,
+  type MinecraftManagerWithBot,
+  type ParsedDuelsStats,
+  type ValidDuelsSearchName,
+  ValidDuelsSearchNames
+} from "../../types/minecraft.js";
 import { formatNumber } from "../../utils/stringUtils.js";
 import { getPlayer } from "../../utils/hypixelUtils.js";
 import type { Player } from "hypixel-api-reborn";
@@ -16,45 +24,20 @@ class DuelsCommand extends MinecraftCommand {
       .setOptions([new MinecraftCommandDataOption().setName("username").setDescription("Minecraft Username")]);
   }
 
-  convertMode(mode: DuelsModeName): DuelsInternalName {
-    switch (mode) {
-      case "uhc":
-        return "uhc";
-      case "skywars":
-      case "sw":
-        return "skywars";
-      case "blitz":
-      case "bsg":
-        return "blitz";
-      case "op":
-        return "op";
-      case "classic":
-        return "classic";
-      case "bow":
-        return "bow";
-      case "nodebuff":
-      case "nb":
-        return "noDebuff";
-      case "combo":
-        return "combo";
-      case "bowspleef":
-      case "bs":
-        return "bowSpleef";
-      case "sumo":
-        return "sumo";
-      case "bridge":
-        return "bridge";
-      case "parkour":
-        return "parkour";
-      default:
-        return "parkour";
-    }
+  convertMode(mode: ValidDuelsSearchName): DuelsInternalName {
+    return DuelsAliasToInternalMap[mode] as DuelsInternalName;
   }
 
-  getStats(hypixelPlayer: Player, mode: DuelsModeName): ParsedDuelsStats {
+  getStats(hypixelPlayer: Player, mode: DuelsSearchMode): ParsedDuelsStats {
     let stats;
-    if (mode === "overall") stats = hypixelPlayer.stats.Duels;
-    else stats = hypixelPlayer.stats.Duels[this.convertMode(mode)];
+
+    if (mode === "overall") {
+      stats = hypixelPlayer.stats.Duels;
+    } else {
+      const internal = this.convertMode(mode);
+      stats = hypixelPlayer.stats.Duels[internal];
+    }
+
     const { title, kills, KDR, wins, WLR, winStreak, bestWinStreak } = stats;
     return { title, kills, KDR, wins, WLR, winStreak, bestWinStreak };
   }
@@ -65,10 +48,10 @@ class DuelsCommand extends MinecraftCommand {
     const arg0 = msg[0];
     const arg1 = msg[1];
 
-    let mode: DuelsModeName = "overall";
+    let mode: DuelsSearchMode = "overall";
 
-    if (arg0 && isDuelsModeName(arg0)) {
-      mode = arg0;
+    if (arg0 && ValidDuelsSearchNames.includes(arg0 as any)) {
+      mode = arg0 as ValidDuelsSearchName;
       if (arg1) player = arg1;
     } else if (arg0) {
       player = arg0;

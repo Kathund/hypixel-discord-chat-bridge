@@ -30,8 +30,8 @@ importers:
         specifier: ^5.2.1
         version: 5.2.1
       hypixel-api-reborn:
-        specifier: 12.0.0-26
-        version: 12.0.0-26
+        specifier: 12.0.0-27
+        version: 12.0.0-27
       minecraft-data:
         specifier: ^3.111.0
         version: 3.111.0
@@ -1438,8 +1438,8 @@ packages:
     resolution: {integrity: sha512-dFcAjpTQFgoLMzC2VwU+C/CbS7uRL0lWmxDITmqm7C+7F0Odmj6s9l6alZc6AELXhrnggM2CeWSXHGOdX2YtwA==}
     engines: {node: '>= 6'}
 
-  hypixel-api-reborn@12.0.0-26:
-    resolution: {integrity: sha512-CcpgpeFmIbkFjZ2myir0gG5uVaeRiUwF7+HCndUhxthgAPUcdYQg/0Gf8MlEA8KgqS0za8wQPL35y6AKMI6cvA==}
+  hypixel-api-reborn@12.0.0-27:
+    resolution: {integrity: sha512-5LWNdU3LYisRiChAytP2+pHOB+ice+3LmVQ+tqtqJXv6G8P+xJviKh4+2UkZdwFaoohnZ0Xg2UVDFCJpBzlMIw==}
     engines: {node: '>=20.19.5'}
 
   iconv-lite@0.6.3:
@@ -3911,7 +3911,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  hypixel-api-reborn@12.0.0-26:
+  hypixel-api-reborn@12.0.0-27:
     dependencies:
       minecraft-data: 3.111.0
       mowojang: 0.4.7

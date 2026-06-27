@@ -49,31 +49,60 @@ export function isBedWarsModeName(value: string): value is BedWarsModeName {
   return (BedWarsModeNames as readonly string[]).includes(value);
 }
 
-export const DuelsModeNames = [
-  "overall",
+export const DuelsInternalNames = [
   "uhc",
   "skywars",
-  "sw",
+  "megawalls",
   "blitz",
-  "bsg",
   "op",
   "classic",
   "bow",
-  "nodebuff",
-  "nb",
+  "noDebuff",
   "combo",
-  "bowspleef",
-  "bs",
+  "bowSpleef",
   "sumo",
   "bridge",
-  "parkour"
+  "parkour",
+  "arena",
+  "boxing",
+  "bedwars",
+  "bedwarsRush"
 ] as const;
-export type DuelsModeName = (typeof DuelsModeNames)[number];
-export type DuelsInternalName = "uhc" | "skywars" | "blitz" | "op" | "classic" | "bow" | "noDebuff" | "combo" | "bowSpleef" | "sumo" | "bridge" | "parkour";
+export type DuelsInternalName = (typeof DuelsInternalNames)[number];
+export const DuelsModeMap: Record<DuelsInternalName, string[]> = {
+  uhc: ["uhc", "u"],
+  skywars: ["skywars", "sw"],
+  megawalls: ["megawalls", "mw", "m"],
+  blitz: ["blitz"],
+  op: ["op"],
+  classic: ["classic", "class", "c"],
+  bow: ["bow"],
+  noDebuff: ["nodebuff", "ndb"],
+  combo: ["combo"],
+  bowSpleef: ["bowspleef", "bs"],
+  sumo: ["sumo", "s"],
+  bridge: ["bridge", "b"],
+  parkour: ["parkour", "p"],
+  arena: ["arena", "a"],
+  boxing: ["boxing"],
+  bedwars: ["bedwars", "bw"],
+  bedwarsRush: ["bedwarsRush", "bwr"]
+};
 
-export function isDuelsModeName(value: string): value is DuelsModeName {
-  return (DuelsModeNames as readonly string[]).includes(value);
-}
+export const DuelsModeNames = Object.values(DuelsModeMap)
+  .flat()
+  .filter((v, i, arr) => arr.indexOf(v) === i) as string[];
+export type DuelsModeName = (typeof DuelsModeNames)[number];
+export type DuelsModSearch = DuelsModeName | "overall";
+export const DuelsModeAliastoInternalMap = Object.entries(DuelsModeMap).reduce(
+  (acc, [internal, aliases]) => {
+    for (const alias of aliases) {
+      acc[alias] = internal as DuelsInternalName;
+    }
+    return acc;
+  },
+  {} as Record<string, DuelsInternalName>
+);
 
 export interface ParsedDuelsStats {
   title: string | null;

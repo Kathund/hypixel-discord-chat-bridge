@@ -33,7 +33,7 @@ export enum ButtonResponse {
   Update
 }
 
-export const GenericChannelNames = ["Guild", "Officer", "Debug"];
+export const GenericChannelNames = ["Guild", "Officer", "Debug"] as const;
 export type GenericChannelName = (typeof GenericChannelNames)[number];
 export const LoggerChannelNames = ["Logger-Guild", "Logger-Event", "Logger-Error", "Logger-Blacklist", "Logger-Scripts", "Logger-Inactivity"] as const;
 export type LoggerChannelName = (typeof LoggerChannelNames)[number];
