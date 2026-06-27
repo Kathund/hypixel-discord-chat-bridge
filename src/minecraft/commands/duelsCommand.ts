@@ -2,13 +2,13 @@ import MinecraftCommand from "../private/commands/MinecraftCommand.js";
 import MinecraftCommandData from "../private/commands/MinecraftCommandData.js";
 import MinecraftCommandDataOption from "../private/commands/MinecraftCommandDataOption.js";
 import {
-  DuelsAliasToInternalMap,
   type DuelsInternalName,
-  type DuelsSearchMode,
+  type DuelsModSearch,
+  DuelsModeAliastoInternalMap,
+  type DuelsModeName,
+  DuelsModeNames,
   type MinecraftManagerWithBot,
-  type ParsedDuelsStats,
-  type ValidDuelsSearchName,
-  ValidDuelsSearchNames
+  type ParsedDuelsStats
 } from "../../types/minecraft.js";
 import { formatNumber } from "../../utils/stringUtils.js";
 import { getPlayer } from "../../utils/hypixelUtils.js";
@@ -24,11 +24,11 @@ class DuelsCommand extends MinecraftCommand {
       .setOptions([new MinecraftCommandDataOption().setName("username").setDescription("Minecraft Username")]);
   }
 
-  convertMode(mode: ValidDuelsSearchName): DuelsInternalName {
-    return DuelsAliasToInternalMap[mode] as DuelsInternalName;
+  convertMode(mode: DuelsModeName): DuelsInternalName {
+    return DuelsModeAliastoInternalMap[mode] as DuelsInternalName;
   }
 
-  getStats(hypixelPlayer: Player, mode: DuelsSearchMode): ParsedDuelsStats {
+  getStats(hypixelPlayer: Player, mode: DuelsModSearch): ParsedDuelsStats {
     let stats;
 
     if (mode === "overall") {
@@ -48,10 +48,10 @@ class DuelsCommand extends MinecraftCommand {
     const arg0 = msg[0];
     const arg1 = msg[1];
 
-    let mode: DuelsSearchMode = "overall";
+    let mode: DuelsModSearch = "overall";
 
-    if (arg0 && ValidDuelsSearchNames.includes(arg0 as any)) {
-      mode = arg0 as ValidDuelsSearchName;
+    if (arg0 && DuelsModeNames.includes(arg0 as any)) {
+      mode = arg0 as DuelsModeName;
       if (arg1) player = arg1;
     } else if (arg0) {
       player = arg0;
