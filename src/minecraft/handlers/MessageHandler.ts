@@ -429,7 +429,7 @@ class MessageHandler {
     }
 
     if (this.isGuildQuestCompletion(message)) {
-      this.minecraft.broadcastHeadedEmbed({ title: "Guild Quest Completion", message: message, color: "Yellow", chatType: "Guild" });
+      this.minecraft.broadcastCleanEmbed({ title: "Guild Quest Completion", message: message, color: "Yellow", chatType: "Guild" });
     }
 
     if (this.isAlreadyMuted(message)) {
