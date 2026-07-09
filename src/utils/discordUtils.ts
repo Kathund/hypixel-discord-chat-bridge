@@ -27,7 +27,7 @@ export async function getRoles(member: GuildMember): Promise<Role[]> {
 export async function isAdminMember(member: GuildMember): Promise<boolean> {
   const adminUsers = await getApplicationOwners(member.client);
 
-  if (member.client.config.discord.commands.checkPermissions === true && adminUsers.includes(member.user.id)) {
+  if (member.client.config.discord.commands.checkPermissions === true && !adminUsers.includes(member.user.id)) {
     return false;
   }
 
