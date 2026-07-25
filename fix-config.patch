@@ -1,0 +1,167 @@
+diff --git a/src/discord/handlers/ButtonHandler.ts b/src/discord/handlers/ButtonHandler.ts
+index 1372e5c..02e16ff 100644
+--- a/src/discord/handlers/ButtonHandler.ts
++++ b/src/discord/handlers/ButtonHandler.ts
+@@ -2,6 +2,8 @@ import HypixelDiscordChatBridgeError from "../../private/error.js";
+ import { type ButtonInteraction, Collection, MessageFlags } from "discord.js";
+ import { ButtonResponse } from "../../types/discord.js";
+ import { readdir } from "node:fs/promises";
++import { dirname, join } from "node:path";
++import { fileURLToPath } from "node:url";
+ import { translate } from "../../translations/TranslationsManager.js";
+ import type DiscordButton from "../private/buttons/DiscordButton.js";
+ import type DiscordManager from "../DiscordManager.js";
+@@ -31,7 +33,8 @@ class ButtonHandler {
+ 
+   async loadButtons() {
+     this.buttons.clear();
+-    const buttonFiles = await readdir("./src/discord/buttons/", { recursive: true, encoding: "utf-8" }).then((files) => files.filter((file) => file.endsWith(".ts")));
++    const __dirname = dirname(fileURLToPath(import.meta.url));
++    const buttonFiles = await readdir(join(__dirname, "..", "buttons"), { recursive: true, encoding: "utf-8" }).then((files) => files.filter((file) => file.endsWith(".ts")));
+     for (const file of buttonFiles) {
+       const button: DiscordButton = new (await import(`../buttons/${file}`)).default(this.discord);
+       button.data.ids.forEach((id) => this.buttons.set(id, button));
+diff --git a/src/discord/handlers/CommandHandler.ts b/src/discord/handlers/CommandHandler.ts
+index 61ae4a7..2bd56d0 100644
+--- a/src/discord/handlers/CommandHandler.ts
++++ b/src/discord/handlers/CommandHandler.ts
+@@ -2,6 +2,8 @@ import HypixelDiscordChatBridgeError from "../../private/error.js";
+ import { type AutocompleteInteraction, type ChatInputCommandInteraction, Collection, MessageFlags, REST, Routes } from "discord.js";
+ import { BasicInteractionResponse, CommandFlags } from "../../types/discord.js";
+ import { readdir } from "node:fs/promises";
++import { dirname, join } from "node:path";
++import { fileURLToPath } from "node:url";
+ import { translate } from "../../translations/TranslationsManager.js";
+ import type DiscordCommand from "../private/commands/DiscordCommand.js";
+ import type DiscordManager from "../DiscordManager.js";
+@@ -42,7 +44,8 @@ class CommandHandler {
+ 
+   async deployCommands(silent: boolean = false, skipChecks: boolean = false) {
+     this.commands.clear();
+-    const commandFiles = await readdir("./src/discord/commands/", { recursive: true, encoding: "utf-8" }).then((files) => files.filter((file) => file.endsWith(".ts")));
++    const __dirname = dirname(fileURLToPath(import.meta.url));
++    const commandFiles = await readdir(join(__dirname, "..", "commands"), { recursive: true, encoding: "utf-8" }).then((files) => files.filter((file) => file.endsWith(".ts")));
+ 
+     const commands = [];
+     for (const file of commandFiles) {
+diff --git a/src/discord/handlers/ModalHandler.ts b/src/discord/handlers/ModalHandler.ts
+index fbd8cd9..893af18 100644
+--- a/src/discord/handlers/ModalHandler.ts
++++ b/src/discord/handlers/ModalHandler.ts
+@@ -2,6 +2,8 @@ import HypixelDiscordChatBridgeError from "../../private/error.js";
+ import { BasicInteractionResponse } from "../../types/discord.js";
+ import { Collection, MessageFlags, type ModalSubmitInteraction } from "discord.js";
+ import { readdir } from "node:fs/promises";
++import { dirname, join } from "node:path";
++import { fileURLToPath } from "node:url";
+ import { translate } from "../../translations/TranslationsManager.js";
+ import type DiscordManager from "../DiscordManager.js";
+ import type DiscordModal from "../private/modals/DiscordModal.js";
+@@ -30,7 +32,8 @@ class ModalHandler {
+ 
+   async loadModals() {
+     this.modals.clear();
+-    const modalFiles = await readdir("./src/discord/modals/", { recursive: true, encoding: "utf-8" }).then((files) => files.filter((file) => file.endsWith(".ts")));
++    const __dirname = dirname(fileURLToPath(import.meta.url));
++    const modalFiles = await readdir(join(__dirname, "..", "modals"), { recursive: true, encoding: "utf-8" }).then((files) => files.filter((file) => file.endsWith(".ts")));
+     for (const file of modalFiles) {
+       const modal: DiscordModal = new (await import(`../modals/${file}`)).default(this.discord);
+       this.modals.set(modal.data.id, modal);
+diff --git a/src/discord/private/Embed.ts b/src/discord/private/Embed.ts
+index 9ce99b3..96d53f0 100644
+--- a/src/discord/private/Embed.ts
++++ b/src/discord/private/Embed.ts
+@@ -1,4 +1,5 @@
+-import config from "../../../config.json" with { type: "json" };
++import { readFileSync } from "node:fs";
++const config = JSON.parse(readFileSync("config.json", "utf-8"));
+ import { type APIEmbed, type ColorResolvable, EmbedBuilder, type EmbedData } from "discord.js";
+ import { CommonDevs } from "../../private/constants.js";
+ import { ConfigOtherColors } from "../../types/config.js";
+diff --git a/src/minecraft/handlers/CommandHandler.ts b/src/minecraft/handlers/CommandHandler.ts
+index db4257b..88a0894 100644
+--- a/src/minecraft/handlers/CommandHandler.ts
++++ b/src/minecraft/handlers/CommandHandler.ts
+@@ -2,6 +2,8 @@ import axios from "axios";
+ import { Collection } from "discord.js";
+ import { formatError } from "../../utils/miscUtils.js";
+ import { readdir } from "node:fs/promises";
++import { dirname, join } from "node:path";
++import { fileURLToPath } from "node:url";
+ import { translate } from "../../translations/TranslationsManager.js";
+ import type MinecraftCommand from "../private/commands/MinecraftCommand.js";
+ import type MinecraftManager from "../MinecraftManager.js";
+@@ -84,7 +86,8 @@ class CommandHandler {
+ 
+   async deployCommands(silent: boolean = false) {
+     this.commands.clear();
+-    const commandFiles = await readdir("./src/minecraft/commands/", { recursive: true, encoding: "utf-8" }).then((files) => files.filter((file) => file.endsWith(".ts")));
++    const __dirname = dirname(fileURLToPath(import.meta.url));
++    const commandFiles = await readdir(join(__dirname, "..", "commands"), { recursive: true, encoding: "utf-8" }).then((files) => files.filter((file) => file.endsWith(".ts")));
+     for (const file of commandFiles) {
+       const command: MinecraftCommand = new (await import(`../commands/${file}`)).default(this.minecraft);
+       if (!command.data.name) continue;
+diff --git a/src/private/HypixelAPIReborn.ts b/src/private/HypixelAPIReborn.ts
+index 97b6bff..c113a20 100644
+--- a/src/private/HypixelAPIReborn.ts
++++ b/src/private/HypixelAPIReborn.ts
+@@ -1,4 +1,5 @@
+-import config from "../../config.json" with { type: "json" };
++import { readFileSync } from "node:fs";
++const config = JSON.parse(readFileSync("config.json", "utf-8"));
+ import { Client } from "hypixel-api-reborn";
+ 
+ const HypixelAPIReborn = new Client(config.API.hypixel.key, { cache: true, mowojangAPI: { baseURL: config.API.mowojang.baseURL || undefined } });
+diff --git a/src/private/MowojangAPI.ts b/src/private/MowojangAPI.ts
+index 416c138..5fe7301 100644
+--- a/src/private/MowojangAPI.ts
++++ b/src/private/MowojangAPI.ts
+@@ -1,4 +1,5 @@
+-import config from "../../config.json" with { type: "json" };
++import { readFileSync } from "node:fs";
++const config = JSON.parse(readFileSync("config.json", "utf-8"));
+ import { Client } from "mowojang";
+ 
+ const MowojangAPI = new Client({ baseURL: config.API.mowojang.baseURL || undefined });
+diff --git a/src/scripts/ScriptsManager.ts b/src/scripts/ScriptsManager.ts
+index 445aeaa..89d3de4 100644
+--- a/src/scripts/ScriptsManager.ts
++++ b/src/scripts/ScriptsManager.ts
+@@ -1,5 +1,7 @@
+ import { Collection } from "discord.js";
+ import { readdir } from "node:fs/promises";
++import { dirname, join } from "node:path";
++import { fileURLToPath } from "node:url";
+ import { translate } from "../translations/TranslationsManager.js";
+ import type Application from "../Application.js";
+ import type BasicScript from "./BasicScript.js";
+@@ -14,7 +16,8 @@ class ScriptManager {
+   }
+ 
+   private async init() {
+-    const buttonFiles = await readdir("./src/scripts/scripts/", { recursive: true, encoding: "utf-8" }).then((files) => files.filter((file) => file.endsWith(".ts")));
++    const __dirname = dirname(fileURLToPath(import.meta.url));
++    const buttonFiles = await readdir(join(__dirname, "scripts"), { recursive: true, encoding: "utf-8" }).then((files) => files.filter((file) => file.endsWith(".ts")));
+     for (const file of buttonFiles) {
+       const script: BasicScript = new (await import(`./scripts/${file}`)).default(this);
+       this.scripts.set(script.id, script);
+diff --git a/src/utils/messageToImage.ts b/src/utils/messageToImage.ts
+index 97c7bef..07d6b87 100644
+--- a/src/utils/messageToImage.ts
++++ b/src/utils/messageToImage.ts
+@@ -1,9 +1,13 @@
+ // Credits https://github.com/Altpapier/hypixel-discord-guild-bridge/blob/master/helper/messageToImage.js
+ 
+ import { createCanvas, loadImage, registerFont } from "canvas";
++import { dirname, join } from "node:path";
++import { fileURLToPath } from "node:url";
+ 
+-registerFont("resources/fonts/MinecraftRegular-Bmg3.ttf", { family: "Minecraft" });
+-registerFont("resources/fonts/unifont.ttf", { family: "MinecraftUnicode" });
++const resourcesDir = join(dirname(fileURLToPath(import.meta.url)), "..", "..", "resources");
++
++registerFont(join(resourcesDir, "fonts/MinecraftRegular-Bmg3.ttf"), { family: "Minecraft" });
++registerFont(join(resourcesDir, "fonts/unifont.ttf"), { family: "MinecraftUnicode" });
+ 
+ const RGBA_COLOR: Record<string | number, string> = {
+   0: "rgba(0,0,0,1)",
