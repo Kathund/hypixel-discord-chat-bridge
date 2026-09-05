@@ -1,6 +1,6 @@
 # Configuration
 
-This document is generated from the Zod config schema in `src/types/config.ts`
+This document is generated from the Zod config schema in [`src/types/config.ts`](/src/types/config.ts)
 
 # <Root>
 
@@ -351,7 +351,7 @@ This document is generated from the Zod config schema in `src/types/config.ts`
 
 ---
 
-This document is [auto generated](/scripts/docs/Configuration.ts) and was last updated on `Tue, 01 Sep 2026 12:40:23 GMT` (`1788266423653`)
+This document is [auto generated](/scripts/docs/Configuration.ts) and was last updated on `Sat, 05 Sep 2026 06:41:50 GMT` (`1788590510038`)
 
 To update this document please run `pnpm docgen` or contact a maintainer and ask them to update it.
 
@@ -359,5 +359,5 @@ To update this document please run `pnpm docgen` or contact a maintainer and ask
 
 If you need any help help consider checking out the [FAQ](/docs/FrequentlyAskedQuestions.md)
 
-Feel free to reach out to the maintainers directly on Discord. [@duckysolucky](https://discord.com/users/486155512568741900) and
+Feel free to reach out to the maintainers directly on Discord. [@duckysolucky](https://discord.com/users/486155512568741900),
 [@.kathund](https://discord.com/users/1276524855445164098)
