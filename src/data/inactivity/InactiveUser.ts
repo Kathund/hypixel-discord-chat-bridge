@@ -1,10 +1,10 @@
-import EmbedHelper from "../../discord/private/EmbedHelper.js";
-import GenericData from "../GenericData.js";
-import HypixelDiscordChatBridgeError from "../../private/error.js";
+import EmbedHelper from "../../discord/private/EmbedHelper.ts";
+import GenericData from "../GenericData.ts";
+import HypixelDiscordChatBridgeError from "../../private/error.ts";
 import { ActionRowBuilder, ButtonBuilder, ComponentType, type GuildMember } from "discord.js";
-import { toError } from "../../utils/asyncUtils.js";
-import type InactivityManager from "./InactivityManager.js";
-import type { BasicInactiveUserData, InactiveUserData } from "../../types/inactivity.js";
+import { toError } from "../../utils/asyncUtils.ts";
+import type InactivityManager from "./InactivityManager.ts";
+import type { BasicInactiveUserData, InactiveUserData } from "../../types/inactivity.ts";
 
 class InactiveUser extends GenericData<InactiveUserData> {
   readonly inactivityId: string;

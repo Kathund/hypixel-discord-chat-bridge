@@ -9,7 +9,7 @@ import {
   Team,
   User
 } from "discord.js";
-import { type AutocompleteInteractionWithGuild, type AutocompleteOption, type BaseInteractionWithGuild, CommandPermission } from "../types/discord.js";
+import { type AutocompleteInteractionWithGuild, type AutocompleteOption, type BaseInteractionWithGuild, CommandPermission } from "../types/discord.ts";
 
 export async function getRoles(member: GuildMember): Promise<Role[]> {
   member = await member.fetch();

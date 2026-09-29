@@ -1,10 +1,10 @@
-import DiscordCommand from "../../private/commands/DiscordCommand.js";
-import DiscordCommandDataBuilder from "../../private/commands/DiscordCommandDataBuilder.js";
-import EmbedHelper from "../../private/EmbedHelper.js";
-import HypixelDiscordChatBridgeError from "../../../private/error.js";
+import DiscordCommand from "../../private/commands/DiscordCommand.ts";
+import DiscordCommandDataBuilder from "../../private/commands/DiscordCommandDataBuilder.ts";
+import EmbedHelper from "../../private/EmbedHelper.ts";
+import HypixelDiscordChatBridgeError from "../../../private/error.ts";
 import ms, { type StringValue } from "ms";
-import { type ChatInputCommandInteractionWithGuild, CommandFlags, type DiscordManagerWithBot, type ListMembers, type ListMembersGroup } from "../../../types/discord.js";
-import { MinecraftRequestTimeoutError } from "../../../minecraft/MinecraftRequestBroker.js";
+import { type ChatInputCommandInteractionWithGuild, CommandFlags, type DiscordManagerWithBot, type ListMembers, type ListMembersGroup } from "../../../types/discord.ts";
+import { MinecraftRequestTimeoutError } from "../../../minecraft/MinecraftRequestBroker.ts";
 
 class OnlineCommand extends DiscordCommand<DiscordManagerWithBot> {
   override readonly data = new DiscordCommandDataBuilder().setName("online").setDescription("List of online members.");

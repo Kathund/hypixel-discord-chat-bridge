@@ -1,5 +1,5 @@
-import MinecraftCommand from "../private/commands/MinecraftCommand.js";
-import MinecraftCommandData from "../private/commands/MinecraftCommandData.js";
+import MinecraftCommand from "../private/commands/MinecraftCommand.ts";
+import MinecraftCommandData from "../private/commands/MinecraftCommandData.ts";
 
 class BarkCommand extends MinecraftCommand {
   private variations: string[] = ["woof", "bork", "bwoof", "awruf", "arf", "awrf", "awooo"];

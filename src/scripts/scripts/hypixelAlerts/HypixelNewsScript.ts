@@ -1,9 +1,9 @@
-import BasicScript from "../../BasicScript.js";
+import BasicScript from "../../BasicScript.ts";
 import Parser from "rss-parser";
-import { delay } from "../../../utils/miscUtils.js";
-import { intervalSchedule } from "../../../types/scripts.js";
+import { delay } from "../../../utils/miscUtils.ts";
+import { intervalSchedule } from "../../../types/scripts.ts";
 import { load } from "cheerio";
-import type ScriptManager from "../../ScriptsManager.js";
+import type ScriptManager from "../../ScriptsManager.ts";
 
 class HypixelNewsScript extends BasicScript {
   private firstTime = true;

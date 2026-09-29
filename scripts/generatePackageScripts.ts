@@ -1,7 +1,7 @@
-import { lowerFirst } from "../src/utils/stringUtils.js";
+import { lowerFirst } from "../src/utils/stringUtils.ts";
 import { readFile, readdir } from "node:fs/promises";
-import { saveFile } from "./utils.js";
-import "../src/private/logger.js";
+import { saveFile } from "./utils.ts";
+import "../src/private/logger.ts";
 
 const packageJson = JSON.parse(await readFile("package.json", "utf-8"));
 const fixedScripts = Object.fromEntries(

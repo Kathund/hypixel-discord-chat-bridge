@@ -1,5 +1,5 @@
 import zod from "zod";
-import { PlayerVariableStatsKeysNumbers, PlayerVariableStatsKeysStrings } from "../private/constants.js";
+import { PlayerVariableStatsKeysNumbers, PlayerVariableStatsKeysStrings } from "../private/constants.ts";
 
 export enum ConfigChangeType {
   Move,

@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
-import isPluginEntry from "../src/plugins/pluginDiscovery.js";
-import loadExtensionModules from "../src/extensions/moduleLoader.js";
+import isPluginEntry from "../src/plugins/pluginDiscovery.ts";
+import loadExtensionModules from "../src/extensions/moduleLoader.ts";
 import test from "node:test";
 import { join, sep } from "node:path";
 import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";

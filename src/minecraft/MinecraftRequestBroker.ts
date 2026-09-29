@@ -1,4 +1,4 @@
-import { toError } from "../utils/asyncUtils.js";
+import { toError } from "../utils/asyncUtils.ts";
 import type { Client } from "minecraft-protocol";
 import type { PrismarineChatFormatter } from "prismarine-chat";
 

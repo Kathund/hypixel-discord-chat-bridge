@@ -1,6 +1,6 @@
-import type { ChannelName } from "./discord.js";
+import type { ChannelName } from "./discord.ts";
 import type { ColorResolvable, Message } from "discord.js";
-import type { ConfigDiscordEmbedsColors } from "./config.js";
+import type { ConfigDiscordEmbedsColors } from "./config.ts";
 
 export interface DiscordToMinecraftMessage {
   readonly channelId: string;

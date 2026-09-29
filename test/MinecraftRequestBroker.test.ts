@@ -1,4 +1,4 @@
-import MinecraftRequestBroker, { MinecraftRequestTimeoutError } from "../src/minecraft/MinecraftRequestBroker.js";
+import MinecraftRequestBroker, { MinecraftRequestTimeoutError } from "../src/minecraft/MinecraftRequestBroker.ts";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { EventEmitter } from "node:events";

@@ -1,4 +1,4 @@
-import type DiscordManager from "../DiscordManager.js";
+import type DiscordManager from "../DiscordManager.ts";
 import type { GuildMember, PartialGuildMember } from "discord.js";
 
 class EventHandler {

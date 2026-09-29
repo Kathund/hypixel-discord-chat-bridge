@@ -1,6 +1,6 @@
-import BasicConfigManager from "./core/BasicConfigManager.js";
-import MinecraftManager from "./minecraft/MinecraftManager.js";
-import { Config, ConfigChangeType, ConfigVerificationRolesCustom, type JsonValue, type MigrationMap } from "./types/config.js";
+import BasicConfigManager from "./core/BasicConfigManager.ts";
+import MinecraftManager from "./minecraft/MinecraftManager.ts";
+import { Config, ConfigChangeType, ConfigVerificationRolesCustom, type JsonValue, type MigrationMap } from "./types/config.ts";
 
 class ConfigManager extends BasicConfigManager<Config> {
   protected readonly configPath = "config.json";

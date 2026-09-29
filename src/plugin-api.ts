@@ -1,49 +1,49 @@
-export * from "./types/application.js";
-export * from "./types/blacklist.js";
-export * from "./types/bridge.js";
-export * from "./types/config.js";
-export * from "./types/discord.js";
-export * from "./types/inactivity.js";
-export * from "./types/linked.js";
-export * from "./types/minecraft.js";
-export * from "./types/misc.js";
-export * from "./types/scripts.js";
+export * from "./types/application.ts";
+export * from "./types/blacklist.ts";
+export * from "./types/bridge.ts";
+export * from "./types/config.ts";
+export * from "./types/discord.ts";
+export * from "./types/inactivity.ts";
+export * from "./types/linked.ts";
+export * from "./types/minecraft.ts";
+export * from "./types/misc.ts";
+export * from "./types/scripts.ts";
 
-export * from "./utils/asyncUtils.js";
-export * from "./utils/discordUtils.js";
-export * from "./utils/hypixelUtils.js";
-export * from "./utils/minecraftUtils.js";
-export * from "./utils/miscUtils.js";
-export * from "./utils/stringUtils.js";
+export * from "./utils/asyncUtils.ts";
+export * from "./utils/discordUtils.ts";
+export * from "./utils/hypixelUtils.ts";
+export * from "./utils/minecraftUtils.ts";
+export * from "./utils/miscUtils.ts";
+export * from "./utils/stringUtils.ts";
 
-export * from "./private/constants.js";
-export * from "./core/Lifecycle.js";
+export * from "./private/constants.ts";
+export * from "./core/Lifecycle.ts";
 
-export { default as Application } from "./Application.js";
-export { default as BasicConfigManager } from "./core/BasicConfigManager.js";
-export { default as BridgeEventBus } from "./private/BridgeEventBus.js";
-export { default as BridgePlugin } from "./plugins/BridgePlugin.js";
-export { default as DiscordButton } from "./discord/private/buttons/DiscordButton.js";
-export { default as DiscordButtonData } from "./discord/private/buttons/DiscordButtonData.js";
-export { default as DiscordCommand } from "./discord/private/commands/DiscordCommand.js";
-export { default as DiscordCommandDataBuilder } from "./discord/private/commands/DiscordCommandDataBuilder.js";
-export { default as DiscordModal } from "./discord/private/modals/DiscordModal.js";
-export { default as DiscordModalData } from "./discord/private/modals/DiscordModalData.js";
-export { default as DiscordStringSelectMenu } from "./discord/private/stringSelectMenu/DiscordStringSelectMenu.js";
-export { default as DiscordStringSelectMenuData } from "./discord/private/stringSelectMenu/DiscordStringSelectMenuData.js";
-export { default as MinecraftRenderer } from "./minecraft/private/MinecraftRenderer.js";
-export { default as MinecraftCommand } from "./minecraft/private/commands/MinecraftCommand.js";
-export { default as MinecraftCommandData } from "./minecraft/private/commands/MinecraftCommandData.js";
-export { default as MinecraftCommandDataOption } from "./minecraft/private/commands/MinecraftCommandDataOption.js";
-export { default as BasicScript } from "./scripts/BasicScript.js";
-export { default as HypixelDiscordChatBridgeError } from "./private/error.js";
-export { default as MowojangAPI } from "./private/MowojangAPI.js";
-export { default as EmbedHelper, WarningEmbed, ErrorEmbed, SuccessEmbed } from "./discord/private/EmbedHelper.js";
-export { default as GenericData } from "./data/GenericData.js";
-export { default as GenericManager } from "./data/GenericManager.js";
-export type { default as DiscordManager } from "./discord/DiscordManager.js";
-export type { default as MinecraftManager } from "./minecraft/MinecraftManager.js";
-export type { default as ScriptManager } from "./scripts/ScriptsManager.js";
+export { default as Application } from "./Application.ts";
+export { default as BasicConfigManager } from "./core/BasicConfigManager.ts";
+export { default as BridgeEventBus } from "./private/BridgeEventBus.ts";
+export { default as BridgePlugin } from "./plugins/BridgePlugin.ts";
+export { default as DiscordButton } from "./discord/private/buttons/DiscordButton.ts";
+export { default as DiscordButtonData } from "./discord/private/buttons/DiscordButtonData.ts";
+export { default as DiscordCommand } from "./discord/private/commands/DiscordCommand.ts";
+export { default as DiscordCommandDataBuilder } from "./discord/private/commands/DiscordCommandDataBuilder.ts";
+export { default as DiscordModal } from "./discord/private/modals/DiscordModal.ts";
+export { default as DiscordModalData } from "./discord/private/modals/DiscordModalData.ts";
+export { default as DiscordStringSelectMenu } from "./discord/private/stringSelectMenu/DiscordStringSelectMenu.ts";
+export { default as DiscordStringSelectMenuData } from "./discord/private/stringSelectMenu/DiscordStringSelectMenuData.ts";
+export { default as MinecraftRenderer } from "./minecraft/private/MinecraftRenderer.ts";
+export { default as MinecraftCommand } from "./minecraft/private/commands/MinecraftCommand.ts";
+export { default as MinecraftCommandData } from "./minecraft/private/commands/MinecraftCommandData.ts";
+export { default as MinecraftCommandDataOption } from "./minecraft/private/commands/MinecraftCommandDataOption.ts";
+export { default as BasicScript } from "./scripts/BasicScript.ts";
+export { default as HypixelDiscordChatBridgeError } from "./private/error.ts";
+export { default as MowojangAPI } from "./private/MowojangAPI.ts";
+export { default as EmbedHelper, WarningEmbed, ErrorEmbed, SuccessEmbed } from "./discord/private/EmbedHelper.ts";
+export { default as GenericData } from "./data/GenericData.ts";
+export { default as GenericManager } from "./data/GenericManager.ts";
+export type { default as DiscordManager } from "./discord/DiscordManager.ts";
+export type { default as MinecraftManager } from "./minecraft/MinecraftManager.ts";
+export type { default as ScriptManager } from "./scripts/ScriptsManager.ts";
 export type {
   BridgePluginContext,
   BridgePluginLogger,
@@ -53,4 +53,4 @@ export type {
   DiscordModalFactory,
   MinecraftCommandFactory,
   ScriptFactory
-} from "./plugins/BridgePlugin.js";
+} from "./plugins/BridgePlugin.ts";

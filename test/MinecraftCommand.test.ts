@@ -1,8 +1,8 @@
-import MinecraftCommand from "../src/minecraft/private/commands/MinecraftCommand.js";
-import MinecraftCommandData from "../src/minecraft/private/commands/MinecraftCommandData.js";
+import MinecraftCommand from "../src/minecraft/private/commands/MinecraftCommand.ts";
+import MinecraftCommandData from "../src/minecraft/private/commands/MinecraftCommandData.ts";
 import assert from "node:assert/strict";
 import test from "node:test";
-import type { MinecraftManagerWithBot } from "../src/types/minecraft.js";
+import type { MinecraftManagerWithBot } from "../src/types/minecraft.ts";
 
 class ConcurrentCommand extends MinecraftCommand {
   override readonly data = new MinecraftCommandData().setName("concurrent");

@@ -1,15 +1,15 @@
-import DiscordCommand from "../../../private/commands/DiscordCommand.js";
-import DiscordCommandDataBuilder from "../../../private/commands/DiscordCommandDataBuilder.js";
-import HypixelDiscordChatBridgeError from "../../../../private/error.js";
+import DiscordCommand from "../../../private/commands/DiscordCommand.ts";
+import DiscordCommandDataBuilder from "../../../private/commands/DiscordCommandDataBuilder.ts";
+import HypixelDiscordChatBridgeError from "../../../../private/error.ts";
 import {
   type ChatInputCommandInteractionWithGuild,
   CommandFlags,
   CommandPermission,
   type DiscordManagerWithBot,
   GuildManagementAction
-} from "../../../../types/discord.js";
-import { SuccessEmbed } from "../../../private/EmbedHelper.js";
-import { replaceVariables } from "../../../../utils/stringUtils.js";
+} from "../../../../types/discord.ts";
+import { SuccessEmbed } from "../../../private/EmbedHelper.ts";
+import { replaceVariables } from "../../../../utils/stringUtils.ts";
 
 class DemoteCommand extends DiscordCommand<DiscordManagerWithBot> {
   override readonly data = new DiscordCommandDataBuilder()

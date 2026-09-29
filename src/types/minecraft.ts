@@ -1,8 +1,8 @@
-import type MinecraftManager from "../minecraft/MinecraftManager.js";
-import type RawRequestData from "hypixel-api-reborn/dist/Private/RawRequestData.js";
+import type MinecraftManager from "../minecraft/MinecraftManager.ts";
+import type RawRequestData from "hypixel-api-reborn/dist/Private/RawRequestData.ts";
 import type { Client } from "minecraft-protocol";
-import type { DevName } from "./application.js";
-import type { DiscordManagerWithBot } from "./discord.js";
+import type { DevName } from "./application.ts";
+import type { DiscordManagerWithBot } from "./discord.ts";
 import type { HexColorString } from "discord.js";
 import type { ProfileNetworthCalculator } from "skyhelper-networth";
 import type { SkyBlockProfile, SkyBlockProfileName, SkyblockProfileWithMe, WithSelectedProfile } from "hypixel-api-reborn";

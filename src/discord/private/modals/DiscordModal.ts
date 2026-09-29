@@ -1,7 +1,7 @@
-import BasicInteractionData from "../BasicInteractionData.js";
-import { BasicInteractionResponse, type DiscordManagerWithClient, type ModalSubmitInteractionWithGuild } from "../../../types/discord.js";
-import type DiscordManager from "../../DiscordManager.js";
-import type DiscordModalData from "./DiscordModalData.js";
+import BasicInteractionData from "../BasicInteractionData.ts";
+import { BasicInteractionResponse, type DiscordManagerWithClient, type ModalSubmitInteractionWithGuild } from "../../../types/discord.ts";
+import type DiscordManager from "../../DiscordManager.ts";
+import type DiscordModalData from "./DiscordModalData.ts";
 
 abstract class DiscordModal<Manager extends DiscordManager = DiscordManagerWithClient> extends BasicInteractionData<Manager> {
   abstract readonly data: DiscordModalData;

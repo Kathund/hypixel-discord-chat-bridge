@@ -1,9 +1,9 @@
-import DiscordCommand from "../../private/commands/DiscordCommand.js";
-import DiscordCommandDataBuilder from "../../private/commands/DiscordCommandDataBuilder.js";
-import HypixelDiscordChatBridgeError from "../../../private/error.js";
+import DiscordCommand from "../../private/commands/DiscordCommand.ts";
+import DiscordCommandDataBuilder from "../../private/commands/DiscordCommandDataBuilder.ts";
+import HypixelDiscordChatBridgeError from "../../../private/error.ts";
 import { AttachmentBuilder } from "discord.js";
-import { type ChatInputCommandInteractionWithGuild, CommandFlags, CommandPermission, type DiscordManagerWithBot } from "../../../types/discord.js";
-import { type ConfigMinecraftFontRenderer } from "../../../types/config.js";
+import { type ChatInputCommandInteractionWithGuild, CommandFlags, CommandPermission, type DiscordManagerWithBot } from "../../../types/discord.ts";
+import { type ConfigMinecraftFontRenderer } from "../../../types/config.ts";
 
 class RenderTextCommand extends DiscordCommand<DiscordManagerWithBot> {
   override readonly data = new DiscordCommandDataBuilder()

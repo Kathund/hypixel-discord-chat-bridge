@@ -1,5 +1,5 @@
-import MinecraftCommand from "../private/commands/MinecraftCommand.js";
-import MinecraftCommandData from "../private/commands/MinecraftCommandData.js";
+import MinecraftCommand from "../private/commands/MinecraftCommand.ts";
+import MinecraftCommandData from "../private/commands/MinecraftCommandData.ts";
 
 class MeowCommand extends MinecraftCommand {
   private variations: string[] = ["mrrp", "mrrow", "miau", "mauww", "meep", ":3", "nja", "nya", "awawa"];

@@ -1,6 +1,6 @@
-import type { ColorChatCode, FormattingChatCode } from "../types/minecraft.js";
-import type { CreditData, DevData } from "../types/application.js";
-import type { EmbedStyleData, EmbedStyleName } from "../types/discord.js";
+import type { ColorChatCode, FormattingChatCode } from "../types/minecraft.ts";
+import type { CreditData, DevData } from "../types/application.ts";
+import type { EmbedStyleData, EmbedStyleName } from "../types/discord.ts";
 
 export const EmbedStyles: Record<EmbedStyleName, EmbedStyleData> = {
   Generic: { color: "Blue", footer: "DuckySoLucky" },

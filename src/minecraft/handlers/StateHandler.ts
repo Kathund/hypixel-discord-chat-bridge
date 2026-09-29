@@ -1,6 +1,6 @@
-import EmbedHelper, { WarningEmbed } from "../../discord/private/EmbedHelper.js";
-import { hasErrorCode, safeListener, toError } from "../../utils/asyncUtils.js";
-import type MinecraftManager from "../MinecraftManager.js";
+import EmbedHelper, { WarningEmbed } from "../../discord/private/EmbedHelper.ts";
+import { hasErrorCode, safeListener, toError } from "../../utils/asyncUtils.ts";
+import type MinecraftManager from "../MinecraftManager.ts";
 import type { Client } from "minecraft-protocol";
 
 class StateHandler {

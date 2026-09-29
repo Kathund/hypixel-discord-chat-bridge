@@ -1,4 +1,4 @@
-import BridgeEventBus from "../src/private/BridgeEventBus.js";
+import BridgeEventBus from "../src/private/BridgeEventBus.ts";
 import assert from "node:assert/strict";
 import test from "node:test";
 

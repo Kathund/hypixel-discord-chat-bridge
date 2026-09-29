@@ -1,12 +1,12 @@
-import BlacklistUser from "../../data/blacklist/BlacklistUser.js";
-import DiscordCommand from "../private/commands/DiscordCommand.js";
-import DiscordCommandDataBuilder from "../private/commands/DiscordCommandDataBuilder.js";
-import HypixelDiscordChatBridgeError from "../../private/error.js";
-import MowojangAPI from "../../private/MowojangAPI.js";
-import { BasicInteractionResponse, type ChatInputCommandInteractionWithGuild, CommandFlags, CommandPermission } from "../../types/discord.js";
+import BlacklistUser from "../../data/blacklist/BlacklistUser.ts";
+import DiscordCommand from "../private/commands/DiscordCommand.ts";
+import DiscordCommandDataBuilder from "../private/commands/DiscordCommandDataBuilder.ts";
+import HypixelDiscordChatBridgeError from "../../private/error.ts";
+import MowojangAPI from "../../private/MowojangAPI.ts";
+import { BasicInteractionResponse, type ChatInputCommandInteractionWithGuild, CommandFlags, CommandPermission } from "../../types/discord.ts";
 import { Message } from "discord.js";
-import { SuccessEmbed } from "../private/EmbedHelper.js";
-import type LinkedUser from "../../data/linked/LinkedUser.js";
+import { SuccessEmbed } from "../private/EmbedHelper.ts";
+import type LinkedUser from "../../data/linked/LinkedUser.ts";
 
 class BlacklistCommand extends DiscordCommand {
   override readonly data = new DiscordCommandDataBuilder()

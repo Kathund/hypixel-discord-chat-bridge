@@ -1,5 +1,5 @@
-import MinecraftCommand from "../private/commands/MinecraftCommand.js";
-import MinecraftCommandData from "../private/commands/MinecraftCommandData.js";
+import MinecraftCommand from "../private/commands/MinecraftCommand.ts";
+import MinecraftCommandData from "../private/commands/MinecraftCommandData.ts";
 
 class CoinFlipCommand extends MinecraftCommand {
   override readonly data = new MinecraftCommandData().setName("coinflip").setDescription("Flips a coin.").setAliases(["coin"]).setAuthors(["CarsonCodess"]);

@@ -1,7 +1,7 @@
-import HypixelDiscordChatBridgeError from "../private/error.js";
-import { ConfigChangeType, type JsonObject, type JsonValue, type MigrationMap } from "../types/config.js";
-import { displayBigMessage } from "../private/logger.js";
-import { getNestedValue } from "../utils/miscUtils.js";
+import HypixelDiscordChatBridgeError from "../private/error.ts";
+import { ConfigChangeType, type JsonObject, type JsonValue, type MigrationMap } from "../types/config.ts";
+import { displayBigMessage } from "../private/logger.ts";
+import { getNestedValue } from "../utils/miscUtils.ts";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import type { ZodType } from "zod";
 

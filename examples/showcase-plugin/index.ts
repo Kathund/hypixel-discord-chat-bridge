@@ -1,12 +1,12 @@
-import ShowcaseButton from "./components/ShowcaseButton.js";
-import ShowcaseDiscordCommand from "./commands/ShowcaseDiscordCommand.js";
-import ShowcaseEventLogger from "./events/ShowcaseEventLogger.js";
-import ShowcaseMinecraftCommand from "./commands/ShowcaseMinecraftCommand.js";
-import ShowcaseModal from "./components/ShowcaseModal.js";
-import ShowcaseScript from "./scripts/ShowcaseScript.js";
-import showcasePluginConfig from "./config.js";
+import ShowcaseButton from "./components/ShowcaseButton.ts";
+import ShowcaseDiscordCommand from "./commands/ShowcaseDiscordCommand.ts";
+import ShowcaseEventLogger from "./events/ShowcaseEventLogger.ts";
+import ShowcaseMinecraftCommand from "./commands/ShowcaseMinecraftCommand.ts";
+import ShowcaseModal from "./components/ShowcaseModal.ts";
+import ShowcaseScript from "./scripts/ShowcaseScript.ts";
+import showcasePluginConfig from "./config.ts";
 import { type Application, BridgePlugin, type BridgePluginContext } from "hypixel-discord-chat-bridge/plugin-api";
-import type { ShowcasePluginConfig } from "./config.js";
+import type { ShowcasePluginConfig } from "./config.ts";
 
 class ShowcasePlugin extends BridgePlugin<ShowcasePlugin> {
   override readonly metadata = { name: "Plugin API Showcase", description: "Example plugin for the Plugin API", version: "1.0.0", author: "DuckySoLucky" } as const;

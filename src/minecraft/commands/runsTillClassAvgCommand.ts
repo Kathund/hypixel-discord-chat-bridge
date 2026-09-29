@@ -1,9 +1,9 @@
-import MinecraftCommand from "../private/commands/MinecraftCommand.js";
-import MinecraftCommandData from "../private/commands/MinecraftCommandData.js";
-import MinecraftCommandDataOption from "../private/commands/MinecraftCommandDataOption.js";
+import MinecraftCommand from "../private/commands/MinecraftCommand.ts";
+import MinecraftCommandData from "../private/commands/MinecraftCommandData.ts";
+import MinecraftCommandDataOption from "../private/commands/MinecraftCommandDataOption.ts";
 import { DUNGEONEERING_XP, type DungeonClass, DungeonClasses, type SkyBlockMemberPlayerData, type SkyblockProfileWithMe, removeDashesFromUUID } from "hypixel-api-reborn";
-import { formatNumber, titleCase } from "../../utils/stringUtils.js";
-import { getSelectedProfile, getSkyBlockElection } from "../../utils/hypixelUtils.js";
+import { formatNumber, titleCase } from "../../utils/stringUtils.ts";
+import { getSelectedProfile, getSkyBlockElection } from "../../utils/hypixelUtils.ts";
 
 type ClassMap<T> = Record<DungeonClass, T>;
 const FloorsBaseExp = { m7: 300_000, m6: 110_000, m5: 70_000, m4: 55_000, m3: 35_000, m2: 20_000, m1: 15_000 };
@@ -12,13 +12,15 @@ const PerLevel = 200_000_000;
 const Max50Xp = 569_809_640;
 const MaxRuns = 15_000;
 
-// Assumption made
-// Has max Scarf Shard providing a 20% boost - https://hypixelskyblock.minecraft.wiki/w/Scarf_Shard
-// Has Scarf's Grimoire providing a 6% boost - https://hypixelskyblock.minecraft.wiki/w/Scarf%27s_Grimoire
-// Completing the floot 5+ times providing a 50% boost - https://web.archive.org/web/20260305134813/https://wiki.hypixel.net/Dungeoneering#Maximizing_XP_Gains
-// Has Catacombs Expert Ring providing a 10% boost - https://hypixelskyblock.minecraft.wiki/w/Catacombs_Expert_Ring
-// Has Hecatomb at max level (10) providing a 2% boost - https://hypixelskyblock.minecraft.wiki/w/Hecatomb
-// Potentially better system would be reading player's api data to calculate what they have
+/*
+ * Assumption made
+ * Has max Scarf Shard providing a 20% boost - https://hypixelskyblock.minecraft.wiki/w/Scarf_Shard
+ * Has Scarf's Grimoire providing a 6% boost - https://hypixelskyblock.minecraft.wiki/w/Scarf%27s_Grimoire
+ * Completing the floot 5+ times providing a 50% boost - https://web.archive.org/web/20260305134813/https://wiki.hypixel.net/Dungeoneering#Maximizing_XP_Gains
+ * Has Catacombs Expert Ring providing a 10% boost - https://hypixelskyblock.minecraft.wiki/w/Catacombs_Expert_Ring
+ * Has Hecatomb at max level (10) providing a 2% boost - https://hypixelskyblock.minecraft.wiki/w/Hecatomb
+ * Potentially better system would be reading player's api data to calculate what they have
+ */
 const GlobalBoost = 0.2 + 0.06 + 0.5 + 0.1 + 0.02;
 
 class RunStillClassAvgCommand extends MinecraftCommand {

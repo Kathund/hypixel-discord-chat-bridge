@@ -1,13 +1,13 @@
-import GenericManager from "../GenericManager.js";
-import HypixelDiscordChatBridgeError from "../../private/error.js";
-import LinkedUser from "./LinkedUser.js";
-import MowojangAPI from "../../private/MowojangAPI.js";
+import GenericManager from "../GenericManager.ts";
+import HypixelDiscordChatBridgeError from "../../private/error.ts";
+import LinkedUser from "./LinkedUser.ts";
+import MowojangAPI from "../../private/MowojangAPI.ts";
 import { type Guild, type Player, type SkyblockProfileWithMe, removeDashesFromUUID } from "hypixel-api-reborn";
-import { type LinkedData, LinkedDataSchema, type LinkedUserData, type OldFormat } from "../../types/linked.js";
+import { type LinkedData, LinkedDataSchema, type LinkedUserData, type OldFormat } from "../../types/linked.ts";
 import { access, readFile, writeFile } from "node:fs/promises";
-import { getNetWorthCalculator, getPlayer, getSelectedProfile } from "../../utils/hypixelUtils.js";
-import type DataManager from "../DataManager.js";
-import type { PlayerVariableStats } from "../../private/constants.js";
+import { getNetWorthCalculator, getPlayer, getSelectedProfile } from "../../utils/hypixelUtils.ts";
+import type DataManager from "../DataManager.ts";
+import type { PlayerVariableStats } from "../../private/constants.ts";
 
 class LinkedManager extends GenericManager<LinkedUserData, LinkedData, LinkedUser> {
   constructor(data: DataManager) {

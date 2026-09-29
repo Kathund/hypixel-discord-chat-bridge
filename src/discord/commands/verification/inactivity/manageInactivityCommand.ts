@@ -1,13 +1,13 @@
-import DiscordCommand from "../../../private/commands/DiscordCommand.js";
-import DiscordCommandDataBuilder from "../../../private/commands/DiscordCommandDataBuilder.js";
-import HypixelDiscordChatBridgeError from "../../../../private/error.js";
-import InactiveUser from "../../../../data/inactivity/InactiveUser.js";
+import DiscordCommand from "../../../private/commands/DiscordCommand.ts";
+import DiscordCommandDataBuilder from "../../../private/commands/DiscordCommandDataBuilder.ts";
+import HypixelDiscordChatBridgeError from "../../../../private/error.ts";
+import InactiveUser from "../../../../data/inactivity/InactiveUser.ts";
 import ms, { type StringValue } from "ms";
-import { CommandFlags, CommandPermission } from "../../../../types/discord.js";
-import { SuccessEmbed } from "../../../private/EmbedHelper.js";
-import { getDisplayName } from "../../../../utils/discordUtils.js";
-import { truncateString } from "../../../../utils/stringUtils.js";
-import type { AutocompleteInteractionWithGuild, AutocompleteOption, ChatInputCommandInteractionWithGuild } from "../../../../types/discord.js";
+import { CommandFlags, CommandPermission } from "../../../../types/discord.ts";
+import { SuccessEmbed } from "../../../private/EmbedHelper.ts";
+import { getDisplayName } from "../../../../utils/discordUtils.ts";
+import { truncateString } from "../../../../utils/stringUtils.ts";
+import type { AutocompleteInteractionWithGuild, AutocompleteOption, ChatInputCommandInteractionWithGuild } from "../../../../types/discord.ts";
 
 class ManageInactivityCommand extends DiscordCommand {
   override readonly data = new DiscordCommandDataBuilder()

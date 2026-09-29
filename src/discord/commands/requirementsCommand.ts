@@ -1,11 +1,11 @@
-import DiscordCommand from "../private/commands/DiscordCommand.js";
-import DiscordCommandDataBuilder from "../private/commands/DiscordCommandDataBuilder.js";
-import EmbedHelper from "../private/EmbedHelper.js";
-import HypixelDiscordChatBridgeError from "../../private/error.js";
-import MowojangAPI from "../../private/MowojangAPI.js";
-import { type ChatInputCommandInteractionWithGuild, CommandFlags, type Requirement, type Requirements } from "../../types/discord.js";
-import { formatNumber, titleCaseCamel } from "../../utils/stringUtils.js";
-import type { PlayerVariableStatsKeysNumber } from "../../private/constants.js";
+import DiscordCommand from "../private/commands/DiscordCommand.ts";
+import DiscordCommandDataBuilder from "../private/commands/DiscordCommandDataBuilder.ts";
+import EmbedHelper from "../private/EmbedHelper.ts";
+import HypixelDiscordChatBridgeError from "../../private/error.ts";
+import MowojangAPI from "../../private/MowojangAPI.ts";
+import { type ChatInputCommandInteractionWithGuild, CommandFlags, type Requirement, type Requirements } from "../../types/discord.ts";
+import { formatNumber, titleCaseCamel } from "../../utils/stringUtils.ts";
+import type { PlayerVariableStatsKeysNumber } from "../../private/constants.ts";
 
 class RequirementsCommand extends DiscordCommand {
   override readonly data = new DiscordCommandDataBuilder()

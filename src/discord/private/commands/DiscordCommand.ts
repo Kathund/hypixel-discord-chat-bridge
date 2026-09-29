@@ -1,14 +1,14 @@
-import BasicInteractionData from "../BasicInteractionData.js";
+import BasicInteractionData from "../BasicInteractionData.ts";
 import {
   type AutocompleteInteractionWithGuild,
   type AutocompleteOption,
   BasicInteractionResponse,
   type ChatInputCommandInteractionWithGuild,
   type DiscordManagerWithClient
-} from "../../../types/discord.js";
-import { ParseAutoComplete } from "../../../utils/discordUtils.js";
-import type DiscordCommandDataBuilder from "./DiscordCommandDataBuilder.js";
-import type DiscordManager from "../../DiscordManager.js";
+} from "../../../types/discord.ts";
+import { ParseAutoComplete } from "../../../utils/discordUtils.ts";
+import type DiscordCommandDataBuilder from "./DiscordCommandDataBuilder.ts";
+import type DiscordManager from "../../DiscordManager.ts";
 
 abstract class DiscordCommand<Manager extends DiscordManager = DiscordManagerWithClient> extends BasicInteractionData<Manager> {
   abstract readonly data: DiscordCommandDataBuilder;

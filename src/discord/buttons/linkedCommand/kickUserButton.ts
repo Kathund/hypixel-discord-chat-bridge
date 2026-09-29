@@ -1,8 +1,8 @@
-import DiscordButton from "../../private/buttons/DiscordButton.js";
-import DiscordButtonData from "../../private/buttons/DiscordButtonData.js";
-import HypixelDiscordChatBridgeError from "../../../private/error.js";
-import LinkedCommand from "../../commands/verification/linkedCommand.js";
-import { type ButtonInteractionWithGuild, ButtonResponse, CommandFlags, CommandPermission } from "../../../types/discord.js";
+import DiscordButton from "../../private/buttons/DiscordButton.ts";
+import DiscordButtonData from "../../private/buttons/DiscordButtonData.ts";
+import HypixelDiscordChatBridgeError from "../../../private/error.ts";
+import LinkedCommand from "../../commands/verification/linkedCommand.ts";
+import { type ButtonInteractionWithGuild, ButtonResponse, CommandFlags, CommandPermission } from "../../../types/discord.ts";
 import { LabelBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } from "discord.js";
 
 class KickUserButton extends DiscordButton {

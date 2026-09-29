@@ -1,9 +1,9 @@
-import MinecraftCommand from "../private/commands/MinecraftCommand.js";
-import MinecraftCommandData from "../private/commands/MinecraftCommandData.js";
-import MinecraftCommandDataOption from "../private/commands/MinecraftCommandDataOption.js";
-import { type DuelsInternalName, type DuelsModSearch, DuelsModeAliastoInternalMap, type DuelsModeName, DuelsModeNames } from "../../types/minecraft.js";
-import { formatNumber } from "../../utils/stringUtils.js";
-import { getPlayer } from "../../utils/hypixelUtils.js";
+import MinecraftCommand from "../private/commands/MinecraftCommand.ts";
+import MinecraftCommandData from "../private/commands/MinecraftCommandData.ts";
+import MinecraftCommandDataOption from "../private/commands/MinecraftCommandDataOption.ts";
+import { type DuelsInternalName, type DuelsModSearch, DuelsModeAliastoInternalMap, type DuelsModeName, DuelsModeNames } from "../../types/minecraft.ts";
+import { formatNumber } from "../../utils/stringUtils.ts";
+import { getPlayer } from "../../utils/hypixelUtils.ts";
 import type { DuelsModeFull, Player } from "hypixel-api-reborn";
 
 class DuelsCommand extends MinecraftCommand {

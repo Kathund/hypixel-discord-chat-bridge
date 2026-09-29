@@ -1,6 +1,6 @@
-import BasicInteractionData from "../BasicInteractionData.js";
-import { ButtonResponse, type DiscordManagerWithClient, type StringSelectMenuInteractionWithGuild } from "../../../types/discord.js";
-import type DiscordManager from "../../DiscordManager.js";
+import BasicInteractionData from "../BasicInteractionData.ts";
+import { ButtonResponse, type DiscordManagerWithClient, type StringSelectMenuInteractionWithGuild } from "../../../types/discord.ts";
+import type DiscordManager from "../../DiscordManager.ts";
 import type DiscordStringSelectMenuData from "./DiscordStringSelectMenuData.ts";
 
 abstract class DiscordStringSelectMenu<Manager extends DiscordManager = DiscordManagerWithClient> extends BasicInteractionData<Manager> {

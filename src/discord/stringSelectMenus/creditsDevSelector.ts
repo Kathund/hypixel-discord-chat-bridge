@@ -1,8 +1,8 @@
-import CreditsCommand from "../commands/creditsCommand.js";
-import DiscordStringSelectMenu from "../private/stringSelectMenu/DiscordStringSelectMenu.js";
-import DiscordStringSelectMenuData from "../private/stringSelectMenu/DiscordStringSelectMenuData.js";
-import { ButtonResponse, type StringSelectMenuInteractionWithGuild } from "../../types/discord.js";
-import type { DevName } from "../../types/application.js";
+import CreditsCommand from "../commands/creditsCommand.ts";
+import DiscordStringSelectMenu from "../private/stringSelectMenu/DiscordStringSelectMenu.ts";
+import DiscordStringSelectMenuData from "../private/stringSelectMenu/DiscordStringSelectMenuData.ts";
+import { ButtonResponse, type StringSelectMenuInteractionWithGuild } from "../../types/discord.ts";
+import type { DevName } from "../../types/application.ts";
 
 class CreditsDevSelector extends DiscordStringSelectMenu {
   override readonly data = new DiscordStringSelectMenuData("creditsDevSelector");

@@ -1,11 +1,11 @@
-import ConfigManager from "../../src/ConfigManager.js";
-import InformationCommand from "../../src/discord/commands/informationCommand.js";
-import { addTable, initMarkdownFile, saveMarkdownFile } from "../utils.js";
-import { getDiscordCommandPermission } from "../../src/utils/discordUtils.js";
+import ConfigManager from "../../src/ConfigManager.ts";
+import InformationCommand from "../../src/discord/commands/informationCommand.ts";
+import { addTable, initMarkdownFile, saveMarkdownFile } from "../utils.ts";
+import { getDiscordCommandPermission } from "../../src/utils/discordUtils.ts";
 
 let lines = await initMarkdownFile("docs/Commands.md");
 const config = await new ConfigManager(false).init();
-const { default: Application } = await import("../../src/Application.js");
+const { default: Application } = await import("../../src/Application.ts");
 const application = new Application(config, false);
 
 lines.push(

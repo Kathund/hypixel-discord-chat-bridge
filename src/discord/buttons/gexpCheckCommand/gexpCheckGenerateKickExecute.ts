@@ -1,10 +1,10 @@
-import DiscordButton from "../../private/buttons/DiscordButton.js";
-import DiscordButtonData from "../../private/buttons/DiscordButtonData.js";
-import HypixelDiscordChatBridgeError from "../../../private/error.js";
-import { type ButtonInteractionWithGuild, CommandFlags, CommandPermission, type DiscordManagerWithBot } from "../../../types/discord.js";
+import DiscordButton from "../../private/buttons/DiscordButton.ts";
+import DiscordButtonData from "../../private/buttons/DiscordButtonData.ts";
+import HypixelDiscordChatBridgeError from "../../../private/error.ts";
+import { type ButtonInteractionWithGuild, CommandFlags, CommandPermission, type DiscordManagerWithBot } from "../../../types/discord.ts";
 import { MessageFlags } from "discord.js";
-import { SuccessEmbed } from "../../private/EmbedHelper.js";
-import { delay } from "../../../utils/miscUtils.js";
+import { SuccessEmbed } from "../../private/EmbedHelper.ts";
+import { delay } from "../../../utils/miscUtils.ts";
 
 class GexpCheckGenerateKickExecuteButton extends DiscordButton<DiscordManagerWithBot> {
   override readonly data = new DiscordButtonData("gexpCheckGenerateKickExecute");

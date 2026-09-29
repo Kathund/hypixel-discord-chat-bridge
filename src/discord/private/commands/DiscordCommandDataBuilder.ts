@@ -14,7 +14,7 @@ import {
   type SlashCommandSubcommandGroupBuilder,
   type SlashCommandUserOption
 } from "discord.js";
-import type { DevName } from "../../../types/application.js";
+import type { DevName } from "../../../types/application.ts";
 
 class DiscordCommandDataBuilder extends SlashCommandBuilder {
   #authors: DevName[] = ["DuckySoLucky"];

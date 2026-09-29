@@ -1,10 +1,10 @@
-import DiscordButton from "../../private/buttons/DiscordButton.js";
-import DiscordButtonData from "../../private/buttons/DiscordButtonData.js";
-import GexpCheckCommand from "../../commands/verification/inactivity/gexpCheckCommand.js";
-import HypixelDiscordChatBridgeError from "../../../private/error.js";
-import { type ButtonInteractionWithGuild, ButtonResponse, CommandFlags, CommandPermission } from "../../../types/discord.js";
+import DiscordButton from "../../private/buttons/DiscordButton.ts";
+import DiscordButtonData from "../../private/buttons/DiscordButtonData.ts";
+import GexpCheckCommand from "../../commands/verification/inactivity/gexpCheckCommand.ts";
+import HypixelDiscordChatBridgeError from "../../../private/error.ts";
+import { type ButtonInteractionWithGuild, ButtonResponse, CommandFlags, CommandPermission } from "../../../types/discord.ts";
 import { CheckboxGroupBuilder, CheckboxGroupOptionBuilder, LabelBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } from "discord.js";
-import { type GexpCheckOptionsDisplays, gexpCheckData } from "../../../types/inactivity.js";
+import { type GexpCheckOptionsDisplays, gexpCheckData } from "../../../types/inactivity.ts";
 
 class GexpCheckFiltersButton extends DiscordButton {
   override readonly data = new DiscordButtonData("gexpCheckFilters");

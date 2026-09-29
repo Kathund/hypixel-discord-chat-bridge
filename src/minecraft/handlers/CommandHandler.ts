@@ -1,10 +1,10 @@
-import ExtensionRegistry from "../../extensions/ExtensionRegistry.js";
-import loadExtensionModules from "../../extensions/moduleLoader.js";
+import ExtensionRegistry from "../../extensions/ExtensionRegistry.ts";
+import loadExtensionModules from "../../extensions/moduleLoader.ts";
 import { Collection } from "discord.js";
-import { formatError } from "../../utils/miscUtils.js";
-import { toError } from "../../utils/asyncUtils.js";
-import type MinecraftCommand from "../private/commands/MinecraftCommand.js";
-import type MinecraftManager from "../MinecraftManager.js";
+import { formatError } from "../../utils/miscUtils.ts";
+import { toError } from "../../utils/asyncUtils.ts";
+import type MinecraftCommand from "../private/commands/MinecraftCommand.ts";
+import type MinecraftManager from "../MinecraftManager.ts";
 import type { SoopyCommandData, SoopyCommandListResponse, SoopyCommandResponse } from "../../types/minecraft.ts";
 
 class CommandHandler {

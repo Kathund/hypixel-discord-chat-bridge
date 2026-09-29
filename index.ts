@@ -1,13 +1,13 @@
-import ConfigManager from "./src/ConfigManager.js";
+import ConfigManager from "./src/ConfigManager.ts";
 import { mkdir } from "node:fs/promises";
-import "./src/private/logger.js";
+import "./src/private/logger.ts";
 
 await mkdir("./data/", { recursive: true });
 
 const configManager = new ConfigManager();
 const config = await configManager.init();
 
-const { default: Application } = await import("./src/Application.js");
+const { default: Application } = await import("./src/Application.ts");
 const application = new Application(config);
 let stopping = false;
 const shutdown = async (signal: NodeJS.Signals): Promise<void> => {

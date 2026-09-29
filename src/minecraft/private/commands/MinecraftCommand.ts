@@ -1,12 +1,12 @@
 import ms, { type StringValue } from "ms";
 import { AsyncLocalStorage } from "node:async_hooks";
-import { MinecraftRequestTimeoutError } from "../../MinecraftRequestBroker.js";
-import { delay, formatError, generateId } from "../../../utils/miscUtils.js";
-import { splitMessage } from "../../../utils/stringUtils.js";
-import { toError } from "../../../utils/asyncUtils.js";
-import type MinecraftCommandData from "./MinecraftCommandData.js";
-import type MinecraftManager from "../../MinecraftManager.js";
-import type { MinecraftCommandContext, MinecraftManagerWithBot } from "../../../types/minecraft.js";
+import { MinecraftRequestTimeoutError } from "../../MinecraftRequestBroker.ts";
+import { delay, formatError, generateId } from "../../../utils/miscUtils.ts";
+import { splitMessage } from "../../../utils/stringUtils.ts";
+import { toError } from "../../../utils/asyncUtils.ts";
+import type MinecraftCommandData from "./MinecraftCommandData.ts";
+import type MinecraftManager from "../../MinecraftManager.ts";
+import type { MinecraftCommandContext, MinecraftManagerWithBot } from "../../../types/minecraft.ts";
 
 enum SendErrorType {
   RATE_LIMITED = "rate-limited",

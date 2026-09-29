@@ -1,9 +1,9 @@
 import { type Attachment, type Message } from "discord.js";
-import { getDisplayName } from "../../utils/discordUtils.js";
-import { toError } from "../../utils/asyncUtils.js";
+import { getDisplayName } from "../../utils/discordUtils.ts";
+import { toError } from "../../utils/asyncUtils.ts";
 import { unemojify } from "node-emoji";
-import type DiscordManager from "../DiscordManager.js";
-import type { DiscordToMinecraftMessage } from "../../types/bridge.js";
+import type DiscordManager from "../DiscordManager.ts";
+import type { DiscordToMinecraftMessage } from "../../types/bridge.ts";
 
 class MessageHandler {
   constructor(private readonly discord: DiscordManager) {}

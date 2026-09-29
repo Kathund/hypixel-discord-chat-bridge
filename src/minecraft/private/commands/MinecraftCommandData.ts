@@ -1,6 +1,6 @@
-import type MinecraftCommandDataOption from "./MinecraftCommandDataOption.js";
-import type { CommandDataJSON } from "../../../types/minecraft.js";
-import type { DevName } from "../../../types/application.js";
+import type MinecraftCommandDataOption from "./MinecraftCommandDataOption.ts";
+import type { CommandDataJSON } from "../../../types/minecraft.ts";
+import type { DevName } from "../../../types/application.ts";
 
 class MinecraftCommandData {
   #name: string = "";

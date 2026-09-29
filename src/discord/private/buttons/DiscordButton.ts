@@ -1,7 +1,7 @@
-import BasicInteractionData from "../BasicInteractionData.js";
-import { type ButtonInteractionWithGuild, ButtonResponse, type DiscordManagerWithClient } from "../../../types/discord.js";
-import type DiscordButtonData from "./DiscordButtonData.js";
-import type DiscordManager from "../../DiscordManager.js";
+import BasicInteractionData from "../BasicInteractionData.ts";
+import { type ButtonInteractionWithGuild, ButtonResponse, type DiscordManagerWithClient } from "../../../types/discord.ts";
+import type DiscordButtonData from "./DiscordButtonData.ts";
+import type DiscordManager from "../../DiscordManager.ts";
 import type { Message } from "discord.js";
 
 abstract class DiscordButton<Manager extends DiscordManager = DiscordManagerWithClient> extends BasicInteractionData<Manager> {

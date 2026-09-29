@@ -1,7 +1,7 @@
-import BasicScript from "../../BasicScript.js";
-import { getSkyBlockSkills } from "../../../utils/hypixelUtils.js";
-import { intervalSchedule } from "../../../types/scripts.js";
-import type ScriptManager from "../../ScriptsManager.js";
+import BasicScript from "../../BasicScript.ts";
+import { getSkyBlockSkills } from "../../../utils/hypixelUtils.ts";
+import { intervalSchedule } from "../../../types/scripts.ts";
+import type ScriptManager from "../../ScriptsManager.ts";
 
 class SkyBlockVersionScript extends BasicScript {
   private skyblockVersion?: string;

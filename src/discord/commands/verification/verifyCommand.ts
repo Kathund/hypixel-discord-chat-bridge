@@ -1,13 +1,13 @@
-import DiscordCommand from "../../private/commands/DiscordCommand.js";
-import DiscordCommandDataBuilder from "../../private/commands/DiscordCommandDataBuilder.js";
-import EmbedHelper, { SuccessEmbed } from "../../private/EmbedHelper.js";
-import HypixelDiscordChatBridgeError from "../../../private/error.js";
-import LinkedUser from "../../../data/linked/LinkedUser.js";
-import UpdateCommand from "./updateCommand.js";
-import { type ChatInputCommandInteractionWithGuild, CommandFlags, type DiscordManagerWithBot } from "../../../types/discord.js";
+import DiscordCommand from "../../private/commands/DiscordCommand.ts";
+import DiscordCommandDataBuilder from "../../private/commands/DiscordCommandDataBuilder.ts";
+import EmbedHelper, { SuccessEmbed } from "../../private/EmbedHelper.ts";
+import HypixelDiscordChatBridgeError from "../../../private/error.ts";
+import LinkedUser from "../../../data/linked/LinkedUser.ts";
+import UpdateCommand from "./updateCommand.ts";
+import { type ChatInputCommandInteractionWithGuild, CommandFlags, type DiscordManagerWithBot } from "../../../types/discord.ts";
 import { MessageFlags } from "discord.js";
-import { delay } from "../../../utils/miscUtils.js";
-import { getPlayer } from "../../../utils/hypixelUtils.js";
+import { delay } from "../../../utils/miscUtils.ts";
+import { getPlayer } from "../../../utils/hypixelUtils.ts";
 
 class VerifyCommand extends DiscordCommand<DiscordManagerWithBot> {
   override readonly data = new DiscordCommandDataBuilder()

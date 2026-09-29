@@ -1,9 +1,9 @@
-import MinecraftCommand from "../private/commands/MinecraftCommand.js";
-import MinecraftCommandData from "../private/commands/MinecraftCommandData.js";
-import MinecraftCommandDataOption from "../private/commands/MinecraftCommandDataOption.js";
+import MinecraftCommand from "../private/commands/MinecraftCommand.ts";
+import MinecraftCommandData from "../private/commands/MinecraftCommandData.ts";
+import MinecraftCommandDataOption from "../private/commands/MinecraftCommandDataOption.ts";
 import { SkyBlockMemberMiningPowder } from "hypixel-api-reborn";
-import { formatNumber, titleCase } from "../../utils/stringUtils.js";
-import { getSelectedProfile } from "../../utils/hypixelUtils.js";
+import { formatNumber, titleCase } from "../../utils/stringUtils.ts";
+import { getSelectedProfile } from "../../utils/hypixelUtils.ts";
 
 class HotmCommand extends MinecraftCommand {
   override readonly data = new MinecraftCommandData()

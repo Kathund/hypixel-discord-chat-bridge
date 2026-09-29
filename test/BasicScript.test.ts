@@ -1,7 +1,7 @@
-import BasicScript from "../src/scripts/BasicScript.js";
+import BasicScript from "../src/scripts/BasicScript.ts";
 import assert from "node:assert/strict";
 import test from "node:test";
-import type ScriptManager from "../src/scripts/ScriptsManager.js";
+import type ScriptManager from "../src/scripts/ScriptsManager.ts";
 
 class TestScript extends BasicScript {
   executions: number = 0;

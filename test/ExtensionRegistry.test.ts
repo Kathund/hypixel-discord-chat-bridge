@@ -1,4 +1,4 @@
-import ExtensionRegistry, { ExtensionRegistrationError } from "../src/extensions/ExtensionRegistry.js";
+import ExtensionRegistry, { ExtensionRegistrationError } from "../src/extensions/ExtensionRegistry.ts";
 import assert from "node:assert/strict";
 import test from "node:test";
 

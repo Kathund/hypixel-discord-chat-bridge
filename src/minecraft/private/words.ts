@@ -1,4 +1,4 @@
-import HypixelDiscordChatBridgeError from "../../private/error.js";
+import HypixelDiscordChatBridgeError from "../../private/error.ts";
 
 export const words = [
   // Minecraft

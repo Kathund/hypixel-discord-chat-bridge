@@ -1,6 +1,6 @@
-import DiscordButton from "../../private/buttons/DiscordButton.js";
-import DiscordButtonData from "../../private/buttons/DiscordButtonData.js";
-import { type ButtonInteractionWithGuild, ButtonResponse, CommandFlags, CommandPermission } from "../../../types/discord.js";
+import DiscordButton from "../../private/buttons/DiscordButton.ts";
+import DiscordButtonData from "../../private/buttons/DiscordButtonData.ts";
+import { type ButtonInteractionWithGuild, ButtonResponse, CommandFlags, CommandPermission } from "../../../types/discord.ts";
 import { LabelBuilder, ModalBuilder, TextDisplayBuilder, TextInputBuilder, TextInputStyle } from "discord.js";
 
 class GexpCheckGenerateKickButton extends DiscordButton {

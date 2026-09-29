@@ -1,10 +1,10 @@
-import ExtensionRegistry from "../../extensions/ExtensionRegistry.js";
-import loadExtensionModules from "../../extensions/moduleLoader.js";
-import { ButtonResponse, type StringSelectMenuInteractionWithGuild } from "../../types/discord.js";
+import ExtensionRegistry from "../../extensions/ExtensionRegistry.ts";
+import loadExtensionModules from "../../extensions/moduleLoader.ts";
+import { ButtonResponse, type StringSelectMenuInteractionWithGuild } from "../../types/discord.ts";
 import { MessageFlags } from "discord.js";
-import { toError } from "../../utils/asyncUtils.js";
-import type DiscordManager from "../DiscordManager.js";
-import type DiscordStringSelectMenu from "../private/stringSelectMenu/DiscordStringSelectMenu.js";
+import { toError } from "../../utils/asyncUtils.ts";
+import type DiscordManager from "../DiscordManager.ts";
+import type DiscordStringSelectMenu from "../private/stringSelectMenu/DiscordStringSelectMenu.ts";
 
 class StringSelectMenuHandler {
   readonly #stringSelectMenus = new ExtensionRegistry<DiscordStringSelectMenu<DiscordManager>>();

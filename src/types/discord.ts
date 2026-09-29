@@ -12,10 +12,10 @@ import {
   type ModalSubmitInteraction,
   StringSelectMenuInteraction
 } from "discord.js";
-import type DiscordManager from "../discord/DiscordManager.js";
-import type { Config, ConfigDiscordEmbedsColors } from "./config.js";
-import type { DevData, DevName } from "./application.js";
-import type { MinecraftManagerWithBot } from "./minecraft.js";
+import type DiscordManager from "../discord/DiscordManager.ts";
+import type { Config, ConfigDiscordEmbedsColors } from "./config.ts";
+import type { DevData, DevName } from "./application.ts";
+import type { MinecraftManagerWithBot } from "./minecraft.ts";
 
 declare module "discord.js" {
   export interface Client {

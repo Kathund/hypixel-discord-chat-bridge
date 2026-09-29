@@ -1,8 +1,8 @@
-import BasicScript from "../../BasicScript.js";
+import BasicScript from "../../BasicScript.ts";
 import minecraftProtocol from "minecraft-protocol";
 import ms, { type StringValue } from "ms";
-import { intervalSchedule } from "../../../types/scripts.js";
-import type ScriptManager from "../../ScriptsManager.js";
+import { intervalSchedule } from "../../../types/scripts.ts";
+import type ScriptManager from "../../ScriptsManager.ts";
 
 class AlphaPlayerCountTrackerScript extends BasicScript {
   private lastPlayerCount = 0;

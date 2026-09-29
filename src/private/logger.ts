@@ -1,8 +1,8 @@
 import chalk from "chalk";
 import { Logger, createLogger, format, transports } from "winston";
 import { access, readFile } from "node:fs/promises";
-import { getTimestamp, replaceVariables, titleCase } from "../utils/stringUtils.js";
-import type { LogData } from "../types/misc.js";
+import { getTimestamp, replaceVariables, titleCase } from "../utils/stringUtils.ts";
+import type { LogData } from "../types/misc.ts";
 
 const otherLog = { level: "other", background: chalk.bgCyan.black, color: chalk.reset.cyan };
 const logs: LogData[] = [

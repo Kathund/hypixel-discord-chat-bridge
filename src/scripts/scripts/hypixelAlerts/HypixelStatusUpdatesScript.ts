@@ -1,8 +1,8 @@
-import BasicScript from "../../BasicScript.js";
+import BasicScript from "../../BasicScript.ts";
 import Parser from "rss-parser";
-import { delay } from "../../../utils/miscUtils.js";
-import { intervalSchedule } from "../../../types/scripts.js";
-import type ScriptManager from "../../ScriptsManager.js";
+import { delay } from "../../../utils/miscUtils.ts";
+import { intervalSchedule } from "../../../types/scripts.ts";
+import type ScriptManager from "../../ScriptsManager.ts";
 
 interface IncidentState {
   notified: boolean;

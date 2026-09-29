@@ -1,7 +1,7 @@
-import DiscordCommand from "../private/commands/DiscordCommand.js";
-import DiscordCommandDataBuilder from "../private/commands/DiscordCommandDataBuilder.js";
-import EmbedHelper from "../private/EmbedHelper.js";
-import { type ChatInputCommandInteractionWithGuild, CommandPermission } from "../../types/discord.js";
+import DiscordCommand from "../private/commands/DiscordCommand.ts";
+import DiscordCommandDataBuilder from "../private/commands/DiscordCommandDataBuilder.ts";
+import EmbedHelper from "../private/EmbedHelper.ts";
+import { type ChatInputCommandInteractionWithGuild, CommandPermission } from "../../types/discord.ts";
 
 class UptimeCommand extends DiscordCommand {
   override readonly data = new DiscordCommandDataBuilder().setName("uptime").setDescription("Shows the uptime of the bot.");

@@ -1,11 +1,11 @@
-import DiscordCommand from "../private/commands/DiscordCommand.js";
-import DiscordCommandDataBuilder from "../private/commands/DiscordCommandDataBuilder.js";
-import EmbedHelper from "../private/EmbedHelper.js";
-import HypixelDiscordChatBridgeError from "../../private/error.js";
-import InformationCommand from "./informationCommand.js";
-import { type ChatInputCommandInteractionWithGuild, CommandFlags } from "../../types/discord.js";
-import { CommonDevs } from "../../private/constants.js";
-import { convertDevDataToName } from "../../utils/miscUtils.js";
+import DiscordCommand from "../private/commands/DiscordCommand.ts";
+import DiscordCommandDataBuilder from "../private/commands/DiscordCommandDataBuilder.ts";
+import EmbedHelper from "../private/EmbedHelper.ts";
+import HypixelDiscordChatBridgeError from "../../private/error.ts";
+import InformationCommand from "./informationCommand.ts";
+import { type ChatInputCommandInteractionWithGuild, CommandFlags } from "../../types/discord.ts";
+import { CommonDevs } from "../../private/constants.ts";
+import { convertDevDataToName } from "../../utils/miscUtils.ts";
 
 class HelpCommand extends DiscordCommand {
   override readonly data = new DiscordCommandDataBuilder()

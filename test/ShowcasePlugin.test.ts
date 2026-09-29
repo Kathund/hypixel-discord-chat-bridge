@@ -1,9 +1,9 @@
-import BridgeEventBus from "../src/private/BridgeEventBus.js";
-import ShowcasePlugin from "../examples/showcase-plugin/index.js";
+import BridgeEventBus from "../src/private/BridgeEventBus.ts";
+import ShowcasePlugin from "../examples/showcase-plugin/index.ts";
 import assert from "node:assert/strict";
-import showcasePluginConfig from "../examples/showcase-plugin/config.js";
+import showcasePluginConfig from "../examples/showcase-plugin/config.ts";
 import test from "node:test";
-import type Application from "../src/Application.js";
+import type Application from "../src/Application.ts";
 import type {
   BridgePluginContext,
   DiscordButtonFactory,
@@ -12,10 +12,10 @@ import type {
   DiscordStringSelectMenuFactory,
   MinecraftCommandFactory,
   ScriptFactory
-} from "../src/plugins/BridgePlugin.js";
-import type { DiscordManagerWithPlugin } from "../src/types/discord.js";
-import type { MinecraftManagerWithPlugin } from "../src/types/minecraft.js";
-import type { ScriptManagerWithPlugin } from "../src/types/scripts.js";
+} from "../src/plugins/BridgePlugin.ts";
+import type { DiscordManagerWithPlugin } from "../src/types/discord.ts";
+import type { MinecraftManagerWithPlugin } from "../src/types/minecraft.ts";
+import type { ScriptManagerWithPlugin } from "../src/types/scripts.ts";
 
 function createPluginContext(): {
   readonly context: BridgePluginContext<ShowcasePlugin>;

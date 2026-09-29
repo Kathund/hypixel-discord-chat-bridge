@@ -5,8 +5,8 @@ import {
   DiscordModalData,
   type ModalSubmitInteractionWithGuild
 } from "hypixel-discord-chat-bridge/plugin-api";
-import { showcaseModalId, showcaseModalInputId } from "./ids.js";
-import type ShowcasePlugin from "../index.js";
+import { showcaseModalId, showcaseModalInputId } from "./ids.ts";
+import type ShowcasePlugin from "../index.ts";
 
 class ShowcaseModal extends DiscordModal<DiscordManagerWithPlugin<ShowcasePlugin>> {
   override readonly data = new DiscordModalData(showcaseModalId);

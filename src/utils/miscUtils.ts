@@ -1,11 +1,11 @@
-import HypixelDiscordChatBridgeError from "../private/error.js";
+import HypixelDiscordChatBridgeError from "../private/error.ts";
 import { DiscordjsError } from "discord.js";
-import { ErrorEmbed } from "../discord/private/EmbedHelper.js";
+import { ErrorEmbed } from "../discord/private/EmbedHelper.ts";
 import { HypixelAPIRebornError } from "hypixel-api-reborn";
-import { MinecraftRequestTimeoutError } from "../minecraft/MinecraftRequestBroker.js";
-import type { DataWithTimestamp } from "../types/misc.js";
-import type { DevData, ValidErrors } from "../types/application.js";
-import type { EmbedHelperField } from "../types/discord.js";
+import { MinecraftRequestTimeoutError } from "../minecraft/MinecraftRequestBroker.ts";
+import type { DataWithTimestamp } from "../types/misc.ts";
+import type { DevData, ValidErrors } from "../types/application.ts";
+import type { EmbedHelperField } from "../types/discord.ts";
 
 export function delay(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));

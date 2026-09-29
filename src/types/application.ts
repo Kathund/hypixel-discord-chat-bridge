@@ -1,11 +1,11 @@
-import type Application from "../Application.js";
-import type HypixelDiscordChatBridgeError from "../private/error.js";
-import type { CommonDevs } from "../private/constants.js";
-import type { DiscordManagerWithClient } from "./discord.js";
+import type Application from "../Application.ts";
+import type HypixelDiscordChatBridgeError from "../private/error.ts";
+import type { CommonDevs } from "../private/constants.ts";
+import type { DiscordManagerWithClient } from "./discord.ts";
 import type { DiscordjsError } from "discord.js";
 import type { HypixelAPIRebornError } from "hypixel-api-reborn";
-import type { MinecraftManagerWithBot } from "./minecraft.js";
-import type { MinecraftRequestTimeoutError } from "../minecraft/MinecraftRequestBroker.js";
+import type { MinecraftManagerWithBot } from "./minecraft.ts";
+import type { MinecraftRequestTimeoutError } from "../minecraft/MinecraftRequestBroker.ts";
 
 export type ApplicationWithClient = Application & { discord: DiscordManagerWithClient };
 export type ApplicationWithBot = Application & { minecraft: MinecraftManagerWithBot };

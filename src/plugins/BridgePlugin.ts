@@ -1,16 +1,16 @@
-import { toCamelCase } from "../utils/stringUtils.js";
-import type Application from "../Application.js";
-import type BasicScript from "../scripts/BasicScript.js";
-import type BridgeEventBus from "../private/BridgeEventBus.js";
-import type DiscordButton from "../discord/private/buttons/DiscordButton.js";
-import type DiscordCommand from "../discord/private/commands/DiscordCommand.js";
-import type DiscordModal from "../discord/private/modals/DiscordModal.js";
-import type DiscordStringSelectMenu from "../discord/private/stringSelectMenu/DiscordStringSelectMenu.js";
-import type MinecraftCommand from "../minecraft/private/commands/MinecraftCommand.js";
-import type { DiscordManagerWithPlugin } from "../types/discord.js";
-import type { Lifecycle } from "../core/Lifecycle.js";
-import type { MinecraftManagerWithPlugin } from "../types/minecraft.js";
-import type { ScriptManagerWithPlugin } from "../types/scripts.js";
+import { toCamelCase } from "../utils/stringUtils.ts";
+import type Application from "../Application.ts";
+import type BasicScript from "../scripts/BasicScript.ts";
+import type BridgeEventBus from "../private/BridgeEventBus.ts";
+import type DiscordButton from "../discord/private/buttons/DiscordButton.ts";
+import type DiscordCommand from "../discord/private/commands/DiscordCommand.ts";
+import type DiscordModal from "../discord/private/modals/DiscordModal.ts";
+import type DiscordStringSelectMenu from "../discord/private/stringSelectMenu/DiscordStringSelectMenu.ts";
+import type MinecraftCommand from "../minecraft/private/commands/MinecraftCommand.ts";
+import type { DiscordManagerWithPlugin } from "../types/discord.ts";
+import type { Lifecycle } from "../core/Lifecycle.ts";
+import type { MinecraftManagerWithPlugin } from "../types/minecraft.ts";
+import type { ScriptManagerWithPlugin } from "../types/scripts.ts";
 
 export interface BridgePluginMetadata {
   readonly name: string;

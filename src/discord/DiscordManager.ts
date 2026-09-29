@@ -1,12 +1,12 @@
-import ButtonHandler from "./handlers/ButtonHandler.js";
-import CommandHandler from "./handlers/CommandHandler.js";
-import CommunicationBridge from "../private/CommunicationBridge.js";
-import EmbedHelper, { ErrorEmbed } from "./private/EmbedHelper.js";
-import EventHandler from "./handlers/EventHandler.js";
-import HypixelDiscordChatBridgeError from "../private/error.js";
-import InteractionHandler from "./handlers/InteractionHandler.js";
-import MessageHandler from "./handlers/MessageHandler.js";
-import ModalHandler from "./handlers/ModalHandler.js";
+import ButtonHandler from "./handlers/ButtonHandler.ts";
+import CommandHandler from "./handlers/CommandHandler.ts";
+import CommunicationBridge from "../private/CommunicationBridge.ts";
+import EmbedHelper, { ErrorEmbed } from "./private/EmbedHelper.ts";
+import EventHandler from "./handlers/EventHandler.ts";
+import HypixelDiscordChatBridgeError from "../private/error.ts";
+import InteractionHandler from "./handlers/InteractionHandler.ts";
+import MessageHandler from "./handlers/MessageHandler.ts";
+import ModalHandler from "./handlers/ModalHandler.ts";
 import StringSelectMenuHandler from "./handlers/StringSelectMenuHandler.ts";
 import { AttachmentBuilder, ChannelType, Client, Events, GatewayIntentBits, Guild, MessageFlags, Partials, type SendableChannels, Webhook } from "discord.js";
 import {
@@ -18,17 +18,17 @@ import {
   type InteractionsWithGuild,
   type LoggerChannelName,
   LoggerChannelNames
-} from "../types/discord.js";
-import { CommonDevs } from "../private/constants.js";
-import { getErrorEmbed } from "../utils/miscUtils.js";
-import { parseInteractionType } from "../utils/discordUtils.js";
-import { removeColorCodes, replaceVariables } from "../utils/stringUtils.js";
-import { safeListener, toError } from "../utils/asyncUtils.js";
+} from "../types/discord.ts";
+import { CommonDevs } from "../private/constants.ts";
+import { getErrorEmbed } from "../utils/miscUtils.ts";
+import { parseInteractionType } from "../utils/discordUtils.ts";
+import { removeColorCodes, replaceVariables } from "../utils/stringUtils.ts";
+import { safeListener, toError } from "../utils/asyncUtils.ts";
 import { writeFile } from "node:fs/promises";
-import type Application from "../Application.js";
-import type { CleanEmbedEvent, HeadedEmbedEvent, MinecraftToDiscordMessage, PlayerToggleEvent } from "../types/bridge.js";
-import type { Lifecycle, LifecycleState } from "../core/Lifecycle.js";
-import type { ValidErrors } from "../types/application.js";
+import type Application from "../Application.ts";
+import type { CleanEmbedEvent, HeadedEmbedEvent, MinecraftToDiscordMessage, PlayerToggleEvent } from "../types/bridge.ts";
+import type { Lifecycle, LifecycleState } from "../core/Lifecycle.ts";
+import type { ValidErrors } from "../types/application.ts";
 
 class DiscordManager extends CommunicationBridge implements Lifecycle {
   readonly buttonHandler: ButtonHandler;

@@ -1,8 +1,8 @@
-import HypixelDiscordChatBridgeError from "../../private/error.js";
-import MinecraftCommand from "../private/commands/MinecraftCommand.js";
-import MinecraftCommandData from "../private/commands/MinecraftCommandData.js";
-import MinecraftCommandDataOption from "../private/commands/MinecraftCommandDataOption.js";
-import { delay } from "../../utils/miscUtils.js";
+import HypixelDiscordChatBridgeError from "../../private/error.ts";
+import MinecraftCommand from "../private/commands/MinecraftCommand.ts";
+import MinecraftCommandData from "../private/commands/MinecraftCommandData.ts";
+import MinecraftCommandDataOption from "../private/commands/MinecraftCommandDataOption.ts";
+import { delay } from "../../utils/miscUtils.ts";
 
 class BooCommand extends MinecraftCommand {
   override readonly data = new MinecraftCommandData()

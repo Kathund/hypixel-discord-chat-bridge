@@ -1,15 +1,15 @@
-import ConfigManager from "../src/ConfigManager.js";
+import ConfigManager from "../src/ConfigManager.ts";
 import zod from "zod";
-import { CommonDevs } from "../src/private/constants.js";
-import { type TemplatePrimitive, replaceVariables } from "../src/utils/stringUtils.js";
+import { CommonDevs } from "../src/private/constants.ts";
+import { type TemplatePrimitive, replaceVariables } from "../src/utils/stringUtils.ts";
 import { access, readFile, writeFile } from "node:fs/promises";
 import { format } from "prettier";
-import { getNestedValue } from "../src/utils/miscUtils.js";
+import { getNestedValue } from "../src/utils/miscUtils.ts";
 import { markdownTable } from "markdown-table";
-import type { ConfigMetadata, ConfigMetadataDescription, ConfigMetadataDotPathDescription, SchemaData, UnwrappedSchema } from "./types.js";
-import type { MaintainerDevData } from "../src/types/application.js";
+import type { ConfigMetadata, ConfigMetadataDescription, ConfigMetadataDotPathDescription, SchemaData, UnwrappedSchema } from "./types.ts";
+import type { MaintainerDevData } from "../src/types/application.ts";
 
-import "../src/private/logger.js";
+import "../src/private/logger.ts";
 
 export function addLines(content: string, lines: string[], variables: Readonly<Record<string, TemplatePrimitive>> = {}): string[] {
   lines.push(...content.split("\n").map((line) => replaceVariables(line.trim(), variables)));

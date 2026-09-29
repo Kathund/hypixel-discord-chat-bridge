@@ -1,4 +1,4 @@
-import HypixelDiscordChatBridgeError from "../../private/error.js";
+import HypixelDiscordChatBridgeError from "../../private/error.ts";
 import ms, { type StringValue } from "ms";
 import {
   type CommandFlags,
@@ -8,9 +8,9 @@ import {
   type GuildManagementActionResponse,
   type GuildManagementCommand,
   type GuildManagementRequest
-} from "../../types/discord.js";
-import { MinecraftRequestTimeoutError } from "../../minecraft/MinecraftRequestBroker.js";
-import type DiscordManager from "../DiscordManager.js";
+} from "../../types/discord.ts";
+import { MinecraftRequestTimeoutError } from "../../minecraft/MinecraftRequestBroker.ts";
+import type DiscordManager from "../DiscordManager.ts";
 
 abstract class BasicInteractionData<Manager extends DiscordManager = DiscordManagerWithClient> {
   readonly flags: readonly CommandFlags[] = [];

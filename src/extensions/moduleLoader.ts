@@ -1,4 +1,4 @@
-import HypixelDiscordChatBridgeError from "../private/error.js";
+import HypixelDiscordChatBridgeError from "../private/error.ts";
 import { readdir } from "node:fs/promises";
 
 type ExtensionConstructor<Extension, Context> = new (context: Context) => Extension;
@@ -18,7 +18,7 @@ async function loadExtensionModules<Extension, Context>(
   include: ExtensionModuleFilter = () => true
 ): Promise<readonly { extension: Extension; source: string }[]> {
   const files = await readdir(directory, { recursive: true, encoding: "utf-8" });
-  const extension = import.meta.filename.endsWith(".ts") ? ".ts" : ".js";
+  const extension = import.meta.filename.endsWith(".ts") ? ".ts" : ".ts";
   const modules: { extension: Extension; source: string }[] = [];
 
   for (const file of files.filter((name) => name.endsWith(extension) && include(name))) {

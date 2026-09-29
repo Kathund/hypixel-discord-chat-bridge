@@ -1,14 +1,14 @@
-import DiscordCommand from "../../private/commands/DiscordCommand.js";
-import DiscordCommandDataBuilder from "../../private/commands/DiscordCommandDataBuilder.js";
-import HypixelDiscordChatBridgeError from "../../../private/error.js";
+import DiscordCommand from "../../private/commands/DiscordCommand.ts";
+import DiscordCommandDataBuilder from "../../private/commands/DiscordCommandDataBuilder.ts";
+import HypixelDiscordChatBridgeError from "../../../private/error.ts";
 import {
   type ButtonInteractionWithGuild,
   type ChatInputCommandInteractionWithGuild,
   CommandFlags,
   CommandPermission,
   type DiscordManagerWithBot
-} from "../../../types/discord.js";
-import { SuccessEmbed } from "../../private/EmbedHelper.js";
+} from "../../../types/discord.ts";
+import { SuccessEmbed } from "../../private/EmbedHelper.ts";
 
 class UnverifyCommand extends DiscordCommand<DiscordManagerWithBot> {
   override readonly data = new DiscordCommandDataBuilder().setName("unverify").setDescription("Remove your linked Minecraft account").setAuthors(["Amber"]);

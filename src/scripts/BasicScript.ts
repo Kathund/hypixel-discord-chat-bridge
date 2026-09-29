@@ -1,12 +1,12 @@
-import EmbedHelper from "../discord/private/EmbedHelper.js";
-import HypixelDiscordChatBridgeError from "../private/error.js";
+import EmbedHelper from "../discord/private/EmbedHelper.ts";
+import HypixelDiscordChatBridgeError from "../private/error.ts";
 import prettyMilliseconds from "pretty-ms";
-import { ScriptLogState, type ScriptOptions } from "../types/scripts.js";
+import { ScriptLogState, type ScriptOptions } from "../types/scripts.ts";
 import { performance } from "node:perf_hooks";
-import { runDetached, toError } from "../utils/asyncUtils.js";
+import { runDetached, toError } from "../utils/asyncUtils.ts";
 import { schedule } from "node-cron";
-import type ScriptManager from "./ScriptsManager.js";
-import type { Lifecycle } from "../core/Lifecycle.js";
+import type ScriptManager from "./ScriptsManager.ts";
+import type { Lifecycle } from "../core/Lifecycle.ts";
 import type { ScheduledTask } from "node-cron";
 import type { User } from "discord.js";
 

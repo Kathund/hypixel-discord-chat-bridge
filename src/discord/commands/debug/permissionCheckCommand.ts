@@ -1,8 +1,8 @@
-import DiscordCommand from "../../private/commands/DiscordCommand.js";
-import DiscordCommandDataBuilder from "../../private/commands/DiscordCommandDataBuilder.js";
-import { type ChatInputCommandInteractionWithGuild, CommandFlags, CommandPermission, type DiscordManagerWithBot } from "../../../types/discord.js";
-import { SuccessEmbed } from "../../private/EmbedHelper.js";
-import { isAdminMember, isApplicationOwner, isDiscordServerOwner, isGuildMember, isStaffMember, isVerifiedMember } from "../../../utils/discordUtils.js";
+import DiscordCommand from "../../private/commands/DiscordCommand.ts";
+import DiscordCommandDataBuilder from "../../private/commands/DiscordCommandDataBuilder.ts";
+import { type ChatInputCommandInteractionWithGuild, CommandFlags, CommandPermission, type DiscordManagerWithBot } from "../../../types/discord.ts";
+import { SuccessEmbed } from "../../private/EmbedHelper.ts";
+import { isAdminMember, isApplicationOwner, isDiscordServerOwner, isGuildMember, isStaffMember, isVerifiedMember } from "../../../utils/discordUtils.ts";
 
 class PermissionCheckCommand extends DiscordCommand<DiscordManagerWithBot> {
   override readonly data = new DiscordCommandDataBuilder()

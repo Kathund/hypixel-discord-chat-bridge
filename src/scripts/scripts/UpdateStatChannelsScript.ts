@@ -1,9 +1,9 @@
-import BasicScript from "../BasicScript.js";
-import HypixelDiscordChatBridgeError from "../../private/error.js";
-import { formatNumber, replaceVariables } from "../../utils/stringUtils.js";
-import { intervalSchedule } from "../../types/scripts.js";
-import type ScriptManager from "../ScriptsManager.js";
-import type { ChannelVariableStats } from "../../private/constants.js";
+import BasicScript from "../BasicScript.ts";
+import HypixelDiscordChatBridgeError from "../../private/error.ts";
+import { formatNumber, replaceVariables } from "../../utils/stringUtils.ts";
+import { intervalSchedule } from "../../types/scripts.ts";
+import type ScriptManager from "../ScriptsManager.ts";
+import type { ChannelVariableStats } from "../../private/constants.ts";
 
 class UpdateStatChannelsScript extends BasicScript {
   constructor(scripts: ScriptManager) {

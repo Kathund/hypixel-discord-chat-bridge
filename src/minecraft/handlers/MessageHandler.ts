@@ -1,19 +1,19 @@
-import BlacklistUser from "../../data/blacklist/BlacklistUser.js";
-import EmbedHelper from "../../discord/private/EmbedHelper.js";
+import BlacklistUser from "../../data/blacklist/BlacklistUser.ts";
+import EmbedHelper from "../../discord/private/EmbedHelper.ts";
 import GetMinecraftData from "minecraft-data";
-import HypixelDiscordChatBridgeError from "../../private/error.js";
-import MowojangAPI from "../../private/MowojangAPI.js";
-import RequirementsCommand from "../../discord/commands/requirementsCommand.js";
+import HypixelDiscordChatBridgeError from "../../private/error.ts";
+import MowojangAPI from "../../private/MowojangAPI.ts";
+import RequirementsCommand from "../../discord/commands/requirementsCommand.ts";
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType } from "discord.js";
-import { delay, isUuid, replaceAllRanks } from "../../utils/miscUtils.js";
-import { parseChatComponent } from "../../utils/minecraftUtils.js";
-import { replaceVariables, truncateString } from "../../utils/stringUtils.js";
-import { runDetached, safeListener, toError } from "../../utils/asyncUtils.js";
-import type MinecraftManager from "../MinecraftManager.js";
-import type { CachedDiscordMessageData } from "../../types/minecraft.js";
+import { delay, isUuid, replaceAllRanks } from "../../utils/miscUtils.ts";
+import { parseChatComponent } from "../../utils/minecraftUtils.ts";
+import { replaceVariables, truncateString } from "../../utils/stringUtils.ts";
+import { runDetached, safeListener, toError } from "../../utils/asyncUtils.ts";
+import type MinecraftManager from "../MinecraftManager.ts";
+import type { CachedDiscordMessageData } from "../../types/minecraft.ts";
 import type { ChatMessage } from "prismarine-chat";
 import type { Client } from "minecraft-protocol";
-import type { HeadedEmbedEvent } from "../../types/bridge.js";
+import type { HeadedEmbedEvent } from "../../types/bridge.ts";
 
 class MessageHandler {
   private allowLimbo: boolean = true;

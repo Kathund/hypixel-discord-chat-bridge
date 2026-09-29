@@ -1,7 +1,7 @@
-import MessageHandler from "../src/discord/handlers/MessageHandler.js";
+import MessageHandler from "../src/discord/handlers/MessageHandler.ts";
 import assert from "node:assert/strict";
 import test from "node:test";
-import type DiscordManager from "../src/discord/DiscordManager.js";
+import type DiscordManager from "../src/discord/DiscordManager.ts";
 import type { GuildMember, Message, Role } from "discord.js";
 
 function createMessage(content: string, roles: ReadonlyMap<string, Role> = new Map()): Message {

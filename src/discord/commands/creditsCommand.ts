@@ -1,12 +1,12 @@
-import DiscordCommand from "../private/commands/DiscordCommand.js";
-import DiscordCommandDataBuilder from "../private/commands/DiscordCommandDataBuilder.js";
-import EmbedHelper from "../private/EmbedHelper.js";
-import HypixelDiscordChatBridgeError from "../../private/error.js";
+import DiscordCommand from "../private/commands/DiscordCommand.ts";
+import DiscordCommandDataBuilder from "../private/commands/DiscordCommandDataBuilder.ts";
+import EmbedHelper from "../private/EmbedHelper.ts";
+import HypixelDiscordChatBridgeError from "../../private/error.ts";
 import { ActionRowBuilder, type BaseMessageOptions, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder, StringSelectMenuOptionBuilder } from "discord.js";
-import { CommonDevs, MiscCredits } from "../../private/constants.js";
-import { type DevData, type DevName, DevTypes } from "../../types/application.js";
-import { convertDevDataToName } from "../../utils/miscUtils.js";
-import type { ChatInputCommandInteractionWithGuild } from "../../types/discord.js";
+import { CommonDevs, MiscCredits } from "../../private/constants.ts";
+import { type DevData, type DevName, DevTypes } from "../../types/application.ts";
+import { convertDevDataToName } from "../../utils/miscUtils.ts";
+import type { ChatInputCommandInteractionWithGuild } from "../../types/discord.ts";
 
 class CreditsCommand extends DiscordCommand {
   override readonly data = new DiscordCommandDataBuilder()

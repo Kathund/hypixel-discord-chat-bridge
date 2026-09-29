@@ -1,5 +1,5 @@
 import ms, { type StringValue } from "ms";
-import type ScriptManager from "../scripts/ScriptsManager.js";
+import type ScriptManager from "../scripts/ScriptsManager.ts";
 
 export interface CronScriptSchedule {
   readonly type: "cron";

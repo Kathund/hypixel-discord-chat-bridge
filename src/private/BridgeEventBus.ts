@@ -1,5 +1,5 @@
-import { toError } from "../utils/asyncUtils.js";
-import type { BridgeEventMap } from "../types/bridge.js";
+import { toError } from "../utils/asyncUtils.ts";
+import type { BridgeEventMap } from "../types/bridge.ts";
 
 type BridgeEventName = keyof BridgeEventMap;
 type BridgeEventListener<Event extends BridgeEventName> = (payload: BridgeEventMap[Event]) => Promise<void> | void;

@@ -1,12 +1,12 @@
-import MinecraftCommand from "../private/commands/MinecraftCommand.js";
-import MinecraftCommandData from "../private/commands/MinecraftCommandData.js";
+import MinecraftCommand from "../private/commands/MinecraftCommand.ts";
+import MinecraftCommandData from "../private/commands/MinecraftCommandData.ts";
 
 /*
-Derpy = 368 mod 24 = 8
-Jerry = 376 mod 24 = 16
-Scorpius = 384 mod 24 = 0
-https://hypixel-skyblock.fandom.com/wiki/Mayor_Election#Special_Candidates_Election_Cycle
-*/
+ *Derpy = 368 mod 24 = 8
+ *Jerry = 376 mod 24 = 16
+ *Scorpius = 384 mod 24 = 0
+ *https://hypixel-skyblock.fandom.com/wiki/Mayor_Election#Special_Candidates_Election_Cycle
+ */
 
 const hourMs = 50_000;
 const dayMs = 24 * hourMs;

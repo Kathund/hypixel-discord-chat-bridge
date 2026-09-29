@@ -1,12 +1,12 @@
-import EmbedHelper, { BlacklistEmbed, SuccessEmbed } from "../../discord/private/EmbedHelper.js";
-import GenericData from "../GenericData.js";
-import HypixelDiscordChatBridgeError from "../../private/error.js";
-import MowojangAPI from "../../private/MowojangAPI.js";
+import EmbedHelper, { BlacklistEmbed, SuccessEmbed } from "../../discord/private/EmbedHelper.ts";
+import GenericData from "../GenericData.ts";
+import HypixelDiscordChatBridgeError from "../../private/error.ts";
+import MowojangAPI from "../../private/MowojangAPI.ts";
 import { ActionRowBuilder, ButtonBuilder, ComponentType, type GuildMember } from "discord.js";
-import { getPlayer } from "../../utils/hypixelUtils.js";
-import { toError } from "../../utils/asyncUtils.js";
-import type BlacklistManager from "./BlacklistManager.js";
-import type { BasicBlacklistedUserData, BlacklistDeleteOptions, BlacklistSaveOptions, BlacklistedUserData } from "../../types/blacklist.js";
+import { getPlayer } from "../../utils/hypixelUtils.ts";
+import { toError } from "../../utils/asyncUtils.ts";
+import type BlacklistManager from "./BlacklistManager.ts";
+import type { BasicBlacklistedUserData, BlacklistDeleteOptions, BlacklistSaveOptions, BlacklistedUserData } from "../../types/blacklist.ts";
 import type { Guild, GuildMember as HypixelGuildMember, Player } from "hypixel-api-reborn";
 
 class BlacklistUser extends GenericData<BlacklistedUserData> {

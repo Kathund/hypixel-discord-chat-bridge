@@ -1,5 +1,5 @@
-import HypixelDiscordChatBridgeError from "../private/error.js";
-import MowojangAPI from "../private/MowojangAPI.js";
+import HypixelDiscordChatBridgeError from "../private/error.ts";
+import MowojangAPI from "../private/MowojangAPI.ts";
 import {
   Client,
   type Guild,
@@ -15,8 +15,8 @@ import {
 } from "hypixel-api-reborn";
 import { ProfileNetworthCalculator } from "skyhelper-networth";
 import { readFileSync } from "node:fs";
-import type RequestData from "hypixel-api-reborn/dist/Private/RequestData.js";
-import type { LatestProfileOptions, NetWorthCalculatorData, SelectedProfileData } from "../types/minecraft.js";
+import type RequestData from "hypixel-api-reborn/dist/Private/RequestData.ts";
+import type { LatestProfileOptions, NetWorthCalculatorData, SelectedProfileData } from "../types/minecraft.ts";
 
 const config = JSON.parse(readFileSync("config.json", "utf-8"));
 const HypixelAPIReborn = new Client(config?.API?.hypixel?.key || "UNKNOWN", { cache: true, mowojang: MowojangAPI });

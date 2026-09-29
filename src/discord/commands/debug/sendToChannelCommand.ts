@@ -1,9 +1,9 @@
-import DiscordCommand from "../../private/commands/DiscordCommand.js";
-import DiscordCommandDataBuilder from "../../private/commands/DiscordCommandDataBuilder.js";
-import HypixelDiscordChatBridgeError from "../../../private/error.js";
-import { ChannelNames, type ChatInputCommandInteractionWithGuild, CommandFlags, CommandPermission, isChannelName } from "../../../types/discord.js";
-import { SuccessEmbed } from "../../private/EmbedHelper.js";
-import { titleCase } from "../../../utils/stringUtils.js";
+import DiscordCommand from "../../private/commands/DiscordCommand.ts";
+import DiscordCommandDataBuilder from "../../private/commands/DiscordCommandDataBuilder.ts";
+import HypixelDiscordChatBridgeError from "../../../private/error.ts";
+import { ChannelNames, type ChatInputCommandInteractionWithGuild, CommandFlags, CommandPermission, isChannelName } from "../../../types/discord.ts";
+import { SuccessEmbed } from "../../private/EmbedHelper.ts";
+import { titleCase } from "../../../utils/stringUtils.ts";
 
 class SendToChannelCommand extends DiscordCommand {
   override readonly data = new DiscordCommandDataBuilder()

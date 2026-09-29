@@ -1,9 +1,9 @@
-import DiscordModal from "../../private/modals/DiscordModal.js";
-import DiscordModalData from "../../private/modals/DiscordModalData.js";
-import GexpCheckCommand from "../../commands/verification/inactivity/gexpCheckCommand.js";
-import HypixelDiscordChatBridgeError from "../../../private/error.js";
-import { BasicInteractionResponse, CommandFlags, CommandPermission, type ModalSubmitInteractionWithGuild } from "../../../types/discord.js";
-import { type GexpCheckOptionsDisplays, GexpDisplays } from "../../../types/inactivity.js";
+import DiscordModal from "../../private/modals/DiscordModal.ts";
+import DiscordModalData from "../../private/modals/DiscordModalData.ts";
+import GexpCheckCommand from "../../commands/verification/inactivity/gexpCheckCommand.ts";
+import HypixelDiscordChatBridgeError from "../../../private/error.ts";
+import { BasicInteractionResponse, CommandFlags, CommandPermission, type ModalSubmitInteractionWithGuild } from "../../../types/discord.ts";
+import { type GexpCheckOptionsDisplays, GexpDisplays } from "../../../types/inactivity.ts";
 
 class GexpCheckFiltersModal extends DiscordModal {
   override readonly data = new DiscordModalData("gexpCheckFilters");

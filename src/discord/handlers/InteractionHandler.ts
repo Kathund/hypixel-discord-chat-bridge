@@ -1,8 +1,8 @@
-import HypixelDiscordChatBridgeError from "../../private/error.js";
-import { CommandFlags, CommandPermission } from "../../types/discord.js";
-import { isAdminMember, isGuildMember, isInteractionInsideOfGuild, isStaffMember, isVerifiedMember } from "../../utils/discordUtils.js";
-import type BasicInteractionData from "../private/BasicInteractionData.js";
-import type DiscordManager from "../DiscordManager.js";
+import HypixelDiscordChatBridgeError from "../../private/error.ts";
+import { CommandFlags, CommandPermission } from "../../types/discord.ts";
+import { isAdminMember, isGuildMember, isInteractionInsideOfGuild, isStaffMember, isVerifiedMember } from "../../utils/discordUtils.ts";
+import type BasicInteractionData from "../private/BasicInteractionData.ts";
+import type DiscordManager from "../DiscordManager.ts";
 import type { BaseInteraction, GuildMember } from "discord.js";
 
 class InteractionHandler {

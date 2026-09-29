@@ -1,15 +1,15 @@
-import DiscordCommand from "../../private/commands/DiscordCommand.js";
-import DiscordCommandDataBuilder from "../../private/commands/DiscordCommandDataBuilder.js";
-import HypixelDiscordChatBridgeError from "../../../private/error.js";
-import MowojangAPI from "../../../private/MowojangAPI.js";
+import DiscordCommand from "../../private/commands/DiscordCommand.ts";
+import DiscordCommandDataBuilder from "../../private/commands/DiscordCommandDataBuilder.ts";
+import HypixelDiscordChatBridgeError from "../../../private/error.ts";
+import MowojangAPI from "../../../private/MowojangAPI.ts";
 import {
   type ButtonInteractionWithGuild,
   type ChatInputCommandInteractionWithGuild,
   CommandFlags,
   CommandPermission,
   type DiscordManagerWithBot
-} from "../../../types/discord.js";
-import { SuccessEmbed } from "../../private/EmbedHelper.js";
+} from "../../../types/discord.ts";
+import { SuccessEmbed } from "../../private/EmbedHelper.ts";
 
 class UpdateCommand extends DiscordCommand<DiscordManagerWithBot> {
   override readonly data = new DiscordCommandDataBuilder().setName("update").setDescription("Update your current roles").setAuthors(["Amber"]);

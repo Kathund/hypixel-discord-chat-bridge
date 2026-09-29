@@ -1,8 +1,8 @@
-import ExtensionRegistry from "../extensions/ExtensionRegistry.js";
-import loadExtensionModules from "../extensions/moduleLoader.js";
-import type Application from "../Application.js";
-import type BasicScript from "./BasicScript.js";
-import type { Lifecycle } from "../core/Lifecycle.js";
+import ExtensionRegistry from "../extensions/ExtensionRegistry.ts";
+import loadExtensionModules from "../extensions/moduleLoader.ts";
+import type Application from "../Application.ts";
+import type BasicScript from "./BasicScript.ts";
+import type { Lifecycle } from "../core/Lifecycle.ts";
 
 class ScriptManager implements Lifecycle {
   readonly #scripts = new ExtensionRegistry<BasicScript>();

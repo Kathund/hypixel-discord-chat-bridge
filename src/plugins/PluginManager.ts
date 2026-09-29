@@ -1,16 +1,16 @@
-import ExtensionRegistry from "../extensions/ExtensionRegistry.js";
-import isPluginEntry from "./pluginDiscovery.js";
+import ExtensionRegistry from "../extensions/ExtensionRegistry.ts";
+import isPluginEntry from "./pluginDiscovery.ts";
 import { access, mkdir, readdir } from "node:fs/promises";
 import { pathToFileURL } from "node:url";
 import { resolve } from "node:path";
-import { toError } from "../utils/asyncUtils.js";
-import type Application from "../Application.js";
-import type BridgePlugin from "./BridgePlugin.js";
-import type { BridgePluginContext } from "./BridgePlugin.js";
-import type { DiscordManagerWithPlugin } from "../types/discord.js";
-import type { Lifecycle } from "../core/Lifecycle.js";
-import type { MinecraftManagerWithPlugin } from "../types/minecraft.js";
-import type { ScriptManagerWithPlugin } from "../types/scripts.js";
+import { toError } from "../utils/asyncUtils.ts";
+import type Application from "../Application.ts";
+import type BridgePlugin from "./BridgePlugin.ts";
+import type { BridgePluginContext } from "./BridgePlugin.ts";
+import type { DiscordManagerWithPlugin } from "../types/discord.ts";
+import type { Lifecycle } from "../core/Lifecycle.ts";
+import type { MinecraftManagerWithPlugin } from "../types/minecraft.ts";
+import type { ScriptManagerWithPlugin } from "../types/scripts.ts";
 
 class PluginManager implements Lifecycle {
   readonly #plugins = new ExtensionRegistry<BridgePlugin<any>>();

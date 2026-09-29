@@ -1,8 +1,8 @@
-import HypixelDiscordChatBridgeError from "../private/error.js";
+import HypixelDiscordChatBridgeError from "../private/error.ts";
 import { access, readFile, rename, writeFile } from "node:fs/promises";
-import type DataManager from "./DataManager.js";
-import type GenericData from "./GenericData.js";
-import type { Lifecycle } from "../core/Lifecycle.js";
+import type DataManager from "./DataManager.ts";
+import type GenericData from "./GenericData.ts";
+import type { Lifecycle } from "../core/Lifecycle.ts";
 import type { ZodType } from "zod";
 
 abstract class GenericManager<JSONData, Data, ParsedData extends GenericData<JSONData>, Manager = DataManager> implements Lifecycle {

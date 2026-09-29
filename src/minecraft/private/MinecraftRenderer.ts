@@ -6,7 +6,7 @@
  */
 
 import { type CanvasRenderingContext2D, Image, createCanvas, loadImage, registerFont } from "canvas";
-import { MinecraftChatCodes } from "../../private/constants.js";
+import { MinecraftChatCodes } from "../../private/constants.ts";
 import type MinecraftManager from "../MinecraftManager.ts";
 import type { ConfigMinecraftFontRenderer } from "../../types/config.ts";
 

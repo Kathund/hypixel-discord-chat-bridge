@@ -1,12 +1,12 @@
-import GenericData from "../src/data/GenericData.js";
-import GenericManager from "../src/data/GenericManager.js";
+import GenericData from "../src/data/GenericData.ts";
+import GenericManager from "../src/data/GenericManager.ts";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { join } from "node:path";
 import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { z } from "zod";
-import type DataManager from "../src/data/DataManager.js";
+import type DataManager from "../src/data/DataManager.ts";
 
 interface TestRecordJSON {
   readonly id: string;

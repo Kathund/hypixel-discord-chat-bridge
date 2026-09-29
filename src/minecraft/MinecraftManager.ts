@@ -1,21 +1,21 @@
-import CommandHandler from "./handlers/CommandHandler.js";
-import CommunicationBridge from "../private/CommunicationBridge.js";
-import MessageHandler from "./handlers/MessageHandler.js";
+import CommandHandler from "./handlers/CommandHandler.ts";
+import CommunicationBridge from "../private/CommunicationBridge.ts";
+import MessageHandler from "./handlers/MessageHandler.ts";
 import MinecraftData from "minecraft-data";
-import MinecraftRenderer from "./private/MinecraftRenderer.js";
-import MinecraftRequestBroker from "./MinecraftRequestBroker.js";
+import MinecraftRenderer from "./private/MinecraftRenderer.ts";
+import MinecraftRequestBroker from "./MinecraftRequestBroker.ts";
 import PrismarineChat from "prismarine-chat";
 import PrismarineRegistry, { type RegistryPc } from "prismarine-registry";
-import StateHandler from "./handlers/StateHandler.js";
+import StateHandler from "./handlers/StateHandler.ts";
 import ms, { type StringValue } from "ms";
 import { type Client, createClient } from "minecraft-protocol";
-import { ResourcePackResult } from "../types/minecraft.js";
-import { removeEmojis, removeNonAlphanumeric, removeSpaces, replaceVariables } from "../utils/stringUtils.js";
-import { runDetached, toError } from "../utils/asyncUtils.js";
-import type Application from "../Application.js";
-import type { DiscordToMinecraftMessage } from "../types/bridge.js";
-import type { Lifecycle, LifecycleState } from "../core/Lifecycle.js";
-import type { MinecraftManagerWithBot } from "../types/minecraft.js";
+import { ResourcePackResult } from "../types/minecraft.ts";
+import { removeEmojis, removeNonAlphanumeric, removeSpaces, replaceVariables } from "../utils/stringUtils.ts";
+import { runDetached, toError } from "../utils/asyncUtils.ts";
+import type Application from "../Application.ts";
+import type { DiscordToMinecraftMessage } from "../types/bridge.ts";
+import type { Lifecycle, LifecycleState } from "../core/Lifecycle.ts";
+import type { MinecraftManagerWithBot } from "../types/minecraft.ts";
 import type { NBT } from "prismarine-nbt";
 import type { PrismarineChatFormatter } from "prismarine-chat";
 
@@ -135,8 +135,10 @@ class MinecraftManager extends CommunicationBridge implements Lifecycle {
     });
   }
 
-  // Credit: https://github.com/aidn3/hypixel-guild-discord-bridge/blob/a31353fbd8c37e013c419eec0ba640040d503767/src/instance/minecraft/client-session.ts#L21-L67
-  // Thank you aidn for letting me skid your shit
+  /*
+   * Credit: https://github.com/aidn3/hypixel-guild-discord-bridge/blob/a31353fbd8c37e013c419eec0ba640040d503767/src/instance/minecraft/client-session.ts#L21-L67
+   * Thank you aidn for letting me skid your shit
+   */
 
   /*
    * Used to create special minecraft data.

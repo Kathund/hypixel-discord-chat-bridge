@@ -1,10 +1,10 @@
-import DiscordCommand from "../../private/commands/DiscordCommand.js";
-import DiscordCommandDataBuilder from "../../private/commands/DiscordCommandDataBuilder.js";
-import HypixelDiscordChatBridgeError from "../../../private/error.js";
-import LinkedUser from "../../../data/linked/LinkedUser.js";
-import MowojangAPI from "../../../private/MowojangAPI.js";
-import UpdateCommand from "./updateCommand.js";
-import { type ChatInputCommandInteractionWithGuild, CommandFlags, CommandPermission, type DiscordManagerWithBot } from "../../../types/discord.js";
+import DiscordCommand from "../../private/commands/DiscordCommand.ts";
+import DiscordCommandDataBuilder from "../../private/commands/DiscordCommandDataBuilder.ts";
+import HypixelDiscordChatBridgeError from "../../../private/error.ts";
+import LinkedUser from "../../../data/linked/LinkedUser.ts";
+import MowojangAPI from "../../../private/MowojangAPI.ts";
+import UpdateCommand from "./updateCommand.ts";
+import { type ChatInputCommandInteractionWithGuild, CommandFlags, CommandPermission, type DiscordManagerWithBot } from "../../../types/discord.ts";
 
 class ForceVerifyCommand extends DiscordCommand<DiscordManagerWithBot> {
   override readonly data = new DiscordCommandDataBuilder()

@@ -1,13 +1,13 @@
-import DiscordCommand from "../../../private/commands/DiscordCommand.js";
-import DiscordCommandDataBuilder from "../../../private/commands/DiscordCommandDataBuilder.js";
-import HypixelDiscordChatBridgeError from "../../../../private/error.js";
-import MowojangAPI from "../../../../private/MowojangAPI.js";
+import DiscordCommand from "../../../private/commands/DiscordCommand.ts";
+import DiscordCommandDataBuilder from "../../../private/commands/DiscordCommandDataBuilder.ts";
+import HypixelDiscordChatBridgeError from "../../../../private/error.ts";
+import MowojangAPI from "../../../../private/MowojangAPI.ts";
 import { ActionRowBuilder, type BaseMessageOptions, ButtonBuilder, ButtonComponent, ButtonStyle, ComponentType, Message } from "discord.js";
-import { type ChatInputCommandInteractionWithGuild, CommandFlags, CommandPermission } from "../../../../types/discord.js";
-import { type GexpCheckOptions, type GexpCheckOptionsDisplays, type ParsedGexpCheckUser, gexpCheckData } from "../../../../types/inactivity.js";
-import { SuccessEmbed } from "../../../private/EmbedHelper.js";
+import { type ChatInputCommandInteractionWithGuild, CommandFlags, CommandPermission } from "../../../../types/discord.ts";
+import { type GexpCheckOptions, type GexpCheckOptionsDisplays, type ParsedGexpCheckUser, gexpCheckData } from "../../../../types/inactivity.ts";
+import { SuccessEmbed } from "../../../private/EmbedHelper.ts";
 import { removeDashesFromUUID } from "hypixel-api-reborn";
-import { sanitizeString } from "../../../../utils/stringUtils.js";
+import { sanitizeString } from "../../../../utils/stringUtils.ts";
 
 class GexpCheckCommand extends DiscordCommand {
   override readonly data = new DiscordCommandDataBuilder()

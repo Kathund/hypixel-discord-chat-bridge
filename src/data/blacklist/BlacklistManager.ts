@@ -1,12 +1,12 @@
-import BlacklistUser from "./BlacklistUser.js";
-import GenericManager from "../GenericManager.js";
-import HypixelDiscordChatBridgeError from "../../private/error.js";
-import MowojangAPI from "../../private/MowojangAPI.js";
+import BlacklistUser from "./BlacklistUser.ts";
+import GenericManager from "../GenericManager.ts";
+import HypixelDiscordChatBridgeError from "../../private/error.ts";
+import MowojangAPI from "../../private/MowojangAPI.ts";
 import { ActionRowBuilder, type BaseMessageOptions, ButtonStyle } from "discord.js";
-import { type BlacklistData, BlacklistDataSchema, type BlacklistedUserData } from "../../types/blacklist.js";
-import { BlacklistEmbed } from "../../discord/private/EmbedHelper.js";
+import { type BlacklistData, BlacklistDataSchema, type BlacklistedUserData } from "../../types/blacklist.ts";
+import { BlacklistEmbed } from "../../discord/private/EmbedHelper.ts";
 import { ButtonBuilder } from "discord.js";
-import type DataManager from "../DataManager.js";
+import type DataManager from "../DataManager.ts";
 
 class BlacklistManager extends GenericManager<BlacklistedUserData, BlacklistData, BlacklistUser> {
   constructor(data: DataManager) {

@@ -1,18 +1,18 @@
-import ConfigManager from "../src/ConfigManager.js";
+import ConfigManager from "../src/ConfigManager.ts";
 import zod from "zod";
-import { Config, ConfigVerificationRolesCustomEnabled, ConfigVerificationRolesCustomRequirement } from "../src/types/config.js";
+import { Config, ConfigVerificationRolesCustomEnabled, ConfigVerificationRolesCustomRequirement } from "../src/types/config.ts";
 import {
   PlayerVariableStatsKeyDescriptionMap,
   PlayerVariableStatsKeys,
   PlayerVariableStatsKeysNumbers,
   type PlayerVariableStatsKeysString,
   PlayerVariableStatsKeysStrings
-} from "../src/private/constants.js";
+} from "../src/private/constants.ts";
 import { access } from "node:fs/promises";
 import { confirm, input, number, search, select } from "@inquirer/prompts";
-import { getMetadata, getObjectShape, saveFile, unwrapSchema } from "./utils.js";
-import { titleCaseCamel } from "../src/utils/stringUtils.js";
-import type { AskMetadata, SchemaData } from "./types.js";
+import { getMetadata, getObjectShape, saveFile, unwrapSchema } from "./utils.ts";
+import { titleCaseCamel } from "../src/utils/stringUtils.ts";
+import type { AskMetadata, SchemaData } from "./types.ts";
 
 const context = { shouldUseConfig: false };
 

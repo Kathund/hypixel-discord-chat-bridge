@@ -1,13 +1,13 @@
-import GenericData from "../GenericData.js";
-import HypixelDiscordChatBridgeError from "../../private/error.js";
-import MowojangAPI from "../../private/MowojangAPI.js";
+import GenericData from "../GenericData.ts";
+import HypixelDiscordChatBridgeError from "../../private/error.ts";
+import MowojangAPI from "../../private/MowojangAPI.ts";
 import { type Guild, type GuildMember as HypixelGuildMember, type Player, removeDashesFromUUID } from "hypixel-api-reborn";
-import { formatNumber, replaceVariables } from "../../utils/stringUtils.js";
-import { getPlayer } from "../../utils/hypixelUtils.js";
-import { toError } from "../../utils/asyncUtils.js";
-import type LinkedManager from "./LinkedManager.js";
+import { formatNumber, replaceVariables } from "../../utils/stringUtils.ts";
+import { getPlayer } from "../../utils/hypixelUtils.ts";
+import { toError } from "../../utils/asyncUtils.ts";
+import type LinkedManager from "./LinkedManager.ts";
 import type { GuildMember } from "discord.js";
-import type { LinkedUserData } from "../../types/linked.js";
+import type { LinkedUserData } from "../../types/linked.ts";
 
 class LinkedUser extends GenericData<LinkedUserData> {
   readonly discordId: string;

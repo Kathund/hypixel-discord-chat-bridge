@@ -1,11 +1,11 @@
-import DiscordModal from "../../private/modals/DiscordModal.js";
-import DiscordModalData from "../../private/modals/DiscordModalData.js";
-import GexpCheckCommand from "../../commands/verification/inactivity/gexpCheckCommand.js";
-import HypixelDiscordChatBridgeError from "../../../private/error.js";
+import DiscordModal from "../../private/modals/DiscordModal.ts";
+import DiscordModalData from "../../private/modals/DiscordModalData.ts";
+import GexpCheckCommand from "../../commands/verification/inactivity/gexpCheckCommand.ts";
+import HypixelDiscordChatBridgeError from "../../../private/error.ts";
 import { ActionRowBuilder, AttachmentBuilder, ButtonBuilder, ButtonStyle } from "discord.js";
-import { BasicInteractionResponse, CommandFlags, CommandPermission, type ModalSubmitInteractionWithGuild } from "../../../types/discord.js";
-import { SuccessEmbed } from "../../private/EmbedHelper.js";
-import { replaceVariables } from "../../../utils/stringUtils.js";
+import { BasicInteractionResponse, CommandFlags, CommandPermission, type ModalSubmitInteractionWithGuild } from "../../../types/discord.ts";
+import { SuccessEmbed } from "../../private/EmbedHelper.ts";
+import { replaceVariables } from "../../../utils/stringUtils.ts";
 
 class GexpCheckGenerateKickModal extends DiscordModal {
   override readonly data = new DiscordModalData("gexpCheckGenerateKick");

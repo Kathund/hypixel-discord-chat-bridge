@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { safeListener } from "../src/utils/asyncUtils.js";
+import { safeListener } from "../src/utils/asyncUtils.ts";
 
 test("safeListener reports asynchronous listener failures", async () => {
   const reported = new Promise<unknown>((resolve) => {

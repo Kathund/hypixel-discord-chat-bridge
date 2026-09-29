@@ -1,7 +1,7 @@
-import DiscordCommand from "../private/commands/DiscordCommand.js";
-import DiscordCommandDataBuilder from "../private/commands/DiscordCommandDataBuilder.js";
-import EmbedHelper from "../private/EmbedHelper.js";
-import type { ChatInputCommandInteractionWithGuild } from "../../types/discord.js";
+import DiscordCommand from "../private/commands/DiscordCommand.ts";
+import DiscordCommandDataBuilder from "../private/commands/DiscordCommandDataBuilder.ts";
+import EmbedHelper from "../private/EmbedHelper.ts";
+import type { ChatInputCommandInteractionWithGuild } from "../../types/discord.ts";
 
 class PingCommand extends DiscordCommand {
   override readonly data = new DiscordCommandDataBuilder().setName("ping").setDescription("Show the latency of the bot.");

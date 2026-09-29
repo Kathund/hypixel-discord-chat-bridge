@@ -1,10 +1,10 @@
-import BlacklistCommand from "../../commands/blacklistCommand.js";
-import DiscordModal from "../../private/modals/DiscordModal.js";
-import DiscordModalData from "../../private/modals/DiscordModalData.js";
-import HypixelDiscordChatBridgeError from "../../../private/error.js";
-import { CommandFlags, CommandPermission, type DiscordManagerWithBot, GuildManagementAction, type ModalSubmitInteractionWithGuild } from "../../../types/discord.js";
-import { SuccessEmbed } from "../../private/EmbedHelper.js";
-import { replaceVariables } from "../../../utils/stringUtils.js";
+import BlacklistCommand from "../../commands/blacklistCommand.ts";
+import DiscordModal from "../../private/modals/DiscordModal.ts";
+import DiscordModalData from "../../private/modals/DiscordModalData.ts";
+import HypixelDiscordChatBridgeError from "../../../private/error.ts";
+import { CommandFlags, CommandPermission, type DiscordManagerWithBot, GuildManagementAction, type ModalSubmitInteractionWithGuild } from "../../../types/discord.ts";
+import { SuccessEmbed } from "../../private/EmbedHelper.ts";
+import { replaceVariables } from "../../../utils/stringUtils.ts";
 
 class BlacklistKickModal extends DiscordModal<DiscordManagerWithBot> {
   override readonly data = new DiscordModalData("blacklistKick");

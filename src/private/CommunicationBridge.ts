@@ -1,5 +1,5 @@
-import type BridgeEventBus from "./BridgeEventBus.js";
-import type { BridgeEventMap, CleanEmbedEvent, DiscordToMinecraftMessage, HeadedEmbedEvent, MinecraftToDiscordMessage, PlayerToggleEvent } from "../types/bridge.js";
+import type BridgeEventBus from "./BridgeEventBus.ts";
+import type { BridgeEventMap, CleanEmbedEvent, DiscordToMinecraftMessage, HeadedEmbedEvent, MinecraftToDiscordMessage, PlayerToggleEvent } from "../types/bridge.ts";
 
 abstract class CommunicationBridge {
   readonly #bridgeDisposers: (() => void)[] = [];

@@ -5,8 +5,8 @@ import {
   PlayerVariableStatsKeysGeneral,
   PlayerVariableStatsKeysSkyBlock,
   PlayerVariableStatsKeysSkyWars
-} from "../../../src/private/constants.js";
-import { initMarkdownFile, saveMarkdownFile } from "../../utils.js";
+} from "../../../src/private/constants.ts";
+import { initMarkdownFile, saveMarkdownFile } from "../../utils.ts";
 
 const variableGroups = {
   General: PlayerVariableStatsKeysGeneral,

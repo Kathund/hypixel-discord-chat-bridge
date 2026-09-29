@@ -1,9 +1,9 @@
-import BlacklistManager from "./blacklist/BlacklistManager.js";
-import InactivityManager from "./inactivity/InactivityManager.js";
-import LinkedManager from "./linked/LinkedManager.js";
+import BlacklistManager from "./blacklist/BlacklistManager.ts";
+import InactivityManager from "./inactivity/InactivityManager.ts";
+import LinkedManager from "./linked/LinkedManager.ts";
 import { mkdir } from "node:fs/promises";
-import type Application from "../Application.js";
-import type { Lifecycle } from "../core/Lifecycle.js";
+import type Application from "../Application.ts";
+import type { Lifecycle } from "../core/Lifecycle.ts";
 
 class DataManager implements Lifecycle {
   readonly blacklist: BlacklistManager;

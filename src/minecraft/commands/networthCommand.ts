@@ -1,8 +1,8 @@
-import MinecraftCommand from "../private/commands/MinecraftCommand.js";
-import MinecraftCommandData from "../private/commands/MinecraftCommandData.js";
-import MinecraftCommandDataOption from "../private/commands/MinecraftCommandDataOption.js";
-import { formatNumber } from "../../utils/stringUtils.js";
-import { getNetWorthCalculator } from "../../utils/hypixelUtils.js";
+import MinecraftCommand from "../private/commands/MinecraftCommand.ts";
+import MinecraftCommandData from "../private/commands/MinecraftCommandData.ts";
+import MinecraftCommandDataOption from "../private/commands/MinecraftCommandDataOption.ts";
+import { formatNumber } from "../../utils/stringUtils.ts";
+import { getNetWorthCalculator } from "../../utils/hypixelUtils.ts";
 
 class NetworthCommand extends MinecraftCommand {
   override readonly data = new MinecraftCommandData()

@@ -1,13 +1,13 @@
-/* eslint-disable */
 import globals from "globals";
 import importPlugin from "eslint-plugin-import";
+import plugin from "./scripts/eslint/plugin.js";
 import prettier from "eslint-config-prettier";
 import sortImports from "@j4cobi/eslint-plugin-sort-imports";
-import ts from "typescript-eslint";
-import plugin from "./scripts/eslint/plugin.js";
 import stylistic from "@stylistic/eslint-plugin";
+import ts from "typescript-eslint";
 import { globalIgnores } from "eslint/config";
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default [
   ...ts.configs.recommended,
   importPlugin.flatConfigs.recommended,
@@ -28,6 +28,8 @@ export default [
       "hypixelDiscordChatBridge/enforce-discord-command-data-builder": "error",
       "@stylistic/function-call-argument-newline": ["error", "consistent"],
       "hypixelDiscordChatBridge/enforce-no-plugin-api-imports": "error",
+      "import/extensions": ["warn", "always", { ignorePackages: true, pathGroupOverrides: [{ pattern: "hypixel-discord-chat-bridge/plugin-api", action: "ignore" }] }],
+      "@stylistic/line-comment-position": ["warn", { position: "above" }],
       "@typescript-eslint/no-unused-vars": ["error", { args: "none" }],
       "@stylistic/quotes": ["error", "double", { avoidEscape: true }],
       "@stylistic/array-bracket-newline": ["error", "consistent"],
@@ -54,8 +56,8 @@ export default [
       "@stylistic/member-delimiter-style": "error",
       "@stylistic/template-curly-spacing": "error",
       "import/no-extraneous-dependencies": "error",
+      "@stylistic/multiline-comment-style": "warn",
       "@typescript-eslint/no-explicit-any": "off",
-      "@stylistic/line-comment-position": "warn",
       "@stylistic/object-curly-newline": "error",
       "@stylistic/array-bracket-spacing": "warn",
       "import/no-useless-path-segments": "error",
@@ -83,6 +85,7 @@ export default [
       "@stylistic/comma-spacing": "error",
       "@stylistic/curly-newline": "error",
       "import/no-dynamic-require": "warn",
+      "@stylistic/spaced-comment": "warn",
       "@stylistic/semi-spacing": "error",
       "@stylistic/arrow-parens": "error",
       "import/no-absolute-path": "error",
@@ -92,6 +95,7 @@ export default [
       "@stylistic/key-spacing": "error",
       "@stylistic/comma-style": "error",
       "no-useless-constructor": "error",
+      "import/no-absolute-path": "warn",
       "@stylistic/semi-style": "error",
       "@stylistic/new-parens": "error",
       "no-useless-assignment": "error",
@@ -100,7 +104,7 @@ export default [
       "no-implicit-coercion": "error",
       "import/no-deprecated": "error",
       "@stylistic/eol-last": "error",
-      "import/no-namespace": "error",
+      "import/no-namespace": "warn",
       "no-use-before-define": "warn",
       "no-underscore-dangle": "warn",
       "no-unneeded-ternary": "error",
@@ -133,7 +137,9 @@ export default [
       "no-new-func": "error",
       "camelcase": "warn",
       "no-var": "warn",
-      "eqeqeq": "warn"
+      "eqeqeq": "warn",
+
+      "@stylistic/spaced-comment": "warn"
     }
   }
 ];

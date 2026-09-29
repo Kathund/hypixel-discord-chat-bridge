@@ -1,7 +1,7 @@
-import StateHandler from "../src/minecraft/handlers/StateHandler.js";
+import StateHandler from "../src/minecraft/handlers/StateHandler.ts";
 import assert from "node:assert/strict";
 import test from "node:test";
-import type MinecraftManager from "../src/minecraft/MinecraftManager.js";
+import type MinecraftManager from "../src/minecraft/MinecraftManager.ts";
 import type { Client } from "minecraft-protocol";
 
 const originalMinecraftLogger = console.minecraft;

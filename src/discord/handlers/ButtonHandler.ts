@@ -1,11 +1,11 @@
-import ExtensionRegistry from "../../extensions/ExtensionRegistry.js";
-import HypixelDiscordChatBridgeError from "../../private/error.js";
-import loadExtensionModules from "../../extensions/moduleLoader.js";
-import { type ButtonInteractionWithGuild, ButtonResponse } from "../../types/discord.js";
+import ExtensionRegistry from "../../extensions/ExtensionRegistry.ts";
+import HypixelDiscordChatBridgeError from "../../private/error.ts";
+import loadExtensionModules from "../../extensions/moduleLoader.ts";
+import { type ButtonInteractionWithGuild, ButtonResponse } from "../../types/discord.ts";
 import { MessageFlags } from "discord.js";
-import { toError } from "../../utils/asyncUtils.js";
-import type DiscordButton from "../private/buttons/DiscordButton.js";
-import type DiscordManager from "../DiscordManager.js";
+import { toError } from "../../utils/asyncUtils.ts";
+import type DiscordButton from "../private/buttons/DiscordButton.ts";
+import type DiscordManager from "../DiscordManager.ts";
 
 class ButtonHandler {
   readonly #buttons = new ExtensionRegistry<DiscordButton<DiscordManager>>();

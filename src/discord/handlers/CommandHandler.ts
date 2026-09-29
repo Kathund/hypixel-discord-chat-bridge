@@ -1,10 +1,10 @@
-import ExtensionRegistry from "../../extensions/ExtensionRegistry.js";
-import loadExtensionModules from "../../extensions/moduleLoader.js";
-import { type AutocompleteInteractionWithGuild, BasicInteractionResponse, type ChatInputCommandInteractionWithGuild, CommandFlags } from "../../types/discord.js";
+import ExtensionRegistry from "../../extensions/ExtensionRegistry.ts";
+import loadExtensionModules from "../../extensions/moduleLoader.ts";
+import { type AutocompleteInteractionWithGuild, BasicInteractionResponse, type ChatInputCommandInteractionWithGuild, CommandFlags } from "../../types/discord.ts";
 import { MessageFlags, REST, Routes } from "discord.js";
-import { toError } from "../../utils/asyncUtils.js";
-import type DiscordCommand from "../private/commands/DiscordCommand.js";
-import type DiscordManager from "../DiscordManager.js";
+import { toError } from "../../utils/asyncUtils.ts";
+import type DiscordCommand from "../private/commands/DiscordCommand.ts";
+import type DiscordManager from "../DiscordManager.ts";
 
 class CommandHandler {
   readonly #commands = new ExtensionRegistry<DiscordCommand<DiscordManager>>();
