@@ -4,10 +4,10 @@
   "description": "A Hypixel guild chat and Discord chat bridge",
   "main": "build/index.js",
   "type": "module",
-  "packageManager": "pnpm@11.21.0",
+  "packageManager": "pnpm@11.15.0",
   "engines": {
-    "node": ">=24.19.0",
-    "pnpm": ">=11.21.0",
+    "node": ">=24.18.0",
+    "pnpm": ">=11.15.0",
     "npm": "forbidden, use pnpm instead",
     "yarn": "forbidden, use pnpm instead",
     "bun": "forbidden, use pnpm instead"
