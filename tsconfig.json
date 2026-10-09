@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "types": ["eslint", "express", "ms", "node"],
     "allowJs": false,
     "declaration": true,
     "esModuleInterop": true,
@@ -22,6 +23,7 @@
     "verbatimModuleSyntax": true,
     "declarationMap": true,
     "allowArbitraryExtensions": false,
-    "rewriteRelativeImportExtensions": true
+    "rewriteRelativeImportExtensions": true,
+    "allowImportingTsExtensions": true
   }
 }
