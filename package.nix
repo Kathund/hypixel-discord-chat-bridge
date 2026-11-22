@@ -20,7 +20,7 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "hypixel-discord-chat-bridge";
-  version = "0-unstable-2026-07-25";
+  version = "0-unstable-2026-11-21";
   __structuredAttrs = true;
   strictDeps = true;
 
