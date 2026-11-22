@@ -165,7 +165,6 @@ class MinecraftManager extends CommunicationBridge implements Lifecycle {
 
   private listenForSettings(client: Client): void {
     client.on("state", (newState: string) => {
-      // eslint-disable-next-line no-underscore-dangle
       const supportFeature = (client as Client & Record<string, unknown>)._supportFeature as ((name: string) => boolean) | undefined;
       if (newState !== "configuration" || supportFeature?.("hasConfigurationState") !== true) return;
 

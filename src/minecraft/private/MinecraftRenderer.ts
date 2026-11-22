@@ -5,6 +5,7 @@
  * Modified
  */
 
+import Application from "../../Application.ts";
 import { type CanvasRenderingContext2D, Image, createCanvas, loadImage, registerFont } from "canvas";
 import { MinecraftChatCodes } from "../../private/constants.ts";
 import type MinecraftManager from "../MinecraftManager.ts";
@@ -30,14 +31,12 @@ class MinecraftRenderer {
   constructor(protected readonly minecraft: MinecraftManager) {}
 
   async getSkinHeadImage(username: string): Promise<Image> {
-    const cached = this.minecraft.application.cache.get<Buffer>(`minecraft:skin:${username}`);
+    const cached = Application.cache.get<Buffer>(`minecraft:skin:${username}`);
     if (cached) return loadImage(cached);
 
-    const response = await this.minecraft.application.request<any>(`${this.minecraft.application.config.API.nmsr.baseURL}/face/${username}`, {
-      responseType: "arraybuffer"
-    });
+    const response = await Application.request<any>(`${this.minecraft.application.config.API.nmsr.baseURL}/face/${username}`, { responseType: "arraybuffer" });
     const buffer = Buffer.from(response.data);
-    this.minecraft.application.cache.set(`minecraft:skin:${username}`, buffer);
+    Application.cache.set(`minecraft:skin:${username}`, buffer);
     return loadImage(buffer);
   }
 

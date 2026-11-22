@@ -4,12 +4,12 @@ import plugin from "./scripts/eslint/plugin.js";
 import prettier from "eslint-config-prettier";
 import sortImports from "@j4cobi/eslint-plugin-sort-imports";
 import stylistic from "@stylistic/eslint-plugin";
-import ts from "typescript-eslint";
+import { configs } from "typescript-eslint";
 import { globalIgnores } from "eslint/config";
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default [
-  ...ts.configs.recommended,
+  ...configs.recommended,
   importPlugin.flatConfigs.recommended,
   importPlugin.flatConfigs.typescript,
   prettier,
@@ -21,6 +21,7 @@ export default [
     plugins: { "@stylistic": stylistic, "sort-imports": sortImports, "hypixelDiscordChatBridge": plugin },
     settings: { "import/resolver": { typescript: true, node: true } },
     rules: {
+      "import/extensions": ["warn", "always", { ignorePackages: true, pathGroupOverrides: [{ pattern: "hypixel-discord-chat-bridge/plugin-api", action: "ignore" }] }],
       "sort-imports/sort-imports": ["warn", { ignoreCase: false, ignoreMemberSort: false, memberSyntaxSortOrder: ["all", "single", "multiple", "none"] }],
       "@stylistic/max-len": ["warn", { code: 170, tabWidth: 2, ignoreComments: true, ignoreUrls: true, ignoreRegExpLiterals: true }],
       "@stylistic/space-before-function-paren": ["error", { anonymous: "never", named: "never", catch: "always" }],
@@ -28,7 +29,6 @@ export default [
       "hypixelDiscordChatBridge/enforce-discord-command-data-builder": "error",
       "@stylistic/function-call-argument-newline": ["error", "consistent"],
       "hypixelDiscordChatBridge/enforce-no-plugin-api-imports": "error",
-      "import/extensions": ["warn", "always", { ignorePackages: true, pathGroupOverrides: [{ pattern: "hypixel-discord-chat-bridge/plugin-api", action: "ignore" }] }],
       "@stylistic/line-comment-position": ["warn", { position: "above" }],
       "@typescript-eslint/no-unused-vars": ["error", { args: "none" }],
       "@stylistic/quotes": ["error", "double", { avoidEscape: true }],
@@ -85,7 +85,6 @@ export default [
       "@stylistic/comma-spacing": "error",
       "@stylistic/curly-newline": "error",
       "import/no-dynamic-require": "warn",
-      "@stylistic/spaced-comment": "warn",
       "@stylistic/semi-spacing": "error",
       "@stylistic/arrow-parens": "error",
       "import/no-absolute-path": "error",
@@ -101,14 +100,14 @@ export default [
       "no-useless-assignment": "error",
       "no-inner-declarations": "error",
       "import/no-self-import": "error",
+      "import/no-unresolved": "error",
       "no-implicit-coercion": "error",
       "import/no-deprecated": "error",
       "@stylistic/eol-last": "error",
-      "import/no-namespace": "warn",
       "no-use-before-define": "warn",
-      "no-underscore-dangle": "warn",
       "no-unneeded-ternary": "error",
       "import/exports-last": "error",
+      "import/no-namespace": "warn",
       "@stylistic/no-tabs": "error",
       "default-param-last": "error",
       "import/no-commonjs": "error",
@@ -137,9 +136,7 @@ export default [
       "no-new-func": "error",
       "camelcase": "warn",
       "no-var": "warn",
-      "eqeqeq": "warn",
-
-      "@stylistic/spaced-comment": "warn"
+      "eqeqeq": "warn"
     }
   }
 ];

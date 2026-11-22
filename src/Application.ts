@@ -15,7 +15,6 @@ import { canSendMessages, getApplicationOwners } from "./utils/discordUtils.ts";
 import { execSync } from "node:child_process";
 import { getErrorEmbed, getErrorTypeName } from "./utils/miscUtils.ts";
 import { getGuild } from "./utils/hypixelUtils.ts";
-import { toError } from "./utils/asyncUtils.ts";
 import type { Config } from "./types/config.ts";
 import type { EmbedHelperField } from "./types/discord.ts";
 import type { Guild } from "hypixel-api-reborn";
@@ -24,9 +23,10 @@ import type { MowojangProfile } from "mowojang";
 import type { RuntimeInformation, ValidErrors } from "./types/application.ts";
 
 class Application implements Lifecycle {
-  readonly package: typeof packageJson;
+  static readonly package: typeof packageJson = packageJson;
+  static readonly runtimeInformation = Object.freeze({ commit: this.getGitCommit(), dirty: this.getGitDirty() });
+  static readonly cache: CacheHandler = new CacheHandler();
   readonly messages: typeof messages;
-  readonly cache: CacheHandler;
   readonly data: DataManager;
   readonly events: BridgeEventBus;
   readonly discord: DiscordManager;
@@ -42,9 +42,7 @@ class Application implements Lifecycle {
     readonly config: Config,
     deployScripts: boolean = true
   ) {
-    this.package = packageJson;
     this.messages = messages;
-    this.cache = new CacheHandler(this);
     this.data = new DataManager(this);
     this.events = new BridgeEventBus();
     this.discord = new DiscordManager(this);
@@ -143,37 +141,40 @@ class Application implements Lifecycle {
     }
   }
 
-  private getGitCommit(): RuntimeInformation["commit"] {
+  private static getGitCommit(): RuntimeInformation["commit"] {
     try {
       return process.env.GIT_COMMIT ?? execSync("git rev-parse HEAD", { encoding: "utf8" }).trim();
     } catch (error) {
-      this.logError(toError(error));
+      console.error(error);
       return "UNKNOWN";
     }
   }
 
-  private getGitDirty(): RuntimeInformation["dirty"] {
+  private static getGitDirty(): RuntimeInformation["dirty"] {
     try {
       return process.env.GIT_DIRTY !== undefined ? process.env.GIT_DIRTY === "true" : execSync("git status --porcelain", { encoding: "utf8" }).trim().length > 0;
     } catch (error) {
-      this.logError(toError(error));
+      console.error(error);
       return false;
     }
   }
 
-  getRuntimeInformation(): RuntimeInformation {
-    return { commit: this.getGitCommit(), dirty: this.getGitDirty(), docker: process.env.RUNNING_IN_DOCKER === "true" };
+  static get startTime(): RuntimeInformation["startTime"] {
+    return Math.floor(Date.now() / 1000) - Math.floor(process.uptime());
   }
 
-  getUserAgent() {
-    const runtime = this.getRuntimeInformation();
-    return `${this.package.name}/g${runtime.commit} (github:DuckySoLucky/hypixel-discord-chat-bridge)`;
+  static getRuntimeInformation(): RuntimeInformation {
+    return { commit: this.runtimeInformation.commit, dirty: this.runtimeInformation.dirty, startTime: this.startTime, docker: process.env.RUNNING_IN_DOCKER === "true" };
   }
 
-  async request<T>(url: string, config: AxiosRequestConfig = {}): Promise<AxiosResponse<T>> {
+  static getUserAgent() {
+    return `${this.package.name}/git:${this.runtimeInformation.commit} (github:Kathund/hypixel-discord-chat-bridge)`;
+  }
+
+  static async request<T>(url: string, config: AxiosRequestConfig = {}): Promise<AxiosResponse<T>> {
     const headers = new AxiosHeaders(config.headers as AxiosHeaders | undefined);
     if (!headers.has("User-Agent")) headers.set("User-Agent", this.getUserAgent());
-    return await axios.get<T>(url, { ...config, headers });
+    return await axios.request<T>({ ...config, url, method: config.method ?? "GET", headers });
   }
 }
 

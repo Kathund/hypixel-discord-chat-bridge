@@ -1,14 +1,14 @@
-import MinecraftRequestBroker from "../src/minecraft/MinecraftRequestBroker.js";
+import MinecraftRequestBroker from "../src/minecraft/MinecraftRequestBroker.ts";
 import PrismarineChat from "prismarine-chat";
 import PrismarineRegistry, { type RegistryPc } from "prismarine-registry";
-import QuickMathsCommand from "../src/minecraft/commands/quickMathsCommand.js";
+import QuickMathsCommand from "../src/minecraft/commands/quickMathsCommand.ts";
 import assert from "node:assert/strict";
-import loadExtensionModules from "../src/extensions/moduleLoader.js";
+import loadExtensionModules from "../src/extensions/moduleLoader.ts";
 import test from "node:test";
 import { EventEmitter } from "node:events";
-import type MinecraftCommand from "../src/minecraft/private/commands/MinecraftCommand.js";
+import type MinecraftCommand from "../src/minecraft/private/commands/MinecraftCommand.ts";
 import type { Client } from "minecraft-protocol";
-import type { MinecraftChatChannel, MinecraftManagerWithBot } from "../src/types/minecraft.js";
+import type { MinecraftChatChannel, MinecraftManagerWithBot } from "../src/types/minecraft.ts";
 
 const BOT = "BridgeBot";
 const VERSION = "26.1.2";

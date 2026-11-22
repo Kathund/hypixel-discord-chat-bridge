@@ -45,10 +45,9 @@
           "required": ["baseURL"],
           "additionalProperties": false,
           "description": "Configuration for the nmsr API"
-        },
-        "cache": { "type": "boolean", "description": "Should stuff be cached", "skip": true }
+        }
       },
-      "required": ["hypixel", "mowojang", "soopy", "nmsr", "cache"],
+      "required": ["hypixel", "mowojang", "soopy", "nmsr"],
       "additionalProperties": false,
       "description": "Configuration options for API's used inside of the bot"
     },
@@ -88,7 +87,7 @@
               "type": "object",
               "properties": {
                 "enabled": { "type": "boolean", "description": "Should this bridge channel be enabled" },
-                "channel": { "anyOf": [{ "type": "string" }, { "type": "null" }], "description": "Discord channel id. If null, an auto-generated channel will be used" }
+                "channel": { "description": "Discord channel id. If null, an auto-generated channel will be used", "type": ["string", "null"] }
               },
               "required": ["enabled", "channel"],
               "additionalProperties": false,
@@ -98,7 +97,7 @@
               "type": "object",
               "properties": {
                 "enabled": { "type": "boolean", "description": "Should this bridge channel be enabled" },
-                "channel": { "anyOf": [{ "type": "string" }, { "type": "null" }], "description": "Discord channel id. If null, an auto-generated channel will be used" }
+                "channel": { "description": "Discord channel id. If null, an auto-generated channel will be used", "type": ["string", "null"] }
               },
               "required": ["enabled", "channel"],
               "additionalProperties": false,
@@ -108,7 +107,7 @@
               "type": "object",
               "properties": {
                 "enabled": { "type": "boolean", "description": "Should this bridge channel be enabled" },
-                "channel": { "anyOf": [{ "type": "string" }, { "type": "null" }], "description": "Discord channel id. If null, an auto-generated channel will be used" }
+                "channel": { "description": "Discord channel id. If null, an auto-generated channel will be used", "type": ["string", "null"] }
               },
               "required": ["enabled", "channel"],
               "additionalProperties": false,
@@ -118,25 +117,16 @@
               "type": "object",
               "properties": {
                 "enabled": { "type": "boolean", "description": "Should this bridge channel be enabled" },
-                "channel": { "anyOf": [{ "type": "string" }, { "type": "null" }], "description": "Discord channel id. If null, an auto-generated channel will be used" },
+                "channel": { "description": "Discord channel id. If null, an auto-generated channel will be used", "type": ["string", "null"] },
                 "channels": {
                   "type": "object",
                   "properties": {
-                    "guild": { "anyOf": [{ "type": "string" }, { "type": "null" }], "description": "Discord channel id. If null, an auto-generated thread will be used" },
-                    "event": { "anyOf": [{ "type": "string" }, { "type": "null" }], "description": "Discord channel id. If null, an auto-generated thread will be used" },
-                    "error": { "anyOf": [{ "type": "string" }, { "type": "null" }], "description": "Discord channel id. If null, an auto-generated thread will be used" },
-                    "blacklist": {
-                      "anyOf": [{ "type": "string" }, { "type": "null" }],
-                      "description": "Discord channel id. If null, an auto-generated thread will be used"
-                    },
-                    "scripts": {
-                      "anyOf": [{ "type": "string" }, { "type": "null" }],
-                      "description": "Discord channel id. If null, an auto-generated thread will be used"
-                    },
-                    "inactivity": {
-                      "anyOf": [{ "type": "string" }, { "type": "null" }],
-                      "description": "Discord channel id. If null, an auto-generated thread will be used"
-                    }
+                    "guild": { "description": "Discord channel id. If null, an auto-generated thread will be used", "type": ["string", "null"] },
+                    "event": { "description": "Discord channel id. If null, an auto-generated thread will be used", "type": ["string", "null"] },
+                    "error": { "description": "Discord channel id. If null, an auto-generated thread will be used", "type": ["string", "null"] },
+                    "blacklist": { "description": "Discord channel id. If null, an auto-generated thread will be used", "type": ["string", "null"] },
+                    "scripts": { "description": "Discord channel id. If null, an auto-generated thread will be used", "type": ["string", "null"] },
+                    "inactivity": { "description": "Discord channel id. If null, an auto-generated thread will be used", "type": ["string", "null"] }
                   },
                   "required": ["guild", "event", "error", "blacklist", "scripts", "inactivity"],
                   "additionalProperties": false,
@@ -426,10 +416,7 @@
                 },
                 {
                   "type": "object",
-                  "properties": {
-                    "enabled": { "type": "boolean", "const": false },
-                    "roleId": { "anyOf": [{ "type": "string" }, { "type": "null" }], "description": "Discord role id" }
-                  },
+                  "properties": { "enabled": { "type": "boolean", "const": false }, "roleId": { "description": "Discord role id", "type": ["string", "null"] } },
                   "required": ["enabled", "roleId"],
                   "additionalProperties": false
                 }
@@ -446,10 +433,7 @@
                 },
                 {
                   "type": "object",
-                  "properties": {
-                    "enabled": { "type": "boolean", "const": false },
-                    "roleId": { "anyOf": [{ "type": "string" }, { "type": "null" }], "description": "Discord role id" }
-                  },
+                  "properties": { "enabled": { "type": "boolean", "const": false }, "roleId": { "description": "Discord role id", "type": ["string", "null"] } },
                   "required": ["enabled", "roleId"],
                   "additionalProperties": false
                 }
@@ -829,7 +813,7 @@
                     "type": "object",
                     "properties": {
                       "enabled": { "type": "boolean", "const": false, "description": "Whether this custom verification role is disabled" },
-                      "roleId": { "anyOf": [{ "type": "string" }, { "type": "null" }], "description": "Discord role id" },
+                      "roleId": { "description": "Discord role id", "type": ["string", "null"] },
                       "requirements": {
                         "type": "array",
                         "items": {
@@ -1308,7 +1292,16 @@
     "other": {
       "type": "object",
       "properties": {
-        "backupConfigs": { "type": "boolean", "description": "Whether backup copies of config files should be created" },
+        "configBackups": {
+          "type": "object",
+          "properties": {
+            "enabled": { "type": "boolean", "description": "Should config backups be made" },
+            "location": { "type": "string", "description": "The location of where these files should be saved" }
+          },
+          "required": ["enabled", "location"],
+          "additionalProperties": false,
+          "description": "Configuration options for config backup system"
+        },
         "logger": {
           "type": "object",
           "properties": {
@@ -1321,7 +1314,7 @@
           "description": "Configuration options for the logger"
         }
       },
-      "required": ["backupConfigs", "logger"],
+      "required": ["configBackups", "logger"],
       "additionalProperties": false,
       "description": "Configuration options for misc/other stuff or things that don't have a good location"
     }

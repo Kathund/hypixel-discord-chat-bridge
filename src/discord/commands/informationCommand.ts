@@ -1,3 +1,4 @@
+import Application from "../../Application.ts";
 import DiscordCommand from "../private/commands/DiscordCommand.ts";
 import DiscordCommandDataBuilder from "../private/commands/DiscordCommandDataBuilder.ts";
 import EmbedHelper from "../private/EmbedHelper.ts";
@@ -74,10 +75,10 @@ class InformationCommand extends DiscordCommand<DiscordManagerWithBot> {
           : "Disabled"
       }
     ];
-    const runtimeInformation = discord.application.getRuntimeInformation();
+    const runtimeInformation = Application.getRuntimeInformation();
     const generalInformation: Information[] = [
       { name: "Filter Messages", value: discord.application.config.bridge.filter.enabled ? "Enabled" : "Disabled" },
-      { name: "Version", value: discord.application.package.version },
+      { name: "Version", value: Application.package.version },
       { name: "Uptime", value: `<t:${Math.floor((Date.now() - discord.client.uptime) / 1000)}:R>`, format: false },
       { name: "Is Inside of Docker Container", value: runtimeInformation.docker ? ":white_check_mark: Yes" : ":x: No", format: false },
       { name: "Git Hash", value: runtimeInformation.commit },

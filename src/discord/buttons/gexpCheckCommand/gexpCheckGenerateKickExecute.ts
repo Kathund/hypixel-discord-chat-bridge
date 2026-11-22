@@ -1,3 +1,4 @@
+import Application from "../../../Application.ts";
 import DiscordButton from "../../private/buttons/DiscordButton.ts";
 import DiscordButtonData from "../../private/buttons/DiscordButtonData.ts";
 import HypixelDiscordChatBridgeError from "../../../private/error.ts";
@@ -16,7 +17,7 @@ class GexpCheckGenerateKickExecuteButton extends DiscordButton<DiscordManagerWit
     const attachment = interaction.message.attachments.first();
     if (!attachment) throw new HypixelDiscordChatBridgeError("No commands file found on the message?");
 
-    const res = await this.discord.application.request<string>(attachment.url);
+    const res = await Application.request<string>(attachment.url);
     const commands = res.data
       .split("\n")
       .map((line) => line.trim())

@@ -1,8 +1,10 @@
 import HypixelDiscordChatBridgeError from "../private/error.ts";
+import ms from "ms";
 import { ConfigChangeType, type JsonObject, type JsonValue, type MigrationMap } from "../types/config.ts";
-import { displayBigMessage } from "../private/logger.ts";
-import { getNestedValue } from "../utils/miscUtils.ts";
+import { deleteExpiredFiles, displayBigMessage, getNestedValue } from "../utils/miscUtils.ts";
+import { dirname } from "node:path";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { replaceVariables } from "../utils/stringUtils.ts";
 import type { ZodType } from "zod";
 
 abstract class BasicConfigManager<TypedConfig extends JsonObject> {
@@ -12,10 +14,13 @@ abstract class BasicConfigManager<TypedConfig extends JsonObject> {
   protected abstract readonly schema: ZodType<TypedConfig>;
 
   private hasConfigChanged = false;
+  private startTime: Date = new Date();
   constructor(private readonly shouldBackupConfig: boolean = true) {}
 
   async init(): Promise<TypedConfig> {
+    this.startTime = new Date();
     console.other("Checking config");
+    await this.cleanBackups(await this.getConfigFile());
     await this.migrate();
     const config = await this.validate();
     await this.handleBackupConfig(config);
@@ -59,11 +64,26 @@ abstract class BasicConfigManager<TypedConfig extends JsonObject> {
     await this.backupConfig(config);
   }
 
+  private async cleanBackups(config: JsonObject | TypedConfig): Promise<void> {
+    if (this.shouldBackupConfig === false || getNestedValue(config, "other.configBackups.enabled") === false) return;
+
+    const configuredLocation = getNestedValue(config, "other.configBackups.location");
+    const backupPathTemplate = typeof configuredLocation === "string" ? configuredLocation : "./data/backup/config/config_{timestamp}.json";
+    const backupPath = replaceVariables(backupPathTemplate, { timestamp: new Date().toISOString() });
+    await deleteExpiredFiles(dirname(backupPath), Date.now() - ms("90d"), (fileName) => fileName.endsWith(".json"));
+  }
+
   async backupConfig(config: JsonObject | TypedConfig, skipCheck: boolean = false): Promise<void> {
     if (this.shouldBackupConfig === false) return console.warn("Config backup is disabled");
-    if (skipCheck === false && getNestedValue(config, "other.backupConfigs") === false) return console.warn("Config backup is disabled");
-    await mkdir("./data/backup/config", { recursive: true });
-    await writeFile(`./data/backup/config/config_${new Date().toISOString()}.json`, JSON.stringify(config, null, 2), "utf-8");
+    if (skipCheck === false && getNestedValue(config, "other.configBackups.enabled") === false) {
+      return console.warn("Config backup is disabled");
+    }
+    const configuredLocation = getNestedValue(config, "other.configBackups.location");
+    const backupPath = replaceVariables(typeof configuredLocation === "string" ? configuredLocation : "./data/backup/config/config_{timestamp}.json", {
+      timestamp: this.startTime.toISOString()
+    });
+    await mkdir(dirname(backupPath), { recursive: true });
+    await writeFile(backupPath, JSON.stringify(config, null, 2), "utf-8");
     console.other("Saved config backup");
   }
 
@@ -112,7 +132,9 @@ abstract class BasicConfigManager<TypedConfig extends JsonObject> {
           break;
         }
         case ConfigChangeType.Transform: {
-          if (!rule.transform) throw new HypixelDiscordChatBridgeError(`Transform migration missing transform function for "${oldPath}"`);
+          if (!rule.transform) {
+            throw new HypixelDiscordChatBridgeError(`Transform migration missing transform function for "${oldPath}"`);
+          }
           if (!rule.key) throw new HypixelDiscordChatBridgeError(`Transform migration missing target key for "${oldPath}"`);
           const transformed = rule.transform(value, config);
           this.setNestedValue(config, rule.key, transformed);
@@ -201,7 +223,9 @@ abstract class BasicConfigManager<TypedConfig extends JsonObject> {
 
   private parseJsonObject(input: string, source: string): JsonObject {
     const parsed: unknown = JSON.parse(input);
-    if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) throw new HypixelDiscordChatBridgeError(`${source} must contain a JSON object.`);
+    if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
+      throw new HypixelDiscordChatBridgeError(`${source} must contain a JSON object.`);
+    }
     return parsed as JsonObject;
   }
 

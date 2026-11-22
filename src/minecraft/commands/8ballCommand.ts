@@ -1,3 +1,4 @@
+import Application from "../../Application.ts";
 import HypixelDiscordChatBridgeError from "../../private/error.ts";
 import MinecraftCommand from "../private/commands/MinecraftCommand.ts";
 import MinecraftCommandData from "../private/commands/MinecraftCommandData.ts";
@@ -17,7 +18,7 @@ class EightBallCommand extends MinecraftCommand {
 
   override async execute(player: string, message: string) {
     if (this.getArgs(message).length === 0) throw new HypixelDiscordChatBridgeError("You must provide a question.");
-    const response = await this.minecraft.application.request<EightBallAPIResponse>("https://www.eightballapi.com/api");
+    const response = await Application.request<EightBallAPIResponse>("https://www.eightballapi.com/api");
     if (!response.data.reading) throw new HypixelDiscordChatBridgeError("Wouldn't you like to know weather boy.");
     await this.send(`${response.data.reading}`);
   }

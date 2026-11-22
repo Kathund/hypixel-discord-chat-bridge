@@ -19,13 +19,12 @@ This document is generated from the Zod config schema in [`src/types/config.ts`]
 
 ## API
 
-| Key        | Type      | Description                        |
-| ---------- | --------- | ---------------------------------- |
-| `hypixel`  | `object`  | Configuration for the Hypixel API  |
-| `mowojang` | `object`  | Configuration for the Mowojang API |
-| `soopy`    | `object`  | Configuration for the Soopy API    |
-| `nmsr`     | `object`  | Configuration for the nmsr API     |
-| `cache`    | `boolean` | Should stuff be cached             |
+| Key        | Type     | Description                        |
+| ---------- | -------- | ---------------------------------- |
+| `hypixel`  | `object` | Configuration for the Hypixel API  |
+| `mowojang` | `object` | Configuration for the Mowojang API |
+| `soopy`    | `object` | Configuration for the Soopy API    |
+| `nmsr`     | `object` | Configuration for the nmsr API     |
 
 ### hypixel
 
@@ -395,10 +394,17 @@ This document is generated from the Zod config schema in [`src/types/config.ts`]
 
 ## other
 
-| Key             | Type      | Description                                             |
-| --------------- | --------- | ------------------------------------------------------- |
-| `backupConfigs` | `boolean` | Whether backup copies of config files should be created |
-| `logger`        | `object`  | Configuration options for the logger                    |
+| Key             | Type     | Description                                    |
+| --------------- | -------- | ---------------------------------------------- |
+| `configBackups` | `object` | Configuration options for config backup system |
+| `logger`        | `object` | Configuration options for the logger           |
+
+### configBackups
+
+| Key        | Type      | Description                                       |
+| ---------- | --------- | ------------------------------------------------- |
+| `enabled`  | `boolean` | Should config backups be made                     |
+| `location` | `string`  | The location of where these files should be saved |
 
 ### logger
 
@@ -410,7 +416,7 @@ This document is generated from the Zod config schema in [`src/types/config.ts`]
 
 ---
 
-This document is [auto generated](/scripts/docs/Configuration.ts) and was last updated on `Fri, 23 Oct 2026 04:05:15 GMT` (`1792728315959`)
+This document is [auto generated](/scripts/docs/Configuration.ts) and was last updated on `Sun, 22 Nov 2026 10:22:41 GMT` (`1795342961306`)
 
 To update this document please run `pnpm docgen` or contact a maintainer and ask them to update it.
 

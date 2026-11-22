@@ -1,7 +1,7 @@
-import MinecraftCommand from "../private/commands/MinecraftCommand.js";
-import MinecraftCommandData from "../private/commands/MinecraftCommandData.js";
-import { MinecraftRequestTimeoutError } from "../MinecraftRequestBroker.js";
-import type { MinecraftChatChannel } from "../../types/minecraft.js";
+import MinecraftCommand from "../private/commands/MinecraftCommand.ts";
+import MinecraftCommandData from "../private/commands/MinecraftCommandData.ts";
+import { MinecraftRequestTimeoutError } from "../MinecraftRequestBroker.ts";
+import type { MinecraftChatChannel } from "../../types/minecraft.ts";
 
 const OPERATORS = ["+", "-", "*"] as const;
 const CHAT_LINE = /^(?<chatType>Guild|Officer) > (?:\[[^\]]+\] )?(?<username>\w+)(?: \[[^\]]+\])?: (?<message>.+)$/;

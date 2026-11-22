@@ -1,1 +1,0 @@
-{ "exec": "pnpm start", "ext": "ts", "ignore": ["data", "build", "node_modules", "config.json", "config.example.json"] }

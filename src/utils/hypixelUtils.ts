@@ -83,3 +83,20 @@ export async function getSkyBlockSkills(options?: RequestOptions): Promise<SkyBl
     return data.parsed;
   });
 }
+
+export function replaceAllRanks(input: string): string {
+  input = input.replaceAll("[ዞ] ", "");
+  input = input.replaceAll("[MINISTER] ", "");
+  input = input.replaceAll("[MCP] ", "");
+  input = input.replaceAll("[MOJANG] ", "");
+  input = input.replaceAll("[EVENTS] ", "");
+  input = input.replaceAll("[PIG+++] ", "");
+  input = input.replaceAll("[INNIT] ", "");
+  input = input.replaceAll("[YOUTUBE] ", "");
+  input = input.replaceAll("[MVP++] ", "");
+  input = input.replaceAll("[MVP+] ", "");
+  input = input.replaceAll("[MVP] ", "");
+  input = input.replaceAll("[VIP+] ", "");
+  input = input.replaceAll("[VIP] ", "");
+  return input;
+}

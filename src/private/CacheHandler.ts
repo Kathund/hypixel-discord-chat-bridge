@@ -1,22 +1,23 @@
 import NodeCache from "node-cache";
-import type Application from "../Application.ts";
+import assert from "node:assert";
 
 class CacheHandler {
   // Should cache things for an hour
   private readonly cache: NodeCache = new NodeCache({ stdTTL: 1 * 60 * 60, maxKeys: -1, checkperiod: 180 });
-  constructor(private readonly application: Application) {}
 
   set<T>(key: string, value: T): T {
-    if (!this.application.config.API.cache) return value;
-    return this.cache.set(key, value) as T;
+    this.cache.set<T>(key, value);
+    const cached = this.get<T>(key);
+    assert(cached);
+    return cached;
   }
 
   has(key: string): boolean {
     return this.cache.has(key);
   }
 
-  get<T>(key: string): T {
-    return this.cache.get(key) as T;
+  get<T>(key: string): T | undefined {
+    return this.cache.get<T>(key);
   }
 
   keys(): string[] {

@@ -1,6 +1,6 @@
 {
   "$schema": "./docs/config.schema.json",
-  "configVersion": 11,
+  "configVersion": 12,
   "API": {
     "hypixel": {
       "key": "HYPIXEL_API_KEY",
@@ -14,8 +14,7 @@
     },
     "nmsr": {
       "baseURL": "https://nmsr.nickac.dev"
-    },
-    "cache": true
+    }
   },
   "bridge": {
     "minecraft": {
@@ -220,7 +219,10 @@
     "channels": []
   },
   "other": {
-    "backupConfigs": true,
+    "configBackups": {
+      "enabled": true,
+      "location": "./data/backup/config/config_{timestamp}.json"
+    },
     "logger": {
       "saveToFiles": true,
       "location": "./data/logs/{timestamp}",

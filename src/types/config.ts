@@ -54,13 +54,7 @@ export const ConfigAPINMSR = zod
   .meta({ description: "Configuration for the nmsr API" });
 
 export const ConfigAPI = zod
-  .object({
-    hypixel: ConfigAPIHypixel,
-    mowojang: ConfigAPIMowojang,
-    soopy: ConfigAPISoopy,
-    nmsr: ConfigAPINMSR,
-    cache: zod.boolean().meta({ description: "Should stuff be cached", skip: true })
-  })
+  .object({ hypixel: ConfigAPIHypixel, mowojang: ConfigAPIMowojang, soopy: ConfigAPISoopy, nmsr: ConfigAPINMSR })
   .meta({ description: "Configuration options for API's used inside of the bot" });
 export type ConfigAPI = zod.infer<typeof ConfigAPI>;
 
@@ -361,6 +355,12 @@ export const ConfigStatsChannels = zod
   })
   .meta({ description: "Configuration for stats channels" });
 
+export const ConfigOtherConfigBackups = zod
+  .object({
+    enabled: zod.boolean().meta({ description: "Should config backups be made" }),
+    location: zod.string().meta({ description: "The location of where these files should be saved" })
+  })
+  .meta({ description: "Configuration options for config backup system" });
 export const ConfigOtherLogger = zod
   .object({
     saveToFiles: zod.boolean().meta({ description: "Whether log output should be written to files" }),
@@ -369,7 +369,7 @@ export const ConfigOtherLogger = zod
   })
   .meta({ description: "Configuration options for the logger" });
 export const ConfigOther = zod
-  .object({ backupConfigs: zod.boolean().meta({ description: "Whether backup copies of config files should be created" }), logger: ConfigOtherLogger })
+  .object({ configBackups: ConfigOtherConfigBackups, logger: ConfigOtherLogger })
   .meta({ description: "Configuration options for misc/other stuff or things that don't have a good location" });
 
 export const Config = zod.object({

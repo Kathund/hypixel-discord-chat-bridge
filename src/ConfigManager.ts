@@ -3,7 +3,7 @@ import MinecraftManager from "./minecraft/MinecraftManager.ts";
 import { Config, ConfigChangeType, ConfigVerificationRolesCustom, type JsonValue, type MigrationMap } from "./types/config.ts";
 
 class ConfigManager extends BasicConfigManager<Config> {
-  protected readonly configPath = "config.json";
+  protected readonly configPath = process.env.CONFIG_PATH ?? "config.json";
   protected readonly defaultConfigPath = "config.example.json";
   protected readonly schema = Config;
   protected readonly playerVariableStatsKeyRenamingMap: Record<number, Record<string, string>> = {
@@ -181,7 +181,8 @@ class ConfigManager extends BasicConfigManager<Config> {
         }
       }
     },
-    11: { "api.mcHeads": { change: ConfigChangeType.Delete } }
+    11: { "api.mcHeads": { change: ConfigChangeType.Delete } },
+    12: { "other.backupConfigs": { key: "other.configBackups.enabled", change: ConfigChangeType.Move }, "api.cache": { change: ConfigChangeType.Delete } }
   };
 
   protected override onConfigValidated(config: Config): Config {

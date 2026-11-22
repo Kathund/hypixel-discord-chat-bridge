@@ -51,5 +51,6 @@ export type ValidErrors = Error | DiscordjsError | HypixelDiscordChatBridgeError
 export interface RuntimeInformation {
   commit: string;
   dirty: boolean;
+  startTime: number;
   docker: boolean;
 }

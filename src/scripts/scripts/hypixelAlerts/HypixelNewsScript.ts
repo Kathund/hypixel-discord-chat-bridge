@@ -1,3 +1,4 @@
+import Application from "../../../Application.ts";
 import BasicScript from "../../BasicScript.ts";
 import Parser from "rss-parser";
 import { delay } from "../../../utils/miscUtils.ts";
@@ -52,7 +53,7 @@ class HypixelNewsScript extends BasicScript {
 
   private async isRecentPost(url: string): Promise<boolean> {
     try {
-      const response = await this.scripts.application.request<string>(url, {
+      const response = await Application.request<string>(url, {
         headers: { "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:89.0) Gecko/20100101 Firefox/89.0" }
       });
       const $ = load(response.data);

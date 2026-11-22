@@ -1,3 +1,4 @@
+import Application from "../../Application.ts";
 import ExtensionRegistry from "../../extensions/ExtensionRegistry.ts";
 import loadExtensionModules from "../../extensions/moduleLoader.ts";
 import { Collection } from "discord.js";
@@ -67,13 +68,13 @@ class CommandHandler {
   private async handleSoopyCommand(chat: string, player: string, commandData: SoopyCommandData) {
     if (!this.minecraft.isBotOnline()) return;
     try {
-      const cached = this.minecraft.application.cache.get<SoopyCommandResponse>(`minecraft:commands:soopy:${commandData.command}:${player}`);
+      const cached = Application.cache.get<SoopyCommandResponse>(`minecraft:commands:soopy:${commandData.command}:${player}`);
       if (cached) return this.minecraft.bot.chat(`/${chat} [SOOPY V2] ${cached.raw}`);
-      const response = await this.minecraft.application.request<SoopyCommandResponse>(
+      const response = await Application.request<SoopyCommandResponse>(
         encodeURI(`${this.minecraft.application.config.API.soopy.baseURL}/guildBot/runCommand?user=${player}&cmd=${commandData.command}`)
       );
       if (!response.data.success) return this.minecraft.bot.chat(`/${chat} [SOOPY V2] An error occured while running the command`);
-      this.minecraft.application.cache.set(`minecraft:commands:soopy:${commandData.command}:${player}`, response.data);
+      Application.cache.set(`minecraft:commands:soopy:${commandData.command}:${player}`, response.data);
       return this.minecraft.bot.chat(`/${chat} [SOOPY V2] ${response.data.raw}`);
     } catch (error) {
       await this.minecraft.application.logError(toError(error));
@@ -94,7 +95,7 @@ class CommandHandler {
 
   async loadSoopyCommands(silent: boolean = false): Promise<void> {
     this.#soopyCommands.clear();
-    const commands = await this.minecraft.application.request<SoopyCommandListResponse>("https://soopy.dev/commands/list");
+    const commands = await Application.request<SoopyCommandListResponse>("https://soopy.dev/commands/list");
     commands.data.defaultCommands.filter((command) => !command.modOnly).forEach((command) => this.#soopyCommands.set(command.command, command));
     if (!silent) console.minecraft(`Successfully loaded ${this.#soopyCommands.size} soopy command(s).`);
   }
