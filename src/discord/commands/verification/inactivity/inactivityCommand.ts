@@ -1,32 +1,47 @@
-import DiscordCommand from "../../../private/commands/DiscordCommand.ts";
-import DiscordCommandDataBuilder from "../../../private/commands/DiscordCommandDataBuilder.ts";
-import HypixelDiscordChatBridgeError from "../../../../private/error.ts";
-import InactiveUser from "../../../../data/inactivity/InactiveUser.ts";
-import ms, { type StringValue } from "ms";
-import { CommandFlags, CommandPermission } from "../../../../types/discord.ts";
-import { SuccessEmbed } from "../../../private/EmbedHelper.ts";
-import type { ChatInputCommandInteractionWithGuild } from "../../../../types/discord.ts";
+import DiscordCommand from '../../../private/commands/DiscordCommand.ts';
+import DiscordCommandDataBuilder from '../../../private/commands/DiscordCommandDataBuilder.ts';
+import HypixelDiscordChatBridgeError from '../../../../private/error.ts';
+import InactiveUser from '../../../../data/inactivity/InactiveUser.ts';
+import ms, { type StringValue } from 'ms';
+import { CommandFlags, CommandPermission } from '../../../../types/discord.ts';
+import { SuccessEmbed } from '../../../private/EmbedHelper.ts';
+import type { ChatInputCommandInteractionWithGuild } from '../../../../types/discord.ts';
 
 class InactivityCommand extends DiscordCommand {
   override readonly data = new DiscordCommandDataBuilder()
-    .setName("inactivity")
-    .setDescription("Send an inactivity notice to the guild staff")
-    .addStringOption((option) => option.setName("time").setDescription("The time you are inactive for (e.g. 1d, 72h, 2w)").setRequired(true))
-    .addStringOption((option) => option.setName("reason").setDescription("The reason you are going away"));
+    .setName('inactivity')
+    .setDescription('Send an inactivity notice to the guild staff')
+    .addStringOption((option) =>
+      option.setName('time').setDescription('The time you are inactive for (e.g. 1d, 72h, 2w)').setRequired(true)
+    )
+    .addStringOption((option) => option.setName('reason').setDescription('The reason you are going away'));
   override readonly flags = [CommandFlags.InactivityCommand, CommandFlags.VerificationCommand];
   override readonly permission = CommandPermission.GuildMember;
 
   override async execute(interaction: ChatInputCommandInteractionWithGuild) {
     const linkedUser = await this.discord.application.data.linked.getUserByDiscordId(interaction.user.id);
-    if (!linkedUser) throw new HypixelDiscordChatBridgeError("This command requires you to be verified. Please use /verify to verify.");
+    if (!linkedUser) {
+      throw new HypixelDiscordChatBridgeError(
+        'This command requires you to be verified. Please use /verify to verify.'
+      );
+    }
     const inactivityData = await this.discord.application.data.inactivity.getUserByDiscordId(interaction.user.id);
-    if (inactivityData) throw new HypixelDiscordChatBridgeError(`You are already inactive until <t:${inactivityData.expires}:F> (<t:${inactivityData.expires}:R>)`);
+    if (inactivityData) {
+      throw new HypixelDiscordChatBridgeError(
+        `You are already inactive until <t:${inactivityData.expires}:F> (<t:${inactivityData.expires}:R>)`
+      );
+    }
 
-    const time = Math.floor(ms(interaction.options.getString("time", true) as StringValue) / 1000);
-    if (isNaN(time)) throw new HypixelDiscordChatBridgeError("Please input a valid time");
-    const reason = interaction.options.getString("reason") ?? "No reason provided";
-    await new InactiveUser({ discordId: interaction.user.id, reason, duration: time }, this.discord.application.data.inactivity).save();
-    await interaction.followUp({ embeds: [new SuccessEmbed().setDescription("Inactivity request has been successfully sent to the guild staff.")] });
+    const time = Math.floor(ms(interaction.options.getString('time', true) as StringValue) / 1000);
+    if (isNaN(time)) throw new HypixelDiscordChatBridgeError('Please input a valid time');
+    const reason = interaction.options.getString('reason') ?? 'No reason provided';
+    await new InactiveUser(
+      { discordId: interaction.user.id, reason, duration: time },
+      this.discord.application.data.inactivity
+    ).save();
+    await interaction.followUp({
+      embeds: [new SuccessEmbed().setDescription('Inactivity request has been successfully sent to the guild staff.')]
+    });
   }
 }
 

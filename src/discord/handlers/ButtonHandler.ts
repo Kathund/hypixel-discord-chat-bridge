@@ -1,11 +1,11 @@
-import ExtensionRegistry from "../../extensions/ExtensionRegistry.ts";
-import HypixelDiscordChatBridgeError from "../../private/error.ts";
-import loadExtensionModules from "../../extensions/moduleLoader.ts";
-import { type ButtonInteractionWithGuild, ButtonResponse } from "../../types/discord.ts";
-import { MessageFlags } from "discord.js";
-import { toError } from "../../utils/asyncUtils.ts";
-import type DiscordButton from "../private/buttons/DiscordButton.ts";
-import type DiscordManager from "../DiscordManager.ts";
+import ExtensionRegistry from '../../extensions/ExtensionRegistry.ts';
+import HypixelDiscordChatBridgeError from '../../private/error.ts';
+import loadExtensionModules from '../../extensions/moduleLoader.ts';
+import { type ButtonInteractionWithGuild, ButtonResponse } from '../../types/discord.ts';
+import { MessageFlags } from 'discord.js';
+import { toError } from '../../utils/asyncUtils.ts';
+import type DiscordButton from '../private/buttons/DiscordButton.ts';
+import type DiscordManager from '../DiscordManager.ts';
 
 class ButtonHandler {
   readonly #buttons = new ExtensionRegistry<DiscordButton<DiscordManager>>();
@@ -17,10 +17,17 @@ class ButtonHandler {
 
     try {
       if (button.response !== ButtonResponse.None) {
-        if (button.response === ButtonResponse.Update) await interaction.deferUpdate();
-        else await interaction.deferReply({ flags: button.response === ButtonResponse.Ephemeral ? MessageFlags.Ephemeral : undefined });
+        if (button.response === ButtonResponse.Update) {
+          await interaction.deferUpdate();
+        } else {
+          await interaction.deferReply({
+            flags: button.response === ButtonResponse.Ephemeral ? MessageFlags.Ephemeral : undefined
+          });
+        }
       }
-      console.discord(`Button Clicked ${interaction.user.username} (${interaction.user.id}) button ${interaction.customId}`);
+      console.discord(
+        `Button Clicked ${interaction.user.username} (${interaction.user.id}) button ${interaction.customId}`
+      );
 
       await this.discord.interactionHandler.checkPerms(interaction.member, button);
 
@@ -32,7 +39,10 @@ class ButtonHandler {
 
   async loadButtons() {
     this.#buttons.clear();
-    const modules = await loadExtensionModules<DiscordButton<DiscordManager>, DiscordManager>(new URL("../buttons/", import.meta.url), this.discord);
+    const modules = await loadExtensionModules<DiscordButton<DiscordManager>, DiscordManager>(
+      new URL('../buttons/', import.meta.url),
+      this.discord
+    );
     for (const { extension: button, source } of modules) {
       const [id, ...aliases] = button.data.ids;
       if (!id) throw new HypixelDiscordChatBridgeError(`${source}: Button must define at least one identifier.`);
@@ -41,7 +51,7 @@ class ButtonHandler {
     console.discord(`Successfully loaded ${this.#buttons.size} button(s).`);
   }
 
-  registerButton(button: DiscordButton<DiscordManager>, source: string = "programmatic"): void {
+  registerButton(button: DiscordButton<DiscordManager>, source: string = 'programmatic'): void {
     const [id, ...aliases] = button.data.ids;
     if (!id) throw new HypixelDiscordChatBridgeError(`${source}: Button must define at least one identifier.`);
     this.#buttons.register(id, button, aliases, source);

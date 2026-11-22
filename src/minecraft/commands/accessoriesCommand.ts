@@ -1,18 +1,18 @@
-import HypixelDiscordChatBridgeError from "../../private/error.ts";
-import MinecraftCommand from "../private/commands/MinecraftCommand.ts";
-import MinecraftCommandData from "../private/commands/MinecraftCommandData.ts";
-import MinecraftCommandDataOption from "../private/commands/MinecraftCommandDataOption.ts";
-import { formatNumber, replaceVariables } from "../../utils/stringUtils.ts";
-import { getSelectedProfile } from "../../utils/hypixelUtils.ts";
-import type { Rarity, SkyBlockInventoryItem } from "hypixel-api-reborn";
+import HypixelDiscordChatBridgeError from '../../private/error.ts';
+import MinecraftCommand from '../private/commands/MinecraftCommand.ts';
+import MinecraftCommandData from '../private/commands/MinecraftCommandData.ts';
+import MinecraftCommandDataOption from '../private/commands/MinecraftCommandDataOption.ts';
+import { formatNumber, replaceVariables } from '../../utils/stringUtils.ts';
+import { getSelectedProfile } from '../../utils/hypixelUtils.ts';
+import type { Rarity, SkyBlockInventoryItem } from 'hypixel-api-reborn';
 
 class AccessoriesCommand extends MinecraftCommand {
   override readonly data = new MinecraftCommandData()
-    .setName("accessories")
-    .setDescription("Accessories of specified user.")
-    .setAliases(["acc", "talismans", "talisman", "mp", "magicpower"])
-    .setOptions([new MinecraftCommandDataOption().setName("username").setDescription("Minecraft Username")])
-    .setAuthors(["DuckySoLucky"]);
+    .setName('accessories')
+    .setDescription('Accessories of specified user.')
+    .setAliases(['acc', 'talismans', 'talisman', 'mp', 'magicpower'])
+    .setOptions([new MinecraftCommandDataOption().setName('username').setDescription('Minecraft Username')])
+    .setAuthors(['DuckySoLucky']);
 
   getAccessories(accessories: SkyBlockInventoryItem[]) {
     try {
@@ -20,7 +20,17 @@ class AccessoriesCommand extends MinecraftCommand {
         amount: 0,
         recombed: 0,
         enriched: 0,
-        rarities: { COMMON: 0, UNCOMMON: 0, RARE: 0, EPIC: 0, LEGENDARY: 0, MYTHIC: 0, DIVINE: 0, SPECIAL: 0, VERY_SPECIAL: 0 }
+        rarities: {
+          COMMON: 0,
+          UNCOMMON: 0,
+          RARE: 0,
+          EPIC: 0,
+          LEGENDARY: 0,
+          MYTHIC: 0,
+          DIVINE: 0,
+          SPECIAL: 0,
+          VERY_SPECIAL: 0
+        }
       };
 
       if (!accessories?.length) return output;
@@ -49,7 +59,9 @@ class AccessoriesCommand extends MinecraftCommand {
     const decoded = await profile.me.inventory.bags.talisman.decodeData();
     if (!decoded) throw new HypixelDiscordChatBridgeError(`${username} has no SkyBlock profiles.`);
     const talismans = this.getAccessories(decoded.items);
-    if (!talismans) throw new HypixelDiscordChatBridgeError(replaceVariables("Couldn't parse {username}'s talismans", { username }));
+    if (!talismans) {
+      throw new HypixelDiscordChatBridgeError(replaceVariables("Couldn't parse {username}'s talismans", { username }));
+    }
 
     const { recombed, amount, enriched, rarities } = talismans;
     const { COMMON, RARE, EPIC, LEGENDARY, MYTHIC, SPECIAL } = rarities;

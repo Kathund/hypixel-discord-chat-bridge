@@ -1,13 +1,18 @@
-import DiscordButton from "../../private/buttons/DiscordButton.ts";
-import DiscordButtonData from "../../private/buttons/DiscordButtonData.ts";
-import HypixelDiscordChatBridgeError from "../../../private/error.ts";
-import LinkedCommand from "../../commands/verification/linkedCommand.ts";
-import { type ButtonInteractionWithGuild, ButtonResponse, CommandFlags, CommandPermission } from "../../../types/discord.ts";
-import { LabelBuilder, ModalBuilder, RadioGroupBuilder, RadioGroupOptionBuilder } from "discord.js";
-import type LinkedUser from "../../../data/linked/LinkedUser.ts";
+import DiscordButton from '../../private/buttons/DiscordButton.ts';
+import DiscordButtonData from '../../private/buttons/DiscordButtonData.ts';
+import HypixelDiscordChatBridgeError from '../../../private/error.ts';
+import LinkedCommand from '../../commands/verification/linkedCommand.ts';
+import {
+  type ButtonInteractionWithGuild,
+  ButtonResponse,
+  CommandFlags,
+  CommandPermission
+} from '../../../types/discord.ts';
+import { LabelBuilder, ModalBuilder, RadioGroupBuilder, RadioGroupOptionBuilder } from 'discord.js';
+import type LinkedUser from '../../../data/linked/LinkedUser.ts';
 
 class SetRankUserButton extends DiscordButton {
-  override readonly data = new DiscordButtonData("setRankUser");
+  override readonly data = new DiscordButtonData('setRankUser');
   override readonly response = ButtonResponse.None;
   override readonly flags = [CommandFlags.RequiresMinecraftBot, CommandFlags.VerificationCommand];
   override readonly permission = CommandPermission.Staff;
@@ -15,22 +20,24 @@ class SetRankUserButton extends DiscordButton {
   override async execute(interaction: ButtonInteractionWithGuild) {
     const linkedCommand = new LinkedCommand(this.discord);
     const linked = await linkedCommand.getLinkedFromLinkedEmbed(interaction.message);
-    if (!linked) throw new HypixelDiscordChatBridgeError("Unable to find the linked user");
+    if (!linked) throw new HypixelDiscordChatBridgeError('Unable to find the linked user');
     const username = await linked.getUsername();
     const modal = new ModalBuilder()
-      .setCustomId("setRankUser")
+      .setCustomId('setRankUser')
       .setTitle(`Set Rank ${username}`)
       .addLabelComponents(await this.createRankLabel(linked));
     await interaction.showModal(modal);
   }
 
   private async createRankLabel(linked: LinkedUser): Promise<LabelBuilder> {
-    const guild = this.discord.application.botGuild ? this.discord.application.botGuild : await this.discord.application.getBotGuild();
+    const guild = this.discord.application.botGuild
+      ? this.discord.application.botGuild
+      : await this.discord.application.getBotGuild();
     const guildMember = await linked.isUserInHypixelGuild();
 
-    return new LabelBuilder().setLabel("Rank").setRadioGroupComponent(
+    return new LabelBuilder().setLabel('Rank').setRadioGroupComponent(
       new RadioGroupBuilder()
-        .setCustomId("setRankUserRank")
+        .setCustomId('setRankUserRank')
         .setRequired(true)
         .addOptions(
           guild.ranks.map(({ name }) =>

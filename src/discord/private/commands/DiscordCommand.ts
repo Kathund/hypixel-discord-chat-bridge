@@ -1,16 +1,18 @@
-import BasicInteractionData from "../BasicInteractionData.ts";
+import BasicInteractionData from '../BasicInteractionData.ts';
 import {
   type AutocompleteInteractionWithGuild,
   type AutocompleteOption,
   BasicInteractionResponse,
   type ChatInputCommandInteractionWithGuild,
   type DiscordManagerWithClient
-} from "../../../types/discord.ts";
-import { ParseAutoComplete } from "../../../utils/discordUtils.ts";
-import type DiscordCommandDataBuilder from "./DiscordCommandDataBuilder.ts";
-import type DiscordManager from "../../DiscordManager.ts";
+} from '../../../types/discord.ts';
+import { ParseAutoComplete } from '../../../utils/discordUtils.ts';
+import type DiscordCommandDataBuilder from './DiscordCommandDataBuilder.ts';
+import type DiscordManager from '../../DiscordManager.ts';
 
-abstract class DiscordCommand<Manager extends DiscordManager = DiscordManagerWithClient> extends BasicInteractionData<Manager> {
+abstract class DiscordCommand<
+  Manager extends DiscordManager = DiscordManagerWithClient
+> extends BasicInteractionData<Manager> {
   abstract readonly data: DiscordCommandDataBuilder;
   readonly response: BasicInteractionResponse = BasicInteractionResponse.Public;
 
@@ -23,16 +25,18 @@ abstract class DiscordCommand<Manager extends DiscordManager = DiscordManagerWit
 
     // eslint-disable-next-line default-case -- Should just use the options that already exist
     switch (focusedOption.name) {
-      case "guild-member-username": {
+      case 'guild-member-username': {
         const members = this.discord.application.botGuildMembers;
         if (members === undefined) {
           options = [{ name: "No username's cached" }];
           break;
         }
-        options = members.sort((a, b) => a.username.localeCompare(b.username)).map(({ username }) => ({ name: username }));
+        options = members
+          .sort((a, b) => a.username.localeCompare(b.username))
+          .map(({ username }) => ({ name: username }));
         break;
       }
-      case "guild-rank": {
+      case 'guild-rank': {
         const ranks = this.discord.application.botGuild?.ranks;
         if (ranks === undefined) {
           options = [{ name: "No guild's cached" }];

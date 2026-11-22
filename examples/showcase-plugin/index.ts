@@ -1,15 +1,20 @@
-import ShowcaseButton from "./components/ShowcaseButton.ts";
-import ShowcaseDiscordCommand from "./commands/ShowcaseDiscordCommand.ts";
-import ShowcaseEventLogger from "./events/ShowcaseEventLogger.ts";
-import ShowcaseMinecraftCommand from "./commands/ShowcaseMinecraftCommand.ts";
-import ShowcaseModal from "./components/ShowcaseModal.ts";
-import ShowcaseScript from "./scripts/ShowcaseScript.ts";
-import showcasePluginConfig from "./config.ts";
-import { type Application, BridgePlugin, type BridgePluginContext } from "hypixel-discord-chat-bridge/plugin-api";
-import type { ShowcasePluginConfig } from "./config.ts";
+import ShowcaseButton from './components/ShowcaseButton.ts';
+import ShowcaseDiscordCommand from './commands/ShowcaseDiscordCommand.ts';
+import ShowcaseEventLogger from './events/ShowcaseEventLogger.ts';
+import ShowcaseMinecraftCommand from './commands/ShowcaseMinecraftCommand.ts';
+import ShowcaseModal from './components/ShowcaseModal.ts';
+import ShowcaseScript from './scripts/ShowcaseScript.ts';
+import showcasePluginConfig from './config.ts';
+import { type Application, BridgePlugin, type BridgePluginContext } from 'hypixel-discord-chat-bridge/plugin-api';
+import type { ShowcasePluginConfig } from './config.ts';
 
 class ShowcasePlugin extends BridgePlugin<ShowcasePlugin> {
-  override readonly metadata = { name: "Plugin API Showcase", description: "Example plugin for the Plugin API", version: "1.0.0", author: "Kathund" } as const;
+  override readonly metadata = {
+    name: 'Plugin API Showcase',
+    description: 'Example plugin for the Plugin API',
+    version: '1.0.0',
+    author: 'Kathund'
+  } as const;
   readonly #eventLogger: ShowcaseEventLogger;
   #started: boolean = false;
 
@@ -28,7 +33,9 @@ class ShowcasePlugin extends BridgePlugin<ShowcasePlugin> {
     this.context.registerMinecraftCommand((minecraft) => new ShowcaseMinecraftCommand(minecraft));
     this.context.registerButton((discord) => new ShowcaseButton(discord));
     this.context.registerModal((discord) => new ShowcaseModal(discord));
-    this.context.registerScript((scripts) => new ShowcaseScript(scripts, this.context.logger, this.config.scripts.showcase));
+    this.context.registerScript(
+      (scripts) => new ShowcaseScript(scripts, this.context.logger, this.config.scripts.showcase)
+    );
     return Promise.resolve();
   }
 
@@ -37,7 +44,7 @@ class ShowcasePlugin extends BridgePlugin<ShowcasePlugin> {
     if (this.#started) return Promise.resolve();
     this.#started = true;
     this.#eventLogger.start();
-    this.context.logger.info("Showcase plugin started.");
+    this.context.logger.info('Showcase plugin started.');
     return Promise.resolve();
   }
 
@@ -46,7 +53,7 @@ class ShowcasePlugin extends BridgePlugin<ShowcasePlugin> {
     if (!this.#started) return Promise.resolve();
     this.#started = false;
     this.#eventLogger.stop();
-    this.context.logger.info("Showcase plugin stopped.");
+    this.context.logger.info('Showcase plugin stopped.');
     return Promise.resolve();
   }
 }

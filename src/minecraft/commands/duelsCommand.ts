@@ -1,18 +1,24 @@
-import MinecraftCommand from "../private/commands/MinecraftCommand.ts";
-import MinecraftCommandData from "../private/commands/MinecraftCommandData.ts";
-import MinecraftCommandDataOption from "../private/commands/MinecraftCommandDataOption.ts";
-import { type DuelsInternalName, type DuelsModSearch, DuelsModeAliastoInternalMap, type DuelsModeName, DuelsModeNames } from "../../types/minecraft.ts";
-import { formatNumber } from "../../utils/stringUtils.ts";
-import { getPlayer } from "../../utils/hypixelUtils.ts";
-import type { DuelsModeFull, Player } from "hypixel-api-reborn";
+import MinecraftCommand from '../private/commands/MinecraftCommand.ts';
+import MinecraftCommandData from '../private/commands/MinecraftCommandData.ts';
+import MinecraftCommandDataOption from '../private/commands/MinecraftCommandDataOption.ts';
+import {
+  type DuelsInternalName,
+  type DuelsModSearch,
+  DuelsModeAliastoInternalMap,
+  type DuelsModeName,
+  DuelsModeNames
+} from '../../types/minecraft.ts';
+import { formatNumber } from '../../utils/stringUtils.ts';
+import { getPlayer } from '../../utils/hypixelUtils.ts';
+import type { DuelsModeFull, Player } from 'hypixel-api-reborn';
 
 class DuelsCommand extends MinecraftCommand {
   override readonly data = new MinecraftCommandData()
-    .setName("duels")
-    .setDescription("Duel stats of specified user.")
-    .setAliases(["d"])
-    .setOptions([new MinecraftCommandDataOption().setName("username").setDescription("Minecraft Username")])
-    .setAuthors(["DuckySoLucky"]);
+    .setName('duels')
+    .setDescription('Duel stats of specified user.')
+    .setAliases(['d'])
+    .setOptions([new MinecraftCommandDataOption().setName('username').setDescription('Minecraft Username')])
+    .setAuthors(['DuckySoLucky']);
 
   convertMode(mode: DuelsModeName): DuelsInternalName {
     return DuelsModeAliastoInternalMap[mode] as DuelsInternalName;
@@ -21,7 +27,7 @@ class DuelsCommand extends MinecraftCommand {
   getStats(hypixelPlayer: Player, mode: DuelsModSearch): DuelsModeFull {
     let stats;
 
-    if (mode === "overall") {
+    if (mode === 'overall') {
       stats = hypixelPlayer.stats.Duels;
     } else {
       const internal = this.convertMode(mode);
@@ -32,12 +38,12 @@ class DuelsCommand extends MinecraftCommand {
   }
 
   override async execute(player: string, message: string) {
-    const msg = this.getArgs(message).map((arg) => arg.replaceAll("/", ""));
+    const msg = this.getArgs(message).map((arg) => arg.replaceAll('/', ''));
 
     const arg0 = msg[0];
     const arg1 = msg[1];
 
-    let mode: DuelsModSearch = "overall";
+    let mode: DuelsModSearch = 'overall';
 
     if (arg0 && DuelsModeNames.includes(arg0)) {
       mode = arg0 as DuelsModeName;
@@ -47,8 +53,11 @@ class DuelsCommand extends MinecraftCommand {
     }
 
     const hypixelPlayer = await getPlayer(player);
-    const { title, kills, killDeathRatio, wins, winLossRatio, winstreak, winstreakBest } = this.getStats(hypixelPlayer, mode);
-    const parsedTitle = title ? `[${title}] ` : "";
+    const { title, kills, killDeathRatio, wins, winLossRatio, winstreak, winstreakBest } = this.getStats(
+      hypixelPlayer,
+      mode
+    );
+    const parsedTitle = title ? `[${title}] ` : '';
     await this.send(
       `${parsedTitle}${hypixelPlayer.nickname}'s ${mode} Kills: ${formatNumber(kills)} KDR: ${killDeathRatio} | Wins: ${formatNumber(wins)} WLR: ${
         winLossRatio

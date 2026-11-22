@@ -1,16 +1,16 @@
-import MinecraftCommand from "../private/commands/MinecraftCommand.ts";
-import MinecraftCommandData from "../private/commands/MinecraftCommandData.ts";
-import MinecraftCommandDataOption from "../private/commands/MinecraftCommandDataOption.ts";
-import { formatNumber, titleCase } from "../../utils/stringUtils.ts";
-import { getSelectedProfile } from "../../utils/hypixelUtils.ts";
+import MinecraftCommand from '../private/commands/MinecraftCommand.ts';
+import MinecraftCommandData from '../private/commands/MinecraftCommandData.ts';
+import MinecraftCommandDataOption from '../private/commands/MinecraftCommandDataOption.ts';
+import { formatNumber, titleCase } from '../../utils/stringUtils.ts';
+import { getSelectedProfile } from '../../utils/hypixelUtils.ts';
 
 class SkillsCommand extends MinecraftCommand {
   override readonly data = new MinecraftCommandData()
-    .setName("skills")
-    .setDescription("Skills and Skill Average of specified user.")
-    .setAliases(["skill", "sa"])
-    .setOptions([new MinecraftCommandDataOption().setName("username").setDescription("Minecraft Username")])
-    .setAuthors(["DuckySoLucky"]);
+    .setName('skills')
+    .setDescription('Skills and Skill Average of specified user.')
+    .setAliases(['skill', 'sa'])
+    .setOptions([new MinecraftCommandDataOption().setName('username').setDescription('Minecraft Username')])
+    .setAuthors(['DuckySoLucky']);
 
   override async execute(player: string, message: string) {
     player = this.getArgs(message)[0] || player;
@@ -18,13 +18,15 @@ class SkillsCommand extends MinecraftCommand {
 
     const skills = profile.me.playerData.skills;
     const formattedSkills = Object.entries(skills)
-      .filter(([name]) => !["average", "nonCosmeticAverage", "toString"].includes(name))
+      .filter(([name]) => !['average', 'nonCosmeticAverage', 'toString'].includes(name))
       .filter(([_, data]) => data.currentXp > 1)
       .map(([name, data]) => ({ name, level: data.levelWithProgress }))
       .sort((a, b) => a.name.localeCompare(b.name))
       .map((skill) => `${titleCase(skill.name)}: ${formatNumber(skill.level)}`);
 
-    await this.send(`${username}'s Skill Average: ${(skills.nonCosmeticAverage ?? 0).toFixed(2)} (${formattedSkills.join(", ")})`);
+    await this.send(
+      `${username}'s Skill Average: ${(skills.nonCosmeticAverage ?? 0).toFixed(2)} (${formattedSkills.join(', ')})`
+    );
   }
 }
 

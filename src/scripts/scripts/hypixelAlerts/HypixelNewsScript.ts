@@ -1,10 +1,10 @@
-import Application from "../../../Application.ts";
-import BasicScript from "../../BasicScript.ts";
-import Parser from "rss-parser";
-import { delay } from "../../../utils/miscUtils.ts";
-import { intervalSchedule } from "../../../types/scripts.ts";
-import { load } from "cheerio";
-import type ScriptManager from "../../ScriptsManager.ts";
+import Application from '../../../Application.ts';
+import BasicScript from '../../BasicScript.ts';
+import Parser from 'rss-parser';
+import { delay } from '../../../utils/miscUtils.ts';
+import { intervalSchedule } from '../../../types/scripts.ts';
+import { load } from 'cheerio';
+import type ScriptManager from '../../ScriptsManager.ts';
 
 class HypixelNewsScript extends BasicScript {
   private firstTime = true;
@@ -12,7 +12,7 @@ class HypixelNewsScript extends BasicScript {
   private readonly parser = new Parser();
   constructor(scripts: ScriptManager) {
     super(scripts, {
-      id: "hypixelNews",
+      id: 'hypixelNews',
       enabled: scripts.application.config.minecraft.hypixelAlerts.hypixelNews.enabled,
       schedule: intervalSchedule(scripts.application.config.minecraft.hypixelAlerts.hypixelNews.interval)
     });
@@ -26,8 +26,8 @@ class HypixelNewsScript extends BasicScript {
   override async execute() {
     if (!this.scripts.application.minecraft.isBotOnline()) return;
     const [{ items: news }, { items: skyblockNews }] = await Promise.all([
-      this.parser.parseURL("https://hypixel.net/forums/news-and-announcements.4/index.rss"),
-      this.parser.parseURL("https://hypixel.net/forums/skyblock-patch-notes.158/index.rss")
+      this.parser.parseURL('https://hypixel.net/forums/news-and-announcements.4/index.rss'),
+      this.parser.parseURL('https://hypixel.net/forums/skyblock-patch-notes.158/index.rss')
     ]);
 
     const latestFeed = news.concat(skyblockNews);
@@ -54,10 +54,10 @@ class HypixelNewsScript extends BasicScript {
   private async isRecentPost(url: string): Promise<boolean> {
     try {
       const response = await Application.request<string>(url, {
-        headers: { "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:89.0) Gecko/20100101 Firefox/89.0" }
+        headers: { 'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:89.0) Gecko/20100101 Firefox/89.0' }
       });
       const $ = load(response.data);
-      const timestamp = Number($("time.u-dt").first().attr("data-time"));
+      const timestamp = Number($('time.u-dt').first().attr('data-time'));
       if (!Number.isFinite(timestamp)) return false;
       const now = Math.floor(Date.now() / 1000);
       return timestamp + 12 * 60 * 60 >= now;

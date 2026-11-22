@@ -1,12 +1,12 @@
-import GenericData from "../src/data/GenericData.ts";
-import GenericManager from "../src/data/GenericManager.ts";
-import assert from "node:assert/strict";
-import test from "node:test";
-import { join } from "node:path";
-import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
-import { tmpdir } from "node:os";
-import { z } from "zod";
-import type DataManager from "../src/data/DataManager.ts";
+import GenericData from '../src/data/GenericData.ts';
+import GenericManager from '../src/data/GenericManager.ts';
+import assert from 'node:assert/strict';
+import test from 'node:test';
+import { join } from 'node:path';
+import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { z } from 'zod';
+import type DataManager from '../src/data/DataManager.ts';
 
 interface TestRecordJSON {
   readonly id: string;
@@ -30,7 +30,7 @@ class TestRecord extends GenericData<TestRecordJSON> {
 
 class TestManager extends GenericManager<TestRecordJSON, TestRecordJSON[], TestRecord> {
   constructor(filePath: string) {
-    super(undefined as unknown as DataManager, filePath, "test", [], testStoreSchema);
+    super(undefined as unknown as DataManager, filePath, 'test', [], testStoreSchema);
   }
 
   override parseData(data: TestRecordJSON[]): TestRecord[] {
@@ -46,19 +46,23 @@ class TestManager extends GenericManager<TestRecordJSON, TestRecordJSON[], TestR
   }
 }
 
-test("serializes concurrent persistence mutations and prevents duplicates", async () => {
-  const directory = await mkdtemp(join(tmpdir(), "bridge-data-"));
-  const filePath = join(directory, "records.json");
+test('serializes concurrent persistence mutations and prevents duplicates', async () => {
+  const directory = await mkdtemp(join(tmpdir(), 'bridge-data-'));
+  const filePath = join(directory, 'records.json');
   const manager = new TestManager(filePath);
 
   try {
     await manager.start();
-    await Promise.all([manager.add({ id: "one", value: "1" }), manager.add({ id: "two", value: "2" }), manager.add({ id: "one", value: "duplicate" })]);
+    await Promise.all([
+      manager.add({ id: 'one', value: '1' }),
+      manager.add({ id: 'two', value: '2' }),
+      manager.add({ id: 'one', value: 'duplicate' })
+    ]);
 
-    const stored = testStoreSchema.parse(JSON.parse(await readFile(filePath, "utf-8")));
+    const stored = testStoreSchema.parse(JSON.parse(await readFile(filePath, 'utf-8')));
     assert.deepEqual(stored, [
-      { id: "one", value: "1" },
-      { id: "two", value: "2" }
+      { id: 'one', value: '1' },
+      { id: 'two', value: '2' }
     ]);
   } finally {
     await manager.stop();
@@ -66,13 +70,13 @@ test("serializes concurrent persistence mutations and prevents duplicates", asyn
   }
 });
 
-test("rejects malformed persisted JSON", async () => {
-  const directory = await mkdtemp(join(tmpdir(), "bridge-data-"));
-  const filePath = join(directory, "records.json");
+test('rejects malformed persisted JSON', async () => {
+  const directory = await mkdtemp(join(tmpdir(), 'bridge-data-'));
+  const filePath = join(directory, 'records.json');
   const manager = new TestManager(filePath);
 
   try {
-    await writeFile(filePath, JSON.stringify([{ id: 1 }]), "utf-8");
+    await writeFile(filePath, JSON.stringify([{ id: 1 }]), 'utf-8');
     await assert.rejects(manager.getFullData(), /malformed/u);
   } finally {
     await manager.stop();

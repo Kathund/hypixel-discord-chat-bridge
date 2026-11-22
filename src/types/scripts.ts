@@ -1,18 +1,18 @@
-import ms, { type StringValue } from "ms";
-import type ScriptManager from "../scripts/ScriptsManager.ts";
+import ms, { type StringValue } from 'ms';
+import type ScriptManager from '../scripts/ScriptsManager.ts';
 
 export interface CronScriptSchedule {
-  readonly type: "cron";
+  readonly type: 'cron';
   readonly expression: string;
 }
 
 export interface IntervalScriptSchedule {
-  readonly type: "interval";
+  readonly type: 'interval';
   readonly milliseconds: number;
 }
 
 export interface EmptyScriptSchedule {
-  readonly type: "empty";
+  readonly type: 'empty';
 }
 
 export type ScriptSchedule = CronScriptSchedule | IntervalScriptSchedule | EmptyScriptSchedule;
@@ -21,19 +21,19 @@ export interface ScriptOptions {
   readonly id: string;
   readonly enabled: boolean;
   readonly schedule: ScriptSchedule;
-  readonly overlap?: "allow" | "skip";
+  readonly overlap?: 'allow' | 'skip';
 }
 
 export function intervalSchedule(value: string | StringValue): ScriptSchedule {
-  return { type: "interval", milliseconds: ms(value as StringValue) };
+  return { type: 'interval', milliseconds: ms(value as StringValue) };
 }
 
 export function cronSchedule(expression: string): ScriptSchedule {
-  return { type: "cron", expression };
+  return { type: 'cron', expression };
 }
 
 export function emptySchedule(): EmptyScriptSchedule {
-  return { type: "empty" };
+  return { type: 'empty' };
 }
 
 export enum ScriptLogState {

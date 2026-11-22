@@ -1,18 +1,27 @@
-import { BasicScript, type BridgePluginLogger, type ScriptManagerWithPlugin } from "hypixel-discord-chat-bridge/plugin-api";
-import type ShowcasePlugin from "../index.ts";
-import type { ShowcasePluginConfig } from "../config.ts";
+import {
+  BasicScript,
+  type BridgePluginLogger,
+  type ScriptManagerWithPlugin
+} from 'hypixel-discord-chat-bridge/plugin-api';
+import type ShowcasePlugin from '../index.ts';
+import type { ShowcasePluginConfig } from '../config.ts';
 
 class ShowcaseScript extends BasicScript<ScriptManagerWithPlugin<ShowcasePlugin>> {
   constructor(
     scripts: ScriptManagerWithPlugin<ShowcasePlugin>,
     private readonly logger: BridgePluginLogger,
-    config: ShowcasePluginConfig["scripts"]["showcase"]
+    config: ShowcasePluginConfig['scripts']['showcase']
   ) {
-    super(scripts, { id: "showcase-script", enabled: config.enabled, schedule: { type: "interval", milliseconds: config.intervalMilliseconds }, overlap: "skip" });
+    super(scripts, {
+      id: 'showcase-script',
+      enabled: config.enabled,
+      schedule: { type: 'interval', milliseconds: config.intervalMilliseconds },
+      overlap: 'skip'
+    });
   }
 
   override execute(signal: AbortSignal): Promise<void> {
-    if (!signal.aborted) this.logger.info("The showcase script executed.");
+    if (!signal.aborted) this.logger.info('The showcase script executed.');
     return Promise.resolve();
   }
 }

@@ -1,22 +1,24 @@
-import HypixelDiscordChatBridgeError from "../../private/error.ts";
-import MinecraftCommand from "../private/commands/MinecraftCommand.ts";
-import MinecraftCommandData from "../private/commands/MinecraftCommandData.ts";
-import MinecraftCommandDataOption from "../private/commands/MinecraftCommandDataOption.ts";
-import { delay } from "../../utils/miscUtils.ts";
+import HypixelDiscordChatBridgeError from '../../private/error.ts';
+import MinecraftCommand from '../private/commands/MinecraftCommand.ts';
+import MinecraftCommandData from '../private/commands/MinecraftCommandData.ts';
+import MinecraftCommandDataOption from '../private/commands/MinecraftCommandDataOption.ts';
+import { delay } from '../../utils/miscUtils.ts';
 
 class BooCommand extends MinecraftCommand {
   override readonly data = new MinecraftCommandData()
-    .setName("boo")
-    .setDescription("Boo someone!")
-    .setOptions([new MinecraftCommandDataOption().setName("username").setRequired(true)])
-    .setAuthors(["Zickles"]);
+    .setName('boo')
+    .setDescription('Boo someone!')
+    .setOptions([new MinecraftCommandDataOption().setName('username').setRequired(true)])
+    .setAuthors(['Zickles']);
   private isOnCooldown: boolean = false;
 
   override async execute(player: string, message: string) {
     try {
       const args = this.getArgs(message);
       if (args.length === 0) throw new HypixelDiscordChatBridgeError("You must provide a user to boo!'");
-      if (new Date().getMonth() !== 9) throw new HypixelDiscordChatBridgeError("You can only do this during Halloween!");
+      if (new Date().getMonth() !== 9) {
+        throw new HypixelDiscordChatBridgeError('You can only do this during Halloween!');
+      }
       if (this.isOnCooldown) throw new HypixelDiscordChatBridgeError(`${player} Command is on cooldown`);
 
       this.isOnCooldown = true;

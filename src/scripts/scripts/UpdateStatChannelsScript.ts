@@ -1,14 +1,14 @@
-import BasicScript from "../BasicScript.ts";
-import HypixelDiscordChatBridgeError from "../../private/error.ts";
-import { formatNumber, replaceVariables } from "../../utils/stringUtils.ts";
-import { intervalSchedule } from "../../types/scripts.ts";
-import type ScriptManager from "../ScriptsManager.ts";
-import type { ChannelVariableStats } from "../../private/constants.ts";
+import BasicScript from '../BasicScript.ts';
+import HypixelDiscordChatBridgeError from '../../private/error.ts';
+import { formatNumber, replaceVariables } from '../../utils/stringUtils.ts';
+import { intervalSchedule } from '../../types/scripts.ts';
+import type ScriptManager from '../ScriptsManager.ts';
+import type { ChannelVariableStats } from '../../private/constants.ts';
 
 class UpdateStatChannelsScript extends BasicScript {
   constructor(scripts: ScriptManager) {
     super(scripts, {
-      id: "updateStatChannels",
+      id: 'updateStatChannels',
       enabled: scripts.application.config.statsChannels.autoUpdater.enabled,
       schedule: intervalSchedule(scripts.application.config.statsChannels.autoUpdater.interval)
     });
@@ -50,7 +50,7 @@ class UpdateStatChannelsScript extends BasicScript {
     const stats = await this.getStats();
     for (const channelInfo of this.scripts.application.discord.application.config.statsChannels.channels) {
       const channel = await this.scripts.application.discord.guild.channels.fetch(channelInfo.id);
-      await channel?.setName(replaceVariables(channelInfo.name, stats), "Updated Channels");
+      await channel?.setName(replaceVariables(channelInfo.name, stats), 'Updated Channels');
     }
   }
 }

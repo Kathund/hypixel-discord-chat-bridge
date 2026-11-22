@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 export const LinkedUserDataSchema = z.object({ discordId: z.string(), uuid: z.string() });
 export const LinkedDataSchema = z.array(LinkedUserDataSchema);

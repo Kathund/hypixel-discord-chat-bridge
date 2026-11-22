@@ -1,10 +1,10 @@
-import ExtensionRegistry from "../../extensions/ExtensionRegistry.ts";
-import loadExtensionModules from "../../extensions/moduleLoader.ts";
-import { ButtonResponse, type StringSelectMenuInteractionWithGuild } from "../../types/discord.ts";
-import { MessageFlags } from "discord.js";
-import { toError } from "../../utils/asyncUtils.ts";
-import type DiscordManager from "../DiscordManager.ts";
-import type DiscordStringSelectMenu from "../private/stringSelectMenu/DiscordStringSelectMenu.ts";
+import ExtensionRegistry from '../../extensions/ExtensionRegistry.ts';
+import loadExtensionModules from '../../extensions/moduleLoader.ts';
+import { ButtonResponse, type StringSelectMenuInteractionWithGuild } from '../../types/discord.ts';
+import { MessageFlags } from 'discord.js';
+import { toError } from '../../utils/asyncUtils.ts';
+import type DiscordManager from '../DiscordManager.ts';
+import type DiscordStringSelectMenu from '../private/stringSelectMenu/DiscordStringSelectMenu.ts';
 
 class StringSelectMenuHandler {
   readonly #stringSelectMenus = new ExtensionRegistry<DiscordStringSelectMenu<DiscordManager>>();
@@ -16,10 +16,17 @@ class StringSelectMenuHandler {
 
     try {
       if (stringSelectMenu.response !== ButtonResponse.None) {
-        if (stringSelectMenu.response === ButtonResponse.Update) await interaction.deferUpdate();
-        else await interaction.deferReply({ flags: stringSelectMenu.response === ButtonResponse.Ephemeral ? MessageFlags.Ephemeral : undefined });
+        if (stringSelectMenu.response === ButtonResponse.Update) {
+          await interaction.deferUpdate();
+        } else {
+          await interaction.deferReply({
+            flags: stringSelectMenu.response === ButtonResponse.Ephemeral ? MessageFlags.Ephemeral : undefined
+          });
+        }
       }
-      console.discord(`String select men submitted ${interaction.user.username} (${interaction.user.id}) modal ${interaction.customId}`);
+      console.discord(
+        `String select men submitted ${interaction.user.username} (${interaction.user.id}) modal ${interaction.customId}`
+      );
 
       await this.discord.interactionHandler.checkPerms(interaction.member, stringSelectMenu);
 
@@ -31,14 +38,20 @@ class StringSelectMenuHandler {
 
   async loadStringSelectMenus() {
     this.#stringSelectMenus.clear();
-    const modules = await loadExtensionModules<DiscordStringSelectMenu<DiscordManager>, DiscordManager>(new URL("../stringSelectMenus/", import.meta.url), this.discord);
+    const modules = await loadExtensionModules<DiscordStringSelectMenu<DiscordManager>, DiscordManager>(
+      new URL('../stringSelectMenus/', import.meta.url),
+      this.discord
+    );
     for (const { extension: stringSelectMenu, source } of modules) {
       this.#stringSelectMenus.register(stringSelectMenu.data.id, stringSelectMenu, [], source);
     }
     console.discord(`Successfully loaded ${this.#stringSelectMenus.size} string select menu(s).`);
   }
 
-  registerStringSelectMenu(stringSelectMenu: DiscordStringSelectMenu<DiscordManager>, source: string = "programmatic"): void {
+  registerStringSelectMenu(
+    stringSelectMenu: DiscordStringSelectMenu<DiscordManager>,
+    source: string = 'programmatic'
+  ): void {
     this.#stringSelectMenus.register(stringSelectMenu.data.id, stringSelectMenu, [], source);
   }
 }

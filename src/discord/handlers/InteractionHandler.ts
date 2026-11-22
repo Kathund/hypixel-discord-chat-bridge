@@ -1,9 +1,15 @@
-import HypixelDiscordChatBridgeError from "../../private/error.ts";
-import { CommandFlags, CommandPermission } from "../../types/discord.ts";
-import { isAdminMember, isGuildMember, isInteractionInsideOfGuild, isStaffMember, isVerifiedMember } from "../../utils/discordUtils.ts";
-import type BasicInteractionData from "../private/BasicInteractionData.ts";
-import type DiscordManager from "../DiscordManager.ts";
-import type { BaseInteraction, GuildMember } from "discord.js";
+import HypixelDiscordChatBridgeError from '../../private/error.ts';
+import { CommandFlags, CommandPermission } from '../../types/discord.ts';
+import {
+  isAdminMember,
+  isGuildMember,
+  isInteractionInsideOfGuild,
+  isStaffMember,
+  isVerifiedMember
+} from '../../utils/discordUtils.ts';
+import type BasicInteractionData from '../private/BasicInteractionData.ts';
+import type DiscordManager from '../DiscordManager.ts';
+import type { BaseInteraction, GuildMember } from 'discord.js';
 
 class InteractionHandler {
   constructor(private readonly discord: DiscordManager) {}
@@ -39,16 +45,37 @@ class InteractionHandler {
         data.permission === CommandPermission.GuildMember && !isGuildMemberCheck,
         "You don't have permission to use this command. You are required to be inside of the guild to use this command."
       ],
-      [data.permission === CommandPermission.Linked && !isVerifiedMemberCheck, "This command requires you to be verified. Please use /verify to verify."],
-      [data.flags.includes(CommandFlags.InactivityCommand) && !this.discord.application.config.verification.inactivity.enabled, "Inactivity commands are disabled."],
-      [data.flags.includes(CommandFlags.VerificationCommand) && !this.discord.application.config.verification.enabled, "Verification commands are disabled."],
-      [data.flags.includes(CommandFlags.DebugCommand) && !this.discord.application.config.discord.commands.debugCommands, "Debug commands are disabled."],
-      [data.flags.includes(CommandFlags.BlacklistCommand) && !this.discord.application.config.blacklist.enabled, "Blacklist commands are disabled."],
       [
-        data.flags.includes(CommandFlags.RequirementsCommand) && !this.discord.application.config.minecraft.guild.requirements.enabled,
-        "Requirements commands are disabled."
+        data.permission === CommandPermission.Linked && !isVerifiedMemberCheck,
+        'This command requires you to be verified. Please use /verify to verify.'
       ],
-      [data.flags.includes(CommandFlags.RequiresMinecraftBot) && !this.discord.application.minecraft.isBotOnline(), this.discord.application.messages.minecraftBotOffline]
+      [
+        data.flags.includes(CommandFlags.InactivityCommand) &&
+          !this.discord.application.config.verification.inactivity.enabled,
+        'Inactivity commands are disabled.'
+      ],
+      [
+        data.flags.includes(CommandFlags.VerificationCommand) && !this.discord.application.config.verification.enabled,
+        'Verification commands are disabled.'
+      ],
+      [
+        data.flags.includes(CommandFlags.DebugCommand) &&
+          !this.discord.application.config.discord.commands.debugCommands,
+        'Debug commands are disabled.'
+      ],
+      [
+        data.flags.includes(CommandFlags.BlacklistCommand) && !this.discord.application.config.blacklist.enabled,
+        'Blacklist commands are disabled.'
+      ],
+      [
+        data.flags.includes(CommandFlags.RequirementsCommand) &&
+          !this.discord.application.config.minecraft.guild.requirements.enabled,
+        'Requirements commands are disabled.'
+      ],
+      [
+        data.flags.includes(CommandFlags.RequiresMinecraftBot) && !this.discord.application.minecraft.isBotOnline(),
+        this.discord.application.messages.minecraftBotOffline
+      ]
     ];
 
     for (const [failed, message] of checks) {

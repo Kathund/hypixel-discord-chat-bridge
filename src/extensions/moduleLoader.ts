@@ -1,5 +1,5 @@
-import HypixelDiscordChatBridgeError from "../private/error.ts";
-import { readdir } from "node:fs/promises";
+import HypixelDiscordChatBridgeError from '../private/error.ts';
+import { readdir } from 'node:fs/promises';
 
 type ExtensionConstructor<Extension, Context> = new (context: Context) => Extension;
 type ExtensionModuleFilter = (relativePath: string) => boolean;
@@ -9,7 +9,7 @@ interface ExtensionModule<Extension, Context> {
 }
 
 function isExtensionModule<Extension, Context>(value: unknown): value is ExtensionModule<Extension, Context> {
-  return typeof value === "object" && value !== null && typeof Reflect.get(value, "default") === "function";
+  return typeof value === 'object' && value !== null && typeof Reflect.get(value, 'default') === 'function';
 }
 
 async function loadExtensionModules<Extension, Context>(
@@ -17,8 +17,8 @@ async function loadExtensionModules<Extension, Context>(
   context: Context,
   include: ExtensionModuleFilter = () => true
 ): Promise<readonly { extension: Extension; source: string }[]> {
-  const files = await readdir(directory, { recursive: true, encoding: "utf-8" });
-  const extension = import.meta.filename.endsWith(".ts") ? ".ts" : ".ts";
+  const files = await readdir(directory, { recursive: true, encoding: 'utf-8' });
+  const extension = import.meta.filename.endsWith('.ts') ? '.ts' : '.ts';
   const modules: { extension: Extension; source: string }[] = [];
 
   for (const file of files.filter((name) => name.endsWith(extension) && include(name))) {
@@ -26,7 +26,9 @@ async function loadExtensionModules<Extension, Context>(
     try {
       const imported: unknown = await import(source);
       if (!isExtensionModule<Extension, Context>(imported)) {
-        throw new HypixelDiscordChatBridgeError(`Invalid extension module: ${source}. A default class export is required.`);
+        throw new HypixelDiscordChatBridgeError(
+          `Invalid extension module: ${source}. A default class export is required.`
+        );
       }
       modules.push({ extension: new imported.default(context), source });
     } catch (error: unknown) {

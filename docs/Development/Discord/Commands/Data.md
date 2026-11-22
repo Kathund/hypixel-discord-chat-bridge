@@ -2,15 +2,17 @@
 
 This guide will be explaining how we set the metadata for commands and will also explain options
 
-Instead of using the discord.js `SlashCommandBuilder` we are using our own custom `DiscordCommandDataBuilder` as a wrapper around it. By doing this we can set custom
-preset data while taking advantage of the work from the discord.js devs in making it
+Instead of using the discord.js `SlashCommandBuilder` we are using our own custom `DiscordCommandDataBuilder` as a
+wrapper around it. By doing this we can set custom preset data while taking advantage of the work from the discord.js
+devs in making it
 
-One of the big changes that our custom `DiscordCommandDataBuilder` makes is that it **only allows commands to be ran inside of guild** and will only register that command
-via the GuildInstall method.
+One of the big changes that our custom `DiscordCommandDataBuilder` makes is that it **only allows commands to be ran
+inside of guild** and will only register that command via the GuildInstall method.
 
 ## Defining Data
 
-When creating a command you will need to define the data such as the name, description and any options you want to give the command.
+When creating a command you will need to define the data such as the name, description and any options you want to give
+the command.
 
 This is an example of how you would create something
 
@@ -58,27 +60,30 @@ There are multiple types of. Consider checking out the discord.js guide on them 
 
 #### Reading Options
 
-Inside of our execute method we can retrieve the option that we created from before from the `CommandInteractionOptionResolver` (`interaction.options`). Since we declared
-a string option we need to call the `getString` option and input the name of the option from before
+Inside of our execute method we can retrieve the option that we created from before from the
+`CommandInteractionOptionResolver` (`interaction.options`). Since we declared a string option we need to call the
+`getString` option and input the name of the option from before
 
 ```ts
 class ExampleCommand extends DiscordCommand {
   override async execute(interaction: ChatInputCommandInteractionWithGuild): Promise<void> {
-    const stringOption = interaction.options.getString("option-name");
+    const stringOption = interaction.options.getString('option-name');
     await interaction.followUp(`Received \`${stringOption}\` from the command options`);
   }
 }
 ```
 
-By default options are return like this `THERE_TYPE | undefined`. Since the option we fetched was a string option it will be typed out like this `string | undefined`
+By default options are return like this `THERE_TYPE | undefined`. Since the option we fetched was a string option it
+will be typed out like this `string | undefined`
 
-If we wanted to fetch an required option (like `required-option-name`) we can do the exact same setup as before but mark it as required when we call the method
+If we wanted to fetch an required option (like `required-option-name`) we can do the exact same setup as before but mark
+it as required when we call the method
 
 ```ts
 class ExampleCommand extends DiscordCommand {
   override async execute(interaction: ChatInputCommandInteractionWithGuild): Promise<void> {
     // Setting true is us marking that this option is required
-    const requiredStringOption = interaction.options.getString("required-option-name", true);
+    const requiredStringOption = interaction.options.getString('required-option-name', true);
     await interaction.followUp(`Received \`${requiredStringOption}\` from the command options`);
   }
 }
@@ -109,4 +114,5 @@ Below are some things that you should consider when defining the metadata of a c
 
 If you need any help help consider checking out the [FAQ](/docs/FrequentlyAskedQuestions.md)
 
-Feel free to reach out to the maintainers directly on Discord. [@amber.rip](https://discord.com/users/1276524855445164098)
+Feel free to reach out to the maintainers directly on Discord.
+[@amber.rip](https://discord.com/users/1276524855445164098)

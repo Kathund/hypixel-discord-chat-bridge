@@ -13,11 +13,11 @@ import {
   type SlashCommandSubcommandBuilder,
   type SlashCommandSubcommandGroupBuilder,
   type SlashCommandUserOption
-} from "discord.js";
-import type { DevName } from "../../../types/application.ts";
+} from 'discord.js';
+import type { DevName } from '../../../types/application.ts';
 
 class DiscordCommandDataBuilder extends SlashCommandBuilder {
-  #authors: DevName[] = ["Kathund"];
+  #authors: DevName[] = ['Kathund'];
   constructor() {
     super();
     this.setContexts(InteractionContextType.Guild);
@@ -34,59 +34,83 @@ class DiscordCommandDataBuilder extends SlashCommandBuilder {
     return this;
   }
 
-  override addAttachmentOption(input: SlashCommandAttachmentOption | ((builder: SlashCommandAttachmentOption) => SlashCommandAttachmentOption)): this {
+  override addAttachmentOption(
+    input: SlashCommandAttachmentOption | ((builder: SlashCommandAttachmentOption) => SlashCommandAttachmentOption)
+  ): this {
     super.addAttachmentOption(input);
     return this;
   }
 
-  override addBooleanOption(input: SlashCommandBooleanOption | ((builder: SlashCommandBooleanOption) => SlashCommandBooleanOption)): this {
+  override addBooleanOption(
+    input: SlashCommandBooleanOption | ((builder: SlashCommandBooleanOption) => SlashCommandBooleanOption)
+  ): this {
     super.addBooleanOption(input);
     return this;
   }
 
-  override addChannelOption(input: SlashCommandChannelOption | ((builder: SlashCommandChannelOption) => SlashCommandChannelOption)): this {
+  override addChannelOption(
+    input: SlashCommandChannelOption | ((builder: SlashCommandChannelOption) => SlashCommandChannelOption)
+  ): this {
     super.addChannelOption(input);
     return this;
   }
 
-  override addIntegerOption(input: SlashCommandIntegerOption | ((builder: SlashCommandIntegerOption) => SlashCommandIntegerOption)): this {
+  override addIntegerOption(
+    input: SlashCommandIntegerOption | ((builder: SlashCommandIntegerOption) => SlashCommandIntegerOption)
+  ): this {
     super.addIntegerOption(input);
     return this;
   }
 
-  override addMentionableOption(input: SlashCommandMentionableOption | ((builder: SlashCommandMentionableOption) => SlashCommandMentionableOption)): this {
+  override addMentionableOption(
+    input: SlashCommandMentionableOption | ((builder: SlashCommandMentionableOption) => SlashCommandMentionableOption)
+  ): this {
     super.addMentionableOption(input);
     return this;
   }
 
-  override addNumberOption(input: SlashCommandNumberOption | ((builder: SlashCommandNumberOption) => SlashCommandNumberOption)): this {
+  override addNumberOption(
+    input: SlashCommandNumberOption | ((builder: SlashCommandNumberOption) => SlashCommandNumberOption)
+  ): this {
     super.addNumberOption(input);
     return this;
   }
 
-  override addRoleOption(input: SlashCommandRoleOption | ((builder: SlashCommandRoleOption) => SlashCommandRoleOption)): this {
+  override addRoleOption(
+    input: SlashCommandRoleOption | ((builder: SlashCommandRoleOption) => SlashCommandRoleOption)
+  ): this {
     super.addRoleOption(input);
     return this;
   }
 
-  override addStringOption(input: SlashCommandStringOption | ((builder: SlashCommandStringOption) => SlashCommandStringOption)): this {
+  override addStringOption(
+    input: SlashCommandStringOption | ((builder: SlashCommandStringOption) => SlashCommandStringOption)
+  ): this {
     super.addStringOption(input);
     return this;
   }
 
-  override addSubcommand(input: SlashCommandSubcommandBuilder | ((subcommandGroup: SlashCommandSubcommandBuilder) => SlashCommandSubcommandBuilder)): this {
+  override addSubcommand(
+    input:
+      | SlashCommandSubcommandBuilder
+      | ((subcommandGroup: SlashCommandSubcommandBuilder) => SlashCommandSubcommandBuilder)
+  ): this {
     super.addSubcommand(input);
     return this;
   }
 
   override addSubcommandGroup(
-    input: SlashCommandSubcommandGroupBuilder | ((subcommandGroup: SlashCommandSubcommandGroupBuilder) => SlashCommandSubcommandGroupBuilder)
+    input:
+      | SlashCommandSubcommandGroupBuilder
+      | ((subcommandGroup: SlashCommandSubcommandGroupBuilder) => SlashCommandSubcommandGroupBuilder)
   ): this {
     super.addSubcommandGroup(input);
     return this;
   }
 
-  override addUserOption(input: SlashCommandUserOption | ((builder: SlashCommandUserOption) => SlashCommandUserOption)): this {
+  override addUserOption(
+    input: SlashCommandUserOption | ((builder: SlashCommandUserOption) => SlashCommandUserOption)
+  ): this {
     super.addUserOption(input);
     return this;
   }

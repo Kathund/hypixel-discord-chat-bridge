@@ -1,10 +1,10 @@
-import ExtensionRegistry from "../../extensions/ExtensionRegistry.ts";
-import loadExtensionModules from "../../extensions/moduleLoader.ts";
-import { BasicInteractionResponse, type ModalSubmitInteractionWithGuild } from "../../types/discord.ts";
-import { MessageFlags } from "discord.js";
-import { toError } from "../../utils/asyncUtils.ts";
-import type DiscordManager from "../DiscordManager.ts";
-import type DiscordModal from "../private/modals/DiscordModal.ts";
+import ExtensionRegistry from '../../extensions/ExtensionRegistry.ts';
+import loadExtensionModules from '../../extensions/moduleLoader.ts';
+import { BasicInteractionResponse, type ModalSubmitInteractionWithGuild } from '../../types/discord.ts';
+import { MessageFlags } from 'discord.js';
+import { toError } from '../../utils/asyncUtils.ts';
+import type DiscordManager from '../DiscordManager.ts';
+import type DiscordModal from '../private/modals/DiscordModal.ts';
 
 class ModalHandler {
   readonly #modals = new ExtensionRegistry<DiscordModal<DiscordManager>>();
@@ -16,9 +16,13 @@ class ModalHandler {
 
     try {
       if (modal.response !== BasicInteractionResponse.None) {
-        await interaction.deferReply({ flags: modal.response === BasicInteractionResponse.Ephemeral ? MessageFlags.Ephemeral : undefined });
+        await interaction.deferReply({
+          flags: modal.response === BasicInteractionResponse.Ephemeral ? MessageFlags.Ephemeral : undefined
+        });
       }
-      console.discord(`Modal submitted ${interaction.user.username} (${interaction.user.id}) modal ${interaction.customId}`);
+      console.discord(
+        `Modal submitted ${interaction.user.username} (${interaction.user.id}) modal ${interaction.customId}`
+      );
 
       await this.discord.interactionHandler.checkPerms(interaction.member, modal);
 
@@ -30,14 +34,17 @@ class ModalHandler {
 
   async loadModals() {
     this.#modals.clear();
-    const modules = await loadExtensionModules<DiscordModal<DiscordManager>, DiscordManager>(new URL("../modals/", import.meta.url), this.discord);
+    const modules = await loadExtensionModules<DiscordModal<DiscordManager>, DiscordManager>(
+      new URL('../modals/', import.meta.url),
+      this.discord
+    );
     for (const { extension: modal, source } of modules) {
       this.#modals.register(modal.data.id, modal, [], source);
     }
     console.discord(`Successfully loaded ${this.#modals.size} modal(s).`);
   }
 
-  registerModal(modal: DiscordModal<DiscordManager>, source: string = "programmatic"): void {
+  registerModal(modal: DiscordModal<DiscordManager>, source: string = 'programmatic'): void {
     this.#modals.register(modal.data.id, modal, [], source);
   }
 }

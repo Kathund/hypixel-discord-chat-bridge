@@ -1,29 +1,36 @@
-import CommandHandler from "./handlers/CommandHandler.ts";
-import CommunicationBridge from "../private/CommunicationBridge.ts";
-import MessageHandler from "./handlers/MessageHandler.ts";
-import MinecraftData from "minecraft-data";
-import MinecraftRenderer from "./private/MinecraftRenderer.ts";
-import MinecraftRequestBroker from "./MinecraftRequestBroker.ts";
-import PrismarineChat from "prismarine-chat";
-import PrismarineRegistry, { type RegistryPc } from "prismarine-registry";
-import StateHandler from "./handlers/StateHandler.ts";
-import ms, { type StringValue } from "ms";
-import { type Client, createClient } from "minecraft-protocol";
-import { ResourcePackResult } from "../types/minecraft.ts";
-import { removeEmojis, removeNonAlphanumeric, removeSpaces, replaceVariables } from "../utils/stringUtils.ts";
-import { runDetached, toError } from "../utils/asyncUtils.ts";
-import type Application from "../Application.ts";
-import type { DiscordToMinecraftMessage } from "../types/bridge.ts";
-import type { Lifecycle, LifecycleState } from "../core/Lifecycle.ts";
-import type { MinecraftManagerWithBot } from "../types/minecraft.ts";
-import type { NBT } from "prismarine-nbt";
-import type { PrismarineChatFormatter } from "prismarine-chat";
+import CommandHandler from './handlers/CommandHandler.ts';
+import CommunicationBridge from '../private/CommunicationBridge.ts';
+import MessageHandler from './handlers/MessageHandler.ts';
+import MinecraftData from 'minecraft-data';
+import MinecraftRenderer from './private/MinecraftRenderer.ts';
+import MinecraftRequestBroker from './MinecraftRequestBroker.ts';
+import PrismarineChat from 'prismarine-chat';
+import PrismarineRegistry, { type RegistryPc } from 'prismarine-registry';
+import StateHandler from './handlers/StateHandler.ts';
+import ms, { type StringValue } from 'ms';
+import { type Client, createClient } from 'minecraft-protocol';
+import { ResourcePackResult } from '../types/minecraft.ts';
+import { removeEmojis, removeNonAlphanumeric, removeSpaces, replaceVariables } from '../utils/stringUtils.ts';
+import { runDetached, toError } from '../utils/asyncUtils.ts';
+import type Application from '../Application.ts';
+import type { DiscordToMinecraftMessage } from '../types/bridge.ts';
+import type { Lifecycle, LifecycleState } from '../core/Lifecycle.ts';
+import type { MinecraftManagerWithBot } from '../types/minecraft.ts';
+import type { NBT } from 'prismarine-nbt';
+import type { PrismarineChatFormatter } from 'prismarine-chat';
 
 class MinecraftManager extends CommunicationBridge implements Lifecycle {
-  static supportedVersions: string[] = ["26.1.2"];
+  static supportedVersions: string[] = ['26.1.2'];
   static versionsInformation: Record<string, { reason: string; disable: boolean }> = {
-    "1.8.9": { reason: "1.8.9 is old and outdated. It will no longer be supported please move to a supported version", disable: true },
-    "1.21.11": { reason: "1.21.11 is no longer supported by hypixel skyblock. This means commands like !warpout will not function correctly", disable: false }
+    '1.8.9': {
+      reason: '1.8.9 is old and outdated. It will no longer be supported please move to a supported version',
+      disable: true
+    },
+    '1.21.11': {
+      reason:
+        '1.21.11 is no longer supported by hypixel skyblock. This means commands like !warpout will not function correctly',
+      disable: false
+    }
   };
   readonly stateHandler: StateHandler;
   readonly commandHandler: CommandHandler;
@@ -34,7 +41,7 @@ class MinecraftManager extends CommunicationBridge implements Lifecycle {
   readonly renderer: MinecraftRenderer;
   private readonly indexedData;
   private readonly intentionallyClosedClients = new WeakSet<Client>();
-  private state: LifecycleState = "idle";
+  private state: LifecycleState = 'idle';
   private reconnectTimer?: NodeJS.Timeout;
   private startPromise?: Promise<void>;
   private resolveStart?: () => void;
@@ -53,12 +60,12 @@ class MinecraftManager extends CommunicationBridge implements Lifecycle {
   }
 
   async start(): Promise<void> {
-    if (this.state === "running") return;
+    if (this.state === 'running') return;
     if (this.startPromise) return this.startPromise;
 
-    this.state = "starting";
+    this.state = 'starting';
     this.stopBridgeListeners();
-    this.listen("discord-message", (event) => this.onBroadcast(event));
+    this.listen('discord-message', (event) => this.onBroadcast(event));
     const client = this.createBotConnection();
     this.bot = client;
     const startupPromise = new Promise<void>((resolve, reject) => {
@@ -78,30 +85,30 @@ class MinecraftManager extends CommunicationBridge implements Lifecycle {
       await startupPromise;
     } catch (error: unknown) {
       this.finishStart();
-      this.state = "idle";
+      this.state = 'idle';
       throw toError(error);
     }
   }
 
   stop(): Promise<void> {
-    if (this.state === "stopping") return Promise.resolve();
-    this.state = "stopping";
+    if (this.state === 'stopping') return Promise.resolve();
+    this.state = 'stopping';
     if (this.reconnectTimer) clearTimeout(this.reconnectTimer);
     this.reconnectTimer = undefined;
-    this.requestBroker.stop(new Error("Minecraft client is shutting down."));
+    this.requestBroker.stop(new Error('Minecraft client is shutting down.'));
     this.stopBridgeListeners();
 
     const client = this.bot;
     this.bot = undefined;
     if (client) {
       this.intentionallyClosedClients.add(client);
-      client.end("Application shutdown");
+      client.end('Application shutdown');
       client.removeAllListeners();
     }
 
-    this.rejectStart?.(new Error("Minecraft startup was cancelled."));
+    this.rejectStart?.(new Error('Minecraft startup was cancelled.'));
     this.finishStart();
-    this.state = "idle";
+    this.state = 'idle';
     return Promise.resolve();
   }
 
@@ -109,17 +116,19 @@ class MinecraftManager extends CommunicationBridge implements Lifecycle {
     const versionData = this.versionsInformation[version];
 
     const isVersionSupported = this.supportedVersions.includes(version);
-    if (!isVersionSupported) console.warn(`[minecraft.bot.version] You currently have an unsupported version selected (${version})`);
+    if (!isVersionSupported) {
+      console.warn(`[minecraft.bot.version] You currently have an unsupported version selected (${version})`);
+    }
 
     if (versionData) {
       console.warn(`[minecraft.bot.version] ${versionData.reason}`);
-      console.warn(`[minecraft.bot.version] The currently supported versions are ${this.supportedVersions.join(", ")}`);
+      console.warn(`[minecraft.bot.version] The currently supported versions are ${this.supportedVersions.join(', ')}`);
       if (versionData.disable) process.exit(1);
     }
 
     if (!isVersionSupported) {
-      console.warn("[minecraft.bot.version] While it may work we cannot guarantee it to work");
-      console.warn(`[minecraft.bot.version] The currently supported versions are ${this.supportedVersions.join(", ")}`);
+      console.warn('[minecraft.bot.version] While it may work we cannot guarantee it to work');
+      console.warn(`[minecraft.bot.version] The currently supported versions are ${this.supportedVersions.join(', ')}`);
     }
   }
 
@@ -128,8 +137,8 @@ class MinecraftManager extends CommunicationBridge implements Lifecycle {
     return createClient({
       host: this.application.config.minecraft.bot.server,
       port: this.application.config.minecraft.bot.port,
-      username: "Kathund",
-      auth: "microsoft",
+      username: 'Kathund',
+      auth: 'microsoft',
       version: this.application.config.minecraft.bot.version,
       profilesFolder: this.application.config.minecraft.bot.accountsLocation
     });
@@ -147,16 +156,16 @@ class MinecraftManager extends CommunicationBridge implements Lifecycle {
    */
   private listenForRegistry(client: Client): void {
     // 1.20.2+
-    client.on("registry_data", (packet: { codec?: NBT; id?: string; entries?: unknown[] }) => {
+    client.on('registry_data', (packet: { codec?: NBT; id?: string; entries?: unknown[] }) => {
       this.prismarineRegistry.loadDimensionCodec((packet.codec ?? packet) as NBT);
     });
     // older versions
-    client.on("login", (packet: { dimensionCodec?: NBT }) => {
+    client.on('login', (packet: { dimensionCodec?: NBT }) => {
       if (packet.dimensionCodec) {
         this.prismarineRegistry.loadDimensionCodec(packet.dimensionCodec);
       }
     });
-    client.on("respawn", (packet: { dimensionCodec?: NBT }) => {
+    client.on('respawn', (packet: { dimensionCodec?: NBT }) => {
       if (packet.dimensionCodec) {
         this.prismarineRegistry.loadDimensionCodec(packet.dimensionCodec);
       }
@@ -164,12 +173,13 @@ class MinecraftManager extends CommunicationBridge implements Lifecycle {
   }
 
   private listenForSettings(client: Client): void {
-    client.on("state", (newState: string) => {
-      const supportFeature = (client as Client & Record<string, unknown>)._supportFeature as ((name: string) => boolean) | undefined;
-      if (newState !== "configuration" || supportFeature?.("hasConfigurationState") !== true) return;
+    client.on('state', (newState: string) => {
+      const supportFeature = (client as Client & Record<string, unknown>)._supportFeature as
+        ((name: string) => boolean) | undefined;
+      if (newState !== 'configuration' || supportFeature?.('hasConfigurationState') !== true) return;
 
-      client.write("settings", {
-        locale: "en_us",
+      client.write('settings', {
+        locale: 'en_us',
         viewDistance: 2,
         chatFlags: 0,
         chatColors: true,
@@ -186,12 +196,12 @@ class MinecraftManager extends CommunicationBridge implements Lifecycle {
   private listenForResourcePacks(client: Client): void {
     const activeResourcePacks = new Set<string>();
 
-    client.on("add_resource_pack", (data: { uuid: string }) => {
+    client.on('add_resource_pack', (data: { uuid: string }) => {
       activeResourcePacks.add(data.uuid);
       this.acceptResourcePackViaUuid(client, data.uuid);
     });
-    client.on("resource_pack_send", (data: unknown) => {
-      if (this.indexedData.supportFeature("resourcePackUsesUUID")) {
+    client.on('resource_pack_send', (data: unknown) => {
+      if (this.indexedData.supportFeature('resourcePackUsesUUID')) {
         const typedData = data as { uuid: string; url: string };
         activeResourcePacks.add(typedData.uuid);
         this.acceptResourcePackViaUuid(client, typedData.uuid);
@@ -201,7 +211,7 @@ class MinecraftManager extends CommunicationBridge implements Lifecycle {
       }
     });
 
-    client.on("remove_resource_pack", (data: { uuid?: string }) => {
+    client.on('remove_resource_pack', (data: { uuid?: string }) => {
       if (data.uuid === undefined) {
         activeResourcePacks.clear();
       } else {
@@ -211,17 +221,17 @@ class MinecraftManager extends CommunicationBridge implements Lifecycle {
   }
 
   private acceptResourcePackViaUuid(client: Client, uuid: string) {
-    client.write("resource_pack_receive", { uuid: uuid, result: ResourcePackResult.Accepted });
-    client.write("resource_pack_receive", { uuid: uuid, result: ResourcePackResult.SuccessfullyLoaded });
+    client.write('resource_pack_receive', { uuid: uuid, result: ResourcePackResult.Accepted });
+    client.write('resource_pack_receive', { uuid: uuid, result: ResourcePackResult.SuccessfullyLoaded });
   }
 
   private acceptResourcePackViaHash(client: Client, hash: string) {
-    client.write("resource_pack_receive", { result: ResourcePackResult.Accepted, hash: hash });
-    client.write("resource_pack_receive", { result: ResourcePackResult.SuccessfullyLoaded, hash: hash });
+    client.write('resource_pack_receive', { result: ResourcePackResult.Accepted, hash: hash });
+    client.write('resource_pack_receive', { result: ResourcePackResult.SuccessfullyLoaded, hash: hash });
   }
 
   isBotOnline(): this is MinecraftManagerWithBot {
-    return this.bot !== undefined && this.state === "running";
+    return this.bot !== undefined && this.state === 'running';
   }
 
   hasBot(): this is MinecraftManagerWithBot {
@@ -233,8 +243,8 @@ class MinecraftManager extends CommunicationBridge implements Lifecycle {
   }
 
   markReady(client: Client): void {
-    if (!this.isCurrentClient(client) || this.state !== "starting") return;
-    this.state = "running";
+    if (!this.isCurrentClient(client) || this.state !== 'starting') return;
+    this.state = 'running';
     this.resolveStart?.();
     this.finishStart();
   }
@@ -246,12 +256,12 @@ class MinecraftManager extends CommunicationBridge implements Lifecycle {
     this.requestBroker.stop(new Error(`Minecraft client disconnected: ${reason}`));
     this.rejectStart?.(new Error(`Minecraft client disconnected before becoming ready: ${reason}`));
     this.finishStart();
-    this.state = "idle";
+    this.state = 'idle';
     return true;
   }
 
   scheduleReconnect(delayMs: number): void {
-    if (this.state === "stopping" || this.reconnectTimer) return;
+    if (this.state === 'stopping' || this.reconnectTimer) return;
     this.reconnectTimer = setTimeout(() => {
       this.reconnectTimer = undefined;
       runDetached(this.start());
@@ -262,9 +272,12 @@ class MinecraftManager extends CommunicationBridge implements Lifecycle {
     if (!this.isBotOnline()) return;
     let { channelId, username, message, replyingTo, sourceMessage } = event;
     const rawMessage = message;
-    console.broadcast(`${username}: ${message}`, "Minecraft");
+    console.broadcast(`${username}: ${message}`, 'Minecraft');
 
-    if (channelId === this.application.config.bridge.channels.debug.channel && this.application.config.bridge.channels.debug.enabled === true) {
+    if (
+      channelId === this.application.config.bridge.channels.debug.channel &&
+      this.application.config.bridge.channels.debug.enabled === true
+    ) {
       this.bot.chat(message);
       return;
     }
@@ -287,7 +300,7 @@ class MinecraftManager extends CommunicationBridge implements Lifecycle {
     if (this.application.config.bridge.strippers.messages.nonAlphanumeric) message = removeNonAlphanumeric(message);
 
     message = replaceVariables(this.application.config.bridge.minecraft.format, { username, message });
-    const chat = channelId === this.application.config.bridge.channels.officer.channel ? "/oc" : "/gc";
+    const chat = channelId === this.application.config.bridge.channels.officer.channel ? '/oc' : '/gc';
     if (replyingTo) message = message.replace(username, `${username} replying to ${replyingTo}`);
 
     const outboundContent = message.trim();
@@ -295,7 +308,8 @@ class MinecraftManager extends CommunicationBridge implements Lifecycle {
       description: `Discord bridge message from ${username}`,
       timeoutMs: ms(this.application.config.bridge.timeout as StringValue),
       matches: (inboundContent) => {
-        const expectedChannel = this.messageHandler.isGuildMessage(inboundContent) || this.messageHandler.isOfficerMessage(inboundContent);
+        const expectedChannel =
+          this.messageHandler.isGuildMessage(inboundContent) || this.messageHandler.isOfficerMessage(inboundContent);
         return expectedChannel && inboundContent.trim().includes(outboundContent);
       },
       map: () => undefined
@@ -306,7 +320,7 @@ class MinecraftManager extends CommunicationBridge implements Lifecycle {
       await acknowledgement;
     } catch (error: unknown) {
       await this.application.logError(toError(error));
-      if (this.application.config.bridge.messageErrorReactions) await sourceMessage.react("❌");
+      if (this.application.config.bridge.messageErrorReactions) await sourceMessage.react('❌');
     }
   }
 

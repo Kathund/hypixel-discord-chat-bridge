@@ -1,23 +1,37 @@
-import ConfigManager from "../src/ConfigManager.ts";
-import zod from "zod";
-import { CommonDevs } from "../src/private/constants.ts";
-import { type TemplatePrimitive, replaceVariables } from "../src/utils/stringUtils.ts";
-import { access, readFile, writeFile } from "node:fs/promises";
-import { format } from "prettier";
-import { getNestedValue } from "../src/utils/miscUtils.ts";
-import { markdownTable } from "markdown-table";
-import type { ConfigMetadata, ConfigMetadataDescription, ConfigMetadataDotPathDescription, SchemaData, UnwrappedSchema } from "./types.ts";
-import type { MaintainerDevData } from "../src/types/application.ts";
+import ConfigManager from '../src/ConfigManager.ts';
+import zod from 'zod';
+import { CommonDevs } from '../src/private/constants.ts';
+import { type TemplatePrimitive, replaceVariables } from '../src/utils/stringUtils.ts';
+import { access, readFile, writeFile } from 'node:fs/promises';
+import { format } from 'prettier';
+import { getNestedValue } from '../src/utils/miscUtils.ts';
+import { markdownTable } from 'markdown-table';
+import type {
+  ConfigMetadata,
+  ConfigMetadataDescription,
+  ConfigMetadataDotPathDescription,
+  SchemaData,
+  UnwrappedSchema
+} from './types.ts';
+import type { MaintainerDevData } from '../src/types/application.ts';
 
-import "../src/private/logger.ts";
+import '../src/private/logger.ts';
 
-export function addLines(content: string, lines: string[], variables: Readonly<Record<string, TemplatePrimitive>> = {}): string[] {
-  lines.push(...content.split("\n").map((line) => replaceVariables(line.trim(), variables)));
+export function addLines(
+  content: string,
+  lines: string[],
+  variables: Readonly<Record<string, TemplatePrimitive>> = {}
+): string[] {
+  lines.push(...content.split('\n').map((line) => replaceVariables(line.trim(), variables)));
   return lines;
 }
 
-export async function addFile(path: string, lines: string[], variables?: Readonly<Record<string, TemplatePrimitive>>): Promise<string[]> {
-  const content = await readFile(path, "utf-8");
+export async function addFile(
+  path: string,
+  lines: string[],
+  variables?: Readonly<Record<string, TemplatePrimitive>>
+): Promise<string[]> {
+  const content = await readFile(path, 'utf-8');
   return addLines(content, lines, variables);
 }
 
@@ -26,18 +40,22 @@ export function addTable(table: string[][], lines: string[]): string[] {
 }
 
 export async function saveFile(path: string, data: string) {
-  const prettierFile = await readFile("./.prettierrc", "utf-8");
+  const prettierFile = await readFile('./.prettierrc', 'utf-8');
   const prettierConfig = JSON.parse(prettierFile);
   const formatted = await format(data, { ...prettierConfig, filepath: path });
-  await writeFile(path, formatted, "utf-8");
+  await writeFile(path, formatted, 'utf-8');
   console.other(`File Saved - ${path}`);
 }
 
 export function getMarkdownFileId(path: string): string {
-  return path.replaceAll("docs/", "").replaceAll(".md", "");
+  return path.replaceAll('docs/', '').replaceAll('.md', '');
 }
 
-export async function initMarkdownFile(path: string, id: string = getMarkdownFileId(path), variables?: Readonly<Record<string, TemplatePrimitive>>): Promise<string[]> {
+export async function initMarkdownFile(
+  path: string,
+  id: string = getMarkdownFileId(path),
+  variables?: Readonly<Record<string, TemplatePrimitive>>
+): Promise<string[]> {
   const headerPath = `./scripts/templates/${id}/Header.md`;
   let lines: string[] = [];
 
@@ -51,7 +69,12 @@ export async function initMarkdownFile(path: string, id: string = getMarkdownFil
   return lines;
 }
 
-export async function saveMarkdownFile(path: string, lines: string[], id: string = getMarkdownFileId(path), generatedFooters: boolean = true) {
+export async function saveMarkdownFile(
+  path: string,
+  lines: string[],
+  id: string = getMarkdownFileId(path),
+  generatedFooters: boolean = true
+) {
   const footerPath = `./scripts/templates/${id}/Footer.md`;
 
   process.env.UNIX_TIMESTAMP ||= Date.now().toString();
@@ -60,9 +83,9 @@ export async function saveMarkdownFile(path: string, lines: string[], id: string
     timestamp: new Date(Number(process.env.UNIX_TIMESTAMP)).toUTCString(),
     unix: process.env.UNIX_TIMESTAMP,
     maintainers: Object.values(CommonDevs)
-      .filter((dev): dev is MaintainerDevData => dev.type === "Maintainer")
+      .filter((dev): dev is MaintainerDevData => dev.type === 'Maintainer')
       .map(({ discord }) => `[@${discord.username}](https://discord.com/users/${discord.id})`)
-      .join(", ")
+      .join(', ')
   };
 
   try {
@@ -73,14 +96,14 @@ export async function saveMarkdownFile(path: string, lines: string[], id: string
   }
 
   if (generatedFooters) {
-    const generatedFooter = await readFile("./scripts/templates/Utils/GeneratedFooter.md", "utf-8");
+    const generatedFooter = await readFile('./scripts/templates/Utils/GeneratedFooter.md', 'utf-8');
     lines = addLines(generatedFooter, lines, variables);
 
-    const globalFooter = await readFile("./scripts/templates/Utils/GlobalFooter.md", "utf-8");
+    const globalFooter = await readFile('./scripts/templates/Utils/GlobalFooter.md', 'utf-8');
     lines = addLines(globalFooter, lines, variables);
   }
 
-  await saveFile(path, lines.join("\n"));
+  await saveFile(path, lines.join('\n'));
 }
 
 export function unwrapSchema(schema: any): UnwrappedSchema {
@@ -116,26 +139,34 @@ export function getObjectShape(schema: any): Record<string, any> {
 }
 
 export function getDotPath(path: string[], key: string): string {
-  return [...path, key].join(".");
+  return [...path, key].join('.');
 }
 
 export function getMetadataDescription(schema: any): ConfigMetadataDescription {
   const meta = schema.meta();
-  if (!meta) return { description: "", rawDescription: undefined };
-  return { description: (meta.description ?? "").replace(/\n/g, " "), rawDescription: meta.description };
+  if (!meta) return { description: '', rawDescription: undefined };
+  return { description: (meta.description ?? '').replace(/\n/g, ' '), rawDescription: meta.description };
 }
 
 export function getTitle({ formattedDotPath, description, rawDescription }: ConfigMetadataDotPathDescription): string {
-  return `${formattedDotPath}${rawDescription ? ` ${description}` : ""}:`;
+  return `${formattedDotPath}${rawDescription ? ` ${description}` : ''}:`;
 }
 
-export async function getMetadata({ schema, path, key }: SchemaData, shouldUseConfig: boolean = false): Promise<ConfigMetadata> {
+export async function getMetadata(
+  { schema, path, key }: SchemaData,
+  shouldUseConfig: boolean = false
+): Promise<ConfigMetadata> {
   const { description, rawDescription } = getMetadataDescription(schema);
   const dotPath = getDotPath(path, key);
   const configManager = new ConfigManager();
   const config = shouldUseConfig ? await configManager.getConfigFile() : await configManager.getExampleConfigFile();
   const value = getNestedValue(config, dotPath);
-  const smallMetadata: ConfigMetadataDotPathDescription = { dotPath, formattedDotPath: `[${dotPath}]`, description, rawDescription };
+  const smallMetadata: ConfigMetadataDotPathDescription = {
+    dotPath,
+    formattedDotPath: `[${dotPath}]`,
+    description,
+    rawDescription
+  };
   const metadata: ConfigMetadata = {
     dotPath,
     formattedDotPath: `[${dotPath}]`,

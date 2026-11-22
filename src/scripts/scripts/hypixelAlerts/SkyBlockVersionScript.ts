@@ -1,13 +1,13 @@
-import BasicScript from "../../BasicScript.ts";
-import { getSkyBlockSkills } from "../../../utils/hypixelUtils.ts";
-import { intervalSchedule } from "../../../types/scripts.ts";
-import type ScriptManager from "../../ScriptsManager.ts";
+import BasicScript from '../../BasicScript.ts';
+import { getSkyBlockSkills } from '../../../utils/hypixelUtils.ts';
+import { intervalSchedule } from '../../../types/scripts.ts';
+import type ScriptManager from '../../ScriptsManager.ts';
 
 class SkyBlockVersionScript extends BasicScript {
   private skyblockVersion?: string;
   constructor(scripts: ScriptManager) {
     super(scripts, {
-      id: "skyBlockVersion",
+      id: 'skyBlockVersion',
       enabled: scripts.application.config.minecraft.hypixelAlerts.skyblockVersion.enabled,
       schedule: intervalSchedule(scripts.application.config.minecraft.hypixelAlerts.skyblockVersion.interval)
     });
@@ -24,7 +24,9 @@ class SkyBlockVersionScript extends BasicScript {
     }
 
     if (this.skyblockVersion !== currentVersion) {
-      this.scripts.application.minecraft.bot.chat(`/gc [HYPIXEL SKYBLOCK] Skyblock version has been updated to ${currentVersion}! Server restarts might occur!`);
+      this.scripts.application.minecraft.bot.chat(
+        `/gc [HYPIXEL SKYBLOCK] Skyblock version has been updated to ${currentVersion}! Server restarts might occur!`
+      );
     }
     this.skyblockVersion = currentVersion;
   }

@@ -1,12 +1,15 @@
-import MinecraftCommand from "../private/commands/MinecraftCommand.ts";
-import MinecraftCommandData from "../private/commands/MinecraftCommandData.ts";
+import MinecraftCommand from '../private/commands/MinecraftCommand.ts';
+import MinecraftCommandData from '../private/commands/MinecraftCommandData.ts';
 
 class MeowCommand extends MinecraftCommand {
-  private variations: string[] = ["mrrp", "mrrow", "miau", "mauww", "meep", ":3", "nja", "nya", "awawa"];
-  override readonly data = new MinecraftCommandData().setName("meow").setDescription("meow").setAliases(this.variations);
+  private variations: string[] = ['mrrp', 'mrrow', 'miau', 'mauww', 'meep', ':3', 'nja', 'nya', 'awawa'];
+  override readonly data = new MinecraftCommandData()
+    .setName('meow')
+    .setDescription('meow')
+    .setAliases(this.variations);
 
   override async execute(username: string, message: string): Promise<void> {
-    await this.send(this.variations[Math.floor(Math.random() * this.variations.length)] || "meow");
+    await this.send(this.variations[Math.floor(Math.random() * this.variations.length)] || 'meow');
   }
 }
 

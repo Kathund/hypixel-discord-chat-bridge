@@ -8,8 +8,13 @@ import {
   type SendableChannels,
   Team,
   User
-} from "discord.js";
-import { type AutocompleteInteractionWithGuild, type AutocompleteOption, type BaseInteractionWithGuild, CommandPermission } from "../types/discord.ts";
+} from 'discord.js';
+import {
+  type AutocompleteInteractionWithGuild,
+  type AutocompleteOption,
+  type BaseInteractionWithGuild,
+  CommandPermission
+} from '../types/discord.ts';
 
 export async function getRoles(member: GuildMember): Promise<Role[]> {
   member = await member.fetch();
@@ -48,19 +53,22 @@ export async function isStaffMember(member: GuildMember): Promise<boolean> {
 export async function isGuildMember(member: GuildMember): Promise<boolean> {
   if (await isAdminMember(member.user)) return true;
   const userRoles = await getRoles(member).then((roles) => roles.map((role) => role.id));
-  if (userRoles.includes(member.client.config.verification.roles.guildMember.roleId ?? "")) return true;
+  if (userRoles.includes(member.client.config.verification.roles.guildMember.roleId ?? '')) return true;
   return false;
 }
 
 export async function isVerifiedMember(member: GuildMember): Promise<boolean> {
   if (await isAdminMember(member.user)) return true;
   const userRoles = await getRoles(member).then((roles) => roles.map((role) => role.id));
-  if (userRoles.includes(member.client.config.verification.roles.verified.roleId ?? "")) return true;
+  if (userRoles.includes(member.client.config.verification.roles.verified.roleId ?? '')) return true;
   return false;
 }
 
-export function ParseAutoComplete(interaction: AutocompleteInteractionWithGuild, options: AutocompleteOption[]): ApplicationCommandOptionChoiceData[] {
-  if (options.length === 0) options.push({ name: "No choices found", value: "UNKNOWN" });
+export function ParseAutoComplete(
+  interaction: AutocompleteInteractionWithGuild,
+  options: AutocompleteOption[]
+): ApplicationCommandOptionChoiceData[] {
+  if (options.length === 0) options.push({ name: 'No choices found', value: 'UNKNOWN' });
   const focusedOption = interaction.options.getFocused(true);
   return options
     .filter((choice) => choice.name.toLowerCase().startsWith(focusedOption.value.toLowerCase()))
@@ -73,7 +81,7 @@ export async function canSendMessages(channel: SendableChannels): Promise<boolea
     .sendTyping()
     .then(() => true)
     .catch((error: Error) => {
-      if (error.message === "Missing Access") return false;
+      if (error.message === 'Missing Access') return false;
       throw error;
     });
 }
@@ -81,16 +89,16 @@ export async function canSendMessages(channel: SendableChannels): Promise<boolea
 export function getDiscordCommandPermission(permission: CommandPermission) {
   switch (permission) {
     case CommandPermission.Admin:
-      return "Admin";
+      return 'Admin';
     case CommandPermission.Staff:
-      return "Staff";
+      return 'Staff';
     case CommandPermission.GuildMember:
-      return "Guild Member";
+      return 'Guild Member';
     case CommandPermission.Linked:
-      return "Verified";
+      return 'Verified';
     case CommandPermission.Anyone:
     default:
-      return "Anyone";
+      return 'Anyone';
   }
 }
 
@@ -101,16 +109,16 @@ export function isInteractionInsideOfGuild(interaction: BaseInteraction): intera
 export function parseInteractionType(type: InteractionType): string {
   switch (type) {
     case InteractionType.ApplicationCommand:
-      return "ApplicationCommand";
+      return 'ApplicationCommand';
     case InteractionType.MessageComponent:
-      return "MessageComponent";
+      return 'MessageComponent';
     case InteractionType.ApplicationCommandAutocomplete:
-      return "ApplicationCommandAutocomplete";
+      return 'ApplicationCommandAutocomplete';
     case InteractionType.ModalSubmit:
-      return "ModalSubmit";
+      return 'ModalSubmit';
     case InteractionType.Ping:
     default:
-      return "Ping";
+      return 'Ping';
   }
 }
 
@@ -119,7 +127,7 @@ export function getDisplayNameUser(user: User): string {
 }
 
 export function getDisplayName(user: GuildMember | User | null): string {
-  if (!user) return "UNKNOWN";
+  if (!user) return 'UNKNOWN';
   if (user instanceof GuildMember) return user.nickname ?? getDisplayNameUser(user.user);
   return getDisplayNameUser(user);
 }

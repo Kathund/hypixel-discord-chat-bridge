@@ -7,7 +7,7 @@
  * Package official index.d.ts is incorrect.
  * This fixes some of those mistakes
  */
-declare module "prismarine-chat" {
+declare module 'prismarine-chat' {
   // This is only declared for "json" property to be not "any"
   export declare class ChatMessage {
     json: Record<string, unknown>;

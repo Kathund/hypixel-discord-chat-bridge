@@ -11,13 +11,15 @@
 
 ## How to setup the Discord Bot
 
-Discord.js has an good guide on how to create a discord bot linked [here](https://discordjs.guide/legacy/preparations/app-setup)
+Discord.js has an good guide on how to create a discord bot linked
+[here](https://discordjs.guide/legacy/preparations/app-setup)
 
 Make sure to enable all the intents as they are needed to run the bot
 
 ## How to get an hypixel api key
 
-Get hypixel key at [Hypixel Developer Dashboard](https://developer.hypixel.net). Make an application for a key and wait for its activation.
+Get hypixel key at [Hypixel Developer Dashboard](https://developer.hypixel.net). Make an application for a key and wait
+for its activation.
 
 > Do **NOT generate and use developing key** for the application!
 
@@ -31,8 +33,8 @@ From Discord via slash commands: `/execute guild party` will run `/guild party` 
 
 When you first start the bot you will be given an Microsoft login message that looks like this
 
-> [msa] First time signing in. Please authenticate now: To sign in, use a web browser to open the page https://www.microsoft.com/link and use the code XXXXXXXX or visit
-> http://microsoft.com/link?otc=XXXXXXXX
+> [msa] First time signing in. Please authenticate now: To sign in, use a web browser to open the page
+> https://www.microsoft.com/link and use the code XXXXXXXX or visit http://microsoft.com/link?otc=XXXXXXXX
 
 Click the Microsoft link that you are given and sign into the account
 
@@ -42,8 +44,10 @@ Delete the `data/auth-cache` folder
 
 ## How do I manage the profanity filter
 
-In the `config.json` under bridge there is the filter options. From there you can either fully disable it or add custom words to the filter
+In the `config.json` under bridge there is the filter options. From there you can either fully disable it or add custom
+words to the filter
 
 ## How do I get extra help
 
-You can get extra help by reaching out to the maintainers dirrectly on discord. [@amber.rip](https://discord.com/users/1276524855445164098)
+You can get extra help by reaching out to the maintainers dirrectly on discord.
+[@amber.rip](https://discord.com/users/1276524855445164098)

@@ -1,15 +1,15 @@
-import BasicScript from "../../BasicScript.ts";
-import { emptySchedule } from "../../../types/scripts.ts";
-import type ScriptManager from "../../ScriptsManager.ts";
+import BasicScript from '../../BasicScript.ts';
+import { emptySchedule } from '../../../types/scripts.ts';
+import type ScriptManager from '../../ScriptsManager.ts';
 
 class RemoveAllBlacklistsScript extends BasicScript {
   constructor(scripts: ScriptManager) {
-    super(scripts, { id: "removeAllBlacklists", enabled: true, schedule: emptySchedule() });
+    super(scripts, { id: 'removeAllBlacklists', enabled: true, schedule: emptySchedule() });
   }
 
   override async execute() {
     const blacklistedUsers = await this.scripts.application.data.blacklist.getFullData();
-    const reason = "No reason provided";
+    const reason = 'No reason provided';
     const alertUser = this.scripts.application.config.blacklist.notifications.onBlacklistChange.enabled;
     const shareUser = this.scripts.application.config.blacklist.notifications.onBlacklistChange.shareBlacklister;
     const user = this.getUser();

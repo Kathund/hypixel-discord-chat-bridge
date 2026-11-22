@@ -1,17 +1,17 @@
-import HypixelDiscordChatBridgeError from "../../private/error.ts";
-import MinecraftCommand from "../private/commands/MinecraftCommand.ts";
-import MinecraftCommandData from "../private/commands/MinecraftCommandData.ts";
-import MinecraftCommandDataOption from "../private/commands/MinecraftCommandDataOption.ts";
-import prettyMilliseconds from "pretty-ms";
-import { getSelectedProfile } from "../../utils/hypixelUtils.ts";
-import type { ParsedForgeSlot } from "../../types/minecraft.ts";
-import type { SkyBlockMemberMiningHotmForgeItem } from "hypixel-api-reborn";
+import HypixelDiscordChatBridgeError from '../../private/error.ts';
+import MinecraftCommand from '../private/commands/MinecraftCommand.ts';
+import MinecraftCommandData from '../private/commands/MinecraftCommandData.ts';
+import MinecraftCommandDataOption from '../private/commands/MinecraftCommandDataOption.ts';
+import prettyMilliseconds from 'pretty-ms';
+import { getSelectedProfile } from '../../utils/hypixelUtils.ts';
+import type { ParsedForgeSlot } from '../../types/minecraft.ts';
+import type { SkyBlockMemberMiningHotmForgeItem } from 'hypixel-api-reborn';
 
 class ForgeCommand extends MinecraftCommand {
   override readonly data = new MinecraftCommandData()
-    .setName("forge")
-    .setDescription("Skyblock Forge Info Stats of specified user.")
-    .setOptions([new MinecraftCommandDataOption().setName("username").setDescription("Minecraft Username")]);
+    .setName('forge')
+    .setDescription('Skyblock Forge Info Stats of specified user.')
+    .setOptions([new MinecraftCommandDataOption().setName('username').setDescription('Minecraft Username')]);
 
   override async execute(player: string, message: string) {
     player = this.getArgs(message)[0] || player;
@@ -20,11 +20,18 @@ class ForgeCommand extends MinecraftCommand {
     Object.values(profile.me.mining.hotm.forge)
       .filter((slot: SkyBlockMemberMiningHotmForgeItem | null) => slot !== null)
       .forEach((slot: SkyBlockMemberMiningHotmForgeItem) =>
-        slots.push({ item: slot.name, slot: slot.slot, finished: Date.now() > slot.endTime, timeLeft: prettyMilliseconds(slot.endTime - Date.now()) })
+        slots.push({
+          item: slot.name,
+          slot: slot.slot,
+          finished: Date.now() > slot.endTime,
+          timeLeft: prettyMilliseconds(slot.endTime - Date.now())
+        })
       );
 
     if (slots.length === 0) throw new HypixelDiscordChatBridgeError(`${username} has no items in their forge.`);
-    await this.send(`${username}'s Forge: ${slots.map((slot) => `${slot.slot}: ${slot.item} ${slot.finished ? "Finished" : `(${slot.timeLeft})`}`).join(" | ")}`);
+    await this.send(
+      `${username}'s Forge: ${slots.map((slot) => `${slot.slot}: ${slot.item} ${slot.finished ? 'Finished' : `(${slot.timeLeft})`}`).join(' | ')}`
+    );
   }
 }
 

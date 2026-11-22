@@ -1,7 +1,7 @@
-import EmbedHelper, { WarningEmbed } from "../../discord/private/EmbedHelper.ts";
-import { hasErrorCode, safeListener, toError } from "../../utils/asyncUtils.ts";
-import type MinecraftManager from "../MinecraftManager.ts";
-import type { Client } from "minecraft-protocol";
+import EmbedHelper, { WarningEmbed } from '../../discord/private/EmbedHelper.ts';
+import { hasErrorCode, safeListener, toError } from '../../utils/asyncUtils.ts';
+import type MinecraftManager from '../MinecraftManager.ts';
+import type { Client } from 'minecraft-protocol';
 
 class StateHandler {
   private loginAttempts: number = 0;
@@ -9,18 +9,18 @@ class StateHandler {
 
   registerEvents(client: Client): void {
     client.on(
-      "login",
+      'login',
       safeListener(() => this.onLogin(client), this.reportError)
     );
     client.on(
-      "end",
+      'end',
       safeListener((reason: string) => this.onEnd(client, reason), this.reportError)
     );
     client.on(
-      "kicked",
+      'kicked',
       safeListener((reason: string) => this.onKicked(reason), this.reportError)
     );
-    client.on("error", this.onError);
+    client.on('error', this.onError);
   }
 
   async onLogin(client: Client): Promise<void> {
@@ -30,9 +30,13 @@ class StateHandler {
     try {
       if (this.minecraft.application.botGuild === undefined) await this.minecraft.application.getBotGuild();
 
-      const loggerChannel = await this.minecraft.application.discord.getChannel("Logger-Event");
+      const loggerChannel = await this.minecraft.application.discord.getChannel('Logger-Event');
       if (!loggerChannel) return;
-      await loggerChannel.send({ embeds: [new EmbedHelper().setDescription(`Minecraft client ready, logged in as ${client.username}`).setColor("Green")] });
+      await loggerChannel.send({
+        embeds: [
+          new EmbedHelper().setDescription(`Minecraft client ready, logged in as ${client.username}`).setColor('Green')
+        ]
+      });
     } catch (error: unknown) {
       this.reportError(error);
     } finally {
@@ -46,23 +50,33 @@ class StateHandler {
     console.warn(`Minecraft bot has disconnected! Attempting reconnect in ${loginDelay / 1000} seconds`);
     this.minecraft.scheduleReconnect(loginDelay);
 
-    const loggerChannel = await this.minecraft.application.discord.getChannel("Logger-Event");
+    const loggerChannel = await this.minecraft.application.discord.getChannel('Logger-Event');
     if (!loggerChannel) return;
-    await loggerChannel.send({ embeds: [new WarningEmbed().setDescription(`Minecraft bot has disconnected! Attempting reconnect in ${loginDelay / 1000} seconds`)] });
+    await loggerChannel.send({
+      embeds: [
+        new WarningEmbed().setDescription(
+          `Minecraft bot has disconnected! Attempting reconnect in ${loginDelay / 1000} seconds`
+        )
+      ]
+    });
   }
 
   async onKicked(reason: string): Promise<void> {
     console.warn(`Minecraft bot has been kicked from the server for "${reason}"`);
     this.loginAttempts++;
 
-    const loggerChannel = await this.minecraft.application.discord.getChannel("Logger-Event");
+    const loggerChannel = await this.minecraft.application.discord.getChannel('Logger-Event');
     if (!loggerChannel) return;
-    await loggerChannel.send({ embeds: [new WarningEmbed().setDescription(`Minecraft bot has been kicked from the server for "${reason}"`)] });
+    await loggerChannel.send({
+      embeds: [new WarningEmbed().setDescription(`Minecraft bot has been kicked from the server for "${reason}"`)]
+    });
   }
 
   readonly onError = (error: Error): void => {
-    if (hasErrorCode(error, "ECONNRESET")) return;
-    if (hasErrorCode(error, "ECONNREFUSED")) return console.error("Connection refused while attempting to login via the Minecraft client");
+    if (hasErrorCode(error, 'ECONNRESET')) return;
+    if (hasErrorCode(error, 'ECONNREFUSED')) {
+      return console.error('Connection refused while attempting to login via the Minecraft client');
+    }
 
     this.reportError(error);
   };

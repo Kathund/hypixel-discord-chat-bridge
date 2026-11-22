@@ -1,30 +1,36 @@
-import DiscordCommand from "../../../private/commands/DiscordCommand.ts";
-import DiscordCommandDataBuilder from "../../../private/commands/DiscordCommandDataBuilder.ts";
-import HypixelDiscordChatBridgeError from "../../../../private/error.ts";
+import DiscordCommand from '../../../private/commands/DiscordCommand.ts';
+import DiscordCommandDataBuilder from '../../../private/commands/DiscordCommandDataBuilder.ts';
+import HypixelDiscordChatBridgeError from '../../../../private/error.ts';
 import {
   type ChatInputCommandInteractionWithGuild,
   CommandFlags,
   CommandPermission,
   type DiscordManagerWithBot,
   GuildManagementAction
-} from "../../../../types/discord.ts";
-import { SuccessEmbed } from "../../../private/EmbedHelper.ts";
-import { replaceVariables } from "../../../../utils/stringUtils.ts";
+} from '../../../../types/discord.ts';
+import { SuccessEmbed } from '../../../private/EmbedHelper.ts';
+import { replaceVariables } from '../../../../utils/stringUtils.ts';
 
 class MuteCommand extends DiscordCommand<DiscordManagerWithBot> {
   override readonly data = new DiscordCommandDataBuilder()
-    .setName("mute")
-    .setDescription("Mutes the given user for a given amount of time.")
-    .addStringOption((option) => option.setName("guild-member-username").setDescription("Minecraft Username").setRequired(true).setAutocomplete(true))
-    .addStringOption((option) => option.setName("time").setDescription("Time").setRequired(true))
-    .setAuthors(["DuckySoLucky"]);
+    .setName('mute')
+    .setDescription('Mutes the given user for a given amount of time.')
+    .addStringOption((option) =>
+      option
+        .setName('guild-member-username')
+        .setDescription('Minecraft Username')
+        .setRequired(true)
+        .setAutocomplete(true)
+    )
+    .addStringOption((option) => option.setName('time').setDescription('Time').setRequired(true))
+    .setAuthors(['DuckySoLucky']);
   override readonly flags = [CommandFlags.RequiresMinecraftBot];
   override readonly permission = CommandPermission.Staff;
 
   override async execute(interaction: ChatInputCommandInteractionWithGuild) {
-    const username = interaction.options.getString("guild-member-username", true);
-    const time = interaction.options.getString("time", true);
-    const { action } = await this.handleGuildManagementAction("mute", username, time);
+    const username = interaction.options.getString('guild-member-username', true);
+    const time = interaction.options.getString('time', true);
+    const { action } = await this.handleGuildManagementAction('mute', username, time);
     if (action === GuildManagementAction.MuteTooLong) {
       throw new HypixelDiscordChatBridgeError(this.discord.application.messages.cannotMuteMoreThanOneMonthMessage);
     } else if (action === GuildManagementAction.AlreadyMuted) {
@@ -32,16 +38,26 @@ class MuteCommand extends DiscordCommand<DiscordManagerWithBot> {
     } else if (action === GuildManagementAction.NoPerms) {
       throw new HypixelDiscordChatBridgeError("The bot doesn't have perms to mute");
     } else if (action === GuildManagementAction.Timeout) {
-      throw new HypixelDiscordChatBridgeError("Command timed out. Please try again");
+      throw new HypixelDiscordChatBridgeError('Command timed out. Please try again');
     } else if (action === GuildManagementAction.NotInGuild) {
-      throw new HypixelDiscordChatBridgeError(replaceVariables(this.discord.application.messages.notInGuildMessage, { username }));
+      throw new HypixelDiscordChatBridgeError(
+        replaceVariables(this.discord.application.messages.notInGuildMessage, { username })
+      );
     } else if (action === GuildManagementAction.UserMute) {
       await interaction.followUp({
-        embeds: [new SuccessEmbed().setDescription(replaceVariables(this.discord.application.messages.userMuteMessage, { username, time })).setDevFooter("DuckySoLucky")]
+        embeds: [
+          new SuccessEmbed()
+            .setDescription(replaceVariables(this.discord.application.messages.userMuteMessage, { username, time }))
+            .setDevFooter('DuckySoLucky')
+        ]
       });
     } else if (action === GuildManagementAction.GuildMute) {
       await interaction.followUp({
-        embeds: [new SuccessEmbed().setDescription(replaceVariables(this.discord.application.messages.guildMuteMessage, { time })).setDevFooter("DuckySoLucky")]
+        embeds: [
+          new SuccessEmbed()
+            .setDescription(replaceVariables(this.discord.application.messages.guildMuteMessage, { time }))
+            .setDevFooter('DuckySoLucky')
+        ]
       });
     }
   }

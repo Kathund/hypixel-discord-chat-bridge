@@ -1,6 +1,6 @@
-import { toError } from "../utils/asyncUtils.ts";
-import type { Client } from "minecraft-protocol";
-import type { PrismarineChatFormatter } from "prismarine-chat";
+import { toError } from '../utils/asyncUtils.ts';
+import type { Client } from 'minecraft-protocol';
+import type { PrismarineChatFormatter } from 'prismarine-chat';
 
 interface MinecraftRequestOptions<Result> {
   readonly description: string;
@@ -19,7 +19,7 @@ interface PendingRequest {
 class MinecraftRequestTimeoutError extends Error {
   constructor(description: string) {
     super(`Minecraft request timed out: ${description}`);
-    this.name = "MinecraftRequestTimeoutError";
+    this.name = 'MinecraftRequestTimeoutError';
   }
 }
 
@@ -37,19 +37,19 @@ class MinecraftRequestBroker {
 
   start(client: Client): void {
     if (this.client === client) return;
-    this.stop(new Error("Minecraft request broker changed clients."));
+    this.stop(new Error('Minecraft request broker changed clients.'));
     this.client = client;
-    client.on("systemChat", this.listener);
+    client.on('systemChat', this.listener);
   }
 
-  stop(error: Error = new Error("Minecraft request broker stopped.")): void {
-    this.client?.off("systemChat", this.listener);
+  stop(error: Error = new Error('Minecraft request broker stopped.')): void {
+    this.client?.off('systemChat', this.listener);
     this.client = undefined;
     this.rejectAll(error);
   }
 
   request<Result>(options: MinecraftRequestOptions<Result>): Promise<Result> {
-    if (!this.client) return Promise.reject(new Error("Minecraft request broker is not connected."));
+    if (!this.client) return Promise.reject(new Error('Minecraft request broker is not connected.'));
 
     return new Promise<Result>((resolve, reject) => {
       const id = Symbol(options.description);
@@ -58,7 +58,7 @@ class MinecraftRequestBroker {
 
       const cleanup = (): void => {
         if (resources.timeout) clearTimeout(resources.timeout);
-        if (resources.onAbort) options.signal?.removeEventListener("abort", resources.onAbort);
+        if (resources.onAbort) options.signal?.removeEventListener('abort', resources.onAbort);
         this.#pending.delete(id);
       };
       const rejectRequest = (error: Error): void => {
@@ -77,15 +77,19 @@ class MinecraftRequestBroker {
           reject(toError(error));
         }
       };
-      resources.onAbort = (): void => rejectRequest(toError(options.signal?.reason ?? new Error(`${options.description} aborted.`)));
-      resources.timeout = setTimeout(() => rejectRequest(new MinecraftRequestTimeoutError(options.description)), options.timeoutMs);
+      resources.onAbort = (): void =>
+        rejectRequest(toError(options.signal?.reason ?? new Error(`${options.description} aborted.`)));
+      resources.timeout = setTimeout(
+        () => rejectRequest(new MinecraftRequestTimeoutError(options.description)),
+        options.timeoutMs
+      );
 
       if (options.signal?.aborted) {
         resources.onAbort();
         return;
       }
 
-      options.signal?.addEventListener("abort", resources.onAbort, { once: true });
+      options.signal?.addEventListener('abort', resources.onAbort, { once: true });
       this.#pending.set(id, { matches: options.matches, resolve: resolveRequest, reject: rejectRequest });
     });
   }

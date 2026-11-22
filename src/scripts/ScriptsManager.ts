@@ -1,8 +1,8 @@
-import ExtensionRegistry from "../extensions/ExtensionRegistry.ts";
-import loadExtensionModules from "../extensions/moduleLoader.ts";
-import type Application from "../Application.ts";
-import type BasicScript from "./BasicScript.ts";
-import type { Lifecycle } from "../core/Lifecycle.ts";
+import ExtensionRegistry from '../extensions/ExtensionRegistry.ts';
+import loadExtensionModules from '../extensions/moduleLoader.ts';
+import type Application from '../Application.ts';
+import type BasicScript from './BasicScript.ts';
+import type { Lifecycle } from '../core/Lifecycle.ts';
 
 class ScriptManager implements Lifecycle {
   readonly #scripts = new ExtensionRegistry<BasicScript>();
@@ -15,7 +15,10 @@ class ScriptManager implements Lifecycle {
   async start(): Promise<void> {
     if (!this.deployScripts) return;
     if (!this.loaded) {
-      const modules = await loadExtensionModules<BasicScript, ScriptManager>(new URL("./scripts/", import.meta.url), this);
+      const modules = await loadExtensionModules<BasicScript, ScriptManager>(
+        new URL('./scripts/', import.meta.url),
+        this
+      );
       for (const { extension, source } of modules) this.#scripts.register(extension.id, extension, [], source);
       this.loaded = true;
     }
@@ -35,7 +38,7 @@ class ScriptManager implements Lifecycle {
     return this.#scripts.get(id);
   }
 
-  registerScript(script: BasicScript, source: string = "programmatic"): void {
+  registerScript(script: BasicScript, source: string = 'programmatic'): void {
     this.#scripts.register(script.id, script, [], source);
   }
 }

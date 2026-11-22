@@ -1,16 +1,16 @@
-import ExtensionRegistry from "../extensions/ExtensionRegistry.ts";
-import isPluginEntry from "./pluginDiscovery.ts";
-import { access, mkdir, readdir } from "node:fs/promises";
-import { pathToFileURL } from "node:url";
-import { resolve } from "node:path";
-import { toError } from "../utils/asyncUtils.ts";
-import type Application from "../Application.ts";
-import type BridgePlugin from "./BridgePlugin.ts";
-import type { BridgePluginContext } from "./BridgePlugin.ts";
-import type { DiscordManagerWithPlugin } from "../types/discord.ts";
-import type { Lifecycle } from "../core/Lifecycle.ts";
-import type { MinecraftManagerWithPlugin } from "../types/minecraft.ts";
-import type { ScriptManagerWithPlugin } from "../types/scripts.ts";
+import ExtensionRegistry from '../extensions/ExtensionRegistry.ts';
+import isPluginEntry from './pluginDiscovery.ts';
+import { access, mkdir, readdir } from 'node:fs/promises';
+import { pathToFileURL } from 'node:url';
+import { resolve } from 'node:path';
+import { toError } from '../utils/asyncUtils.ts';
+import type Application from '../Application.ts';
+import type BridgePlugin from './BridgePlugin.ts';
+import type { BridgePluginContext } from './BridgePlugin.ts';
+import type { DiscordManagerWithPlugin } from '../types/discord.ts';
+import type { Lifecycle } from '../core/Lifecycle.ts';
+import type { MinecraftManagerWithPlugin } from '../types/minecraft.ts';
+import type { ScriptManagerWithPlugin } from '../types/scripts.ts';
 
 class PluginManager implements Lifecycle {
   readonly #plugins = new ExtensionRegistry<BridgePlugin<any>>();
@@ -21,32 +21,46 @@ class PluginManager implements Lifecycle {
 
   private createDiscordManagerWithPlugin<Plugin>(getPlugin: () => Plugin): DiscordManagerWithPlugin<Plugin> {
     return new Proxy(this.application.discord, {
-      get: (target, property, receiver) => (property === "plugin" ? getPlugin() : Reflect.get(target, property, receiver)),
-      set: (target, property, value, receiver) => (property === "plugin" ? true : Reflect.set(target, property, value, receiver))
+      get: (target, property, receiver) => {
+        return property === 'plugin' ? getPlugin() : Reflect.get(target, property, receiver);
+      },
+      set: (target, property, value, receiver) => {
+        return property === 'plugin' ? true : Reflect.set(target, property, value, receiver);
+      }
     }) as DiscordManagerWithPlugin<Plugin>;
   }
 
   private createMinecraftManagerWithPlugin<Plugin>(getPlugin: () => Plugin): MinecraftManagerWithPlugin<Plugin> {
     return new Proxy(this.application.minecraft, {
-      get: (target, property, receiver) => (property === "plugin" ? getPlugin() : Reflect.get(target, property, receiver)),
-      set: (target, property, value, receiver) => (property === "plugin" ? true : Reflect.set(target, property, value, receiver))
+      get: (target, property, receiver) => {
+        return property === 'plugin' ? getPlugin() : Reflect.get(target, property, receiver);
+      },
+      set: (target, property, value, receiver) => {
+        return property === 'plugin' ? true : Reflect.set(target, property, value, receiver);
+      }
     }) as MinecraftManagerWithPlugin<Plugin>;
   }
 
   private createScriptManagerWithPlugin<Plugin>(getPlugin: () => Plugin): ScriptManagerWithPlugin<Plugin> {
     return new Proxy(this.application.scripts, {
-      get: (target, property, receiver) => (property === "plugin" ? getPlugin() : Reflect.get(target, property, receiver)),
-      set: (target, property, value, receiver) => (property === "plugin" ? true : Reflect.set(target, property, value, receiver))
+      get: (target, property, receiver) => {
+        return property === 'plugin' ? getPlugin() : Reflect.get(target, property, receiver);
+      },
+      set: (target, property, value, receiver) => {
+        return property === 'plugin' ? true : Reflect.set(target, property, value, receiver);
+      }
     }) as ScriptManagerWithPlugin<Plugin>;
   }
 
-  private isExtensionModule<Extension, Context>(value: unknown): value is { default: new (context: Context, application: Application) => Extension } {
-    return typeof value === "object" && value !== null && typeof Reflect.get(value, "default") === "function";
+  private isExtensionModule<Extension, Context>(
+    value: unknown
+  ): value is { default: new (context: Context, application: Application) => Extension } {
+    return typeof value === 'object' && value !== null && typeof Reflect.get(value, 'default') === 'function';
   }
 
   async load(): Promise<void> {
     if (this.loaded) return;
-    const directoryPath = resolve("plugins");
+    const directoryPath = resolve('plugins');
     try {
       await access(directoryPath);
     } catch {
@@ -55,8 +69,8 @@ class PluginManager implements Lifecycle {
     }
 
     const directory = new URL(`${pathToFileURL(directoryPath).href}/`);
-    const files = await readdir(directory, { recursive: true, encoding: "utf-8" });
-    const extension = import.meta.filename.endsWith(".ts") ? ".ts" : ".js";
+    const files = await readdir(directory, { recursive: true, encoding: 'utf-8' });
+    const extension = import.meta.filename.endsWith('.ts') ? '.ts' : '.js';
 
     const modules: { extension: BridgePlugin<any>; source: string }[] = [];
     for (const file of files.filter((name) => name.endsWith(extension) && isPluginEntry(name))) {
@@ -76,15 +90,38 @@ class PluginManager implements Lifecycle {
 
         const context: BridgePluginContext<any> = {
           events: this.application.events,
-          logger: { info: (message) => console.info(message), warn: (message) => console.warn(message), error: (error) => console.error(error) },
-          registerDiscordCommand: (factory) => this.application.discord.commandHandler.registerCommand(factory(this.createDiscordManagerWithPlugin(getPlugin)), "plugin"),
+          logger: {
+            info: (message) => console.info(message),
+            warn: (message) => console.warn(message),
+            error: (error) => console.error(error)
+          },
+          registerDiscordCommand: (factory) =>
+            this.application.discord.commandHandler.registerCommand(
+              factory(this.createDiscordManagerWithPlugin(getPlugin)),
+              'plugin'
+            ),
           registerMinecraftCommand: (factory) =>
-            this.application.minecraft.commandHandler.registerCommand(factory(this.createMinecraftManagerWithPlugin(getPlugin)), "plugin"),
-          registerButton: (factory) => this.application.discord.buttonHandler.registerButton(factory(this.createDiscordManagerWithPlugin(getPlugin)), "plugin"),
-          registerModal: (factory) => this.application.discord.modalHandler.registerModal(factory(this.createDiscordManagerWithPlugin(getPlugin)), "plugin"),
+            this.application.minecraft.commandHandler.registerCommand(
+              factory(this.createMinecraftManagerWithPlugin(getPlugin)),
+              'plugin'
+            ),
+          registerButton: (factory) =>
+            this.application.discord.buttonHandler.registerButton(
+              factory(this.createDiscordManagerWithPlugin(getPlugin)),
+              'plugin'
+            ),
+          registerModal: (factory) =>
+            this.application.discord.modalHandler.registerModal(
+              factory(this.createDiscordManagerWithPlugin(getPlugin)),
+              'plugin'
+            ),
           registerStringSelectMenu: (factory) =>
-            this.application.discord.stringSelectMenuHandler.registerStringSelectMenu(factory(this.createDiscordManagerWithPlugin(getPlugin)), "plugin"),
-          registerScript: (factory) => this.application.scripts.registerScript(factory(this.createScriptManagerWithPlugin(getPlugin)), "plugin")
+            this.application.discord.stringSelectMenuHandler.registerStringSelectMenu(
+              factory(this.createDiscordManagerWithPlugin(getPlugin)),
+              'plugin'
+            ),
+          registerScript: (factory) =>
+            this.application.scripts.registerScript(factory(this.createScriptManagerWithPlugin(getPlugin)), 'plugin')
         };
 
         const plugin = new imported.default(context, this.application);
@@ -119,7 +156,7 @@ class PluginManager implements Lifecycle {
     this.#started.clear();
     const results = await Promise.allSettled(plugins.map((plugin) => plugin.stop()));
     for (const result of results) {
-      if (result.status === "rejected") console.error(toError(result.reason));
+      if (result.status === 'rejected') console.error(toError(result.reason));
     }
   }
 

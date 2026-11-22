@@ -1,17 +1,19 @@
-import DiscordCommand from "../../private/commands/DiscordCommand.ts";
-import DiscordCommandDataBuilder from "../../private/commands/DiscordCommandDataBuilder.ts";
-import HypixelDiscordChatBridgeError from "../../../private/error.ts";
+import DiscordCommand from '../../private/commands/DiscordCommand.ts';
+import DiscordCommandDataBuilder from '../../private/commands/DiscordCommandDataBuilder.ts';
+import HypixelDiscordChatBridgeError from '../../../private/error.ts';
 import {
   type ButtonInteractionWithGuild,
   type ChatInputCommandInteractionWithGuild,
   CommandFlags,
   CommandPermission,
   type DiscordManagerWithBot
-} from "../../../types/discord.ts";
-import { SuccessEmbed } from "../../private/EmbedHelper.ts";
+} from '../../../types/discord.ts';
+import { SuccessEmbed } from '../../private/EmbedHelper.ts';
 
 class UnverifyCommand extends DiscordCommand<DiscordManagerWithBot> {
-  override readonly data = new DiscordCommandDataBuilder().setName("unverify").setDescription("Remove your linked Minecraft account");
+  override readonly data = new DiscordCommandDataBuilder()
+    .setName('unverify')
+    .setDescription('Remove your linked Minecraft account');
   override readonly flags = [CommandFlags.VerificationCommand];
   override readonly permission = CommandPermission.Linked;
   discordId: string | null = null;
@@ -22,7 +24,13 @@ class UnverifyCommand extends DiscordCommand<DiscordManagerWithBot> {
     if (linkedUser === undefined) throw new HypixelDiscordChatBridgeError(`<@${this.discordId}> is not verified`);
     await linkedUser.reset();
     await linkedUser.delete();
-    await interaction.followUp({ embeds: [new SuccessEmbed().setDescription(`Successfully unlinked <@${this.discordId}> from \`${await linkedUser.getUsername()}\`!`)] });
+    await interaction.followUp({
+      embeds: [
+        new SuccessEmbed().setDescription(
+          `Successfully unlinked <@${this.discordId}> from \`${await linkedUser.getUsername()}\`!`
+        )
+      ]
+    });
     this.discordId = null;
   }
 }

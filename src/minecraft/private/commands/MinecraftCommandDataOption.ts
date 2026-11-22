@@ -1,7 +1,7 @@
-import type { CommandDataOptionJSON } from "../../../types/minecraft.ts";
+import type { CommandDataOptionJSON } from '../../../types/minecraft.ts';
 
 class MinecraftCommandDataOption {
-  #name: string = "";
+  #name: string = '';
   #description: string | null = null;
   #required: boolean = false;
 

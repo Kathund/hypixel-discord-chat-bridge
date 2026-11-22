@@ -1,20 +1,21 @@
-import MinecraftCommand from "../private/commands/MinecraftCommand.ts";
-import MinecraftCommandData from "../private/commands/MinecraftCommandData.ts";
-import MinecraftCommandDataOption from "../private/commands/MinecraftCommandDataOption.ts";
-import { getPlayer } from "../../utils/hypixelUtils.ts";
+import MinecraftCommand from '../private/commands/MinecraftCommand.ts';
+import MinecraftCommandData from '../private/commands/MinecraftCommandData.ts';
+import MinecraftCommandDataOption from '../private/commands/MinecraftCommandDataOption.ts';
+import { getPlayer } from '../../utils/hypixelUtils.ts';
 
 class EightBallCommand extends MinecraftCommand {
   override readonly data = new MinecraftCommandData()
-    .setName("megawalls")
-    .setDescription("View the Megawalls stats of a player")
-    .setAliases(["mw"])
-    .setOptions([new MinecraftCommandDataOption().setName("username").setDescription("Minecraft Username")])
-    .setAuthors(["DuckySoLucky"]);
+    .setName('megawalls')
+    .setDescription('View the Megawalls stats of a player')
+    .setAliases(['mw'])
+    .setOptions([new MinecraftCommandDataOption().setName('username').setDescription('Minecraft Username')])
+    .setAuthors(['DuckySoLucky']);
 
   override async execute(player: string, message: string) {
     player = this.getArgs(message)[0] || player;
     const hypixelPlayer = await getPlayer(player);
-    const { selectedClass, finalKills, finalKillDeathRatio, wins, winLossRatio, kills, killDeathRatio, assists } = hypixelPlayer.stats.MegaWalls;
+    const { selectedClass, finalKills, finalKillDeathRatio, wins, winLossRatio, kills, killDeathRatio, assists } =
+      hypixelPlayer.stats.MegaWalls;
     await this.send(
       `${player}'s Megawalls: Class: ${selectedClass} | FK: ${finalKills} | FKDR: ${finalKillDeathRatio} | W: ${wins} | WLR: ${winLossRatio} | K: ${kills} | KDR: ${
         killDeathRatio

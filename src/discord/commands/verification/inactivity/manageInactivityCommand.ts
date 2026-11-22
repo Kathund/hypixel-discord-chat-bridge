@@ -1,43 +1,63 @@
-import DiscordCommand from "../../../private/commands/DiscordCommand.ts";
-import DiscordCommandDataBuilder from "../../../private/commands/DiscordCommandDataBuilder.ts";
-import HypixelDiscordChatBridgeError from "../../../../private/error.ts";
-import InactiveUser from "../../../../data/inactivity/InactiveUser.ts";
-import ms, { type StringValue } from "ms";
-import { CommandFlags, CommandPermission } from "../../../../types/discord.ts";
-import { SuccessEmbed } from "../../../private/EmbedHelper.ts";
-import { getDisplayName } from "../../../../utils/discordUtils.ts";
-import { truncateString } from "../../../../utils/stringUtils.ts";
-import type { AutocompleteInteractionWithGuild, AutocompleteOption, ChatInputCommandInteractionWithGuild } from "../../../../types/discord.ts";
+import DiscordCommand from '../../../private/commands/DiscordCommand.ts';
+import DiscordCommandDataBuilder from '../../../private/commands/DiscordCommandDataBuilder.ts';
+import HypixelDiscordChatBridgeError from '../../../../private/error.ts';
+import InactiveUser from '../../../../data/inactivity/InactiveUser.ts';
+import ms, { type StringValue } from 'ms';
+import { CommandFlags, CommandPermission } from '../../../../types/discord.ts';
+import { SuccessEmbed } from '../../../private/EmbedHelper.ts';
+import { getDisplayName } from '../../../../utils/discordUtils.ts';
+import { truncateString } from '../../../../utils/stringUtils.ts';
+import type {
+  AutocompleteInteractionWithGuild,
+  AutocompleteOption,
+  ChatInputCommandInteractionWithGuild
+} from '../../../../types/discord.ts';
 
 class ManageInactivityCommand extends DiscordCommand {
   override readonly data = new DiscordCommandDataBuilder()
-    .setName("manage-inactivity")
-    .setDescription("Manage inactivity")
+    .setName('manage-inactivity')
+    .setDescription('Manage inactivity')
     .addSubcommand((option) =>
       option
-        .setName("add")
-        .setDescription("Add a user to the inactivity list")
-        .addUserOption((option) => option.setName("user").setDescription("Discord Username").setRequired(true))
-        .addStringOption((option) => option.setName("time").setDescription("The time you are inactive for (e.g. 1d, 72h, 2w)").setRequired(true))
-        .addStringOption((option) => option.setName("reason").setDescription("The reason you are going away"))
+        .setName('add')
+        .setDescription('Add a user to the inactivity list')
+        .addUserOption((option) => option.setName('user').setDescription('Discord Username').setRequired(true))
+        .addStringOption((option) =>
+          option.setName('time').setDescription('The time you are inactive for (e.g. 1d, 72h, 2w)').setRequired(true)
+        )
+        .addStringOption((option) => option.setName('reason').setDescription('The reason you are going away'))
     )
     .addSubcommand((option) =>
       option
-        .setName("delete")
-        .setDescription("Delete an inactivity list entry")
-        .addStringOption((option) => option.setName("inactivity").setDescription("The inactivity you are wanting to delete").setRequired(true).setAutocomplete(true))
+        .setName('delete')
+        .setDescription('Delete an inactivity list entry')
+        .addStringOption((option) =>
+          option
+            .setName('inactivity')
+            .setDescription('The inactivity you are wanting to delete')
+            .setRequired(true)
+            .setAutocomplete(true)
+        )
     )
     .addSubcommand((option) =>
       option
-        .setName("get")
-        .setDescription("Get an inactivity list entry")
-        .addStringOption((option) => option.setName("inactivity").setDescription("The inactivity you are wanting to get").setRequired(true).setAutocomplete(true))
+        .setName('get')
+        .setDescription('Get an inactivity list entry')
+        .addStringOption((option) =>
+          option
+            .setName('inactivity')
+            .setDescription('The inactivity you are wanting to get')
+            .setRequired(true)
+            .setAutocomplete(true)
+        )
     );
   override readonly flags = [CommandFlags.InactivityCommand, CommandFlags.VerificationCommand];
   override readonly permission = CommandPermission.Staff;
 
   override async autocomplete(interaction: AutocompleteInteractionWithGuild): Promise<void> {
-    const users = await this.discord.application.data.inactivity.getFullData().then((users) => users.filter((user) => !user.isExpired));
+    const users = await this.discord.application.data.inactivity
+      .getFullData()
+      .then((users) => users.filter((user) => !user.isExpired));
     const parsed = (
       await Promise.all(
         users.map(async (user) => {
@@ -57,39 +77,47 @@ class ManageInactivityCommand extends DiscordCommand {
     const subcommand = interaction.options.getSubcommand(true);
 
     switch (subcommand) {
-      case "add": {
-        const user = interaction.options.getUser("user", true);
+      case 'add': {
+        const user = interaction.options.getUser('user', true);
         const linkedUser = await this.discord.application.data.linked.getUserByDiscordId(user.id);
-        if (!linkedUser) throw new HypixelDiscordChatBridgeError("User is not verified.");
+        if (!linkedUser) throw new HypixelDiscordChatBridgeError('User is not verified.');
         const guildMember = await linkedUser.isUserInHypixelGuild();
-        if (!guildMember) throw new HypixelDiscordChatBridgeError("User is not in the guild.");
+        if (!guildMember) throw new HypixelDiscordChatBridgeError('User is not in the guild.');
         const inactivityData = await this.discord.application.data.inactivity.getUserByDiscordId(user.id);
-        if (inactivityData) throw new HypixelDiscordChatBridgeError(`User already inactive until <t:${inactivityData.expires}:F> (<t:${inactivityData.expires}:R>)`);
-        const time = Math.floor(ms(interaction.options.getString("time", true) as StringValue) / 1000);
-        if (isNaN(time)) throw new HypixelDiscordChatBridgeError("Please input a valid time");
-        const reason = interaction.options.getString("reason") ?? "No reason provided";
-        await new InactiveUser({ discordId: user.id, reason, duration: time }, this.discord.application.data.inactivity).save();
-        await interaction.followUp({ embeds: [new SuccessEmbed().setDescription("User has been marked as inactive")] });
+        if (inactivityData) {
+          throw new HypixelDiscordChatBridgeError(
+            `User already inactive until <t:${inactivityData.expires}:F> (<t:${inactivityData.expires}:R>)`
+          );
+        }
+        const time = Math.floor(ms(interaction.options.getString('time', true) as StringValue) / 1000);
+        if (isNaN(time)) throw new HypixelDiscordChatBridgeError('Please input a valid time');
+        const reason = interaction.options.getString('reason') ?? 'No reason provided';
+        await new InactiveUser(
+          { discordId: user.id, reason, duration: time },
+          this.discord.application.data.inactivity
+        ).save();
+        await interaction.followUp({ embeds: [new SuccessEmbed().setDescription('User has been marked as inactive')] });
         break;
       }
-      case "delete": {
-        const inactivityId = interaction.options.getString("inactivity", true);
+      case 'delete': {
+        const inactivityId = interaction.options.getString('inactivity', true);
         const inactivityData = await this.discord.application.data.inactivity.getUserById(inactivityId);
-        if (!inactivityData) throw new HypixelDiscordChatBridgeError("Unable to find that inactivity?");
+        if (!inactivityData) throw new HypixelDiscordChatBridgeError('Unable to find that inactivity?');
         await inactivityData.delete();
-        await interaction.followUp({ embeds: [new SuccessEmbed().setDescription("Inactivity has been removed")] });
+        await interaction.followUp({ embeds: [new SuccessEmbed().setDescription('Inactivity has been removed')] });
         break;
       }
-      case "get": {
-        const inactivityId = interaction.options.getString("inactivity", true);
+      case 'get': {
+        const inactivityId = interaction.options.getString('inactivity', true);
         const inactivityData = await this.discord.application.data.inactivity.getUserById(inactivityId);
-        if (!inactivityData) throw new HypixelDiscordChatBridgeError("Unable to find that inactivity?");
-        const inactivityResponse = await this.discord.application.data.inactivity.getInactivityDataResponse(inactivityData);
+        if (!inactivityData) throw new HypixelDiscordChatBridgeError('Unable to find that inactivity?');
+        const inactivityResponse =
+          await this.discord.application.data.inactivity.getInactivityDataResponse(inactivityData);
         await interaction.followUp(inactivityResponse);
         break;
       }
       default: {
-        throw new HypixelDiscordChatBridgeError("Unknown subcommand");
+        throw new HypixelDiscordChatBridgeError('Unknown subcommand');
       }
     }
   }

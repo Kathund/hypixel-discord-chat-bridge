@@ -2,10 +2,11 @@
 
 ## Issue Reporting, Suggestions and Feedback
 
-You can [open a issue here](https://github.com/Kathund/hypixel-discord-chat-bridge/issues/new), if you have any suggestion, bug reporting, or facing a problem with the
-project.
+You can [open a issue here](https://github.com/Kathund/hypixel-discord-chat-bridge/issues/new), if you have any
+suggestion, bug reporting, or facing a problem with the project.
 
-You can also check [Existing issues](https://github.com/Kathund/hypixel-discord-chat-bridge/issues) and reply to them if you have anything to add to them.
+You can also check [Existing issues](https://github.com/Kathund/hypixel-discord-chat-bridge/issues) and reply to them if
+you have anything to add to them.
 
 You can contact the maintainers dirrectly on discord. [@amber.rip](https://discord.com/users/1276524855445164098)
 
@@ -25,6 +26,7 @@ Clone the project and install dependencies:
 
 ### Committing changes
 
-After done with changes, make sure to run `pnpm check` to validate all changes and ensure they are fully compatible with the project as a whole.
+After done with changes, make sure to run `pnpm check` to validate all changes and ensure they are fully compatible with
+the project as a whole.
 
 Make sure the git commit message follows [git convention](https://www.conventionalcommits.org/)

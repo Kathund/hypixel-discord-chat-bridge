@@ -1,13 +1,18 @@
-import GenericData from "../GenericData.ts";
-import HypixelDiscordChatBridgeError from "../../private/error.ts";
-import MowojangAPI from "../../private/MowojangAPI.ts";
-import { type Guild, type GuildMember as HypixelGuildMember, type Player, removeDashesFromUUID } from "hypixel-api-reborn";
-import { formatNumber, replaceVariables } from "../../utils/stringUtils.ts";
-import { getPlayer } from "../../utils/hypixelUtils.ts";
-import { toError } from "../../utils/asyncUtils.ts";
-import type LinkedManager from "./LinkedManager.ts";
-import type { GuildMember } from "discord.js";
-import type { LinkedUserData } from "../../types/linked.ts";
+import GenericData from '../GenericData.ts';
+import HypixelDiscordChatBridgeError from '../../private/error.ts';
+import MowojangAPI from '../../private/MowojangAPI.ts';
+import {
+  type Guild,
+  type GuildMember as HypixelGuildMember,
+  type Player,
+  removeDashesFromUUID
+} from 'hypixel-api-reborn';
+import { formatNumber, replaceVariables } from '../../utils/stringUtils.ts';
+import { getPlayer } from '../../utils/hypixelUtils.ts';
+import { toError } from '../../utils/asyncUtils.ts';
+import type LinkedManager from './LinkedManager.ts';
+import type { GuildMember } from 'discord.js';
+import type { LinkedUserData } from '../../types/linked.ts';
 
 class LinkedUser extends GenericData<LinkedUserData> {
   readonly discordId: string;
@@ -33,9 +38,11 @@ class LinkedUser extends GenericData<LinkedUserData> {
 
   private getLinkedRoles(): string[] {
     const verificationRoles = this.manager.data.application.config.verification.roles;
-    return [verificationRoles.verified.roleId, verificationRoles.guildMember.roleId, ...verificationRoles.custom.flatMap((r) => r.roleId)].filter(
-      (role) => role !== null
-    );
+    return [
+      verificationRoles.verified.roleId,
+      verificationRoles.guildMember.roleId,
+      ...verificationRoles.custom.flatMap((r) => r.roleId)
+    ].filter((role) => role !== null);
   }
 
   async reset() {
@@ -45,8 +52,10 @@ class LinkedUser extends GenericData<LinkedUserData> {
 
     const member = await this.manager.data.application.discord.guild.members.fetch(this.discordId);
     if (!member) return;
-    if (this.manager.data.application.config.verification.nickname.enabled && member.nickname) await member.setNickname(null);
-    await member.roles.remove(this.getLinkedRoles(), "Updated Roles");
+    if (this.manager.data.application.config.verification.nickname.enabled && member.nickname) {
+      await member.setNickname(null);
+    }
+    await member.roles.remove(this.getLinkedRoles(), 'Updated Roles');
   }
 
   async delete(): Promise<LinkedUser[]> {
@@ -55,9 +64,13 @@ class LinkedUser extends GenericData<LinkedUserData> {
 
   async updateRoles(): Promise<this | null> {
     try {
-      if (!this.manager.data.application.minecraft.isBotOnline()) throw new HypixelDiscordChatBridgeError(this.manager.data.application.messages.minecraftBotOffline);
+      if (!this.manager.data.application.minecraft.isBotOnline()) {
+        throw new HypixelDiscordChatBridgeError(this.manager.data.application.messages.minecraftBotOffline);
+      }
       if (!this.manager.data.application.discord.isClientOnline()) {
-        throw new HypixelDiscordChatBridgeError("The discord bot doesn't seam to be online? Please restart the application");
+        throw new HypixelDiscordChatBridgeError(
+          "The discord bot doesn't seam to be online? Please restart the application"
+        );
       }
       if (!this.manager.data.application.discord.isGuildReady()) {
         await this.manager.data.application.discord.loadGuild();
@@ -71,7 +84,7 @@ class LinkedUser extends GenericData<LinkedUserData> {
       }
 
       if (this.manager.data.application.discord.guild.ownerId === member.user.id) {
-        throw new HypixelDiscordChatBridgeError("This user owns the server thus no one can edit their roles");
+        throw new HypixelDiscordChatBridgeError('This user owns the server thus no one can edit their roles');
       }
 
       const verificationRoles = this.manager.data.application.config.verification.roles;
@@ -86,7 +99,7 @@ class LinkedUser extends GenericData<LinkedUserData> {
 
         const guildRank = verificationRoles.custom.find((r) =>
           r.requirements
-            .filter((req) => r.enabled !== false && req.type === "guildRank")
+            .filter((req) => r.enabled !== false && req.type === 'guildRank')
             .map((req) => req.value)
             .includes(guildMember.rank)
         );
@@ -94,7 +107,9 @@ class LinkedUser extends GenericData<LinkedUserData> {
       }
 
       if (verificationRoles.custom.length > 0) {
-        for (const role of verificationRoles.custom.filter((r) => r.requirements.some((req) => req.type !== "guildRank"))) {
+        for (const role of verificationRoles.custom.filter((r) =>
+          r.requirements.some((req) => req.type !== 'guildRank')
+        )) {
           if (role.enabled === false) continue;
           const meetsRequirements = role.requirements.every((req) => req.value <= (stats[req.type] ?? 0));
           if (meetsRequirements) rolesToAdd.push(role.roleId);
@@ -105,16 +120,21 @@ class LinkedUser extends GenericData<LinkedUserData> {
         await member.setNickname(
           replaceVariables(
             this.manager.data.application.config.verification.nickname.nickname,
-            Object.fromEntries(Object.entries(stats).map(([key, value]) => [key, typeof value === "number" ? formatNumber(value) : value]))
-          ).replace(/,/g, this.manager.data.application.config.verification.nickname.removeCommas ? "" : ","),
-          "Updated Roles"
+            Object.fromEntries(
+              Object.entries(stats).map(([key, value]) => [
+                key,
+                typeof value === 'number' ? formatNumber(value) : value
+              ])
+            )
+          ).replace(/,/g, this.manager.data.application.config.verification.nickname.removeCommas ? '' : ','),
+          'Updated Roles'
         );
       }
 
-      await member.roles.add(rolesToAdd, "Updated Roles");
+      await member.roles.add(rolesToAdd, 'Updated Roles');
       await member.roles.remove(
         this.getLinkedRoles().filter((role) => !rolesToAdd.includes(role)),
-        "Updated Roles"
+        'Updated Roles'
       );
       return this;
     } catch (error) {
@@ -125,7 +145,9 @@ class LinkedUser extends GenericData<LinkedUserData> {
 
   async getDiscordUser(): Promise<GuildMember | null> {
     if (!this.manager.data.application.discord.isClientOnline()) {
-      throw new HypixelDiscordChatBridgeError("The discord bot doesn't seam to be online? Please restart the application");
+      throw new HypixelDiscordChatBridgeError(
+        "The discord bot doesn't seam to be online? Please restart the application"
+      );
     }
     if (!this.manager.data.application.discord.isGuildReady()) {
       this.manager.data.application.discord.loadGuild();

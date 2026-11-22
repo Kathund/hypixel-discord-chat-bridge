@@ -1,4 +1,4 @@
-export type LifecycleState = "idle" | "starting" | "running" | "stopping";
+export type LifecycleState = 'idle' | 'starting' | 'running' | 'stopping';
 
 export interface Lifecycle {
   start(): Promise<void>;

@@ -1,13 +1,18 @@
-import EmbedHelper, { BlacklistEmbed, SuccessEmbed } from "../../discord/private/EmbedHelper.ts";
-import GenericData from "../GenericData.ts";
-import HypixelDiscordChatBridgeError from "../../private/error.ts";
-import MowojangAPI from "../../private/MowojangAPI.ts";
-import { ActionRowBuilder, ButtonBuilder, ComponentType, type GuildMember } from "discord.js";
-import { getPlayer } from "../../utils/hypixelUtils.ts";
-import { toError } from "../../utils/asyncUtils.ts";
-import type BlacklistManager from "./BlacklistManager.ts";
-import type { BasicBlacklistedUserData, BlacklistDeleteOptions, BlacklistSaveOptions, BlacklistedUserData } from "../../types/blacklist.ts";
-import type { Guild, GuildMember as HypixelGuildMember, Player } from "hypixel-api-reborn";
+import EmbedHelper, { BlacklistEmbed, SuccessEmbed } from '../../discord/private/EmbedHelper.ts';
+import GenericData from '../GenericData.ts';
+import HypixelDiscordChatBridgeError from '../../private/error.ts';
+import MowojangAPI from '../../private/MowojangAPI.ts';
+import { ActionRowBuilder, ButtonBuilder, ComponentType, type GuildMember } from 'discord.js';
+import { getPlayer } from '../../utils/hypixelUtils.ts';
+import { toError } from '../../utils/asyncUtils.ts';
+import type BlacklistManager from './BlacklistManager.ts';
+import type {
+  BasicBlacklistedUserData,
+  BlacklistDeleteOptions,
+  BlacklistSaveOptions,
+  BlacklistedUserData
+} from '../../types/blacklist.ts';
+import type { Guild, GuildMember as HypixelGuildMember, Player } from 'hypixel-api-reborn';
 
 class BlacklistUser extends GenericData<BlacklistedUserData> {
   readonly blacklistId: string;
@@ -43,9 +48,11 @@ class BlacklistUser extends GenericData<BlacklistedUserData> {
 
   private async handleSave({ alertUser, shareUser, user }: BlacklistSaveOptions): Promise<this> {
     if (!this.manager.data.application.discord.isClientOnline()) {
-      throw new HypixelDiscordChatBridgeError("The discord bot doesn't seam to be online? Please restart the application");
+      throw new HypixelDiscordChatBridgeError(
+        "The discord bot doesn't seam to be online? Please restart the application"
+      );
     }
-    const channel = await this.manager.data.application.discord.getChannel("Logger-Blacklist");
+    const channel = await this.manager.data.application.discord.getChannel('Logger-Blacklist');
     if (!channel) throw new HypixelDiscordChatBridgeError('Channel "Logger-Blacklist" is disabled!');
     const blacklistData = await this.manager.getBlacklistDataResponse(this);
 
@@ -54,19 +61,23 @@ class BlacklistUser extends GenericData<BlacklistedUserData> {
       return this;
     }
 
-    const message = await channel.send({ ...blacklistData, content: "User has been blacklisted" });
+    const message = await channel.send({ ...blacklistData, content: 'User has been blacklisted' });
     if (this.discordId && alertUser) {
       const embed = new EmbedHelper()
-        .setColor("Red")
-        .setAuthor({ name: "You have been blacklisted" })
+        .setColor('Red')
+        .setAuthor({ name: 'You have been blacklisted' })
         .setDescription(this.reason)
         .setFooter({ text: `Blacklisted by @${user.id}`, iconURL: user.avatarURL({ size: 4096 }) || undefined });
-      if (!shareUser) embed.setDevFooter("Kathund");
-      const send = await this.manager.data.application.discord.client.users.send(this.discordId, { embeds: [embed] }).catch((e: Error) => {
-        if (e.name === "DiscordAPIError[50278]") return null;
-        throw e;
-      });
-      if (send === null) throw new HypixelDiscordChatBridgeError("User has DMs off. They have not be alerted about the blacklist");
+      if (!shareUser) embed.setDevFooter('Kathund');
+      const send = await this.manager.data.application.discord.client.users
+        .send(this.discordId, { embeds: [embed] })
+        .catch((e: Error) => {
+          if (e.name === 'DiscordAPIError[50278]') return null;
+          throw e;
+        });
+      if (send === null) {
+        throw new HypixelDiscordChatBridgeError('User has DMs off. They have not be alerted about the blacklist');
+      }
     }
     this.messageId = message.id;
     return this;
@@ -79,9 +90,11 @@ class BlacklistUser extends GenericData<BlacklistedUserData> {
 
   private async handleDelete({ alertUser, shareUser, user, reason }: BlacklistDeleteOptions): Promise<void> {
     if (!this.manager.data.application.discord.isClientOnline()) {
-      throw new HypixelDiscordChatBridgeError("The discord bot doesn't seam to be online? Please restart the application");
+      throw new HypixelDiscordChatBridgeError(
+        "The discord bot doesn't seam to be online? Please restart the application"
+      );
     }
-    const channel = await this.manager.data.application.discord.getChannel("Logger-Blacklist");
+    const channel = await this.manager.data.application.discord.getChannel('Logger-Blacklist');
     if (!channel) throw new HypixelDiscordChatBridgeError('Channel "Logger-Blacklist" is disabled!');
     if (!this.messageId) return;
     const message = await channel.messages.fetch(this.messageId);
@@ -94,32 +107,38 @@ class BlacklistUser extends GenericData<BlacklistedUserData> {
           .setCustomId(compontent.customId!)
           .setLabel(compontent.label!)
           .setStyle(compontent.style)
-          .setDisabled(compontent.customId !== "getLinked")
+          .setDisabled(compontent.customId !== 'getLinked')
       ];
     });
     await message.edit({
-      content: "",
+      content: '',
       embeds: [
         new BlacklistEmbed(this).addFields(
-          { name: "\u200B", value: "\u200B" },
-          { name: "\u200B", value: "\u200B" },
-          { name: "Removed Reason", value: `\`\`\`${reason}\`\`\`` },
-          { name: "Removed By", value: `<@${user.id}>` }
+          { name: '\u200B', value: '\u200B' },
+          { name: '\u200B', value: '\u200B' },
+          { name: 'Removed Reason', value: `\`\`\`${reason}\`\`\`` },
+          { name: 'Removed By', value: `<@${user.id}>` }
         )
       ],
       components: [new ActionRowBuilder<ButtonBuilder>().addComponents(fixedButtons)]
     });
     if (this.discordId && alertUser) {
       const embed = new SuccessEmbed()
-        .setAuthor({ name: "You have been removed from the blacklist" })
+        .setAuthor({ name: 'You have been removed from the blacklist' })
         .setDescription(this.reason)
         .setFooter({ text: `Removed by @${user.id}`, iconURL: user.avatarURL({ size: 4096 }) || undefined });
-      if (!shareUser) embed.setDevFooter("Kathund");
-      const send = await this.manager.data.application.discord.client.users.send(this.discordId, { embeds: [embed] }).catch((e: Error) => {
-        if (e.name === "DiscordAPIError[50278]") return null;
-        throw e;
-      });
-      if (send === null) throw new HypixelDiscordChatBridgeError("User has DMs off. They have not be alerted about being removed from the blacklist");
+      if (!shareUser) embed.setDevFooter('Kathund');
+      const send = await this.manager.data.application.discord.client.users
+        .send(this.discordId, { embeds: [embed] })
+        .catch((e: Error) => {
+          if (e.name === 'DiscordAPIError[50278]') return null;
+          throw e;
+        });
+      if (send === null) {
+        throw new HypixelDiscordChatBridgeError(
+          'User has DMs off. They have not be alerted about being removed from the blacklist'
+        );
+      }
     }
   }
 
@@ -133,7 +152,9 @@ class BlacklistUser extends GenericData<BlacklistedUserData> {
   async getDiscordUser(): Promise<GuildMember | null> {
     if (!this.discordId) return null;
     if (!this.manager.data.application.discord.isClientOnline()) {
-      throw new HypixelDiscordChatBridgeError("The discord bot doesn't seam to be online? Please restart the application");
+      throw new HypixelDiscordChatBridgeError(
+        "The discord bot doesn't seam to be online? Please restart the application"
+      );
     }
     if (!this.manager.data.application.discord.isGuildReady()) {
       await this.manager.data.application.discord.loadGuild();
@@ -159,7 +180,7 @@ class BlacklistUser extends GenericData<BlacklistedUserData> {
 
   async refreshMessage() {
     if (!this.messageId) return;
-    const channel = await this.manager.data.application.discord.getChannel("Logger-Blacklist");
+    const channel = await this.manager.data.application.discord.getChannel('Logger-Blacklist');
     if (!channel) throw new HypixelDiscordChatBridgeError('Channel "Logger-Blacklist" is disabled!');
     const message = await channel.messages.fetch(this.messageId).catch(() => null);
     if (!message) return;

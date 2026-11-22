@@ -1,10 +1,13 @@
-import DiscordCommand from "../private/commands/DiscordCommand.ts";
-import DiscordCommandDataBuilder from "../private/commands/DiscordCommandDataBuilder.ts";
-import EmbedHelper from "../private/EmbedHelper.ts";
-import type { ChatInputCommandInteractionWithGuild } from "../../types/discord.ts";
+import DiscordCommand from '../private/commands/DiscordCommand.ts';
+import DiscordCommandDataBuilder from '../private/commands/DiscordCommandDataBuilder.ts';
+import EmbedHelper from '../private/EmbedHelper.ts';
+import type { ChatInputCommandInteractionWithGuild } from '../../types/discord.ts';
 
 class PingCommand extends DiscordCommand {
-  override readonly data = new DiscordCommandDataBuilder().setName("ping").setDescription("Show the latency of the bot.").setAuthors(["DuckySoLucky"]);
+  override readonly data = new DiscordCommandDataBuilder()
+    .setName('ping')
+    .setDescription('Show the latency of the bot.')
+    .setAuthors(['DuckySoLucky']);
 
   override async execute(interaction: ChatInputCommandInteractionWithGuild) {
     const clientLatency = Date.now() - interaction.createdTimestamp;
@@ -12,7 +15,10 @@ class PingCommand extends DiscordCommand {
 
     await interaction.followUp({
       embeds: [
-        new EmbedHelper().setTitle("🏓 Pong!").setDescription(`Client Latency: \`${clientLatency}ms\`\nAPI Latency: \`${apiLatency}ms\``).setDevFooter("DuckySoLucky")
+        new EmbedHelper()
+          .setTitle('🏓 Pong!')
+          .setDescription(`Client Latency: \`${clientLatency}ms\`\nAPI Latency: \`${apiLatency}ms\``)
+          .setDevFooter('DuckySoLucky')
       ]
     });
   }

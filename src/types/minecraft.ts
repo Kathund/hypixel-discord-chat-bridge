@@ -1,17 +1,22 @@
-import type MinecraftManager from "../minecraft/MinecraftManager.ts";
-import type RawRequestData from "hypixel-api-reborn/dist/Private/RawRequestData.ts";
-import type { Client } from "minecraft-protocol";
-import type { DevName } from "./application.ts";
-import type { DiscordManagerWithBot } from "./discord.ts";
-import type { HexColorString } from "discord.js";
-import type { ProfileNetworthCalculator } from "skyhelper-networth";
-import type { SkyBlockProfile, SkyBlockProfileName, SkyblockProfileWithMe, WithSelectedProfile } from "hypixel-api-reborn";
+import type MinecraftManager from '../minecraft/MinecraftManager.ts';
+import type RawRequestData from 'hypixel-api-reborn/dist/Private/RawRequestData.ts';
+import type { Client } from 'minecraft-protocol';
+import type { DevName } from './application.ts';
+import type { DiscordManagerWithBot } from './discord.ts';
+import type { HexColorString } from 'discord.js';
+import type { ProfileNetworthCalculator } from 'skyhelper-networth';
+import type {
+  SkyBlockProfile,
+  SkyBlockProfileName,
+  SkyblockProfileWithMe,
+  WithSelectedProfile
+} from 'hypixel-api-reborn';
 
 export type MinecraftManagerWithBot = MinecraftManager & { bot: Client };
 export type MinecraftManagerWithClient = MinecraftManagerWithBot & { application: { discord: DiscordManagerWithBot } };
 export type MinecraftManagerWithPlugin<Plugin> = MinecraftManager & { plugin: Plugin };
 
-export type MinecraftChatChannel = "guild" | "officer";
+export type MinecraftChatChannel = 'guild' | 'officer';
 
 export interface MinecraftCommandContext {
   readonly player: string;
@@ -55,63 +60,63 @@ export interface SelectedProfileData {
   rawUsername: string;
   uuid: string;
   profile: SkyblockProfileWithMe;
-  profiles: WithSelectedProfile<Map<SkyBlockProfileName | "UNKNOWN", SkyBlockProfile>>;
+  profiles: WithSelectedProfile<Map<SkyBlockProfileName | 'UNKNOWN', SkyBlockProfile>>;
   raw: RawRequestData<any>;
 }
 
-export const BedWarsModeNames = ["overall", "solo", "doubles", "threes", "fours", "4v4"] as const;
+export const BedWarsModeNames = ['overall', 'solo', 'doubles', 'threes', 'fours', '4v4'] as const;
 export type BedWarsModeName = (typeof BedWarsModeNames)[number];
-export type BedWarsInternalName = "eightOne" | "eightTwo" | "fourThree" | "fourFour" | "twoFour";
+export type BedWarsInternalName = 'eightOne' | 'eightTwo' | 'fourThree' | 'fourFour' | 'twoFour';
 
 export function isBedWarsModeName(value: string): value is BedWarsModeName {
   return (BedWarsModeNames as readonly string[]).includes(value);
 }
 
 export const DuelsInternalNames = [
-  "arena",
-  "bedWars",
-  "blitz",
-  "bow",
-  "bowspleef",
-  "boxing",
-  "bridge",
-  "classic",
-  "combo",
-  "megaWalls",
-  "op",
-  "parkour",
-  "potion",
-  "quake",
-  "skyWars",
-  "sumo",
-  "uhc"
+  'arena',
+  'bedWars',
+  'blitz',
+  'bow',
+  'bowspleef',
+  'boxing',
+  'bridge',
+  'classic',
+  'combo',
+  'megaWalls',
+  'op',
+  'parkour',
+  'potion',
+  'quake',
+  'skyWars',
+  'sumo',
+  'uhc'
 ] as const;
 export type DuelsInternalName = (typeof DuelsInternalNames)[number];
 export const DuelsModeMap: Record<DuelsInternalName, string[]> = {
-  arena: ["arena", "a"],
-  bedWars: ["bedwars", "bw"],
-  blitz: ["blitz"],
-  bow: ["bow"],
-  bowspleef: ["bowspleef", "bs"],
-  boxing: ["boxing"],
-  bridge: ["bridge", "b"],
-  classic: ["classic", "class", "c"],
-  combo: ["combo"],
-  megaWalls: ["megawalls", "mw", "m"],
-  op: ["op"],
-  parkour: ["parkour", "p"],
-  potion: ["nodebuff", "ndb"],
-  quake: ["quake", "q"],
-  skyWars: ["skywars", "sw"],
-  sumo: ["sumo", "s"],
-  uhc: ["uhc", "u"]
+  arena: ['arena', 'a'],
+  bedWars: ['bedwars', 'bw'],
+  blitz: ['blitz'],
+  bow: ['bow'],
+  bowspleef: ['bowspleef', 'bs'],
+  boxing: ['boxing'],
+  bridge: ['bridge', 'b'],
+  classic: ['classic', 'class', 'c'],
+  combo: ['combo'],
+  megaWalls: ['megawalls', 'mw', 'm'],
+  op: ['op'],
+  parkour: ['parkour', 'p'],
+  potion: ['nodebuff', 'ndb'],
+  quake: ['quake', 'q'],
+  skyWars: ['skywars', 'sw'],
+  sumo: ['sumo', 's'],
+  uhc: ['uhc', 'u']
 };
 
 export const DuelsModeNames = Object.values(DuelsModeMap)
   .flat()
   .filter((v, i, arr) => arr.indexOf(v) === i) as string[];
 export type DuelsModeName = (typeof DuelsModeNames)[number];
-export type DuelsModSearch = DuelsModeName | "overall";
+export type DuelsModSearch = DuelsModeName | 'overall';
 export const DuelsModeAliastoInternalMap = Object.entries(DuelsModeMap).reduce(
   (acc, [internal, aliases]) => {
     for (const alias of aliases) {

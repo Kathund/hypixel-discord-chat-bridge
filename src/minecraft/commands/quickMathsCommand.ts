@@ -1,28 +1,28 @@
-import MinecraftCommand from "../private/commands/MinecraftCommand.ts";
-import MinecraftCommandData from "../private/commands/MinecraftCommandData.ts";
-import { MinecraftRequestTimeoutError } from "../MinecraftRequestBroker.ts";
-import type { MinecraftChatChannel } from "../../types/minecraft.ts";
+import MinecraftCommand from '../private/commands/MinecraftCommand.ts';
+import MinecraftCommandData from '../private/commands/MinecraftCommandData.ts';
+import { MinecraftRequestTimeoutError } from '../MinecraftRequestBroker.ts';
+import type { MinecraftChatChannel } from '../../types/minecraft.ts';
 
-const OPERATORS = ["+", "-", "*"] as const;
+const OPERATORS = ['+', '-', '*'] as const;
 const CHAT_LINE = /^(?<chatType>Guild|Officer) > (?:\[[^\]]+\] )?(?<username>\w+)(?: \[[^\]]+\])?: (?<message>.+)$/;
 const RELAYED_MESSAGE = /^(?<username>(?!https?:\/\/)[^\s»:>]+)\s*[»:>]\s*(?<message>.*)$/;
 
 class QuickMathsCommand extends MinecraftCommand {
   override readonly data = new MinecraftCommandData()
-    .setName("quickmaths")
-    .setDescription("Solve the equation in less than 10 seconds! Test your math skills!")
-    .setAliases(["qm"])
-    .setAuthors(["CraftedFury"]);
+    .setName('quickmaths')
+    .setDescription('Solve the equation in less than 10 seconds! Test your math skills!')
+    .setAliases(['qm'])
+    .setAuthors(['CraftedFury']);
   protected readonly answerWindowMs: number = 10_000;
 
   static createEquation(random: () => number = Math.random): { equation: string; answer: number } {
-    const operator = OPERATORS[Math.floor(random() * OPERATORS.length)] ?? "+";
+    const operator = OPERATORS[Math.floor(random() * OPERATORS.length)] ?? '+';
     const left = Math.floor(random() * 10);
     const right = Math.floor(random() * 10);
 
     let answer = left * right;
-    if (operator === "+") answer = left + right;
-    if (operator === "-") answer = left - right;
+    if (operator === '+') answer = left + right;
+    if (operator === '-') answer = left - right;
     return { equation: `${left} ${operator} ${right}`, answer };
   }
 
@@ -54,9 +54,13 @@ class QuickMathsCommand extends MinecraftCommand {
 
   private parseAnswer(line: string, channel: MinecraftChatChannel): { username: string; answer: string } | undefined {
     const groups = line.match(CHAT_LINE)?.groups;
-    if (groups?.chatType === undefined || groups.username === undefined || groups.message === undefined) return undefined;
-    if ((groups.chatType === "Officer") !== (channel === "officer")) return undefined;
-    if (groups.username !== this.minecraft.bot.username) return { username: groups.username, answer: groups.message.trim() };
+    if (groups?.chatType === undefined || groups.username === undefined || groups.message === undefined) {
+      return undefined;
+    }
+    if ((groups.chatType === 'Officer') !== (channel === 'officer')) return undefined;
+    if (groups.username !== this.minecraft.bot.username) {
+      return { username: groups.username, answer: groups.message.trim() };
+    }
 
     // the bot's own lines only count when they relay a Discord message
     if (!this.minecraft.messageHandler.isDiscordMessage(groups.message, groups.username)) return undefined;

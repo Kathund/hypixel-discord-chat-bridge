@@ -1,21 +1,21 @@
-import MinecraftCommand from "../private/commands/MinecraftCommand.ts";
-import MinecraftCommandData from "../private/commands/MinecraftCommandData.ts";
-import MinecraftCommandDataOption from "../private/commands/MinecraftCommandDataOption.ts";
-import { formatNumber } from "../../utils/stringUtils.ts";
+import MinecraftCommand from '../private/commands/MinecraftCommand.ts';
+import MinecraftCommandData from '../private/commands/MinecraftCommandData.ts';
+import MinecraftCommandDataOption from '../private/commands/MinecraftCommandDataOption.ts';
+import { formatNumber } from '../../utils/stringUtils.ts';
 
 class CalculateCommand extends MinecraftCommand {
   override readonly data = new MinecraftCommandData()
-    .setName("calculate")
-    .setDescription("Calculate.")
-    .setAliases(["math", "calc"])
-    .setOptions([new MinecraftCommandDataOption().setName("calculation").setRequired(true)])
-    .setAuthors(["DuckySoLucky"]);
+    .setName('calculate')
+    .setDescription('Calculate.')
+    .setAliases(['math', 'calc'])
+    .setOptions([new MinecraftCommandDataOption().setName('calculation').setRequired(true)])
+    .setAuthors(['DuckySoLucky']);
 
   override execute(player: string, message: string) {
-    const calculation = message.replace(/[^-()\d/*+.]/g, "");
-    if (calculation.trim() === "9+10") return this.send("9 + 10 = 21");
+    const calculation = message.replace(/[^-()\d/*+.]/g, '');
+    if (calculation.trim() === '9+10') return this.send('9 + 10 = 21');
     const answer = eval(calculation);
-    if (answer === Infinity) return this.send("Something went wrong.. Somehow you broke it (the answer was infinity)");
+    if (answer === Infinity) return this.send('Something went wrong.. Somehow you broke it (the answer was infinity)');
     if (answer > 1000000) return this.send(`${calculation} = ${formatNumber(answer)} (${answer.toLocaleString()})`);
     return this.send(`${calculation} = ${formatNumber(answer)}`);
   }

@@ -1,10 +1,10 @@
-import BasicScript from "../../BasicScript.ts";
-import { emptySchedule } from "../../../types/scripts.ts";
-import type ScriptManager from "../../ScriptsManager.ts";
+import BasicScript from '../../BasicScript.ts';
+import { emptySchedule } from '../../../types/scripts.ts';
+import type ScriptManager from '../../ScriptsManager.ts';
 
 class RemoveAllInactivitiesScript extends BasicScript {
   constructor(scripts: ScriptManager) {
-    super(scripts, { id: "removeAllInactivities", enabled: true, schedule: emptySchedule() });
+    super(scripts, { id: 'removeAllInactivities', enabled: true, schedule: emptySchedule() });
   }
 
   override async execute() {

@@ -1,14 +1,20 @@
-import BasicScript from "../../BasicScript.ts";
-import { intervalSchedule } from "../../../types/scripts.ts";
-import type ScriptManager from "../../ScriptsManager.ts";
+import BasicScript from '../../BasicScript.ts';
+import { intervalSchedule } from '../../../types/scripts.ts';
+import type ScriptManager from '../../ScriptsManager.ts';
 
 class RemoveExpiredInactivitiesScript extends BasicScript {
   constructor(scripts: ScriptManager) {
-    super(scripts, { id: "removeExpiredInactivities", enabled: scripts.application.config.verification.inactivity.enabled, schedule: intervalSchedule("1m") });
+    super(scripts, {
+      id: 'removeExpiredInactivities',
+      enabled: scripts.application.config.verification.inactivity.enabled,
+      schedule: intervalSchedule('1m')
+    });
   }
 
   override async execute() {
-    const users = await this.scripts.application.data.inactivity.getFullData().then((users) => users.filter((user) => user.isExpired));
+    const users = await this.scripts.application.data.inactivity
+      .getFullData()
+      .then((users) => users.filter((user) => user.isExpired));
     for (const user of users) await user.delete();
   }
 }

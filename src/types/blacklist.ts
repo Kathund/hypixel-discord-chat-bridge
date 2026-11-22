@@ -1,5 +1,5 @@
-import { z } from "zod";
-import type { User } from "discord.js";
+import { z } from 'zod';
+import type { User } from 'discord.js';
 
 export const BlacklistedUserDataSchema = z.object({
   blacklistId: z.string(),

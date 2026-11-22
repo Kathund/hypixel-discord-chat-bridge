@@ -1,12 +1,16 @@
-import MinecraftCommand from "../private/commands/MinecraftCommand.ts";
-import MinecraftCommandData from "../private/commands/MinecraftCommandData.ts";
+import MinecraftCommand from '../private/commands/MinecraftCommand.ts';
+import MinecraftCommandData from '../private/commands/MinecraftCommandData.ts';
 
 class BarkCommand extends MinecraftCommand {
-  private variations: string[] = ["woof", "bork", "bwoof", "awruf", "arf", "awrf", "awooo"];
-  override readonly data = new MinecraftCommandData().setName("bark").setDescription("bark").setAliases(this.variations).setAuthors(["it-pup"]);
+  private variations: string[] = ['woof', 'bork', 'bwoof', 'awruf', 'arf', 'awrf', 'awooo'];
+  override readonly data = new MinecraftCommandData()
+    .setName('bark')
+    .setDescription('bark')
+    .setAliases(this.variations)
+    .setAuthors(['it-pup']);
 
   override async execute(username: string, message: string): Promise<void> {
-    await this.send(this.variations[Math.floor(Math.random() * this.variations.length)] || "bark");
+    await this.send(this.variations[Math.floor(Math.random() * this.variations.length)] || 'bark');
   }
 }
 

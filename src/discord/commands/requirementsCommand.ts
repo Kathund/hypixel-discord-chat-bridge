@@ -1,22 +1,28 @@
-import DiscordCommand from "../private/commands/DiscordCommand.ts";
-import DiscordCommandDataBuilder from "../private/commands/DiscordCommandDataBuilder.ts";
-import EmbedHelper from "../private/EmbedHelper.ts";
-import HypixelDiscordChatBridgeError from "../../private/error.ts";
-import MowojangAPI from "../../private/MowojangAPI.ts";
-import { type ChatInputCommandInteractionWithGuild, CommandFlags, type Requirement, type Requirements } from "../../types/discord.ts";
-import { formatNumber, titleCaseCamel } from "../../utils/stringUtils.ts";
-import type { PlayerVariableStatsKeysNumber } from "../../private/constants.ts";
+import DiscordCommand from '../private/commands/DiscordCommand.ts';
+import DiscordCommandDataBuilder from '../private/commands/DiscordCommandDataBuilder.ts';
+import EmbedHelper from '../private/EmbedHelper.ts';
+import HypixelDiscordChatBridgeError from '../../private/error.ts';
+import MowojangAPI from '../../private/MowojangAPI.ts';
+import {
+  type ChatInputCommandInteractionWithGuild,
+  CommandFlags,
+  type Requirement,
+  type Requirements
+} from '../../types/discord.ts';
+import { formatNumber, titleCaseCamel } from '../../utils/stringUtils.ts';
+import type { PlayerVariableStatsKeysNumber } from '../../private/constants.ts';
 
 class RequirementsCommand extends DiscordCommand {
   override readonly data = new DiscordCommandDataBuilder()
-    .setName("requirements")
+    .setName('requirements')
     .setDescription("Check a user's requirements to join the guild")
-    .addStringOption((option) => option.setName("username").setDescription("Minecraft Username"));
+    .addStringOption((option) => option.setName('username').setDescription('Minecraft Username'));
   override readonly flags = [CommandFlags.RequirementsCommand];
 
   async checkRequirements(uuid: string): Promise<Requirements> {
     const stats = await this.discord.application.data.linked.getPlayerVariableStats(uuid);
-    const { requirements: configRequirements, requirementsNeededToPass } = this.discord.application.config.minecraft.guild.requirements;
+    const { requirements: configRequirements, requirementsNeededToPass } =
+      this.discord.application.config.minecraft.guild.requirements;
 
     const requirements: Requirement[] = Object.entries(configRequirements).map(([key, required]) => {
       const has = stats[key as PlayerVariableStatsKeysNumber] ?? 0;
@@ -31,8 +37,8 @@ class RequirementsCommand extends DiscordCommand {
 
   generateEmbed({ passed, username, guildName, requirements, requirementsPassed }: Requirements): EmbedHelper {
     return new EmbedHelper()
-      .setColor(passed ? "Green" : "Red")
-      .setTitle(`${username} **${passed ? "has" : "hasn't"}** got the requirements to join ${guildName}!`)
+      .setColor(passed ? 'Green' : 'Red')
+      .setTitle(`${username} **${passed ? 'has' : "hasn't"}** got the requirements to join ${guildName}!`)
       .setDescription(
         `${username} meets **${requirementsPassed} requirement(s)** out of the required **${
           this.discord.application.config.minecraft.guild.requirements.requirementsNeededToPass
@@ -41,7 +47,7 @@ class RequirementsCommand extends DiscordCommand {
       .addFields(
         ...requirements.map(({ key, has, required, passed }) => ({
           name: titleCaseCamel(key),
-          value: `${passed ? ":white_check_mark:" : ":x:"} ${formatNumber(has, 2)}/${formatNumber(required, 2)}`,
+          value: `${passed ? ':white_check_mark:' : ':x:'} ${formatNumber(has, 2)}/${formatNumber(required, 2)}`,
           inline: true
         }))
       )
@@ -49,10 +55,17 @@ class RequirementsCommand extends DiscordCommand {
   }
 
   override async execute(interaction: ChatInputCommandInteractionWithGuild) {
-    const linkedUUID = await this.discord.application.data.linked.getUserByDiscordId(interaction.user.id).then((linked) => linked?.uuid);
-    const input = interaction.options.getString("username") ?? linkedUUID ?? interaction.member.nickname ?? interaction.user.globalName ?? interaction.user.username;
+    const linkedUUID = await this.discord.application.data.linked
+      .getUserByDiscordId(interaction.user.id)
+      .then((linked) => linked?.uuid);
+    const input =
+      interaction.options.getString('username') ??
+      linkedUUID ??
+      interaction.member.nickname ??
+      interaction.user.globalName ??
+      interaction.user.username;
     const profile = await MowojangAPI.getProfile(input);
-    if (profile.error || !profile.data) throw new HypixelDiscordChatBridgeError("Player does not exist");
+    if (profile.error || !profile.data) throw new HypixelDiscordChatBridgeError('Player does not exist');
     const data = await this.checkRequirements(profile.data.UUID);
     const embed = this.generateEmbed(data);
     await interaction.followUp({ embeds: [embed] });

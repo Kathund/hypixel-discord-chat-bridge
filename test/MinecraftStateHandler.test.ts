@@ -1,8 +1,8 @@
-import StateHandler from "../src/minecraft/handlers/StateHandler.ts";
-import assert from "node:assert/strict";
-import test from "node:test";
-import type MinecraftManager from "../src/minecraft/MinecraftManager.ts";
-import type { Client } from "minecraft-protocol";
+import StateHandler from '../src/minecraft/handlers/StateHandler.ts';
+import assert from 'node:assert/strict';
+import test from 'node:test';
+import type MinecraftManager from '../src/minecraft/MinecraftManager.ts';
+import type { Client } from 'minecraft-protocol';
 
 const originalMinecraftLogger = console.minecraft;
 const originalErrorLogger = console.error;
@@ -17,11 +17,19 @@ test.after(() => {
   console.error = originalErrorLogger;
 });
 
-function createStateHandler(getBotGuild: () => Promise<unknown>): { readonly client: Client; readonly handler: StateHandler; isReady(): boolean } {
-  const client = { username: "TestBot" } as Client;
+function createStateHandler(getBotGuild: () => Promise<unknown>): {
+  readonly client: Client;
+  readonly handler: StateHandler;
+  isReady(): boolean;
+} {
+  const client = { username: 'TestBot' } as Client;
   let ready = false;
   const minecraft = {
-    application: { botGuild: undefined, getBotGuild, discord: { getChannel: () => Promise.resolve({ isSendable: () => true, send: () => Promise.resolve() }) } },
+    application: {
+      botGuild: undefined,
+      getBotGuild,
+      discord: { getChannel: () => Promise.resolve({ isSendable: () => true, send: () => Promise.resolve() }) }
+    },
     isCurrentClient: (candidate: Client) => candidate === client,
     markReady: (candidate: Client) => {
       if (candidate === client) ready = true;
@@ -31,7 +39,7 @@ function createStateHandler(getBotGuild: () => Promise<unknown>): { readonly cli
   return { client, handler: new StateHandler(minecraft), isReady: () => ready };
 }
 
-test("Minecraft startup waits for delayed guild initialization before becoming ready", async () => {
+test('Minecraft startup waits for delayed guild initialization before becoming ready', async () => {
   let resolveGuild: (guild: unknown) => void = () => undefined;
   const guild = new Promise<unknown>((resolve) => {
     resolveGuild = resolve;
@@ -47,8 +55,8 @@ test("Minecraft startup waits for delayed guild initialization before becoming r
   assert.equal(state.isReady(), true);
 });
 
-test("optional guild initialization failure does not leave Minecraft startup pending", async () => {
-  const state = createStateHandler(() => Promise.reject(new Error("Hypixel API unavailable")));
+test('optional guild initialization failure does not leave Minecraft startup pending', async () => {
+  const state = createStateHandler(() => Promise.reject(new Error('Hypixel API unavailable')));
 
   await state.handler.onLogin(state.client);
 

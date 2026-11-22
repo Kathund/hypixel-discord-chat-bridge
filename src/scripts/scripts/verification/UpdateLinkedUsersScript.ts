@@ -1,11 +1,11 @@
-import BasicScript from "../../BasicScript.ts";
-import { ScriptLogState, intervalSchedule } from "../../../types/scripts.ts";
-import type ScriptManager from "../../ScriptsManager.ts";
+import BasicScript from '../../BasicScript.ts';
+import { ScriptLogState, intervalSchedule } from '../../../types/scripts.ts';
+import type ScriptManager from '../../ScriptsManager.ts';
 
 class UpdateLinkedUsersScript extends BasicScript {
   constructor(scripts: ScriptManager) {
     super(scripts, {
-      id: "updateLinkedUsers",
+      id: 'updateLinkedUsers',
       enabled: scripts.application.config.verification.roles.autoUpdater.enabled,
       schedule: intervalSchedule(scripts.application.config.verification.roles.autoUpdater.interval)
     });

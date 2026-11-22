@@ -1,17 +1,17 @@
-import MinecraftCommand from "../private/commands/MinecraftCommand.ts";
-import MinecraftCommandData from "../private/commands/MinecraftCommandData.ts";
-import MinecraftCommandDataOption from "../private/commands/MinecraftCommandDataOption.ts";
-import { COSMETIC_SKILLS, CalculateAverage } from "hypixel-api-reborn";
-import { formatNumber, titleCase } from "../../utils/stringUtils.ts";
-import { getSelectedProfile } from "../../utils/hypixelUtils.ts";
+import MinecraftCommand from '../private/commands/MinecraftCommand.ts';
+import MinecraftCommandData from '../private/commands/MinecraftCommandData.ts';
+import MinecraftCommandDataOption from '../private/commands/MinecraftCommandDataOption.ts';
+import { COSMETIC_SKILLS, CalculateAverage } from 'hypixel-api-reborn';
+import { formatNumber, titleCase } from '../../utils/stringUtils.ts';
+import { getSelectedProfile } from '../../utils/hypixelUtils.ts';
 
 class OverflowSkillsCommand extends MinecraftCommand {
   override readonly data = new MinecraftCommandData()
-    .setName("overflowskills")
-    .setDescription("Overflow Skills and Skill Average of specified user.")
-    .setAliases(["oskills", "oskill", "osk"])
-    .setOptions([new MinecraftCommandDataOption().setName("username").setDescription("Minecraft Username")])
-    .setAuthors(["MattyHD0"]);
+    .setName('overflowskills')
+    .setDescription('Overflow Skills and Skill Average of specified user.')
+    .setAliases(['oskills', 'oskill', 'osk'])
+    .setOptions([new MinecraftCommandDataOption().setName('username').setDescription('Minecraft Username')])
+    .setAuthors(['MattyHD0']);
 
   override async execute(player: string, message: string) {
     player = this.getArgs(message)[0] || player;
@@ -19,13 +19,15 @@ class OverflowSkillsCommand extends MinecraftCommand {
 
     const skills = profile.me.playerData.skills;
     const parsedSkills = Object.entries(skills)
-      .filter(([name]) => !["average", "nonCosmeticAverage", "toString"].includes(name))
+      .filter(([name]) => !['average', 'nonCosmeticAverage', 'toString'].includes(name))
       .filter(([name]) => !COSMETIC_SKILLS.includes(name))
       .filter(([_, data]) => data.currentXp > 1)
       .map(([name, data]) => ({ name, level: data.overflowLevel?.levelWithProgress ?? data.levelWithProgress }))
       .sort((a, b) => a.name.localeCompare(b.name));
     const formattedSkills = parsedSkills.map((skill) => `${titleCase(skill.name)}: ${formatNumber(skill.level)}`);
-    await this.send(`${username}'s Skill Average: ${CalculateAverage(parsedSkills.map((skill) => skill.level)).toFixed(2)} (${formattedSkills.join(", ")})`);
+    await this.send(
+      `${username}'s Skill Average: ${CalculateAverage(parsedSkills.map((skill) => skill.level)).toFixed(2)} (${formattedSkills.join(', ')})`
+    );
   }
 }
 

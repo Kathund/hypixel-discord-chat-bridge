@@ -1,16 +1,16 @@
-import BlacklistUser from "./BlacklistUser.ts";
-import GenericManager from "../GenericManager.ts";
-import HypixelDiscordChatBridgeError from "../../private/error.ts";
-import MowojangAPI from "../../private/MowojangAPI.ts";
-import { ActionRowBuilder, type BaseMessageOptions, ButtonStyle } from "discord.js";
-import { type BlacklistData, BlacklistDataSchema, type BlacklistedUserData } from "../../types/blacklist.ts";
-import { BlacklistEmbed } from "../../discord/private/EmbedHelper.ts";
-import { ButtonBuilder } from "discord.js";
-import type DataManager from "../DataManager.ts";
+import BlacklistUser from './BlacklistUser.ts';
+import GenericManager from '../GenericManager.ts';
+import HypixelDiscordChatBridgeError from '../../private/error.ts';
+import MowojangAPI from '../../private/MowojangAPI.ts';
+import { ActionRowBuilder, type BaseMessageOptions, ButtonStyle } from 'discord.js';
+import { type BlacklistData, BlacklistDataSchema, type BlacklistedUserData } from '../../types/blacklist.ts';
+import { BlacklistEmbed } from '../../discord/private/EmbedHelper.ts';
+import { ButtonBuilder } from 'discord.js';
+import type DataManager from '../DataManager.ts';
 
 class BlacklistManager extends GenericManager<BlacklistedUserData, BlacklistData, BlacklistUser> {
   constructor(data: DataManager) {
-    super(data, "data/blacklist.json", "blacklist", [], BlacklistDataSchema);
+    super(data, 'data/blacklist.json', 'blacklist', [], BlacklistDataSchema);
   }
 
   override parseData(data: BlacklistData): BlacklistUser[] {
@@ -66,17 +66,20 @@ class BlacklistManager extends GenericManager<BlacklistedUserData, BlacklistData
       embeds: [new BlacklistEmbed(user, player, guildMember)],
       components: [
         new ActionRowBuilder<ButtonBuilder>().addComponents(
-          new ButtonBuilder().setCustomId("editBlacklistReason").setLabel("Edit Reason").setStyle(ButtonStyle.Secondary),
-          new ButtonBuilder().setCustomId("getLinked").setLabel("Get Linked Data").setStyle(ButtonStyle.Secondary),
-          new ButtonBuilder().setCustomId("unblacklist").setLabel("Delete Blacklist").setStyle(ButtonStyle.Danger)
+          new ButtonBuilder()
+            .setCustomId('editBlacklistReason')
+            .setLabel('Edit Reason')
+            .setStyle(ButtonStyle.Secondary),
+          new ButtonBuilder().setCustomId('getLinked').setLabel('Get Linked Data').setStyle(ButtonStyle.Secondary),
+          new ButtonBuilder().setCustomId('unblacklist').setLabel('Delete Blacklist').setStyle(ButtonStyle.Danger)
         ),
         new ActionRowBuilder<ButtonBuilder>().addComponents(
           new ButtonBuilder()
-            .setCustomId("blacklistKick")
-            .setLabel("Kick user from guild")
+            .setCustomId('blacklistKick')
+            .setLabel('Kick user from guild')
             .setStyle(ButtonStyle.Danger)
             .setDisabled(guildMember === undefined),
-          new ButtonBuilder().setCustomId("refreshBlacklist").setLabel("Refresh").setStyle(ButtonStyle.Secondary)
+          new ButtonBuilder().setCustomId('refreshBlacklist').setLabel('Refresh').setStyle(ButtonStyle.Secondary)
         )
       ]
     };

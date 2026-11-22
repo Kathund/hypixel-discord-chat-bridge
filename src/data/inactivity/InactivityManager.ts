@@ -1,15 +1,15 @@
-import GenericManager from "../GenericManager.ts";
-import HypixelDiscordChatBridgeError from "../../private/error.ts";
-import InactiveUser from "./InactiveUser.ts";
-import { ActionRowBuilder, type BaseMessageOptions, ButtonStyle } from "discord.js";
-import { ButtonBuilder } from "discord.js";
-import { type InactiveUserData, type InactivityData, InactivityDataSchema } from "../../types/inactivity.ts";
-import { InactivityEmbed } from "../../discord/private/EmbedHelper.ts";
-import type DataManager from "../DataManager.ts";
+import GenericManager from '../GenericManager.ts';
+import HypixelDiscordChatBridgeError from '../../private/error.ts';
+import InactiveUser from './InactiveUser.ts';
+import { ActionRowBuilder, type BaseMessageOptions, ButtonStyle } from 'discord.js';
+import { ButtonBuilder } from 'discord.js';
+import { type InactiveUserData, type InactivityData, InactivityDataSchema } from '../../types/inactivity.ts';
+import { InactivityEmbed } from '../../discord/private/EmbedHelper.ts';
+import type DataManager from '../DataManager.ts';
 
 class InactivityManager extends GenericManager<InactiveUserData, InactivityData, InactiveUser> {
   constructor(data: DataManager) {
-    super(data, "data/inactivity.json", "inactivity", [], InactivityDataSchema);
+    super(data, 'data/inactivity.json', 'inactivity', [], InactivityDataSchema);
   }
 
   override parseData(data: InactivityData): InactiveUser[] {
@@ -25,7 +25,9 @@ class InactivityManager extends GenericManager<InactiveUserData, InactivityData,
   }
 
   async addUser(user: InactiveUser): Promise<InactiveUser> {
-    const users = await this.mutateData((data) => (data.some((item) => item.inactivityId === user.inactivityId) ? data : [...data, user.toJSON()]));
+    const users = await this.mutateData((data) => {
+      return data.some((item) => item.inactivityId === user.inactivityId) ? data : [...data, user.toJSON()];
+    });
     return users.find((item) => item.inactivityId === user.inactivityId) ?? user;
   }
 
@@ -57,15 +59,18 @@ class InactivityManager extends GenericManager<InactiveUserData, InactivityData,
 
   async getInactivityDataResponse(user: InactiveUser): Promise<BaseMessageOptions> {
     const linked = await this.data.linked.getUserByDiscordId(user.discordId);
-    if (!linked) throw new HypixelDiscordChatBridgeError("User is not verified");
+    if (!linked) throw new HypixelDiscordChatBridgeError('User is not verified');
     const player = await linked.getHypixelPlayer();
     return {
       embeds: [new InactivityEmbed(user, player)],
       components: [
         new ActionRowBuilder<ButtonBuilder>().addComponents(
-          new ButtonBuilder().setCustomId("editInactivityReason").setLabel("Edit Reason").setStyle(ButtonStyle.Secondary),
-          new ButtonBuilder().setCustomId("getLinked").setLabel("Get Linked Data").setStyle(ButtonStyle.Secondary),
-          new ButtonBuilder().setCustomId("deleteInactivity").setLabel("Delete Inactivity").setStyle(ButtonStyle.Danger)
+          new ButtonBuilder()
+            .setCustomId('editInactivityReason')
+            .setLabel('Edit Reason')
+            .setStyle(ButtonStyle.Secondary),
+          new ButtonBuilder().setCustomId('getLinked').setLabel('Get Linked Data').setStyle(ButtonStyle.Secondary),
+          new ButtonBuilder().setCustomId('deleteInactivity').setLabel('Delete Inactivity').setStyle(ButtonStyle.Danger)
         )
       ]
     };

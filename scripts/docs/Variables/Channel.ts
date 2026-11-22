@@ -1,17 +1,17 @@
-import { ChannelVariableStatsKeyDescriptionMap, ChannelVariableStatsKeys } from "../../../src/private/constants.ts";
-import { initMarkdownFile, saveMarkdownFile } from "../../utils.ts";
+import { ChannelVariableStatsKeyDescriptionMap, ChannelVariableStatsKeys } from '../../../src/private/constants.ts';
+import { initMarkdownFile, saveMarkdownFile } from '../../utils.ts';
 
 const variableGroups = { General: ChannelVariableStatsKeys };
 
-const lines: string[] = await initMarkdownFile("docs/Variables/Channel.md");
+const lines: string[] = await initMarkdownFile('docs/Variables/Channel.md');
 
 Object.entries(variableGroups).forEach(([title, items]) => {
   lines.push(`## ${title}`);
-  lines.push("");
+  lines.push('');
   items.forEach((item) => {
-    lines.push(`\`{${item}}\` - ${ChannelVariableStatsKeyDescriptionMap[item] ?? "No Description Provided"}`);
-    lines.push("");
+    lines.push(`\`{${item}}\` - ${ChannelVariableStatsKeyDescriptionMap[item] ?? 'No Description Provided'}`);
+    lines.push('');
   });
 });
 
-await saveMarkdownFile("docs/Variables/Channel.md", lines);
+await saveMarkdownFile('docs/Variables/Channel.md', lines);

@@ -1,10 +1,13 @@
-import DiscordCommand from "../private/commands/DiscordCommand.ts";
-import DiscordCommandDataBuilder from "../private/commands/DiscordCommandDataBuilder.ts";
-import EmbedHelper from "../private/EmbedHelper.ts";
-import { type ChatInputCommandInteractionWithGuild, CommandPermission } from "../../types/discord.ts";
+import DiscordCommand from '../private/commands/DiscordCommand.ts';
+import DiscordCommandDataBuilder from '../private/commands/DiscordCommandDataBuilder.ts';
+import EmbedHelper from '../private/EmbedHelper.ts';
+import { type ChatInputCommandInteractionWithGuild, CommandPermission } from '../../types/discord.ts';
 
 class UptimeCommand extends DiscordCommand {
-  override readonly data = new DiscordCommandDataBuilder().setName("uptime").setDescription("Shows the uptime of the bot.").setAuthors(["DuckySoLucky"]);
+  override readonly data = new DiscordCommandDataBuilder()
+    .setName('uptime')
+    .setDescription('Shows the uptime of the bot.')
+    .setAuthors(['DuckySoLucky']);
   override readonly permission: CommandPermission = CommandPermission.Admin;
 
   override async execute(interaction: ChatInputCommandInteractionWithGuild) {
@@ -12,8 +15,8 @@ class UptimeCommand extends DiscordCommand {
       embeds: [
         new EmbedHelper()
           .setDescription(`Online since <t:${Math.floor((Date.now() - interaction.client.uptime) / 1000)}:R>`)
-          .setTitle("🕐 Uptime!")
-          .setDevFooter("DuckySoLucky")
+          .setTitle('🕐 Uptime!')
+          .setDevFooter('DuckySoLucky')
       ]
     });
   }

@@ -1,14 +1,14 @@
-import EmbedHelper from "../discord/private/EmbedHelper.ts";
-import HypixelDiscordChatBridgeError from "../private/error.ts";
-import prettyMilliseconds from "pretty-ms";
-import { ScriptLogState, type ScriptOptions } from "../types/scripts.ts";
-import { performance } from "node:perf_hooks";
-import { runDetached, toError } from "../utils/asyncUtils.ts";
-import { schedule } from "node-cron";
-import type ScriptManager from "./ScriptsManager.ts";
-import type { Lifecycle } from "../core/Lifecycle.ts";
-import type { ScheduledTask } from "node-cron";
-import type { User } from "discord.js";
+import EmbedHelper from '../discord/private/EmbedHelper.ts';
+import HypixelDiscordChatBridgeError from '../private/error.ts';
+import prettyMilliseconds from 'pretty-ms';
+import { ScriptLogState, type ScriptOptions } from '../types/scripts.ts';
+import { performance } from 'node:perf_hooks';
+import { runDetached, toError } from '../utils/asyncUtils.ts';
+import { schedule } from 'node-cron';
+import type ScriptManager from './ScriptsManager.ts';
+import type { Lifecycle } from '../core/Lifecycle.ts';
+import type { ScheduledTask } from 'node-cron';
+import type { User } from 'discord.js';
 
 abstract class BasicScript<Manager extends ScriptManager = ScriptManager> implements Lifecycle {
   #user?: User;
@@ -40,19 +40,21 @@ abstract class BasicScript<Manager extends ScriptManager = ScriptManager> implem
     if (this.interval || this.cronTask) return Promise.resolve();
 
     switch (this.options.schedule.type) {
-      case "cron": {
+      case 'cron': {
         const { expression } = this.options.schedule;
         console.scripts(`Loaded script \`${this.id}\` - executing with cron: ${expression}.`);
         this.cronTask = schedule(expression, () => runDetached(this.runSafely()));
         break;
       }
-      case "interval": {
+      case 'interval': {
         const { milliseconds } = this.options.schedule;
-        console.scripts(`Loaded script \`${this.id}\` - executing every ${milliseconds}ms (${prettyMilliseconds(milliseconds)})`);
+        console.scripts(
+          `Loaded script \`${this.id}\` - executing every ${milliseconds}ms (${prettyMilliseconds(milliseconds)})`
+        );
         this.interval = setInterval(() => runDetached(this.runSafely()), milliseconds);
         break;
       }
-      case "empty":
+      case 'empty':
       default: {
         console.scripts(`Loaded script \`${this.id}\` - No execute set`);
       }
@@ -71,7 +73,7 @@ abstract class BasicScript<Manager extends ScriptManager = ScriptManager> implem
   }
 
   private async runSafely(): Promise<number> {
-    if (this.running && this.options.overlap !== "allow") {
+    if (this.running && this.options.overlap !== 'allow') {
       console.scripts(`Skipped script \`${this.id}\` because its previous execution is still running.`);
       return -1;
     }
@@ -87,7 +89,10 @@ abstract class BasicScript<Manager extends ScriptManager = ScriptManager> implem
       this.scripts.application.logError(toError(error));
     } finally {
       const durationMs = performance.now() - start;
-      await this.log(`Duration of the \`${this.id}\` script: ${durationMs.toFixed(2)}ms (${prettyMilliseconds(durationMs)})`, ScriptLogState.Misc);
+      await this.log(
+        `Duration of the \`${this.id}\` script: ${durationMs.toFixed(2)}ms (${prettyMilliseconds(durationMs)})`,
+        ScriptLogState.Misc
+      );
       this.running = false;
       this.abortController = undefined;
       return durationMs;
@@ -96,12 +101,12 @@ abstract class BasicScript<Manager extends ScriptManager = ScriptManager> implem
 
   protected async log(message: string, state: ScriptLogState = ScriptLogState.Misc): Promise<void> {
     console.scripts(message);
-    const channel = await this.scripts.application.discord.getChannel("Logger-Scripts");
+    const channel = await this.scripts.application.discord.getChannel('Logger-Scripts');
     if (!channel) return;
     const embed = new EmbedHelper().setDescription(message);
-    if (state === ScriptLogState.Good) embed.setColor("Green");
-    else if (state === ScriptLogState.Bad) embed.setColor("Red");
-    else if (state === ScriptLogState.Misc) embed.setColor("Blue");
+    if (state === ScriptLogState.Good) embed.setColor('Green');
+    else if (state === ScriptLogState.Bad) embed.setColor('Red');
+    else if (state === ScriptLogState.Misc) embed.setColor('Blue');
     await channel.send({ content: `Log from script: \`${this.id}\``, embeds: [embed] });
   }
 
@@ -118,7 +123,9 @@ abstract class BasicScript<Manager extends ScriptManager = ScriptManager> implem
   getUser(): User {
     if (this.#user) return this.#user;
     if (!this.scripts.application.discord.isClientOnline()) {
-      throw new HypixelDiscordChatBridgeError("The discord bot doesn't seam to be online? Please restart the application");
+      throw new HypixelDiscordChatBridgeError(
+        "The discord bot doesn't seam to be online? Please restart the application"
+      );
     }
     return this.scripts.application.discord.client.user;
   }

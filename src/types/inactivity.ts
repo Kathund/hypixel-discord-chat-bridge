@@ -1,8 +1,8 @@
-import { z } from "zod";
-import type BlacklistUser from "../data/blacklist/BlacklistUser.ts";
-import type InactiveUser from "../data/inactivity/InactiveUser.ts";
-import type LinkedUser from "../data/linked/LinkedUser.ts";
-import type { GuildMember } from "hypixel-api-reborn";
+import { z } from 'zod';
+import type BlacklistUser from '../data/blacklist/BlacklistUser.ts';
+import type InactiveUser from '../data/inactivity/InactiveUser.ts';
+import type LinkedUser from '../data/linked/LinkedUser.ts';
+import type { GuildMember } from 'hypixel-api-reborn';
 
 export const InactiveUserDataSchema = z.object({
   inactivityId: z.string(),
@@ -31,13 +31,13 @@ export interface InactiveUserData extends BasicInactiveUserData {
 }
 
 export const GexpDisplays = [
-  "gexpcheck_bot",
-  "gexpcheck_verified",
-  "gexpcheck_unverified",
-  "gexpcheck_inactive",
-  "gexpcheck_blacklisted",
-  "gexpcheck_withRequirement",
-  "gexpcheck_withoutRequirement"
+  'gexpcheck_bot',
+  'gexpcheck_verified',
+  'gexpcheck_unverified',
+  'gexpcheck_inactive',
+  'gexpcheck_blacklisted',
+  'gexpcheck_withRequirement',
+  'gexpcheck_withoutRequirement'
 ] as const;
 export type GexpDisplay = (typeof GexpDisplays)[number];
 
@@ -62,13 +62,16 @@ export interface GexpCheckDataDisplayData {
 }
 
 export const gexpCheckData: Record<GexpDisplay, GexpCheckDataDisplayData> = {
-  gexpcheck_bot: { label: "Hide Bot", description: "Hide the bot from the list" },
-  gexpcheck_verified: { label: "Verified", description: "Show users who are verified" },
-  gexpcheck_unverified: { label: "Unverified", description: "Show users who are not verified" },
-  gexpcheck_inactive: { label: "Inactive", description: "Show users who have an inactivity" },
-  gexpcheck_blacklisted: { label: "Blacklisted", description: "Show users who are blacklisted" },
-  gexpcheck_withRequirement: { label: "With Requirement", description: "Show users who have the requirement" },
-  gexpcheck_withoutRequirement: { label: "Without Requirement", description: "Show users who don't have the requirement" }
+  gexpcheck_bot: { label: 'Hide Bot', description: 'Hide the bot from the list' },
+  gexpcheck_verified: { label: 'Verified', description: 'Show users who are verified' },
+  gexpcheck_unverified: { label: 'Unverified', description: 'Show users who are not verified' },
+  gexpcheck_inactive: { label: 'Inactive', description: 'Show users who have an inactivity' },
+  gexpcheck_blacklisted: { label: 'Blacklisted', description: 'Show users who are blacklisted' },
+  gexpcheck_withRequirement: { label: 'With Requirement', description: 'Show users who have the requirement' },
+  gexpcheck_withoutRequirement: {
+    label: 'Without Requirement',
+    description: "Show users who don't have the requirement"
+  }
 };
 
 export interface ParsedGexpCheckUser {

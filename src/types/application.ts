@@ -1,18 +1,21 @@
-import type Application from "../Application.ts";
-import type HypixelDiscordChatBridgeError from "../private/error.ts";
-import type { CommonDevs } from "../private/constants.ts";
-import type { DiscordManagerWithClient } from "./discord.ts";
-import type { DiscordjsError } from "discord.js";
-import type { HypixelAPIRebornError } from "hypixel-api-reborn";
-import type { MinecraftManagerWithBot } from "./minecraft.ts";
-import type { MinecraftRequestTimeoutError } from "../minecraft/MinecraftRequestBroker.ts";
+import type Application from '../Application.ts';
+import type HypixelDiscordChatBridgeError from '../private/error.ts';
+import type { CommonDevs } from '../private/constants.ts';
+import type { DiscordManagerWithClient } from './discord.ts';
+import type { DiscordjsError } from 'discord.js';
+import type { HypixelAPIRebornError } from 'hypixel-api-reborn';
+import type { MinecraftManagerWithBot } from './minecraft.ts';
+import type { MinecraftRequestTimeoutError } from '../minecraft/MinecraftRequestBroker.ts';
 
 export type ApplicationWithClient = Application & { discord: DiscordManagerWithClient };
 export type ApplicationWithBot = Application & { minecraft: MinecraftManagerWithBot };
-export type ApplicationWithClientBot = Application & { discord: DiscordManagerWithClient; minecraft: MinecraftManagerWithBot };
+export type ApplicationWithClientBot = Application & {
+  discord: DiscordManagerWithClient;
+  minecraft: MinecraftManagerWithBot;
+};
 
 export type DevName = keyof typeof CommonDevs;
-export const DevTypes = ["Maintainer", "Legacy Maintainer", "Contributor"] as const;
+export const DevTypes = ['Maintainer', 'Legacy Maintainer', 'Contributor'] as const;
 export type DevType = (typeof DevTypes)[number];
 
 export interface DevDiscordData {
@@ -34,16 +37,16 @@ export interface BaseMaintainerDevData extends BasicDevData {
 }
 
 export interface MaintainerDevData extends BaseMaintainerDevData {
-  type: "Maintainer";
+  type: 'Maintainer';
   note: string;
 }
 
 export interface LegacyMaintainerDevData extends BaseMaintainerDevData {
-  type: "Legacy Maintainer";
+  type: 'Legacy Maintainer';
 }
 
 export interface ContributorDevData extends BasicDevData {
-  type: "Contributor";
+  type: 'Contributor';
 }
 
 export type DevData = MaintainerDevData | LegacyMaintainerDevData | ContributorDevData;
@@ -54,7 +57,8 @@ export interface CreditData {
   link: string;
 }
 
-export type ValidErrors = Error | DiscordjsError | HypixelDiscordChatBridgeError | HypixelAPIRebornError | MinecraftRequestTimeoutError;
+export type ValidErrors =
+  Error | DiscordjsError | HypixelDiscordChatBridgeError | HypixelAPIRebornError | MinecraftRequestTimeoutError;
 
 export interface RuntimeInformation {
   commit: string;

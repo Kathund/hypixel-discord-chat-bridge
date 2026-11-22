@@ -1,5 +1,5 @@
-import NodeCache from "node-cache";
-import assert from "node:assert";
+import NodeCache from 'node-cache';
+import assert from 'node:assert';
 
 class CacheHandler {
   // Should cache things for an hour

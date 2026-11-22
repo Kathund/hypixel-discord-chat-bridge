@@ -1,12 +1,17 @@
-import DiscordModal from "../../private/modals/DiscordModal.ts";
-import DiscordModalData from "../../private/modals/DiscordModalData.ts";
-import GexpCheckCommand from "../../commands/verification/inactivity/gexpCheckCommand.ts";
-import HypixelDiscordChatBridgeError from "../../../private/error.ts";
-import { BasicInteractionResponse, CommandFlags, CommandPermission, type ModalSubmitInteractionWithGuild } from "../../../types/discord.ts";
-import { type GexpCheckOptionsDisplays, GexpDisplays } from "../../../types/inactivity.ts";
+import DiscordModal from '../../private/modals/DiscordModal.ts';
+import DiscordModalData from '../../private/modals/DiscordModalData.ts';
+import GexpCheckCommand from '../../commands/verification/inactivity/gexpCheckCommand.ts';
+import HypixelDiscordChatBridgeError from '../../../private/error.ts';
+import {
+  BasicInteractionResponse,
+  CommandFlags,
+  CommandPermission,
+  type ModalSubmitInteractionWithGuild
+} from '../../../types/discord.ts';
+import { type GexpCheckOptionsDisplays, GexpDisplays } from '../../../types/inactivity.ts';
 
 class GexpCheckFiltersModal extends DiscordModal {
-  override readonly data = new DiscordModalData("gexpCheckFilters");
+  override readonly data = new DiscordModalData('gexpCheckFilters');
   override readonly response = BasicInteractionResponse.Ephemeral;
   override readonly flags = [CommandFlags.InactivityCommand, CommandFlags.VerificationCommand];
   override readonly permission = CommandPermission.Staff;
@@ -15,12 +20,15 @@ class GexpCheckFiltersModal extends DiscordModal {
     if (!interaction.message) return;
     const gexpCheckCommand = new GexpCheckCommand(this.discord);
     const options = GexpCheckCommand.getOptionsfromMessage(interaction.message);
-    if (!options) throw new HypixelDiscordChatBridgeError("Unable to find the requirement gexp");
-    const requirement = interaction.fields.getTextInputValue("gexpCheckFiltersAmount");
+    if (!options) throw new HypixelDiscordChatBridgeError('Unable to find the requirement gexp');
+    const requirement = interaction.fields.getTextInputValue('gexpCheckFiltersAmount');
     options.requirement = requirement.length > 0 ? Number(requirement) : options.requirement;
-    const filters = interaction.fields.getCheckboxGroup("gexpCheckFiltersMain");
-    GexpDisplays.forEach((filter) => (options[filter.replaceAll("gexpcheck_", "") as keyof GexpCheckOptionsDisplays] = filters.includes(filter)));
-    const hiddenRanks = interaction.fields.getCheckboxGroup("gexpCheckFiltersRank");
+    const filters = interaction.fields.getCheckboxGroup('gexpCheckFiltersMain');
+    GexpDisplays.forEach(
+      (filter) =>
+        (options[filter.replaceAll('gexpcheck_', '') as keyof GexpCheckOptionsDisplays] = filters.includes(filter))
+    );
+    const hiddenRanks = interaction.fields.getCheckboxGroup('gexpCheckFiltersRank');
     options.hiddenRanks = [...(hiddenRanks ?? options.hiddenRanks)];
 
     const response = await gexpCheckCommand.getResponse(options);

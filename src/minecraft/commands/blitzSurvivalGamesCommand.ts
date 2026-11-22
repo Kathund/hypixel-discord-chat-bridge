@@ -1,32 +1,38 @@
-import MinecraftCommand from "../private/commands/MinecraftCommand.ts";
-import MinecraftCommandData from "../private/commands/MinecraftCommandData.ts";
-import MinecraftCommandDataOption from "../private/commands/MinecraftCommandDataOption.ts";
-import { type BlitzSurvivalGamesData, type BlitzSurvivalGamesKitId, BlitzSurvivalGamesKitIds, type Player } from "hypixel-api-reborn";
-import { formatNumber } from "../../utils/stringUtils.ts";
-import { getPlayer } from "../../utils/hypixelUtils.ts";
+import MinecraftCommand from '../private/commands/MinecraftCommand.ts';
+import MinecraftCommandData from '../private/commands/MinecraftCommandData.ts';
+import MinecraftCommandDataOption from '../private/commands/MinecraftCommandDataOption.ts';
+import {
+  type BlitzSurvivalGamesData,
+  type BlitzSurvivalGamesKitId,
+  BlitzSurvivalGamesKitIds,
+  type Player
+} from 'hypixel-api-reborn';
+import { formatNumber } from '../../utils/stringUtils.ts';
+import { getPlayer } from '../../utils/hypixelUtils.ts';
 
-type BlitzSurvivalGamesKitKey = Exclude<BlitzSurvivalGamesKitId, "shadow knight" | "hype train"> | "shadowKnight" | "hypeTrain";
+type BlitzSurvivalGamesKitKey =
+  Exclude<BlitzSurvivalGamesKitId, 'shadow knight' | 'hype train'> | 'shadowKnight' | 'hypeTrain';
 class BlitzSurvivalGamesCommand extends MinecraftCommand {
   override readonly data = new MinecraftCommandData()
-    .setName("blitzsurvivalgames")
-    .setDescription("Blitz Survival Games stats of specified user.")
-    .setAliases(["blitz", "blitzsg", "bsg"])
-    .setOptions([new MinecraftCommandDataOption().setName("username").setDescription("Minecraft Username")]);
+    .setName('blitzsurvivalgames')
+    .setDescription('Blitz Survival Games stats of specified user.')
+    .setAliases(['blitz', 'blitzsg', 'bsg'])
+    .setOptions([new MinecraftCommandDataOption().setName('username').setDescription('Minecraft Username')]);
 
   convertKit(mode: BlitzSurvivalGamesKitId): BlitzSurvivalGamesKitKey {
     switch (mode) {
-      case "shadow knight":
-        return "shadowKnight";
-      case "hype train":
-        return "hypeTrain";
+      case 'shadow knight':
+        return 'shadowKnight';
+      case 'hype train':
+        return 'hypeTrain';
       default:
         return mode;
     }
   }
 
-  getStats(hypixelPlayer: Player, kit: BlitzSurvivalGamesKitId | "overall") {
+  getStats(hypixelPlayer: Player, kit: BlitzSurvivalGamesKitId | 'overall') {
     let stats: BlitzSurvivalGamesData;
-    if (kit === "overall") stats = hypixelPlayer.stats.BlitzSurvivalGames;
+    if (kit === 'overall') stats = hypixelPlayer.stats.BlitzSurvivalGames;
     else stats = hypixelPlayer.stats.BlitzSurvivalGames[this.convertKit(kit)];
     const { coins, defaultKit } = hypixelPlayer.stats.BlitzSurvivalGames;
     const { wins, kills, killDeathRatio, winLossRatio } = stats;
@@ -34,17 +40,17 @@ class BlitzSurvivalGamesCommand extends MinecraftCommand {
   }
 
   override async execute(player: string, message: string) {
-    const msg = this.getArgs(message).map((arg) => arg.replaceAll("/", "").toLowerCase());
+    const msg = this.getArgs(message).map((arg) => arg.replaceAll('/', '').toLowerCase());
     const modes = BlitzSurvivalGamesKitIds;
     const isKit = modes.includes(msg[0] as BlitzSurvivalGamesKitId);
 
-    const mode: BlitzSurvivalGamesKitId | "overall" = isKit ? (msg[0] as BlitzSurvivalGamesKitId) : "overall";
+    const mode: BlitzSurvivalGamesKitId | 'overall' = isKit ? (msg[0] as BlitzSurvivalGamesKitId) : 'overall';
     player = isKit ? msg[1] || player : msg[0] || player;
 
     const hypixelPlayer = await getPlayer(player);
     const { kills, killDeathRatio, wins, winLossRatio, coins, defaultKit } = this.getStats(hypixelPlayer, mode);
     await this.send(
-      `${hypixelPlayer.nickname}'s BlitzSG ${mode === "overall" ? `kit: ${defaultKit} |` : mode} Kills: ${formatNumber(kills)} KDR: ${
+      `${hypixelPlayer.nickname}'s BlitzSG ${mode === 'overall' ? `kit: ${defaultKit} |` : mode} Kills: ${formatNumber(kills)} KDR: ${
         killDeathRatio
       } | Wins: ${formatNumber(wins)} WLR: ${winLossRatio} | Coins: ${formatNumber(coins)}`
     );

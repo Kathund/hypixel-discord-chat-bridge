@@ -1,13 +1,13 @@
-import type MinecraftCommandDataOption from "./MinecraftCommandDataOption.ts";
-import type { CommandDataJSON } from "../../../types/minecraft.ts";
-import type { DevName } from "../../../types/application.ts";
+import type MinecraftCommandDataOption from './MinecraftCommandDataOption.ts';
+import type { CommandDataJSON } from '../../../types/minecraft.ts';
+import type { DevName } from '../../../types/application.ts';
 
 class MinecraftCommandData {
-  #name: string = "";
-  #description: string = "";
+  #name: string = '';
+  #description: string = '';
   #aliases: string[] = [];
   #options: MinecraftCommandDataOption[] = [];
-  #authors: DevName[] = ["Kathund"];
+  #authors: DevName[] = ['Kathund'];
 
   setName(name: string): this {
     this.#name = name;
@@ -55,7 +55,13 @@ class MinecraftCommandData {
   }
 
   toJSON(): CommandDataJSON {
-    return { name: this.name, description: this.description, aliases: this.aliases, options: this.options.map((option) => option.toJSON()), authors: this.authors };
+    return {
+      name: this.name,
+      description: this.description,
+      aliases: this.aliases,
+      options: this.options.map((option) => option.toJSON()),
+      authors: this.authors
+    };
   }
 }
 

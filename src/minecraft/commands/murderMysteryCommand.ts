@@ -1,15 +1,15 @@
-import MinecraftCommand from "../private/commands/MinecraftCommand.ts";
-import MinecraftCommandData from "../private/commands/MinecraftCommandData.ts";
-import MinecraftCommandDataOption from "../private/commands/MinecraftCommandDataOption.ts";
-import { formatNumber } from "../../utils/stringUtils.ts";
-import { getPlayer } from "../../utils/hypixelUtils.ts";
+import MinecraftCommand from '../private/commands/MinecraftCommand.ts';
+import MinecraftCommandData from '../private/commands/MinecraftCommandData.ts';
+import MinecraftCommandDataOption from '../private/commands/MinecraftCommandDataOption.ts';
+import { formatNumber } from '../../utils/stringUtils.ts';
+import { getPlayer } from '../../utils/hypixelUtils.ts';
 
 class MurderMysteryCommand extends MinecraftCommand {
   override readonly data = new MinecraftCommandData()
-    .setName("murdermystery")
-    .setDescription("Get Murder Mystery Player Stats")
-    .setAliases(["mm"])
-    .setOptions([new MinecraftCommandDataOption().setName("username").setDescription("Minecraft Username")]);
+    .setName('murdermystery')
+    .setDescription('Get Murder Mystery Player Stats')
+    .setAliases(['mm'])
+    .setOptions([new MinecraftCommandDataOption().setName('username').setDescription('Minecraft Username')]);
 
   override async execute(player: string, message: string) {
     player = this.getArgs(message)[0] || player;
@@ -17,7 +17,9 @@ class MurderMysteryCommand extends MinecraftCommand {
     const { wins, games, kills, deaths } = hypixelPlayer.stats.MurderMystery;
     const wlr = (wins / games).toFixed(2);
     const kdr = (kills / deaths).toFixed(2);
-    await this.send(`${hypixelPlayer.nickname}'s Murder Mystery Wins: ${formatNumber(wins)} | WLR: ${wlr} | Kills: ${formatNumber(kills)} | KDR: ${kdr}`);
+    await this.send(
+      `${hypixelPlayer.nickname}'s Murder Mystery Wins: ${formatNumber(wins)} | WLR: ${wlr} | Kills: ${formatNumber(kills)} | KDR: ${kdr}`
+    );
   }
 }
 

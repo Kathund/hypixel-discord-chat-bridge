@@ -1,14 +1,14 @@
 # Player Stat Variables
 
-In multiple places we support "stat variables". These are in game stats that can be used as a variable inside some configuration options. Below is a full list of these
-variables that are designed for players:
+In multiple places we support "stat variables". These are in game stats that can be used as a variable inside some
+configuration options. Below is a full list of these variables that are designed for players:
 
 ## General
 
 `{username}` - Player's Username
 
-`{guildRank}` - Guild Rank. **Note!** Due to api key limits this will only work if the user is inside of the minecraft bot's guild. Anyone outside will have an empty
-string
+`{guildRank}` - Guild Rank. **Note!** Due to api key limits this will only work if the user is inside of the minecraft
+bot's guild. Anyone outside will have an empty string
 
 `{guildName}` - The guild name. Note this is the name of the guild that the minecraft bot is inside of
 
@@ -18,11 +18,11 @@ string
 
 `{hypixelAchievementPoints}` - Player's Hypixel Achievement Points
 
-`{guildWeeklyXp}` - Player's total amount of gexp gained this week. **Note!** Due to api key limits this will only work if the user is inside of the minecraft bot's
-guild. Anyone outside will have 0
+`{guildWeeklyXp}` - Player's total amount of gexp gained this week. **Note!** Due to api key limits this will only work
+if the user is inside of the minecraft bot's guild. Anyone outside will have 0
 
-`{guildCurrentDayXp}` - Player's total amount of gexp gained this week. **Note!** Due to api key limits this will only work if the user is inside of the minecraft bot's
-guild. Anyone outside will have 0
+`{guildCurrentDayXp}` - Player's total amount of gexp gained this week. **Note!** Due to api key limits this will only
+work if the user is inside of the minecraft bot's guild. Anyone outside will have 0
 
 ## BedWars
 
@@ -476,7 +476,8 @@ guild. Anyone outside will have 0
 
 `{skyblockDungeonsClassArcherLevelOverflow}` - Player's SkyBlock Dungeons Archer Class Overflow Level
 
-`{skyblockDungeonsClassArcherLevelOverflowWithProgress}` - Player's SkyBlock Dungeons Archer Class Overflow Level With Progress
+`{skyblockDungeonsClassArcherLevelOverflowWithProgress}` - Player's SkyBlock Dungeons Archer Class Overflow Level With
+Progress
 
 `{skyblockDungeonsClassBerserkXp}` - Player's SkyBlock Dungeons Berserk Class Xp
 
@@ -486,7 +487,8 @@ guild. Anyone outside will have 0
 
 `{skyblockDungeonsClassBerserkLevelOverflow}` - Player's SkyBlock Dungeons Berserk Class Overflow Level
 
-`{skyblockDungeonsClassBerserkLevelOverflowWithProgress}` - Player's SkyBlock Dungeons Berserk Class Overflow Level With Progress
+`{skyblockDungeonsClassBerserkLevelOverflowWithProgress}` - Player's SkyBlock Dungeons Berserk Class Overflow Level With
+Progress
 
 `{skyblockDungeonsClassHealerXp}` - Player's SkyBlock Dungeons Healer Class Xp
 
@@ -496,7 +498,8 @@ guild. Anyone outside will have 0
 
 `{skyblockDungeonsClassHealerLevelOverflow}` - Player's SkyBlock Dungeons Healer Class Overflow Level
 
-`{skyblockDungeonsClassHealerLevelOverflowWithProgress}` - Player's SkyBlock Dungeons Healer Class Overflow Level With Progress
+`{skyblockDungeonsClassHealerLevelOverflowWithProgress}` - Player's SkyBlock Dungeons Healer Class Overflow Level With
+Progress
 
 `{skyblockDungeonsClassMageXp}` - Player's SkyBlock Dungeons Mage Class Xp
 
@@ -506,7 +509,8 @@ guild. Anyone outside will have 0
 
 `{skyblockDungeonsClassMageLevelOverflow}` - Player's SkyBlock Dungeons Mage Class Overflow Level
 
-`{skyblockDungeonsClassMageLevelOverflowWithProgress}` - Player's SkyBlock Dungeons Mage Class Overflow Level With Progress
+`{skyblockDungeonsClassMageLevelOverflowWithProgress}` - Player's SkyBlock Dungeons Mage Class Overflow Level With
+Progress
 
 `{skyblockDungeonsClassTankXp}` - Player's SkyBlock Dungeons Tank Class Xp
 
@@ -516,7 +520,8 @@ guild. Anyone outside will have 0
 
 `{skyblockDungeonsClassTankLevelOverflow}` - Player's SkyBlock Dungeons Tank Class Overflow Level
 
-`{skyblockDungeonsClassTankLevelOverflowWithProgress}` - Player's SkyBlock Dungeons Tank Class Overflow Level With Progress
+`{skyblockDungeonsClassTankLevelOverflowWithProgress}` - Player's SkyBlock Dungeons Tank Class Overflow Level With
+Progress
 
 `{skyblockDungeonsEssenceDiamond}` - Player's SkyBlock Dungeons Essence Diamond
 
@@ -658,7 +663,8 @@ guild. Anyone outside will have 0
 
 ---
 
-This document is [auto generated](/scripts/docs/Variables/Player.ts) and was last updated on `Sun, 22 Nov 2026 11:32:28 GMT` (`1795347148151`)
+This document is [auto generated](/scripts/docs/Variables/Player.ts) and was last updated on
+`Sun, 22 Nov 2026 12:04:05 GMT` (`1795349045098`)
 
 To update this document please run `pnpm docgen` or contact a maintainer and ask them to update it.
 
@@ -666,4 +672,5 @@ To update this document please run `pnpm docgen` or contact a maintainer and ask
 
 If you need any help help consider checking out the [FAQ](/docs/FrequentlyAskedQuestions.md)
 
-Feel free to reach out to the maintainers directly on Discord. [@amber.rip](https://discord.com/users/1276524855445164098)
+Feel free to reach out to the maintainers directly on Discord.
+[@amber.rip](https://discord.com/users/1276524855445164098)

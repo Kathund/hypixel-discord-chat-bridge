@@ -1,8 +1,8 @@
-import MessageHandler from "../src/discord/handlers/MessageHandler.ts";
-import assert from "node:assert/strict";
-import test from "node:test";
-import type DiscordManager from "../src/discord/DiscordManager.ts";
-import type { GuildMember, Message, Role } from "discord.js";
+import MessageHandler from '../src/discord/handlers/MessageHandler.ts';
+import assert from 'node:assert/strict';
+import test from 'node:test';
+import type DiscordManager from '../src/discord/DiscordManager.ts';
+import type { GuildMember, Message, Role } from 'discord.js';
 
 function createMessage(content: string, roles: ReadonlyMap<string, Role> = new Map()): Message {
   return {
@@ -14,16 +14,16 @@ function createMessage(content: string, roles: ReadonlyMap<string, Role> = new M
   } as unknown as Message;
 }
 
-test("resolves Discord role mentions before broadcasting to Minecraft", () => {
+test('resolves Discord role mentions before broadcasting to Minecraft', () => {
   const handler = new MessageHandler({} as DiscordManager);
-  const role = { id: "1530548906348249168", name: "Guild Member" } as Role;
-  const message = createMessage("hello <@&1530548906348249168>", new Map([[role.id, role]]));
+  const role = { id: '1530548906348249168', name: 'Guild Member' } as Role;
+  const message = createMessage('hello <@&1530548906348249168>', new Map([[role.id, role]]));
 
-  assert.equal(handler.stripDiscordContent(message).trim(), "hello @Guild Member");
+  assert.equal(handler.stripDiscordContent(message).trim(), 'hello @Guild Member');
 });
 
-test("replaces unresolved Discord role mentions with a readable fallback", () => {
+test('replaces unresolved Discord role mentions with a readable fallback', () => {
   const handler = new MessageHandler({} as DiscordManager);
 
-  assert.equal(handler.stripDiscordContent(createMessage("<@&1530548906348249168>")).trim(), "@unknown-role");
+  assert.equal(handler.stripDiscordContent(createMessage('<@&1530548906348249168>')).trim(), '@unknown-role');
 });

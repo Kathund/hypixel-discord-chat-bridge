@@ -5,7 +5,8 @@
 ### Prerequisites
 
 - [Git](https://git-scm.com/install)
-- [Node.js](https://nodejs.org/en/download) v22.23.4+, v24.22.1+ or v26.12.1+ (earlier releases trust the compromised eMudhra CAs)
+- [Node.js](https://nodejs.org/en/download) v22.23.4+, v24.22.1+ or v26.12.1+ (earlier releases trust the compromised
+  eMudhra CAs)
 - [pnpm](https://pnpm.io/installation) >= v11.0.0
 - [A Minecraft account](https://minecraft.net)
 
@@ -81,13 +82,15 @@ or manually set everything
 
 3. Run the container:
 
-The container runs as the `node` user (UID/GID `1000`). Create the folders before starting the container, otherwise Docker creates them owned by root:
+The container runs as the `node` user (UID/GID `1000`). Create the folders before starting the container, otherwise
+Docker creates them owned by root:
 
 ```bash
 mkdir -p data plugins
 ```
 
-If you are upgrading from an older image that ran as root, `chown` the files to UID `1000` to prevent the bot from not starting.
+If you are upgrading from an older image that ran as root, `chown` the files to UID `1000` to prevent the bot from not
+starting.
 
 ```bash
 sudo chown -R 1000:1000 config.json data plugins
@@ -118,4 +121,5 @@ To sign into a Minecraft account please see the [FAQ](./FAQ.md#how-do-i-add-a-mi
 
 If you need any help help consider checking out the [FAQ](/docs/FrequentlyAskedQuestions.md)
 
-Feel free to reach out to the maintainers directly on Discord. [@amber.rip](https://discord.com/users/1276524855445164098)
+Feel free to reach out to the maintainers directly on Discord.
+[@amber.rip](https://discord.com/users/1276524855445164098)

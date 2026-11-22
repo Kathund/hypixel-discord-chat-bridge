@@ -1,18 +1,20 @@
-import DiscordCommand from "../../private/commands/DiscordCommand.ts";
-import DiscordCommandDataBuilder from "../../private/commands/DiscordCommandDataBuilder.ts";
-import HypixelDiscordChatBridgeError from "../../../private/error.ts";
-import MowojangAPI from "../../../private/MowojangAPI.ts";
+import DiscordCommand from '../../private/commands/DiscordCommand.ts';
+import DiscordCommandDataBuilder from '../../private/commands/DiscordCommandDataBuilder.ts';
+import HypixelDiscordChatBridgeError from '../../../private/error.ts';
+import MowojangAPI from '../../../private/MowojangAPI.ts';
 import {
   type ButtonInteractionWithGuild,
   type ChatInputCommandInteractionWithGuild,
   CommandFlags,
   CommandPermission,
   type DiscordManagerWithBot
-} from "../../../types/discord.ts";
-import { SuccessEmbed } from "../../private/EmbedHelper.ts";
+} from '../../../types/discord.ts';
+import { SuccessEmbed } from '../../private/EmbedHelper.ts';
 
 class UpdateCommand extends DiscordCommand<DiscordManagerWithBot> {
-  override readonly data = new DiscordCommandDataBuilder().setName("update").setDescription("Update your current roles");
+  override readonly data = new DiscordCommandDataBuilder()
+    .setName('update')
+    .setDescription('Update your current roles');
   override readonly flags = [CommandFlags.RequiresMinecraftBot, CommandFlags.VerificationCommand];
   override readonly permission = CommandPermission.Linked;
   discordId: string | null = null;
@@ -24,7 +26,11 @@ class UpdateCommand extends DiscordCommand<DiscordManagerWithBot> {
     const response = await linkedUser.updateRoles();
     if (response === null) throw new HypixelDiscordChatBridgeError("Something wen't wrong with updating");
     await interaction.followUp({
-      embeds: [new SuccessEmbed().setDescription(`Successfully synced <@${this.discordId}>'s roles with \`${await MowojangAPI.getUsername(linkedUser.uuid)}\`'s stats!`)]
+      embeds: [
+        new SuccessEmbed().setDescription(
+          `Successfully synced <@${this.discordId}>'s roles with \`${await MowojangAPI.getUsername(linkedUser.uuid)}\`'s stats!`
+        )
+      ]
     });
     this.discordId = null;
   }

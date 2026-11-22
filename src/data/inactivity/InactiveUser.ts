@@ -1,10 +1,10 @@
-import EmbedHelper from "../../discord/private/EmbedHelper.ts";
-import GenericData from "../GenericData.ts";
-import HypixelDiscordChatBridgeError from "../../private/error.ts";
-import { ActionRowBuilder, ButtonBuilder, ComponentType, type GuildMember } from "discord.js";
-import { toError } from "../../utils/asyncUtils.ts";
-import type InactivityManager from "./InactivityManager.ts";
-import type { BasicInactiveUserData, InactiveUserData } from "../../types/inactivity.ts";
+import EmbedHelper from '../../discord/private/EmbedHelper.ts';
+import GenericData from '../GenericData.ts';
+import HypixelDiscordChatBridgeError from '../../private/error.ts';
+import { ActionRowBuilder, ButtonBuilder, ComponentType, type GuildMember } from 'discord.js';
+import { toError } from '../../utils/asyncUtils.ts';
+import type InactivityManager from './InactivityManager.ts';
+import type { BasicInactiveUserData, InactiveUserData } from '../../types/inactivity.ts';
 
 class InactiveUser extends GenericData<InactiveUserData> {
   readonly inactivityId: string;
@@ -35,9 +35,11 @@ class InactiveUser extends GenericData<InactiveUserData> {
 
   private async handleSave(): Promise<this> {
     if (!this.manager.data.application.discord.isClientOnline()) {
-      throw new HypixelDiscordChatBridgeError("The discord bot doesn't seam to be online? Please restart the application");
+      throw new HypixelDiscordChatBridgeError(
+        "The discord bot doesn't seam to be online? Please restart the application"
+      );
     }
-    const channel = await this.manager.data.application.discord.getChannel("Logger-Inactivity");
+    const channel = await this.manager.data.application.discord.getChannel('Logger-Inactivity');
     if (!channel) throw new HypixelDiscordChatBridgeError('Channel "Logger-Inactivity" is disabled!');
     const inactivityData = await this.manager.getInactivityDataResponse(this);
     const message = await channel.send(inactivityData);
@@ -52,13 +54,15 @@ class InactiveUser extends GenericData<InactiveUserData> {
 
   private async handleDelete(): Promise<void> {
     if (!this.manager.data.application.discord.isClientOnline()) {
-      throw new HypixelDiscordChatBridgeError("The discord bot doesn't seam to be online? Please restart the application");
+      throw new HypixelDiscordChatBridgeError(
+        "The discord bot doesn't seam to be online? Please restart the application"
+      );
     }
-    const channel = await this.manager.data.application.discord.getChannel("Logger-Inactivity");
+    const channel = await this.manager.data.application.discord.getChannel('Logger-Inactivity');
     if (!channel) throw new HypixelDiscordChatBridgeError('Channel "Logger-Inactivity" is disabled!');
     if (!this.messageId) return;
     const message = await channel.messages.fetch(this.messageId);
-    const embeds = message.embeds.map((embed) => new EmbedHelper(embed.toJSON()).setColor("Red"));
+    const embeds = message.embeds.map((embed) => new EmbedHelper(embed.toJSON()).setColor('Red'));
     const component = message.components[0];
     if (!component || component.type !== ComponentType.ActionRow) return;
     const fixedButtons = component.components.flatMap((compontent) => {
@@ -68,16 +72,22 @@ class InactiveUser extends GenericData<InactiveUserData> {
           .setCustomId(compontent.customId!)
           .setLabel(compontent.label!)
           .setStyle(compontent.style)
-          .setDisabled(compontent.customId !== "getLinked")
+          .setDisabled(compontent.customId !== 'getLinked')
       ];
     });
-    await message.edit({ content: ":warning: This inactivity has expired", embeds, components: [new ActionRowBuilder<ButtonBuilder>().addComponents(fixedButtons)] });
+    await message.edit({
+      content: ':warning: This inactivity has expired',
+      embeds,
+      components: [new ActionRowBuilder<ButtonBuilder>().addComponents(fixedButtons)]
+    });
   }
 
   async getDiscordUser(): Promise<GuildMember | null> {
     if (!this.discordId) return null;
     if (!this.manager.data.application.discord.isClientOnline()) {
-      throw new HypixelDiscordChatBridgeError("The discord bot doesn't seam to be online? Please restart the application");
+      throw new HypixelDiscordChatBridgeError(
+        "The discord bot doesn't seam to be online? Please restart the application"
+      );
     }
     if (!this.manager.data.application.discord.isGuildReady()) {
       await this.manager.data.application.discord.loadGuild();
@@ -99,7 +109,14 @@ class InactiveUser extends GenericData<InactiveUserData> {
   }
 
   override toJSON(): InactiveUserData {
-    return { inactivityId: this.inactivityId, messageId: this.messageId, discordId: this.discordId, reason: this.reason, start: this.start, duration: this.duration };
+    return {
+      inactivityId: this.inactivityId,
+      messageId: this.messageId,
+      discordId: this.discordId,
+      reason: this.reason,
+      start: this.start,
+      duration: this.duration
+    };
   }
 }
 

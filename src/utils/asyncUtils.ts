@@ -2,7 +2,7 @@ export type AsyncListener<Arguments extends readonly unknown[]> = (...args: Argu
 
 export function toError(error: unknown): Error {
   if (error instanceof Error) return error;
-  return new Error(typeof error === "string" ? error : JSON.stringify(error));
+  return new Error(typeof error === 'string' ? error : JSON.stringify(error));
 }
 
 export function safeListener<Arguments extends readonly unknown[]>(
@@ -16,12 +16,15 @@ export function safeListener<Arguments extends readonly unknown[]>(
   };
 }
 
-export function runDetached(task: Promise<unknown>, reportError: (error: unknown) => Promise<void> | void = console.error): void {
+export function runDetached(
+  task: Promise<unknown>,
+  reportError: (error: unknown) => Promise<void> | void = console.error
+): void {
   void task.catch((error: unknown) => {
     void Promise.resolve(reportError(error)).catch(console.error);
   });
 }
 
 export function hasErrorCode(error: unknown, code: string): error is NodeJS.ErrnoException {
-  return error instanceof Error && "code" in error && error.code === code;
+  return error instanceof Error && 'code' in error && error.code === code;
 }

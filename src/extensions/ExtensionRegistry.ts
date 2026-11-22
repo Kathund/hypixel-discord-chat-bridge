@@ -4,7 +4,7 @@ class ExtensionRegistrationError extends Error {
     message: string
   ) {
     super(`${source}: ${message}`);
-    this.name = "ExtensionRegistrationError";
+    this.name = 'ExtensionRegistrationError';
   }
 }
 
@@ -12,16 +12,18 @@ class ExtensionRegistry<Extension> {
   readonly #extensions = new Map<string, Extension>();
   readonly #aliases = new Map<string, string>();
 
-  register(id: string, extension: Extension, aliases: readonly string[] = [], source: string = "programmatic"): void {
+  register(id: string, extension: Extension, aliases: readonly string[] = [], source: string = 'programmatic'): void {
     const normalizedId = this.normalize(id);
-    if (!normalizedId) throw new ExtensionRegistrationError(source, "Extension identifier cannot be empty.");
+    if (!normalizedId) throw new ExtensionRegistrationError(source, 'Extension identifier cannot be empty.');
     this.assertAvailable(normalizedId, source);
 
     const normalizedAliases = aliases.map((alias) => this.normalize(alias));
     const seenAliases = new Set<string>();
     for (const alias of normalizedAliases) {
       if (!alias) throw new ExtensionRegistrationError(source, `Extension "${normalizedId}" has an empty alias.`);
-      if (alias === normalizedId || seenAliases.has(alias)) throw new ExtensionRegistrationError(source, `Duplicate extension alias: ${alias}`);
+      if (alias === normalizedId || seenAliases.has(alias)) {
+        throw new ExtensionRegistrationError(source, `Duplicate extension alias: ${alias}`);
+      }
       this.assertAvailable(alias, source);
       seenAliases.add(alias);
     }
@@ -66,7 +68,9 @@ class ExtensionRegistry<Extension> {
   }
 
   private assertAvailable(id: string, source: string): void {
-    if (this.#extensions.has(id) || this.#aliases.has(id)) throw new ExtensionRegistrationError(source, `Duplicate extension identifier: ${id}`);
+    if (this.#extensions.has(id) || this.#aliases.has(id)) {
+      throw new ExtensionRegistrationError(source, `Duplicate extension identifier: ${id}`);
+    }
   }
 
   private normalize(id: string): string {

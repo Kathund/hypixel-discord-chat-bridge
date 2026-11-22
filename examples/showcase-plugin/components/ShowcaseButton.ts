@@ -1,7 +1,13 @@
-import { type ButtonInteractionWithGuild, ButtonResponse, DiscordButton, DiscordButtonData, type DiscordManagerWithPlugin } from "hypixel-discord-chat-bridge/plugin-api";
-import { LabelBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } from "discord.js";
-import { showcaseButtonId, showcaseModalId, showcaseModalInputId } from "./ids.ts";
-import type ShowcasePlugin from "../index.ts";
+import {
+  type ButtonInteractionWithGuild,
+  ButtonResponse,
+  DiscordButton,
+  DiscordButtonData,
+  type DiscordManagerWithPlugin
+} from 'hypixel-discord-chat-bridge/plugin-api';
+import { LabelBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } from 'discord.js';
+import { showcaseButtonId, showcaseModalId, showcaseModalInputId } from './ids.ts';
+import type ShowcasePlugin from '../index.ts';
 
 class ShowcaseButton extends DiscordButton<DiscordManagerWithPlugin<ShowcasePlugin>> {
   override readonly data = new DiscordButtonData(showcaseButtonId);
@@ -16,12 +22,16 @@ class ShowcaseButton extends DiscordButton<DiscordManagerWithPlugin<ShowcasePlug
     await interaction.showModal(
       new ModalBuilder()
         .setCustomId(showcaseModalId)
-        .setTitle("Plugin Showcase")
+        .setTitle('Plugin Showcase')
         .setLabelComponents(
           new LabelBuilder()
-            .setLabel("Example text")
+            .setLabel('Example text')
             .setTextInputComponent(
-              new TextInputBuilder().setCustomId(showcaseModalInputId).setPlaceholder("Type anything").setStyle(TextInputStyle.Short).setRequired(true)
+              new TextInputBuilder()
+                .setCustomId(showcaseModalInputId)
+                .setPlaceholder('Type anything')
+                .setStyle(TextInputStyle.Short)
+                .setRequired(true)
             )
         )
     );

@@ -1,5 +1,5 @@
-import HypixelDiscordChatBridgeError from "../../private/error.ts";
-import ms, { type StringValue } from "ms";
+import HypixelDiscordChatBridgeError from '../../private/error.ts';
+import ms, { type StringValue } from 'ms';
 import {
   type CommandFlags,
   CommandPermission,
@@ -8,18 +8,24 @@ import {
   type GuildManagementActionResponse,
   type GuildManagementCommand,
   type GuildManagementRequest
-} from "../../types/discord.ts";
-import { MinecraftRequestTimeoutError } from "../../minecraft/MinecraftRequestBroker.ts";
-import type DiscordManager from "../DiscordManager.ts";
+} from '../../types/discord.ts';
+import { MinecraftRequestTimeoutError } from '../../minecraft/MinecraftRequestBroker.ts';
+import type DiscordManager from '../DiscordManager.ts';
 
 abstract class BasicInteractionData<Manager extends DiscordManager = DiscordManagerWithClient> {
   readonly flags: readonly CommandFlags[] = [];
   readonly permission: CommandPermission = CommandPermission.Anyone;
   constructor(protected readonly discord: Manager) {}
 
-  async handleGuildManagementAction(action: GuildManagementCommand, username: string, argument: string = ""): Promise<GuildManagementActionResponse> {
+  async handleGuildManagementAction(
+    action: GuildManagementCommand,
+    username: string,
+    argument: string = ''
+  ): Promise<GuildManagementActionResponse> {
     const minecraft = this.discord.application.minecraft;
-    if (!minecraft.isBotOnline()) throw new HypixelDiscordChatBridgeError(this.discord.application.messages.minecraftBotOffline);
+    if (!minecraft.isBotOnline()) {
+      throw new HypixelDiscordChatBridgeError(this.discord.application.messages.minecraftBotOffline);
+    }
 
     const request: GuildManagementRequest = { action, username, argument };
     const response = minecraft.requestBroker.request({
@@ -37,29 +43,41 @@ abstract class BasicInteractionData<Manager extends DiscordManager = DiscordMana
     try {
       return await response;
     } catch (error: unknown) {
-      if (error instanceof MinecraftRequestTimeoutError) return { action: GuildManagementAction.Timeout, message: null };
+      if (error instanceof MinecraftRequestTimeoutError) {
+        return { action: GuildManagementAction.Timeout, message: null };
+      }
       throw error;
     }
   }
 
-  private parseGuildManagementResponse(request: GuildManagementRequest, message: string): GuildManagementActionResponse | null {
+  private parseGuildManagementResponse(
+    request: GuildManagementRequest,
+    message: string
+  ): GuildManagementActionResponse | null {
     const handler = this.discord.application.minecraft.messageHandler;
-    const matchesEventUsername = (): boolean => handler.getUsernameFromEventMessage(message).toLowerCase() === request.username.toLowerCase();
+    const matchesEventUsername = (): boolean =>
+      handler.getUsernameFromEventMessage(message).toLowerCase() === request.username.toLowerCase();
 
-    if (handler.isKickMessage(message) && matchesEventUsername()) return { action: GuildManagementAction.Kick, message };
+    if (handler.isKickMessage(message) && matchesEventUsername()) {
+      return { action: GuildManagementAction.Kick, message };
+    }
     if (handler.isCannotMuteMoreThanOneMonth(message)) return { action: GuildManagementAction.MuteTooLong, message };
     if (handler.isAlreadyMuted(message)) return { action: GuildManagementAction.AlreadyMuted, message };
     if (handler.isUserMuteMessage(message)) return { action: GuildManagementAction.UserMute, message };
     if (handler.isGuildMuteMessage(message)) return { action: GuildManagementAction.GuildMute, message };
     if (handler.isUserUnmuteMessage(message)) return { action: GuildManagementAction.UserUnmute, message };
     if (handler.isGuildUnmuteMessage(message)) return { action: GuildManagementAction.GuildUnmute, message };
-    if (handler.isPromotionMessage(message) && matchesEventUsername()) return { action: GuildManagementAction.Promote, message };
-    if (handler.isDemotionMessage(message) && matchesEventUsername()) return { action: GuildManagementAction.Demote, message };
+    if (handler.isPromotionMessage(message) && matchesEventUsername()) {
+      return { action: GuildManagementAction.Promote, message };
+    }
+    if (handler.isDemotionMessage(message) && matchesEventUsername()) {
+      return { action: GuildManagementAction.Demote, message };
+    }
     if (handler.isFailedInvite(message)) return { action: GuildManagementAction.FailedInvite, message };
     if (handler.isNoPermission(message)) return { action: GuildManagementAction.NoPerms, message };
 
     const cleanParts = message
-      .replace(/\[(.*?)\]/g, "")
+      .replace(/\[(.*?)\]/g, '')
       .trim()
       .split(/ +/g);
     if (handler.isOnlineInvite(message) && cleanParts[2]?.toLowerCase() === request.username.toLowerCase()) {

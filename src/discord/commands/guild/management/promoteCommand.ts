@@ -1,50 +1,61 @@
-import DiscordCommand from "../../../private/commands/DiscordCommand.ts";
-import DiscordCommandDataBuilder from "../../../private/commands/DiscordCommandDataBuilder.ts";
-import HypixelDiscordChatBridgeError from "../../../../private/error.ts";
+import DiscordCommand from '../../../private/commands/DiscordCommand.ts';
+import DiscordCommandDataBuilder from '../../../private/commands/DiscordCommandDataBuilder.ts';
+import HypixelDiscordChatBridgeError from '../../../../private/error.ts';
 import {
   type ChatInputCommandInteractionWithGuild,
   CommandFlags,
   CommandPermission,
   type DiscordManagerWithBot,
   GuildManagementAction
-} from "../../../../types/discord.ts";
-import { SuccessEmbed } from "../../../private/EmbedHelper.ts";
-import { replaceVariables } from "../../../../utils/stringUtils.ts";
+} from '../../../../types/discord.ts';
+import { SuccessEmbed } from '../../../private/EmbedHelper.ts';
+import { replaceVariables } from '../../../../utils/stringUtils.ts';
 
 class PromoteCommand extends DiscordCommand<DiscordManagerWithBot> {
   override readonly data = new DiscordCommandDataBuilder()
-    .setName("promote")
-    .setDescription("Promote the given user by one guild rank.")
-    .addStringOption((option) => option.setName("guild-member-username").setDescription("Minecraft Username").setRequired(true).setAutocomplete(true))
-    .setAuthors(["DuckySoLucky"]);
+    .setName('promote')
+    .setDescription('Promote the given user by one guild rank.')
+    .addStringOption((option) =>
+      option
+        .setName('guild-member-username')
+        .setDescription('Minecraft Username')
+        .setRequired(true)
+        .setAutocomplete(true)
+    )
+    .setAuthors(['DuckySoLucky']);
   override readonly flags = [CommandFlags.RequiresMinecraftBot];
   override readonly permission = CommandPermission.Staff;
 
   override async execute(interaction: ChatInputCommandInteractionWithGuild) {
-    const username = interaction.options.getString("guild-member-username", true);
-    const { action, message } = await this.handleGuildManagementAction("promote", username);
+    const username = interaction.options.getString('guild-member-username', true);
+    const { action, message } = await this.handleGuildManagementAction('promote', username);
     if (action === GuildManagementAction.NotInGuild) {
-      throw new HypixelDiscordChatBridgeError(replaceVariables(this.discord.application.messages.notInGuildMessage, { username }));
+      throw new HypixelDiscordChatBridgeError(
+        replaceVariables(this.discord.application.messages.notInGuildMessage, { username })
+      );
     } else if (action === GuildManagementAction.NoPerms) {
       throw new HypixelDiscordChatBridgeError("The bot doesn't have perms to promote");
     } else if (action === GuildManagementAction.Timeout) {
-      throw new HypixelDiscordChatBridgeError("Command timed out. Please try again");
+      throw new HypixelDiscordChatBridgeError('Command timed out. Please try again');
     } else if (!message) {
-      throw new HypixelDiscordChatBridgeError("No response message received");
+      throw new HypixelDiscordChatBridgeError('No response message received');
     } else if (action === GuildManagementAction.Promote) {
       const rank =
         message
-          .replace(/\[(.*?)\]/g, "")
+          .replace(/\[(.*?)\]/g, '')
           .trim()
-          .split(" to ")
+          .split(' to ')
           .pop()
-          ?.trim() ?? "";
+          ?.trim() ?? '';
       await interaction.followUp({
         embeds: [
           new SuccessEmbed()
             .setDescription(replaceVariables(this.discord.application.messages.promotionMessage, { username, rank }))
-            .setAuthor({ name: "Member Promoted", iconURL: `${this.discord.application.config.API.nmsr.baseURL}/face/${username}` })
-            .setDevFooter("DuckySoLucky")
+            .setAuthor({
+              name: 'Member Promoted',
+              iconURL: `${this.discord.application.config.API.nmsr.baseURL}/face/${username}`
+            })
+            .setDevFooter('DuckySoLucky')
         ]
       });
     }

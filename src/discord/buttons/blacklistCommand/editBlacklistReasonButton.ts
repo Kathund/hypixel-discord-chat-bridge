@@ -1,12 +1,17 @@
-import BlacklistCommand from "../../commands/blacklistCommand.ts";
-import DiscordButton from "../../private/buttons/DiscordButton.ts";
-import DiscordButtonData from "../../private/buttons/DiscordButtonData.ts";
-import HypixelDiscordChatBridgeError from "../../../private/error.ts";
-import { type ButtonInteractionWithGuild, ButtonResponse, CommandFlags, CommandPermission } from "../../../types/discord.ts";
-import { LabelBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } from "discord.js";
+import BlacklistCommand from '../../commands/blacklistCommand.ts';
+import DiscordButton from '../../private/buttons/DiscordButton.ts';
+import DiscordButtonData from '../../private/buttons/DiscordButtonData.ts';
+import HypixelDiscordChatBridgeError from '../../../private/error.ts';
+import {
+  type ButtonInteractionWithGuild,
+  ButtonResponse,
+  CommandFlags,
+  CommandPermission
+} from '../../../types/discord.ts';
+import { LabelBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } from 'discord.js';
 
 class EditBlacklistReasonButton extends DiscordButton {
-  override readonly data = new DiscordButtonData("editBlacklistReason");
+  override readonly data = new DiscordButtonData('editBlacklistReason');
   override readonly response = ButtonResponse.None;
   override readonly flags = [CommandFlags.BlacklistCommand];
   override readonly permission = CommandPermission.Staff;
@@ -14,20 +19,20 @@ class EditBlacklistReasonButton extends DiscordButton {
   override async execute(interaction: ButtonInteractionWithGuild) {
     const blacklistCommand = new BlacklistCommand(this.discord);
     const blacklistUser = await blacklistCommand.getBlacklistedFromBlacklistEmbed(interaction.message);
-    if (!blacklistUser) throw new HypixelDiscordChatBridgeError("Unable to find the blacklist user");
+    if (!blacklistUser) throw new HypixelDiscordChatBridgeError('Unable to find the blacklist user');
 
     await interaction.showModal(
       new ModalBuilder()
-        .setCustomId("editBlacklistReason")
-        .setTitle("Editing the Reason")
+        .setCustomId('editBlacklistReason')
+        .setTitle('Editing the Reason')
         .addLabelComponents(
           new LabelBuilder()
-            .setLabel("Reason for removing from the blacklist")
+            .setLabel('Reason for removing from the blacklist')
             .setTextInputComponent(
               new TextInputBuilder()
-                .setCustomId("editBlacklistReasonReason")
+                .setCustomId('editBlacklistReasonReason')
                 .setStyle(TextInputStyle.Paragraph)
-                .setPlaceholder("No reason provided")
+                .setPlaceholder('No reason provided')
                 .setRequired(false)
                 .setValue(blacklistUser.reason)
             )

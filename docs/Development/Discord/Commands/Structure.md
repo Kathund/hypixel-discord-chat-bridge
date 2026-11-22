@@ -2,13 +2,14 @@
 
 This guide will explain definding the metadata of a discord command and explain how options work
 
-We use our own custom abstract `DiscordCommand` class system that allows us to have preset options/data that can be read inside of the CommandHandler. This involves stuff
-like Command Permissions, Command Flags and Command Responses
+We use our own custom abstract `DiscordCommand` class system that allows us to have preset options/data that can be read
+inside of the CommandHandler. This involves stuff like Command Permissions, Command Flags and Command Responses
 
 ## Defining a Command
 
-When creating a command you will want to extend the `DiscordCommand` class and create your own class. From here you can set your command data (see
-[Discord Command Data Guide](/docs/Development/Discord/Commands/Structure.md) for more information)
+When creating a command you will want to extend the `DiscordCommand` class and create your own class. From here you can
+set your command data (see [Discord Command Data Guide](/docs/Development/Discord/Commands/Structure.md) for more
+information)
 
 This is an example of how you would create something from the basic template
 
@@ -27,8 +28,8 @@ class ExampleCommand extends DiscordCommand {
 
 ### Permissions
 
-Commands can have permissions set on them. These permissions will always be checked before reaching your execute method so you don't need to worry about it. By default
-commands will allow anyone to use it unless you override that and set it
+Commands can have permissions set on them. These permissions will always be checked before reaching your execute method
+so you don't need to worry about it. By default commands will allow anyone to use it unless you override that and set it
 
 Permissions can be set by overriding the permission
 
@@ -55,4 +56,5 @@ Permissions will fall down. This means any Admin will also be able to use any st
 
 If you need any help help consider checking out the [FAQ](/docs/FrequentlyAskedQuestions.md)
 
-Feel free to reach out to the maintainers directly on Discord. [@amber.rip](https://discord.com/users/1276524855445164098)
+Feel free to reach out to the maintainers directly on Discord.
+[@amber.rip](https://discord.com/users/1276524855445164098)

@@ -1,5 +1,5 @@
-import MinecraftCommand from "../private/commands/MinecraftCommand.ts";
-import MinecraftCommandData from "../private/commands/MinecraftCommandData.ts";
+import MinecraftCommand from '../private/commands/MinecraftCommand.ts';
+import MinecraftCommandData from '../private/commands/MinecraftCommandData.ts';
 
 /*
  *Derpy = 368 mod 24 = 8
@@ -18,10 +18,10 @@ const yearZero = 1560275700000;
 
 class SpecialMayorCommand extends MinecraftCommand {
   override readonly data = new MinecraftCommandData()
-    .setName("specialmayor")
-    .setDescription("How many years until next special mayor, along with speculated special mayor.")
-    .setAliases(["specmayor"])
-    .setAuthors(["CarsonCodess"]);
+    .setName('specialmayor')
+    .setDescription('How many years until next special mayor, along with speculated special mayor.')
+    .setAliases(['specmayor'])
+    .setAuthors(['CarsonCodess']);
 
   getYearsUntilSpecial(year: number): number {
     return (8 - (year % 8)) % 8;
@@ -34,11 +34,11 @@ class SpecialMayorCommand extends MinecraftCommand {
   getSpecialMayor(year: number): string | null {
     switch (year % 24) {
       case 8:
-        return "Derpy";
+        return 'Derpy';
       case 16:
-        return "Jerry";
+        return 'Jerry';
       case 0:
-        return "Scorpius";
+        return 'Scorpius';
       default:
         return null;
     }
@@ -54,7 +54,9 @@ class SpecialMayorCommand extends MinecraftCommand {
     if (yearsUntil === 0) {
       await this.send(`Special Mayor this year! It is speculated to be ${mayor}.`);
     } else {
-      await this.send(`Not a Special Mayor year. ${yearsUntil} year(s) until the next one! It is speculated to be ${mayor}.`);
+      await this.send(
+        `Not a Special Mayor year. ${yearsUntil} year(s) until the next one! It is speculated to be ${mayor}.`
+      );
     }
   }
 }

@@ -1,42 +1,55 @@
-import BlacklistCommand from "../../commands/blacklistCommand.ts";
-import DiscordModal from "../../private/modals/DiscordModal.ts";
-import DiscordModalData from "../../private/modals/DiscordModalData.ts";
-import HypixelDiscordChatBridgeError from "../../../private/error.ts";
-import { CommandFlags, CommandPermission, type DiscordManagerWithBot, GuildManagementAction, type ModalSubmitInteractionWithGuild } from "../../../types/discord.ts";
-import { SuccessEmbed } from "../../private/EmbedHelper.ts";
-import { replaceVariables } from "../../../utils/stringUtils.ts";
+import BlacklistCommand from '../../commands/blacklistCommand.ts';
+import DiscordModal from '../../private/modals/DiscordModal.ts';
+import DiscordModalData from '../../private/modals/DiscordModalData.ts';
+import HypixelDiscordChatBridgeError from '../../../private/error.ts';
+import {
+  CommandFlags,
+  CommandPermission,
+  type DiscordManagerWithBot,
+  GuildManagementAction,
+  type ModalSubmitInteractionWithGuild
+} from '../../../types/discord.ts';
+import { SuccessEmbed } from '../../private/EmbedHelper.ts';
+import { replaceVariables } from '../../../utils/stringUtils.ts';
 
 class BlacklistKickModal extends DiscordModal<DiscordManagerWithBot> {
-  override readonly data = new DiscordModalData("blacklistKick");
+  override readonly data = new DiscordModalData('blacklistKick');
   override readonly flags = [CommandFlags.RequiresMinecraftBot, CommandFlags.BlacklistCommand];
   override readonly permission = CommandPermission.Staff;
 
   override async execute(interaction: ModalSubmitInteractionWithGuild) {
     const blacklistCommand = new BlacklistCommand(this.discord);
-    if (!interaction.isFromMessage()) throw new HypixelDiscordChatBridgeError("Unable to find the Blacklist user");
+    if (!interaction.isFromMessage()) throw new HypixelDiscordChatBridgeError('Unable to find the Blacklist user');
     const blacklistUser = await blacklistCommand.getBlacklistedFromBlacklistEmbed(interaction.message);
-    if (!blacklistUser) throw new HypixelDiscordChatBridgeError("Unable to find the blacklist user");
+    if (!blacklistUser) throw new HypixelDiscordChatBridgeError('Unable to find the blacklist user');
     const username = await blacklistUser.getUsername();
-    if (!username) throw new HypixelDiscordChatBridgeError("Could not find a username for this blacklisted user?");
-    const reason = interaction.fields.getTextInputValue("kickUserReason");
-    const { action } = await this.handleGuildManagementAction("kick", username, reason);
+    if (!username) throw new HypixelDiscordChatBridgeError('Could not find a username for this blacklisted user?');
+    const reason = interaction.fields.getTextInputValue('kickUserReason');
+    const { action } = await this.handleGuildManagementAction('kick', username, reason);
     if (action === GuildManagementAction.NoPerms) {
       throw new HypixelDiscordChatBridgeError("The bot doesn't have perms to kick");
     } else if (action === GuildManagementAction.Timeout) {
-      throw new HypixelDiscordChatBridgeError("Command timed out. Please try again");
+      throw new HypixelDiscordChatBridgeError('Command timed out. Please try again');
     } else if (action === GuildManagementAction.NotInGuild) {
-      throw new HypixelDiscordChatBridgeError(replaceVariables(this.discord.application.messages.notInGuildMessage, { username }));
+      throw new HypixelDiscordChatBridgeError(
+        replaceVariables(this.discord.application.messages.notInGuildMessage, { username })
+      );
     } else if (action === GuildManagementAction.Kick) {
       await interaction.followUp({
         embeds: [
           new SuccessEmbed()
             .setDescription(replaceVariables(this.discord.application.messages.kickMessage, { username }))
-            .setAuthor({ name: "Member Kicked", iconURL: `${this.discord.application.config.API.nmsr.baseURL}/face/${username}` })
+            .setAuthor({
+              name: 'Member Kicked',
+              iconURL: `${this.discord.application.config.API.nmsr.baseURL}/face/${username}`
+            })
         ]
       });
     }
 
-    await interaction.message.edit(await this.discord.application.data.blacklist.getBlacklistDataResponse(blacklistUser));
+    await interaction.message.edit(
+      await this.discord.application.data.blacklist.getBlacklistDataResponse(blacklistUser)
+    );
   }
 }
 

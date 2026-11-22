@@ -1,19 +1,19 @@
-import HypixelDiscordChatBridgeError from "../../private/error.ts";
-import MinecraftCommand from "../private/commands/MinecraftCommand.ts";
-import MinecraftCommandData from "../private/commands/MinecraftCommandData.ts";
-import MinecraftCommandDataOption from "../private/commands/MinecraftCommandDataOption.ts";
-import prettyMilliseconds from "pretty-ms";
-import { formatNumber } from "../../utils/stringUtils.ts";
-import { getSelectedProfile } from "../../utils/hypixelUtils.ts";
-import type { FloorData } from "../../types/minecraft.ts";
-import type { SkyBlockMemberDungeonsFloor } from "hypixel-api-reborn";
+import HypixelDiscordChatBridgeError from '../../private/error.ts';
+import MinecraftCommand from '../private/commands/MinecraftCommand.ts';
+import MinecraftCommandData from '../private/commands/MinecraftCommandData.ts';
+import MinecraftCommandDataOption from '../private/commands/MinecraftCommandDataOption.ts';
+import prettyMilliseconds from 'pretty-ms';
+import { formatNumber } from '../../utils/stringUtils.ts';
+import { getSelectedProfile } from '../../utils/hypixelUtils.ts';
+import type { FloorData } from '../../types/minecraft.ts';
+import type { SkyBlockMemberDungeonsFloor } from 'hypixel-api-reborn';
 
 class FloorCommand extends MinecraftCommand {
   override readonly data = new MinecraftCommandData()
-    .setName("floor")
-    .setDescription("Returns stats about a floor")
-    .setAliases(["f1", "f2", "f3", "f4", "f5", "f6", "f7", "m1", "m2", "m3", "m4", "m5", "m6", "m7"])
-    .setOptions([new MinecraftCommandDataOption().setName("username").setDescription("Minecraft Username")]);
+    .setName('floor')
+    .setDescription('Returns stats about a floor')
+    .setAliases(['f1', 'f2', 'f3', 'f4', 'f5', 'f6', 'f7', 'm1', 'm2', 'm3', 'm4', 'm5', 'm6', 'm7'])
+    .setOptions([new MinecraftCommandDataOption().setName('username').setDescription('Minecraft Username')]);
 
   override async execute(player: string, message: string) {
     player = this.getArgs(message)[0] || player;
@@ -21,13 +21,15 @@ class FloorCommand extends MinecraftCommand {
     const floors: FloorData[] = [];
     const catacombs = profile.me.dungeons.catacombs;
     Object.keys(catacombs)
-      .filter((key) => key.startsWith("floor"))
-      .filter((key) => !key.endsWith("0"))
+      .filter((key) => key.startsWith('floor'))
+      .filter((key) => !key.endsWith('0'))
       .forEach((floor) => {
-        const floorData: SkyBlockMemberDungeonsFloor | null = catacombs[floor as keyof typeof catacombs] as SkyBlockMemberDungeonsFloor | null;
+        const floorData: SkyBlockMemberDungeonsFloor | null = catacombs[
+          floor as keyof typeof catacombs
+        ] as SkyBlockMemberDungeonsFloor | null;
         if (floorData === null) return;
         floors.push({
-          id: floor.replaceAll("floor", "f"),
+          id: floor.replaceAll('floor', 'f'),
           timesPlayed: floorData.timesPlayed,
           fastestTimeS: floorData.fastestTimeS,
           fastestTimeSPlus: floorData.fastestTimeSPlus
@@ -36,13 +38,15 @@ class FloorCommand extends MinecraftCommand {
 
     const masterCatacombs = profile.me.dungeons.masterCatacombs;
     Object.keys(masterCatacombs)
-      .filter((key) => key.startsWith("floor"))
-      .filter((key) => !key.endsWith("0"))
+      .filter((key) => key.startsWith('floor'))
+      .filter((key) => !key.endsWith('0'))
       .forEach((floor) => {
-        const floorData: SkyBlockMemberDungeonsFloor | null = masterCatacombs[floor as keyof typeof masterCatacombs] as SkyBlockMemberDungeonsFloor | null;
+        const floorData: SkyBlockMemberDungeonsFloor | null = masterCatacombs[
+          floor as keyof typeof masterCatacombs
+        ] as SkyBlockMemberDungeonsFloor | null;
         if (floorData === null) return;
         floors.push({
-          id: floor.replaceAll("floor", "m"),
+          id: floor.replaceAll('floor', 'm'),
           timesPlayed: floorData.timesPlayed,
           fastestTimeS: floorData.fastestTimeS,
           fastestTimeSPlus: floorData.fastestTimeSPlus
@@ -51,12 +55,15 @@ class FloorCommand extends MinecraftCommand {
 
     const floorId = message.slice(1, 3).toLowerCase();
     const floorData = floors.find((floor) => floor.id === floorId);
-    if (floorData === undefined || floorData.timesPlayed === 0) throw new HypixelDiscordChatBridgeError(`${username} has never done ${floorId} before.`);
+    if (floorData === undefined || floorData.timesPlayed === 0) {
+      throw new HypixelDiscordChatBridgeError(`${username} has never done ${floorId} before.`);
+    }
 
     await this.send(
-      `${username}'s ${floorId} completions ${formatNumber(floorData.timesPlayed)} | S+: ${prettyMilliseconds(floorData.fastestTimeSPlus, {
-        secondsDecimalDigits: 0
-      })} | S: ${prettyMilliseconds(floorData.fastestTimeS, { secondsDecimalDigits: 0 })}`
+      `${username}'s ${floorId} completions ${formatNumber(floorData.timesPlayed)} | S+: ${prettyMilliseconds(
+        floorData.fastestTimeSPlus,
+        { secondsDecimalDigits: 0 }
+      )} | S: ${prettyMilliseconds(floorData.fastestTimeS, { secondsDecimalDigits: 0 })}`
     );
   }
 }

@@ -1,32 +1,40 @@
-import DiscordCommand from "../../private/commands/DiscordCommand.ts";
-import DiscordCommandDataBuilder from "../../private/commands/DiscordCommandDataBuilder.ts";
-import HypixelDiscordChatBridgeError from "../../../private/error.ts";
-import { ChannelNames, type ChatInputCommandInteractionWithGuild, CommandFlags, CommandPermission, isChannelName } from "../../../types/discord.ts";
-import { SuccessEmbed } from "../../private/EmbedHelper.ts";
-import { titleCase } from "../../../utils/stringUtils.ts";
+import DiscordCommand from '../../private/commands/DiscordCommand.ts';
+import DiscordCommandDataBuilder from '../../private/commands/DiscordCommandDataBuilder.ts';
+import HypixelDiscordChatBridgeError from '../../../private/error.ts';
+import {
+  ChannelNames,
+  type ChatInputCommandInteractionWithGuild,
+  CommandFlags,
+  CommandPermission,
+  isChannelName
+} from '../../../types/discord.ts';
+import { SuccessEmbed } from '../../private/EmbedHelper.ts';
+import { titleCase } from '../../../utils/stringUtils.ts';
 
 class SendToChannelCommand extends DiscordCommand {
   override readonly data = new DiscordCommandDataBuilder()
-    .setName("send-to-channel")
-    .setDescription("Force Sending to a channel")
-    .addStringOption((option) => option.setName("message").setDescription("The message to send").setRequired(true))
+    .setName('send-to-channel')
+    .setDescription('Force Sending to a channel')
+    .addStringOption((option) => option.setName('message').setDescription('The message to send').setRequired(true))
     .addStringOption((option) =>
       option
-        .setName("channel")
-        .setDescription("The channel to send to")
+        .setName('channel')
+        .setDescription('The channel to send to')
         .setRequired(true)
-        .setChoices(ChannelNames.map((channel) => ({ name: titleCase(channel.replaceAll("-", "_")), value: channel })))
+        .setChoices(ChannelNames.map((channel) => ({ name: titleCase(channel.replaceAll('-', '_')), value: channel })))
     );
   override readonly flags = [CommandFlags.DebugCommand];
   override readonly permission = CommandPermission.Admin;
 
   override async execute(interaction: ChatInputCommandInteractionWithGuild) {
-    const channelName = interaction.options.getString("channel", true);
-    if (!isChannelName(channelName)) throw new HypixelDiscordChatBridgeError("Invalid channel name");
+    const channelName = interaction.options.getString('channel', true);
+    if (!isChannelName(channelName)) throw new HypixelDiscordChatBridgeError('Invalid channel name');
     const channel = await this.discord.getChannel(channelName);
     if (!channel) throw new HypixelDiscordChatBridgeError(`Channel "${channelName} is disabled!`);
-    const message = await channel.send({ content: interaction.options.getString("message", true) });
-    await interaction.followUp({ embeds: [new SuccessEmbed().setDescription(`Message sent in \`${channelName}\`\n${message.url}`)] });
+    const message = await channel.send({ content: interaction.options.getString('message', true) });
+    await interaction.followUp({
+      embeds: [new SuccessEmbed().setDescription(`Message sent in \`${channelName}\`\n${message.url}`)]
+    });
   }
 }
 

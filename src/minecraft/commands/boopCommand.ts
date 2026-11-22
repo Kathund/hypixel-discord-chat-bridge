@@ -1,16 +1,16 @@
-import HypixelDiscordChatBridgeError from "../../private/error.ts";
-import MinecraftCommand from "../private/commands/MinecraftCommand.ts";
-import MinecraftCommandData from "../private/commands/MinecraftCommandData.ts";
-import MinecraftCommandDataOption from "../private/commands/MinecraftCommandDataOption.ts";
-import { delay } from "../../utils/miscUtils.ts";
+import HypixelDiscordChatBridgeError from '../../private/error.ts';
+import MinecraftCommand from '../private/commands/MinecraftCommand.ts';
+import MinecraftCommandData from '../private/commands/MinecraftCommandData.ts';
+import MinecraftCommandDataOption from '../private/commands/MinecraftCommandDataOption.ts';
+import { delay } from '../../utils/miscUtils.ts';
 
 class BoopCommand extends MinecraftCommand {
   override readonly data = new MinecraftCommandData()
-    .setName("boop")
-    .setDescription("Boop someone!")
-    .setAliases(["bp"])
-    .setOptions([new MinecraftCommandDataOption().setName("username").setRequired(true)])
-    .setAuthors(["Zickles"]);
+    .setName('boop')
+    .setDescription('Boop someone!')
+    .setAliases(['bp'])
+    .setOptions([new MinecraftCommandDataOption().setName('username').setRequired(true)])
+    .setAuthors(['Zickles']);
   private isOnCooldown: boolean = false;
 
   override async execute(player: string, message: string) {

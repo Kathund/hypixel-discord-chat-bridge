@@ -1,8 +1,8 @@
 # Hypixel Discord Chat Bridge
 
-A two-way chat bridge between [Hypixel](https://hypixel.net/) guild chat and a [Discord](https://discord.com/) channel. The application utilizes
-[discord.js v14](https://github.com/discordjs/discord.js) for communicating with Discord, and [mineflayer](https://github.com/PrismarineJS/mineflayer) for communicating
-with Hypixel.
+A two-way chat bridge between [Hypixel](https://hypixel.net/) guild chat and a [Discord](https://discord.com/) channel.
+The application utilizes [discord.js v14](https://github.com/discordjs/discord.js) for communicating with Discord, and
+[mineflayer](https://github.com/PrismarineJS/mineflayer) for communicating with Hypixel.
 
 <!-- prettier-ignore -->
 > [!WARNING]
@@ -20,8 +20,8 @@ with Hypixel.
 - [Frequently Asked Questions](/docs/FrequentlyAskedQuestions.md)
 - [Installation](/docs/Installation.md)
 
-If you found this project helpful or interesting, please consider giving it a star. It helps other developers find the project and shows your appreciation for the work
-that went into it. Thank you!
+If you found this project helpful or interesting, please consider giving it a star. It helps other developers find the
+project and shows your appreciation for the work that went into it. Thank you!
 
 ## Credits
 
@@ -35,7 +35,8 @@ that went into it. Thank you!
 
 ## Fork
 
-This is a fork of [DuckySoLucky's hypixel-discord-chat-bridge](https://github.com/DuckySoLucky/hypixel-discord-chat-bridge). A lot of the core bridge components are
-straight 1 to 1 recreations or improved on recreations
+This is a fork of
+[DuckySoLucky's hypixel-discord-chat-bridge](https://github.com/DuckySoLucky/hypixel-discord-chat-bridge). A lot of the
+core bridge components are straight 1 to 1 recreations or improved on recreations
 
 This project wouldn't be possible possible without DuckySoLucky's code

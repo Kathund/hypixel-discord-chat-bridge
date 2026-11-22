@@ -1,36 +1,42 @@
-import DiscordCommand from "../../private/commands/DiscordCommand.ts";
-import DiscordCommandDataBuilder from "../../private/commands/DiscordCommandDataBuilder.ts";
-import EmbedHelper from "../../private/EmbedHelper.ts";
-import HypixelDiscordChatBridgeError from "../../../private/error.ts";
-import ms, { type StringValue } from "ms";
-import { type ChatInputCommandInteractionWithGuild, CommandFlags, type DiscordManagerWithBot } from "../../../types/discord.ts";
-import { MinecraftRequestTimeoutError } from "../../../minecraft/MinecraftRequestBroker.ts";
+import DiscordCommand from '../../private/commands/DiscordCommand.ts';
+import DiscordCommandDataBuilder from '../../private/commands/DiscordCommandDataBuilder.ts';
+import EmbedHelper from '../../private/EmbedHelper.ts';
+import HypixelDiscordChatBridgeError from '../../../private/error.ts';
+import ms, { type StringValue } from 'ms';
+import {
+  type ChatInputCommandInteractionWithGuild,
+  CommandFlags,
+  type DiscordManagerWithBot
+} from '../../../types/discord.ts';
+import { MinecraftRequestTimeoutError } from '../../../minecraft/MinecraftRequestBroker.ts';
 
 class GuildTopCommand extends DiscordCommand<DiscordManagerWithBot> {
   override readonly data = new DiscordCommandDataBuilder()
-    .setName("guildtop")
-    .setDescription("Top 10 members with the most guild experience.")
+    .setName('guildtop')
+    .setDescription('Top 10 members with the most guild experience.')
     .addStringOption((option) =>
       option
-        .setName("time")
-        .setDescription("Days ago")
-        .addChoices(...Array.from({ length: 14 }, (_, index) => ({ name: `${index + 1} Day ago`, value: (index + 1).toString() })))
+        .setName('time')
+        .setDescription('Days ago')
+        .addChoices(
+          ...Array.from({ length: 14 }, (_, index) => ({ name: `${index + 1} Day ago`, value: (index + 1).toString() }))
+        )
     )
-    .setAuthors(["DuckySoLucky"]);
+    .setAuthors(['DuckySoLucky']);
   override readonly flags = [CommandFlags.RequiresMinecraftBot];
 
   async getMessages(time: string | null): Promise<string[]> {
     const cachedMessages: string[] = [];
     const response = this.discord.application.minecraft.requestBroker.request({
-      description: "Hypixel guild experience leaderboard",
+      description: 'Hypixel guild experience leaderboard',
       timeoutMs: ms(this.discord.application.config.minecraft.commands.timeout as StringValue),
       matches: (message) => {
         cachedMessages.push(message);
-        return message.startsWith("10.") && message.endsWith("Guild Experience");
+        return message.startsWith('10.') && message.endsWith('Guild Experience');
       },
       map: () => cachedMessages
     });
-    this.discord.application.minecraft.bot.chat(`/g top ${time || ""}`);
+    this.discord.application.minecraft.bot.chat(`/g top ${time || ''}`);
     try {
       return await response;
     } catch (error: unknown) {
@@ -40,18 +46,18 @@ class GuildTopCommand extends DiscordCommand<DiscordManagerWithBot> {
   }
 
   override async execute(interaction: ChatInputCommandInteractionWithGuild) {
-    const messages = await this.getMessages(interaction.options.getString("time"));
-    if (messages.length === 0) throw new HypixelDiscordChatBridgeError("Could not retrieve the top 10 guild members.");
-    const trimmedMessages = messages.map((message) => message.trim()).filter((message) => message.includes("."));
+    const messages = await this.getMessages(interaction.options.getString('time'));
+    if (messages.length === 0) throw new HypixelDiscordChatBridgeError('Could not retrieve the top 10 guild members.');
+    const trimmedMessages = messages.map((message) => message.trim()).filter((message) => message.includes('.'));
 
     const description = trimmedMessages
       .map((message) => {
-        const parts = message.split(" ");
-        if (parts.length < 4) return "";
+        const parts = message.split(' ');
+        if (parts.length < 4) return '';
 
         const [position, mightBeName, tempName, tempGuildExperience] = parts;
 
-        const cleanedExp = (tempGuildExperience || "").replace(/`/g, "");
+        const cleanedExp = (tempGuildExperience || '').replace(/`/g, '');
         const isExperience = !isNaN(parseInt(cleanedExp, 10));
 
         const name = isExperience ? tempName : mightBeName;
@@ -59,10 +65,17 @@ class GuildTopCommand extends DiscordCommand<DiscordManagerWithBot> {
 
         return `\`${position}\` **${name}** - \`${guildExperience}\` Guild Experience\n`;
       })
-      .join("");
+      .join('');
 
-    if (!description) throw new HypixelDiscordChatBridgeError("Failed to parse the top 10 guild members data.");
-    await interaction.followUp({ embeds: [new EmbedHelper().setAuthor({ name: "Top 10 Guild Members" }).setDescription(description).setDevFooter("DuckySoLucky")] });
+    if (!description) throw new HypixelDiscordChatBridgeError('Failed to parse the top 10 guild members data.');
+    await interaction.followUp({
+      embeds: [
+        new EmbedHelper()
+          .setAuthor({ name: 'Top 10 Guild Members' })
+          .setDescription(description)
+          .setDevFooter('DuckySoLucky')
+      ]
+    });
   }
 }
 

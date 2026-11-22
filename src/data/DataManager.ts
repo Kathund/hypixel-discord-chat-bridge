@@ -1,9 +1,9 @@
-import BlacklistManager from "./blacklist/BlacklistManager.ts";
-import InactivityManager from "./inactivity/InactivityManager.ts";
-import LinkedManager from "./linked/LinkedManager.ts";
-import { mkdir } from "node:fs/promises";
-import type Application from "../Application.ts";
-import type { Lifecycle } from "../core/Lifecycle.ts";
+import BlacklistManager from './blacklist/BlacklistManager.ts';
+import InactivityManager from './inactivity/InactivityManager.ts';
+import LinkedManager from './linked/LinkedManager.ts';
+import { mkdir } from 'node:fs/promises';
+import type Application from '../Application.ts';
+import type { Lifecycle } from '../core/Lifecycle.ts';
 
 class DataManager implements Lifecycle {
   readonly blacklist: BlacklistManager;
@@ -16,7 +16,7 @@ class DataManager implements Lifecycle {
   }
 
   async start(): Promise<void> {
-    await mkdir("./data/", { recursive: true });
+    await mkdir('./data/', { recursive: true });
     await Promise.all([this.blacklist.start(), this.inactivity.start(), this.linked.start()]);
   }
 

@@ -1,7 +1,7 @@
-import BasicScript from "../src/scripts/BasicScript.ts";
-import assert from "node:assert/strict";
-import test from "node:test";
-import type ScriptManager from "../src/scripts/ScriptsManager.ts";
+import BasicScript from '../src/scripts/BasicScript.ts';
+import assert from 'node:assert/strict';
+import test from 'node:test';
+import type ScriptManager from '../src/scripts/ScriptsManager.ts';
 
 class TestScript extends BasicScript {
   executions: number = 0;
@@ -31,8 +31,12 @@ test.after(() => {
   scriptConsole.scripts = originalScriptsLogger;
 });
 
-test("disabled scripts create no scheduled execution", async () => {
-  const script = new TestScript(scripts, { id: "disabled", enabled: false, schedule: { type: "interval", milliseconds: 1 } });
+test('disabled scripts create no scheduled execution', async () => {
+  const script = new TestScript(scripts, {
+    id: 'disabled',
+    enabled: false,
+    schedule: { type: 'interval', milliseconds: 1 }
+  });
 
   await script.start();
   await new Promise((resolve) => setTimeout(resolve, 10));
@@ -41,8 +45,12 @@ test("disabled scripts create no scheduled execution", async () => {
   assert.equal(script.executions, 0);
 });
 
-test("scripts skip overlapping executions by default", async () => {
-  const script = new TestScript(scripts, { id: "overlap", enabled: true, schedule: { type: "interval", milliseconds: 60_000 } });
+test('scripts skip overlapping executions by default', async () => {
+  const script = new TestScript(scripts, {
+    id: 'overlap',
+    enabled: true,
+    schedule: { type: 'interval', milliseconds: 60_000 }
+  });
   const first = script.runNow();
   await new Promise((resolve) => setTimeout(resolve, 0));
   await script.runNow();
@@ -53,7 +61,7 @@ test("scripts skip overlapping executions by default", async () => {
   await script.stop();
 });
 
-test("stopping a script cancels its active interval", async () => {
+test('stopping a script cancels its active interval', async () => {
   class ImmediateScript extends TestScript {
     override execute(): Promise<void> {
       this.executions++;
@@ -61,7 +69,11 @@ test("stopping a script cancels its active interval", async () => {
     }
   }
 
-  const script = new ImmediateScript(scripts, { id: "interval", enabled: true, schedule: { type: "interval", milliseconds: 5 } });
+  const script = new ImmediateScript(scripts, {
+    id: 'interval',
+    enabled: true,
+    schedule: { type: 'interval', milliseconds: 5 }
+  });
   await script.start();
   await new Promise((resolve) => setTimeout(resolve, 20));
   await script.stop();

@@ -1,52 +1,60 @@
-import MinecraftCommand from "../private/commands/MinecraftCommand.ts";
-import MinecraftCommandData from "../private/commands/MinecraftCommandData.ts";
-import MinecraftCommandDataOption from "../private/commands/MinecraftCommandDataOption.ts";
-import { type BedWarsInternalName, type BedWarsModeName, isBedWarsModeName } from "../../types/minecraft.ts";
-import { formatNumber, titleCase } from "../../utils/stringUtils.ts";
-import { getPlayer } from "../../utils/hypixelUtils.ts";
-import type { BedWarsMode, Player } from "hypixel-api-reborn";
+import MinecraftCommand from '../private/commands/MinecraftCommand.ts';
+import MinecraftCommandData from '../private/commands/MinecraftCommandData.ts';
+import MinecraftCommandDataOption from '../private/commands/MinecraftCommandDataOption.ts';
+import { type BedWarsInternalName, type BedWarsModeName, isBedWarsModeName } from '../../types/minecraft.ts';
+import { formatNumber, titleCase } from '../../utils/stringUtils.ts';
+import { getPlayer } from '../../utils/hypixelUtils.ts';
+import type { BedWarsMode, Player } from 'hypixel-api-reborn';
 
 class BedwarsCommand extends MinecraftCommand {
   override readonly data = new MinecraftCommandData()
-    .setName("bedwars")
-    .setDescription("BedWars stats of specified user.")
-    .setAliases(["bw", "bws"])
-    .setOptions([new MinecraftCommandDataOption().setName("username").setDescription("Minecraft username")])
-    .setAuthors(["DuckySoLucky"]);
+    .setName('bedwars')
+    .setDescription('BedWars stats of specified user.')
+    .setAliases(['bw', 'bws'])
+    .setOptions([new MinecraftCommandDataOption().setName('username').setDescription('Minecraft username')])
+    .setAuthors(['DuckySoLucky']);
 
   convertMode(mode: BedWarsModeName): BedWarsInternalName {
     switch (mode) {
-      case "solo":
-        return "eightOne";
-      case "doubles":
-        return "eightTwo";
-      case "threes":
-        return "fourThree";
-      case "fours":
-        return "fourFour";
-      case "4v4":
-        return "twoFour";
+      case 'solo':
+        return 'eightOne';
+      case 'doubles':
+        return 'eightTwo';
+      case 'threes':
+        return 'fourThree';
+      case 'fours':
+        return 'fourFour';
+      case '4v4':
+        return 'twoFour';
       default:
-        return "eightOne";
+        return 'eightOne';
     }
   }
 
   getStats(hypixelPlayer: Player, mode: BedWarsModeName) {
     let stats: BedWarsMode;
-    if (mode === "overall") stats = hypixelPlayer.stats.BedWars;
+    if (mode === 'overall') stats = hypixelPlayer.stats.BedWars;
     else stats = hypixelPlayer.stats.BedWars[this.convertMode(mode)];
     const { finals, wins, winstreak, winLossRatio } = stats;
     const { broken, ratio } = stats.beds;
-    return { finalKills: finals.total.kills, FKDR: finals.total.ratio, wins, winstreak, broken, BLRatio: ratio, winLossRatio };
+    return {
+      finalKills: finals.total.kills,
+      FKDR: finals.total.ratio,
+      wins,
+      winstreak,
+      broken,
+      BLRatio: ratio,
+      winLossRatio
+    };
   }
 
   override async execute(player: string, message: string) {
-    const msg = this.getArgs(message).map((arg) => arg.replaceAll("/", ""));
+    const msg = this.getArgs(message).map((arg) => arg.replaceAll('/', ''));
 
     const arg0 = msg[0];
     const arg1 = msg[1];
 
-    let mode: BedWarsModeName = "overall";
+    let mode: BedWarsModeName = 'overall';
 
     if (arg0 && isBedWarsModeName(arg0)) {
       mode = arg0;

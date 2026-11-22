@@ -11,13 +11,13 @@ import {
   type GuildMember,
   type ModalSubmitInteraction,
   StringSelectMenuInteraction
-} from "discord.js";
-import type DiscordManager from "../discord/DiscordManager.ts";
-import type { Config, ConfigDiscordEmbedsColors } from "./config.ts";
-import type { DevData, DevName } from "./application.ts";
-import type { MinecraftManagerWithBot } from "./minecraft.ts";
+} from 'discord.js';
+import type DiscordManager from '../discord/DiscordManager.ts';
+import type { Config, ConfigDiscordEmbedsColors } from './config.ts';
+import type { DevData, DevName } from './application.ts';
+import type { MinecraftManagerWithBot } from './minecraft.ts';
 
-declare module "discord.js" {
+declare module 'discord.js' {
   export interface Client {
     config: Config;
     discordManager: DiscordManager;
@@ -54,9 +54,16 @@ export enum ButtonResponse {
   Update
 }
 
-export const GenericChannelNames = ["Guild", "Officer", "Debug"] as const;
+export const GenericChannelNames = ['Guild', 'Officer', 'Debug'] as const;
 export type GenericChannelName = (typeof GenericChannelNames)[number];
-export const LoggerChannelNames = ["Logger-Guild", "Logger-Event", "Logger-Error", "Logger-Blacklist", "Logger-Scripts", "Logger-Inactivity"] as const;
+export const LoggerChannelNames = [
+  'Logger-Guild',
+  'Logger-Event',
+  'Logger-Error',
+  'Logger-Blacklist',
+  'Logger-Scripts',
+  'Logger-Inactivity'
+] as const;
 export type LoggerChannelName = (typeof LoggerChannelNames)[number];
 export const ChannelNames = [...GenericChannelNames, ...LoggerChannelNames];
 export type ChannelName = (typeof ChannelNames)[number];
@@ -129,7 +136,7 @@ export enum GuildManagementAction {
 
 export type GuildManagementActionResponse = { action: GuildManagementAction; message: string | null };
 
-export type GuildManagementCommand = "demote" | "invite" | "kick" | "mute" | "promote" | "setrank" | "unmute";
+export type GuildManagementCommand = 'demote' | 'invite' | 'kick' | 'mute' | 'promote' | 'setrank' | 'unmute';
 
 export interface GuildManagementRequest {
   readonly action: GuildManagementCommand;
@@ -162,7 +169,7 @@ export type InteractionsWithGuild =
   | ModalSubmitInteractionWithGuild
   | StringSelectMenuInteractionWithGuild;
 
-export const EmbedStyleNames = ["Generic", "Warning", "Error", "Success"] as const;
+export const EmbedStyleNames = ['Generic', 'Warning', 'Error', 'Success'] as const;
 export type EmbedStyleName = (typeof EmbedStyleNames)[number];
 export interface EmbedStyleData {
   title?: string;

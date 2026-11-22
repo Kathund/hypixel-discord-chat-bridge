@@ -1,12 +1,12 @@
-import Application from "../../Application.ts";
-import ExtensionRegistry from "../../extensions/ExtensionRegistry.ts";
-import loadExtensionModules from "../../extensions/moduleLoader.ts";
-import { Collection } from "discord.js";
-import { formatError } from "../../utils/miscUtils.ts";
-import { toError } from "../../utils/asyncUtils.ts";
-import type MinecraftCommand from "../private/commands/MinecraftCommand.ts";
-import type MinecraftManager from "../MinecraftManager.ts";
-import type { SoopyCommandData, SoopyCommandListResponse, SoopyCommandResponse } from "../../types/minecraft.ts";
+import Application from '../../Application.ts';
+import ExtensionRegistry from '../../extensions/ExtensionRegistry.ts';
+import loadExtensionModules from '../../extensions/moduleLoader.ts';
+import { Collection } from 'discord.js';
+import { formatError } from '../../utils/miscUtils.ts';
+import { toError } from '../../utils/asyncUtils.ts';
+import type MinecraftCommand from '../private/commands/MinecraftCommand.ts';
+import type MinecraftManager from '../MinecraftManager.ts';
+import type { SoopyCommandData, SoopyCommandListResponse, SoopyCommandResponse } from '../../types/minecraft.ts';
 
 class CommandHandler {
   readonly #commands = new ExtensionRegistry<MinecraftCommand<MinecraftManager>>();
@@ -18,7 +18,9 @@ class CommandHandler {
   }
 
   findSoopyCommand(name: string): SoopyCommandData | undefined {
-    return this.#soopyCommands.get(name) ?? this.#soopyCommands.find((cmd) => cmd.aliases && cmd.aliases.includes(name));
+    return (
+      this.#soopyCommands.get(name) ?? this.#soopyCommands.find((cmd) => cmd.aliases && cmd.aliases.includes(name))
+    );
   }
 
   async handle(player: string, message: string, officer: boolean) {
@@ -32,14 +34,23 @@ class CommandHandler {
 
     if (message.startsWith(this.minecraft.application.config.minecraft.commands.normal.prefix)) {
       if (this.minecraft.application.config.minecraft.commands.normal.enabled === false) return;
-      const args = message.slice(this.minecraft.application.config.minecraft.commands.normal.prefix.length).trim().split(/ +/);
-      const commandName = (args.shift() ?? "").toLowerCase();
+      const args = message
+        .slice(this.minecraft.application.config.minecraft.commands.normal.prefix.length)
+        .trim()
+        .split(/ +/);
+      const commandName = (args.shift() ?? '').toLowerCase();
       const command = this.findNormalCommand(commandName);
       if (command === undefined) return;
       console.minecraft(`${player} - [${command.data.name}] ${message}`);
       const abortController = new AbortController();
       try {
-        await command.run({ player, rawMessage: message, args, channel: officer ? "officer" : "guild", signal: abortController.signal });
+        await command.run({
+          player,
+          rawMessage: message,
+          args,
+          channel: officer ? 'officer' : 'guild',
+          signal: abortController.signal
+        });
       } catch (error) {
         await this.minecraft.application.logError(toError(error));
         if (!(error instanceof Error)) return;
@@ -53,13 +64,13 @@ class CommandHandler {
         return;
       }
 
-      const command = message.slice(1).split(" ")[0];
+      const command = message.slice(1).split(' ')[0];
       if (!command) return;
-      if (isNaN(parseInt(command.replace(/[^-()\d/*+.]/g, ""))) === false) return;
+      if (isNaN(parseInt(command.replace(/[^-()\d/*+.]/g, ''))) === false) return;
       const commandData = this.findSoopyCommand(command);
       if (!commandData) return;
 
-      const chat = officer ? "oc" : "gc";
+      const chat = officer ? 'oc' : 'gc';
       console.minecraft(`${player} - [${command}] ${message}`);
       await this.handleSoopyCommand(chat, player, commandData);
     }
@@ -68,24 +79,33 @@ class CommandHandler {
   private async handleSoopyCommand(chat: string, player: string, commandData: SoopyCommandData) {
     if (!this.minecraft.isBotOnline()) return;
     try {
-      const cached = Application.cache.get<SoopyCommandResponse>(`minecraft:commands:soopy:${commandData.command}:${player}`);
+      const cached = Application.cache.get<SoopyCommandResponse>(
+        `minecraft:commands:soopy:${commandData.command}:${player}`
+      );
       if (cached) return this.minecraft.bot.chat(`/${chat} [SOOPY V2] ${cached.raw}`);
       const response = await Application.request<SoopyCommandResponse>(
-        encodeURI(`${this.minecraft.application.config.API.soopy.baseURL}/guildBot/runCommand?user=${player}&cmd=${commandData.command}`)
+        encodeURI(
+          `${this.minecraft.application.config.API.soopy.baseURL}/guildBot/runCommand?user=${player}&cmd=${commandData.command}`
+        )
       );
-      if (!response.data.success) return this.minecraft.bot.chat(`/${chat} [SOOPY V2] An error occured while running the command`);
+      if (!response.data.success) {
+        return this.minecraft.bot.chat(`/${chat} [SOOPY V2] An error occured while running the command`);
+      }
       Application.cache.set(`minecraft:commands:soopy:${commandData.command}:${player}`, response.data);
       return this.minecraft.bot.chat(`/${chat} [SOOPY V2] ${response.data.raw}`);
     } catch (error) {
       await this.minecraft.application.logError(toError(error));
       if (!(error instanceof Error)) return;
-      this.minecraft.bot.chat(`/${chat} [SOOPY V2] ${error.cause ?? error.message ?? "Unknown error"}`);
+      this.minecraft.bot.chat(`/${chat} [SOOPY V2] ${error.cause ?? error.message ?? 'Unknown error'}`);
     }
   }
 
   async loadCommands(silent: boolean = false): Promise<void> {
     this.#commands.clear();
-    const modules = await loadExtensionModules<MinecraftCommand<MinecraftManager>, MinecraftManager>(new URL("../commands/", import.meta.url), this.minecraft);
+    const modules = await loadExtensionModules<MinecraftCommand<MinecraftManager>, MinecraftManager>(
+      new URL('../commands/', import.meta.url),
+      this.minecraft
+    );
     for (const { extension: command, source } of modules) {
       if (!command.data.name) continue;
       this.#commands.register(command.data.name, command, command.data.aliases, source);
@@ -95,8 +115,10 @@ class CommandHandler {
 
   async loadSoopyCommands(silent: boolean = false): Promise<void> {
     this.#soopyCommands.clear();
-    const commands = await Application.request<SoopyCommandListResponse>("https://soopy.dev/commands/list");
-    commands.data.defaultCommands.filter((command) => !command.modOnly).forEach((command) => this.#soopyCommands.set(command.command, command));
+    const commands = await Application.request<SoopyCommandListResponse>('https://soopy.dev/commands/list');
+    commands.data.defaultCommands
+      .filter((command) => !command.modOnly)
+      .forEach((command) => this.#soopyCommands.set(command.command, command));
     if (!silent) console.minecraft(`Successfully loaded ${this.#soopyCommands.size} soopy command(s).`);
   }
 
@@ -109,7 +131,7 @@ class CommandHandler {
     return this.#commands.values();
   }
 
-  registerCommand(command: MinecraftCommand<MinecraftManager>, source: string = "programmatic"): void {
+  registerCommand(command: MinecraftCommand<MinecraftManager>, source: string = 'programmatic'): void {
     this.#commands.register(command.data.name, command, command.data.aliases, source);
   }
 }

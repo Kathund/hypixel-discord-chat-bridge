@@ -1,10 +1,17 @@
-import zod from "zod";
-import { Config } from "../../src/types/config.ts";
-import { addTable, getMetadataDescription, getObjectShape, initMarkdownFile, saveMarkdownFile, unwrapSchema } from "../utils.ts";
+import zod from 'zod';
+import { Config } from '../../src/types/config.ts';
+import {
+  addTable,
+  getMetadataDescription,
+  getObjectShape,
+  initMarkdownFile,
+  saveMarkdownFile,
+  unwrapSchema
+} from '../utils.ts';
 
 // TODO: One day I want to remove the use of `any` but i'm not smart enough to do this at the moment
 
-const lines = await initMarkdownFile("docs/Configuration.md");
+const lines = await initMarkdownFile('docs/Configuration.md');
 
 function getTypeLabel(schema: any): string {
   const { schema: unwrapped, optional, nullable } = unwrapSchema(schema);
@@ -12,13 +19,13 @@ function getTypeLabel(schema: any): string {
   let type: string;
 
   if (unwrapped instanceof zod.ZodString || unwrapped instanceof zod.ZodURL) {
-    type = "string";
+    type = 'string';
   } else if (unwrapped instanceof zod.ZodNumber) {
-    type = "number";
+    type = 'number';
   } else if (unwrapped instanceof zod.ZodBoolean) {
-    type = "boolean";
+    type = 'boolean';
   } else if (unwrapped instanceof zod.ZodEnum) {
-    type = `enum(${Object.values(unwrapped.enum).join(", ")})`;
+    type = `enum(${Object.values(unwrapped.enum).join(', ')})`;
   } else if (unwrapped instanceof zod.ZodLiteral) {
     type = `literal(${JSON.stringify(unwrapped.value)})`;
   } else if (unwrapped instanceof zod.ZodArray) {
@@ -26,26 +33,26 @@ function getTypeLabel(schema: any): string {
   } else if (unwrapped instanceof zod.ZodRecord) {
     type = `record<string, ${getTypeLabel(unwrapped.valueType)}>`;
   } else if (unwrapped instanceof zod.ZodUnion) {
-    type = unwrapped.options.map(getTypeLabel).join(" OR ");
+    type = unwrapped.options.map(getTypeLabel).join(' OR ');
   } else if (unwrapped instanceof zod.ZodObject) {
-    type = "object";
+    type = 'object';
   } else if (unwrapped instanceof zod.ZodAny) {
-    type = "any";
+    type = 'any';
   } else if (unwrapped instanceof zod.ZodUnknown) {
-    type = "UNKNOWN";
+    type = 'UNKNOWN';
   } else {
-    type = "UNKNOWN";
+    type = 'UNKNOWN';
   }
 
-  if (nullable) type += " OR null";
-  if (optional) type += " OR undefined";
+  if (nullable) type += ' OR null';
+  if (optional) type += ' OR undefined';
   return type;
 }
 
 function getSectionHeading(path: string[]): string {
-  if (path.length === 0) return "# <Root>";
+  if (path.length === 0) return '# <Root>';
   const headingLevel = Math.min(path.length + 1, 6);
-  return `${"#".repeat(headingLevel)} ${path[path.length - 1]}`;
+  return `${'#'.repeat(headingLevel)} ${path[path.length - 1]}`;
 }
 
 function renderSchemaSection(schema: any, path: string[], lines: string[]): void {
@@ -53,15 +60,19 @@ function renderSchemaSection(schema: any, path: string[], lines: string[]): void
   if (entries.length === 0) return;
 
   lines.push(getSectionHeading(path));
-  lines.push("");
+  lines.push('');
   addTable(
     [
-      ["Key", "Type", "Description"],
-      ...entries.map(([key, fieldSchema]) => [`\`${key}\``, `\`${getTypeLabel(fieldSchema)}\``, getMetadataDescription(fieldSchema).description])
+      ['Key', 'Type', 'Description'],
+      ...entries.map(([key, fieldSchema]) => [
+        `\`${key}\``,
+        `\`${getTypeLabel(fieldSchema)}\``,
+        getMetadataDescription(fieldSchema).description
+      ])
     ],
     lines
   );
-  lines.push("");
+  lines.push('');
 
   for (const [key, fieldSchema] of entries) {
     const { schema: unwrapped } = unwrapSchema(fieldSchema);
@@ -71,4 +82,4 @@ function renderSchemaSection(schema: any, path: string[], lines: string[]): void
 
 renderSchemaSection(Config, [], lines);
 
-await saveMarkdownFile("docs/Configuration.md", lines);
+await saveMarkdownFile('docs/Configuration.md', lines);

@@ -1,14 +1,19 @@
-import DiscordModal from "../../private/modals/DiscordModal.ts";
-import DiscordModalData from "../../private/modals/DiscordModalData.ts";
-import GexpCheckCommand from "../../commands/verification/inactivity/gexpCheckCommand.ts";
-import HypixelDiscordChatBridgeError from "../../../private/error.ts";
-import { ActionRowBuilder, AttachmentBuilder, ButtonBuilder, ButtonStyle } from "discord.js";
-import { BasicInteractionResponse, CommandFlags, CommandPermission, type ModalSubmitInteractionWithGuild } from "../../../types/discord.ts";
-import { SuccessEmbed } from "../../private/EmbedHelper.ts";
-import { replaceVariables } from "../../../utils/stringUtils.ts";
+import DiscordModal from '../../private/modals/DiscordModal.ts';
+import DiscordModalData from '../../private/modals/DiscordModalData.ts';
+import GexpCheckCommand from '../../commands/verification/inactivity/gexpCheckCommand.ts';
+import HypixelDiscordChatBridgeError from '../../../private/error.ts';
+import { ActionRowBuilder, AttachmentBuilder, ButtonBuilder, ButtonStyle } from 'discord.js';
+import {
+  BasicInteractionResponse,
+  CommandFlags,
+  CommandPermission,
+  type ModalSubmitInteractionWithGuild
+} from '../../../types/discord.ts';
+import { SuccessEmbed } from '../../private/EmbedHelper.ts';
+import { replaceVariables } from '../../../utils/stringUtils.ts';
 
 class GexpCheckGenerateKickModal extends DiscordModal {
-  override readonly data = new DiscordModalData("gexpCheckGenerateKick");
+  override readonly data = new DiscordModalData('gexpCheckGenerateKick');
   override readonly response = BasicInteractionResponse.Ephemeral;
   override readonly flags = [CommandFlags.InactivityCommand, CommandFlags.VerificationCommand];
   override readonly permission = CommandPermission.Staff;
@@ -17,21 +22,24 @@ class GexpCheckGenerateKickModal extends DiscordModal {
     if (!interaction.message) return;
     const gexpCheckCommand = new GexpCheckCommand(this.discord);
     const options = GexpCheckCommand.getOptionsfromMessage(interaction.message);
-    if (!options) throw new HypixelDiscordChatBridgeError("Unable to find the requirement gexp");
+    if (!options) throw new HypixelDiscordChatBridgeError('Unable to find the requirement gexp');
     const { filtered } = await gexpCheckCommand.getUsers(options);
-    const reason = interaction.fields.getTextInputValue("gexpCheckGenerateKickReason");
+    const reason = interaction.fields.getTextInputValue('gexpCheckGenerateKickReason');
     const kickCommands = filtered.map(
       ({ username, member }) =>
         `/g kick ${username} ${replaceVariables(reason, { gexp: member.weeklyExperience.toLocaleString(), requirement: options.requirement.toLocaleString(), username })}`
     );
     await interaction.followUp({
-      embeds: [new SuccessEmbed().setDescription("Attached a full list of kick commands for the selected users")],
+      embeds: [new SuccessEmbed().setDescription('Attached a full list of kick commands for the selected users')],
       components: [
         new ActionRowBuilder<ButtonBuilder>().addComponents(
-          new ButtonBuilder().setLabel("Execute commands as bot").setCustomId("gexpCheckGenerateKickExecute").setStyle(ButtonStyle.Danger)
+          new ButtonBuilder()
+            .setLabel('Execute commands as bot')
+            .setCustomId('gexpCheckGenerateKickExecute')
+            .setStyle(ButtonStyle.Danger)
         )
       ],
-      files: [new AttachmentBuilder(Buffer.from(kickCommands.join("\n"), "utf-8"), { name: "commands.txt" })]
+      files: [new AttachmentBuilder(Buffer.from(kickCommands.join('\n'), 'utf-8'), { name: 'commands.txt' })]
     });
   }
 }

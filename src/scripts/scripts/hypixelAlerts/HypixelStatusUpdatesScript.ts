@@ -1,8 +1,8 @@
-import BasicScript from "../../BasicScript.ts";
-import Parser from "rss-parser";
-import { delay } from "../../../utils/miscUtils.ts";
-import { intervalSchedule } from "../../../types/scripts.ts";
-import type ScriptManager from "../../ScriptsManager.ts";
+import BasicScript from '../../BasicScript.ts';
+import Parser from 'rss-parser';
+import { delay } from '../../../utils/miscUtils.ts';
+import { intervalSchedule } from '../../../types/scripts.ts';
+import type ScriptManager from '../../ScriptsManager.ts';
 
 interface IncidentState {
   notified: boolean;
@@ -14,7 +14,7 @@ class HypixelStatusUpdatesScript extends BasicScript {
   private readonly parser = new Parser();
   constructor(scripts: ScriptManager) {
     super(scripts, {
-      id: "hypixelStatusUpdates",
+      id: 'hypixelStatusUpdates',
       enabled: scripts.application.config.minecraft.hypixelAlerts.statusUpdates.enabled,
       schedule: intervalSchedule(scripts.application.config.minecraft.hypixelAlerts.statusUpdates.interval)
     });
@@ -22,8 +22,10 @@ class HypixelStatusUpdatesScript extends BasicScript {
 
   override async execute() {
     if (!this.scripts.application.minecraft.isBotOnline()) return;
-    const { items: status } = await this.parser.parseURL("https://status.hypixel.net/history.rss");
-    const latestIncidents = status.filter(({ pubDate }) => pubDate !== undefined && new Date(pubDate).getTime() + 43200000 > Date.now());
+    const { items: status } = await this.parser.parseURL('https://status.hypixel.net/history.rss');
+    const latestIncidents = status.filter(
+      ({ pubDate }) => pubDate !== undefined && new Date(pubDate).getTime() + 43200000 > Date.now()
+    );
 
     for (const incident of latestIncidents) {
       const { title, link, contentSnippet } = incident;
@@ -37,7 +39,7 @@ class HypixelStatusUpdatesScript extends BasicScript {
       }
 
       const updates = JSON.stringify(contentSnippet)
-        .split("\\n")
+        .split('\\n')
         .filter((_, index) => index % 2 !== 0);
 
       for (const update of updates) {

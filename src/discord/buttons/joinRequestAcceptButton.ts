@@ -1,33 +1,40 @@
-import DiscordButton from "../private/buttons/DiscordButton.ts";
-import DiscordButtonData from "../private/buttons/DiscordButtonData.ts";
-import HypixelDiscordChatBridgeError from "../../private/error.ts";
-import { ActionRowBuilder, ButtonBuilder, ComponentType } from "discord.js";
-import { type ButtonInteractionWithGuild, CommandFlags, CommandPermission, type DiscordManagerWithBot } from "../../types/discord.ts";
-import { SuccessEmbed } from "../private/EmbedHelper.ts";
+import DiscordButton from '../private/buttons/DiscordButton.ts';
+import DiscordButtonData from '../private/buttons/DiscordButtonData.ts';
+import HypixelDiscordChatBridgeError from '../../private/error.ts';
+import { ActionRowBuilder, ButtonBuilder, ComponentType } from 'discord.js';
+import {
+  type ButtonInteractionWithGuild,
+  CommandFlags,
+  CommandPermission,
+  type DiscordManagerWithBot
+} from '../../types/discord.ts';
+import { SuccessEmbed } from '../private/EmbedHelper.ts';
 
 class JoinRequestAcceptButton extends DiscordButton<DiscordManagerWithBot> {
-  override readonly data = new DiscordButtonData("joinRequestAccept");
+  override readonly data = new DiscordButtonData('joinRequestAccept');
   override readonly flags = [CommandFlags.RequiresMinecraftBot];
   override readonly permission = CommandPermission.Staff;
 
   override async execute(interaction: ButtonInteractionWithGuild) {
     const username = this.getUsernameFromJoinRequest(interaction.message);
-    if (!username) throw new HypixelDiscordChatBridgeError("Unable to find username");
+    if (!username) throw new HypixelDiscordChatBridgeError('Unable to find username');
     this.discord.application.minecraft.bot.chat(`/g accept ${username}`);
-    await interaction.followUp({ embeds: [new SuccessEmbed().setDescription(`Successfully accepted \`${username}\` into the guild.`)] });
+    await interaction.followUp({
+      embeds: [new SuccessEmbed().setDescription(`Successfully accepted \`${username}\` into the guild.`)]
+    });
 
     const component = interaction.message.components[0];
     if (!component || component.type !== ComponentType.ActionRow) return;
     let found = false;
     const fixedButtons = component.components.flatMap((compontent) => {
       if (compontent.type !== ComponentType.Button) return [];
-      if (compontent.customId === "joinRequestAccept") found = true;
+      if (compontent.customId === 'joinRequestAccept') found = true;
       return [
         new ButtonBuilder()
           .setCustomId(compontent.customId!)
           .setLabel(compontent.label!)
           .setStyle(compontent.style)
-          .setDisabled(compontent.customId === "joinRequestAccept")
+          .setDisabled(compontent.customId === 'joinRequestAccept')
       ];
     });
     if (!found) return;

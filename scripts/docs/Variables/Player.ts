@@ -5,8 +5,8 @@ import {
   PlayerVariableStatsKeysGeneral,
   PlayerVariableStatsKeysSkyBlock,
   PlayerVariableStatsKeysSkyWars
-} from "../../../src/private/constants.ts";
-import { initMarkdownFile, saveMarkdownFile } from "../../utils.ts";
+} from '../../../src/private/constants.ts';
+import { initMarkdownFile, saveMarkdownFile } from '../../utils.ts';
 
 const variableGroups = {
   General: PlayerVariableStatsKeysGeneral,
@@ -16,15 +16,15 @@ const variableGroups = {
   SkyBlock: PlayerVariableStatsKeysSkyBlock
 };
 
-const lines: string[] = await initMarkdownFile("docs/Variables/Player.md");
+const lines: string[] = await initMarkdownFile('docs/Variables/Player.md');
 
 Object.entries(variableGroups).forEach(([title, items]) => {
   lines.push(`## ${title}`);
-  lines.push("");
+  lines.push('');
   items.forEach((item) => {
-    lines.push(`\`{${item}}\` - ${PlayerVariableStatsKeyDescriptionMap[item] ?? "No Description Provided"}`);
-    lines.push("");
+    lines.push(`\`{${item}}\` - ${PlayerVariableStatsKeyDescriptionMap[item] ?? 'No Description Provided'}`);
+    lines.push('');
   });
 });
 
-await saveMarkdownFile("docs/Variables/Player.md", lines);
+await saveMarkdownFile('docs/Variables/Player.md', lines);

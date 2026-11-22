@@ -1,6 +1,6 @@
-import type { ChannelName } from "./discord.ts";
-import type { ColorResolvable, Message } from "discord.js";
-import type { ConfigDiscordEmbedsColors } from "./config.ts";
+import type { ChannelName } from './discord.ts';
+import type { ColorResolvable, Message } from 'discord.js';
+import type { ConfigDiscordEmbedsColors } from './config.ts';
 
 export interface DiscordToMinecraftMessage {
   readonly channelId: string;
@@ -11,13 +11,13 @@ export interface DiscordToMinecraftMessage {
 }
 
 export interface MinecraftDebugMessage {
-  readonly chatType: "Debug";
+  readonly chatType: 'Debug';
   readonly fullMessage: string;
   readonly message: string;
 }
 
 export interface MinecraftChatMessage {
-  readonly chatType: "Guild" | "Officer";
+  readonly chatType: 'Guild' | 'Officer';
   readonly fullMessage: string;
   readonly username: string;
   readonly rank: string | null;
@@ -33,7 +33,7 @@ export interface PlayerToggleEvent {
   readonly username: string;
   readonly message: string;
   readonly color: ConfigDiscordEmbedsColors | ColorResolvable;
-  readonly chatType: "Guild";
+  readonly chatType: 'Guild';
 }
 
 export interface CleanEmbedEvent {
@@ -48,9 +48,9 @@ export interface HeadedEmbedEvent extends CleanEmbedEvent {
 }
 
 export interface BridgeEventMap {
-  readonly "discord-message": DiscordToMinecraftMessage;
-  readonly "minecraft-message": MinecraftToDiscordMessage;
-  readonly "player-toggle": PlayerToggleEvent;
-  readonly "clean-embed": CleanEmbedEvent;
-  readonly "headed-embed": HeadedEmbedEvent;
+  readonly 'discord-message': DiscordToMinecraftMessage;
+  readonly 'minecraft-message': MinecraftToDiscordMessage;
+  readonly 'player-toggle': PlayerToggleEvent;
+  readonly 'clean-embed': CleanEmbedEvent;
+  readonly 'headed-embed': HeadedEmbedEvent;
 }

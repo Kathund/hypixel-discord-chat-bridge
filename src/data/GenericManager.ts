@@ -1,11 +1,16 @@
-import HypixelDiscordChatBridgeError from "../private/error.ts";
-import { access, readFile, rename, writeFile } from "node:fs/promises";
-import type DataManager from "./DataManager.ts";
-import type GenericData from "./GenericData.ts";
-import type { Lifecycle } from "../core/Lifecycle.ts";
-import type { ZodType } from "zod";
+import HypixelDiscordChatBridgeError from '../private/error.ts';
+import { access, readFile, rename, writeFile } from 'node:fs/promises';
+import type DataManager from './DataManager.ts';
+import type GenericData from './GenericData.ts';
+import type { Lifecycle } from '../core/Lifecycle.ts';
+import type { ZodType } from 'zod';
 
-abstract class GenericManager<JSONData, Data, ParsedData extends GenericData<JSONData>, Manager = DataManager> implements Lifecycle {
+abstract class GenericManager<
+  JSONData,
+  Data,
+  ParsedData extends GenericData<JSONData>,
+  Manager = DataManager
+> implements Lifecycle {
   private initialized?: Promise<void>;
   private writeQueue: Promise<void> = Promise.resolve();
   constructor(
@@ -28,11 +33,17 @@ abstract class GenericManager<JSONData, Data, ParsedData extends GenericData<JSO
 
   protected async getFile(): Promise<Data> {
     await this.start();
-    const data = await readFile(this.filePath, "utf-8");
-    if (!data) throw new HypixelDiscordChatBridgeError(`The ${this.name} data file does not exist. Please contact an administrator.`);
+    const data = await readFile(this.filePath, 'utf-8');
+    if (!data) {
+      throw new HypixelDiscordChatBridgeError(
+        `The ${this.name} data file does not exist. Please contact an administrator.`
+      );
+    }
     const parsed: unknown = JSON.parse(data);
     const result = this.schema.safeParse(parsed);
-    if (!result.success) throw new HypixelDiscordChatBridgeError(`The ${this.name} data file is malformed: ${result.error.message}`);
+    if (!result.success) {
+      throw new HypixelDiscordChatBridgeError(`The ${this.name} data file is malformed: ${result.error.message}`);
+    }
     return result.data;
   }
 
@@ -84,7 +95,7 @@ abstract class GenericManager<JSONData, Data, ParsedData extends GenericData<JSO
 
   private async atomicWrite(data: Data): Promise<void> {
     const temporaryPath = `${this.filePath}.${process.pid}.${Date.now()}.tmp`;
-    await writeFile(temporaryPath, JSON.stringify(data, null, 2), "utf-8");
+    await writeFile(temporaryPath, JSON.stringify(data, null, 2), 'utf-8');
     await rename(temporaryPath, this.filePath);
   }
 }

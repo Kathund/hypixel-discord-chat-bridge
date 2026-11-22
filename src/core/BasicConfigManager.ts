@@ -1,11 +1,11 @@
-import HypixelDiscordChatBridgeError from "../private/error.ts";
-import ms from "ms";
-import { ConfigChangeType, type JsonObject, type JsonValue, type MigrationMap } from "../types/config.ts";
-import { deleteExpiredFiles, displayBigMessage, getNestedValue } from "../utils/miscUtils.ts";
-import { dirname } from "node:path";
-import { mkdir, readFile, writeFile } from "node:fs/promises";
-import { replaceVariables } from "../utils/stringUtils.ts";
-import type { ZodType } from "zod";
+import HypixelDiscordChatBridgeError from '../private/error.ts';
+import ms from 'ms';
+import { ConfigChangeType, type JsonObject, type JsonValue, type MigrationMap } from '../types/config.ts';
+import { deleteExpiredFiles, displayBigMessage, getNestedValue } from '../utils/miscUtils.ts';
+import { dirname } from 'node:path';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { replaceVariables } from '../utils/stringUtils.ts';
+import type { ZodType } from 'zod';
 
 abstract class BasicConfigManager<TypedConfig extends JsonObject> {
   protected abstract readonly configPath: string;
@@ -19,7 +19,7 @@ abstract class BasicConfigManager<TypedConfig extends JsonObject> {
 
   async init(): Promise<TypedConfig> {
     this.startTime = new Date();
-    console.other("Checking config");
+    console.other('Checking config');
     await this.cleanBackups(await this.getConfigFile());
     await this.migrate();
     const config = await this.validate();
@@ -28,19 +28,19 @@ abstract class BasicConfigManager<TypedConfig extends JsonObject> {
   }
 
   async getExampleConfigFile(): Promise<JsonObject> {
-    const file = await readFile(this.defaultConfigPath, "utf-8");
+    const file = await readFile(this.defaultConfigPath, 'utf-8');
     return this.parseJsonObject(file, this.defaultConfigPath);
   }
 
   async getConfigFile(): Promise<JsonObject> {
-    const file = await readFile(this.configPath, "utf-8");
+    const file = await readFile(this.configPath, 'utf-8');
     return this.parseJsonObject(file, this.configPath);
   }
 
   private async saveConfigFile(config: JsonObject): Promise<void> {
     if (!this.hasConfigChanged) return;
-    await writeFile(this.configPath, JSON.stringify(config, null, 2), "utf-8");
-    displayBigMessage("Config updated! Restarting");
+    await writeFile(this.configPath, JSON.stringify(config, null, 2), 'utf-8');
+    displayBigMessage('Config updated! Restarting');
     process.exit(1);
   }
 
@@ -48,16 +48,16 @@ abstract class BasicConfigManager<TypedConfig extends JsonObject> {
     const configFile = await this.getConfigFile();
     const version = configFile.configVersion;
     if (version === undefined) {
-      console.error("Config Version not found. Please manually update your config");
+      console.error('Config Version not found. Please manually update your config');
       process.exit(1);
     }
-    if (typeof version !== "number") throw new HypixelDiscordChatBridgeError("Config Version must be a number.");
+    if (typeof version !== 'number') throw new HypixelDiscordChatBridgeError('Config Version must be a number.');
     return version;
   }
 
   private async handleBackupConfig(config: JsonObject | TypedConfig): Promise<void> {
     if (this.shouldBackupConfig === false) {
-      console.warn("Config backup is disabled");
+      console.warn('Config backup is disabled');
       return;
     }
 
@@ -65,26 +65,28 @@ abstract class BasicConfigManager<TypedConfig extends JsonObject> {
   }
 
   private async cleanBackups(config: JsonObject | TypedConfig): Promise<void> {
-    if (this.shouldBackupConfig === false || getNestedValue(config, "other.configBackups.enabled") === false) return;
+    if (this.shouldBackupConfig === false || getNestedValue(config, 'other.configBackups.enabled') === false) return;
 
-    const configuredLocation = getNestedValue(config, "other.configBackups.location");
-    const backupPathTemplate = typeof configuredLocation === "string" ? configuredLocation : "./data/backup/config/config_{timestamp}.json";
+    const configuredLocation = getNestedValue(config, 'other.configBackups.location');
+    const backupPathTemplate =
+      typeof configuredLocation === 'string' ? configuredLocation : './data/backup/config/config_{timestamp}.json';
     const backupPath = replaceVariables(backupPathTemplate, { timestamp: new Date().toISOString() });
-    await deleteExpiredFiles(dirname(backupPath), Date.now() - ms("90d"), (fileName) => fileName.endsWith(".json"));
+    await deleteExpiredFiles(dirname(backupPath), Date.now() - ms('90d'), (fileName) => fileName.endsWith('.json'));
   }
 
   async backupConfig(config: JsonObject | TypedConfig, skipCheck: boolean = false): Promise<void> {
-    if (this.shouldBackupConfig === false) return console.warn("Config backup is disabled");
-    if (skipCheck === false && getNestedValue(config, "other.configBackups.enabled") === false) {
-      return console.warn("Config backup is disabled");
+    if (this.shouldBackupConfig === false) return console.warn('Config backup is disabled');
+    if (skipCheck === false && getNestedValue(config, 'other.configBackups.enabled') === false) {
+      return console.warn('Config backup is disabled');
     }
-    const configuredLocation = getNestedValue(config, "other.configBackups.location");
-    const backupPath = replaceVariables(typeof configuredLocation === "string" ? configuredLocation : "./data/backup/config/config_{timestamp}.json", {
-      timestamp: this.startTime.toISOString()
-    });
+    const configuredLocation = getNestedValue(config, 'other.configBackups.location');
+    const backupPath = replaceVariables(
+      typeof configuredLocation === 'string' ? configuredLocation : './data/backup/config/config_{timestamp}.json',
+      { timestamp: this.startTime.toISOString() }
+    );
     await mkdir(dirname(backupPath), { recursive: true });
-    await writeFile(backupPath, JSON.stringify(config, null, 2), "utf-8");
-    console.other("Saved config backup");
+    await writeFile(backupPath, JSON.stringify(config, null, 2), 'utf-8');
+    console.other('Saved config backup');
   }
 
   getLatestVersion(): number {
@@ -94,7 +96,9 @@ abstract class BasicConfigManager<TypedConfig extends JsonObject> {
   private async migrate(): Promise<void> {
     const config = await this.getConfigFile();
     const configuredVersion = config.configVersion;
-    if (typeof configuredVersion !== "number") throw new HypixelDiscordChatBridgeError("Config Version must be a number.");
+    if (typeof configuredVersion !== 'number') {
+      throw new HypixelDiscordChatBridgeError('Config Version must be a number.');
+    }
     let currentVersion: number = configuredVersion;
     const latestVersion = this.getLatestVersion();
 
@@ -119,7 +123,9 @@ abstract class BasicConfigManager<TypedConfig extends JsonObject> {
     for (const [oldPath, rule] of Object.entries(migration)) {
       const value = getNestedValue(config, oldPath);
       if (value === undefined) continue;
-      if (!this.isJsonValue(value)) throw new HypixelDiscordChatBridgeError(`Migration value at "${oldPath}" is not valid JSON.`);
+      if (!this.isJsonValue(value)) {
+        throw new HypixelDiscordChatBridgeError(`Migration value at "${oldPath}" is not valid JSON.`);
+      }
       switch (rule.change) {
         case ConfigChangeType.Move: {
           if (!rule.key) throw new HypixelDiscordChatBridgeError(`Move migration missing target key for "${oldPath}"`);
@@ -135,7 +141,9 @@ abstract class BasicConfigManager<TypedConfig extends JsonObject> {
           if (!rule.transform) {
             throw new HypixelDiscordChatBridgeError(`Transform migration missing transform function for "${oldPath}"`);
           }
-          if (!rule.key) throw new HypixelDiscordChatBridgeError(`Transform migration missing target key for "${oldPath}"`);
+          if (!rule.key) {
+            throw new HypixelDiscordChatBridgeError(`Transform migration missing target key for "${oldPath}"`);
+          }
           const transformed = rule.transform(value, config);
           this.setNestedValue(config, rule.key, transformed);
           if (rule.key !== oldPath) this.deleteNestedValue(config, oldPath);
@@ -149,9 +157,9 @@ abstract class BasicConfigManager<TypedConfig extends JsonObject> {
   }
 
   private setNestedValue(obj: JsonObject, path: string, value: JsonValue): void {
-    const keys = path.split(".");
+    const keys = path.split('.');
     const lastKey = keys.pop();
-    if (!lastKey) throw new HypixelDiscordChatBridgeError("Cannot set an empty configuration path.");
+    if (!lastKey) throw new HypixelDiscordChatBridgeError('Cannot set an empty configuration path.');
 
     let current: JsonObject = obj;
     for (const key of keys) {
@@ -160,7 +168,9 @@ abstract class BasicConfigManager<TypedConfig extends JsonObject> {
         this.hasConfigChanged = true;
       }
       const next = current[key];
-      if (!this.isObject(next)) throw new HypixelDiscordChatBridgeError(`Unable to create configuration path "${path}".`);
+      if (!this.isObject(next)) {
+        throw new HypixelDiscordChatBridgeError(`Unable to create configuration path "${path}".`);
+      }
       current = next;
     }
 
@@ -171,10 +181,10 @@ abstract class BasicConfigManager<TypedConfig extends JsonObject> {
   }
 
   private deleteNestedValue(obj: JsonObject, path: string): void {
-    const keys = path.split(".");
+    const keys = path.split('.');
     const lastKey = keys.pop();
     if (!lastKey) return;
-    const parent = getNestedValue(obj, keys.join("."));
+    const parent = getNestedValue(obj, keys.join('.'));
     if (this.isObject(parent) && lastKey in parent) {
       delete parent[lastKey];
       this.hasConfigChanged = true;
@@ -212,34 +222,36 @@ abstract class BasicConfigManager<TypedConfig extends JsonObject> {
   }
 
   private isObject(value: unknown): value is JsonObject {
-    return typeof value === "object" && value !== null && !Array.isArray(value);
+    return typeof value === 'object' && value !== null && !Array.isArray(value);
   }
 
   private isJsonValue(value: unknown): value is JsonValue {
-    if (value === null || ["string", "number", "boolean"].includes(typeof value)) return true;
+    if (value === null || ['string', 'number', 'boolean'].includes(typeof value)) return true;
     if (Array.isArray(value)) return value.every((entry) => this.isJsonValue(entry));
     return this.isObject(value) && Object.values(value).every((entry) => this.isJsonValue(entry));
   }
 
   private parseJsonObject(input: string, source: string): JsonObject {
     const parsed: unknown = JSON.parse(input);
-    if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
+    if (typeof parsed !== 'object' || parsed === null || Array.isArray(parsed)) {
       throw new HypixelDiscordChatBridgeError(`${source} must contain a JSON object.`);
     }
     return parsed as JsonObject;
   }
 
   async validate(): Promise<TypedConfig> {
-    console.other("Validating config");
+    console.other('Validating config');
     return await this.validateConfigData(await this.getConfigFile());
   }
 
   async validateExampleConfig(): Promise<TypedConfig> {
-    console.other("Validating example config");
+    console.other('Validating example config');
     const config = await this.validateConfigData(await this.getExampleConfigFile());
     const latestVersion = this.getLatestVersion();
     if (config.configVersion !== latestVersion) {
-      console.error(`Invalid config version... Current version is ${config.configVersion} and latest is ${latestVersion}`);
+      console.error(
+        `Invalid config version... Current version is ${config.configVersion} and latest is ${latestVersion}`
+      );
       process.exit(1);
     }
 
@@ -249,12 +261,12 @@ abstract class BasicConfigManager<TypedConfig extends JsonObject> {
   private async validateConfigData(data: JsonObject): Promise<TypedConfig> {
     const parse = await this.schema.safeParseAsync(data);
     if (parse.success) {
-      console.other("Config is valid");
+      console.other('Config is valid');
       return this.onConfigValidated(parse.data);
     }
-    console.error("Errors found inside of config...");
+    console.error('Errors found inside of config...');
     parse.error.issues.forEach(({ path, message }) => {
-      const fullPath = path.join(".") || "<root>";
+      const fullPath = path.join('.') || '<root>';
       console.error(`[${fullPath}] ${message}`);
     });
     process.exit(1);

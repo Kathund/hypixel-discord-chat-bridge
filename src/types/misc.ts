@@ -1,4 +1,4 @@
-import type { ChalkInstance } from "chalk";
+import type { ChalkInstance } from 'chalk';
 
 declare global {
   export interface Console {
