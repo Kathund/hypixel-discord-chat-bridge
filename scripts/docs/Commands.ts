@@ -49,15 +49,19 @@ lines.push("", "## Discord Commands", "");
 
 lines = addTable(
   [
-    ["Command", "Description", "Syntax", "Permission"],
+    ["Command", "Description", "Syntax", "Permission", "Author"],
     ...application.discord.commandHandler.commands
       .toSorted((a, b) => a.data.name.localeCompare(b.data.name))
       .map((command) => {
         const { options } = command.data.toJSON();
-
         const optionsString = options?.map(({ name, required }) => InformationCommand.FormatCommandOptions(name, required)).join("") ?? "";
-
-        return [`\`${command.data.name}\``, command.data.description, `\`/${command.data.name}${optionsString}\``, getDiscordCommandPermission(command.permission)];
+        return [
+          `\`${command.data.name}\``,
+          command.data.description,
+          `\`/${command.data.name}${optionsString}\``,
+          getDiscordCommandPermission(command.permission),
+          command.data.authors[0] ?? "DuckySoLucky"
+        ];
       })
   ],
   lines

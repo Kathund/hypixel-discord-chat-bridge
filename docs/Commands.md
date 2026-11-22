@@ -71,46 +71,46 @@ Minecraft commands can be executed from any chat channel that the bot can see. T
 
 ## Discord Commands
 
-| Command                | Description                                            | Syntax                                    | Permission   |
-| ---------------------- | ------------------------------------------------------ | ----------------------------------------- | ------------ |
-| `blacklist`            | Blacklist a user                                       | `/blacklist [add] [remove] [get]`         | Staff        |
-| `credits`              | Shows the credits of the people who make this possible | `/credits [developer]`                    | Anyone       |
-| `demote`               | Demotes the given user by one guild rank.              | `/demote (u)`                             | Staff        |
-| `execute`              | Executes commands as the minecraft bot.                | `/execute (command)`                      | Admin        |
-| `force-error`          | force an error                                         | `/force-error (message) (type)`           | Admin        |
-| `force-execute-script` | Allows executing scripts                               | `/force-execute-script (script-name)`     | Staff        |
-| `force-unverify`       | Remove a linked Minecraft account                      | `/force-unverify (user)`                  | Staff        |
-| `force-update`         | Update user's roles                                    | `/force-update (user)`                    | Staff        |
-| `force-verify`         | Connect Discord account to a Minecraft                 | `/force-verify (user) (u)`                | Staff        |
-| `gexp-check`           | Shows everyone under an set amount of gexp             | `/gexp-check (requirement)`               | Staff        |
-| `guildtop`             | Top 10 members with the most guild experience.         | `/guildtop [time]`                        | Anyone       |
-| `help`                 | Shows the help menu.                                   | `/help [command]`                         | Anyone       |
-| `inactivity`           | Send an inactivity notice to the guild staff           | `/inactivity (time) [reason]`             | Guild Member |
-| `information`          | Shows information about the bot.                       | `/information`                            | Anyone       |
-| `invite`               | Invites the given user to the guild.                   | `/invite (u)`                             | Staff        |
-| `kick`                 | Kicks the given user to the guild.                     | `/kick (u) (reason)`                      | Staff        |
-| `linked`               | View who a user is linked to                           | `/linked [user] [u]`                      | Staff        |
-| `list`                 | List of guild members.                                 | `/list`                                   | Anyone       |
-| `manage-inactivity`    | Manage inactivity                                      | `/manage-inactivity [add] [delete] [get]` | Staff        |
-| `mute`                 | Mutes the given user for a given amount of time.       | `/mute (u) (time)`                        | Staff        |
-| `online`               | List of online members.                                | `/online`                                 | Anyone       |
-| `permission-check`     | Check what level of permission a user has              | `/permission-check [user]`                | Staff        |
-| `ping`                 | Show the latency of the bot.                           | `/ping`                                   | Anyone       |
-| `promote`              | Promote the given user by one guild rank.              | `/promote (u)`                            | Staff        |
-| `render-text`          | Render Text using the bots minecraft text rendering    | `/render-text (text) [u] [target]`        | Staff        |
-| `requirements`         | Check a user's requirements to join the guild          | `/requirements [u]`                       | Anyone       |
-| `restart`              | Restarts the bot.                                      | `/restart`                                | Staff        |
-| `send-to-channel`      | Force Sending to a channel                             | `/send-to-channel (message) (channel)`    | Admin        |
-| `set-rank`             | Set rank of the given user.                            | `/set-rank (u) (rank)`                    | Staff        |
-| `unmute`               | Unmute the given user.                                 | `/unmute (u)`                             | Staff        |
-| `unverify`             | Remove your linked Minecraft account                   | `/unverify`                               | Verified     |
-| `update`               | Update your current roles                              | `/update`                                 | Verified     |
-| `uptime`               | Shows the uptime of the bot.                           | `/uptime`                                 | Admin        |
-| `verify`               | Connect your Discord account to Minecraft              | `/verify (u)`                             | Anyone       |
+| Command                | Description                                            | Syntax                                    | Permission   | Author       |
+| ---------------------- | ------------------------------------------------------ | ----------------------------------------- | ------------ | ------------ |
+| `blacklist`            | Blacklist a user                                       | `/blacklist [add] [remove] [get]`         | Staff        | Amber        |
+| `credits`              | Shows the credits of the people who make this possible | `/credits [developer]`                    | Anyone       | Amber        |
+| `demote`               | Demotes the given user by one guild rank.              | `/demote (u)`                             | Staff        | DuckySoLucky |
+| `execute`              | Executes commands as the minecraft bot.                | `/execute (command)`                      | Admin        | DuckySoLucky |
+| `force-error`          | force an error                                         | `/force-error (message) (type)`           | Admin        | Amber        |
+| `force-execute-script` | Allows executing scripts                               | `/force-execute-script (script-name)`     | Staff        | Amber        |
+| `force-unverify`       | Remove a linked Minecraft account                      | `/force-unverify (user)`                  | Staff        | Amber        |
+| `force-update`         | Update user's roles                                    | `/force-update (user)`                    | Staff        | Amber        |
+| `force-verify`         | Connect Discord account to a Minecraft                 | `/force-verify (user) (u)`                | Staff        | Amber        |
+| `gexp-check`           | Shows everyone under an set amount of gexp             | `/gexp-check (requirement)`               | Staff        | Amber        |
+| `guildtop`             | Top 10 members with the most guild experience.         | `/guildtop [time]`                        | Anyone       | DuckySoLucky |
+| `help`                 | Shows the help menu.                                   | `/help [command]`                         | Anyone       | DuckySoLucky |
+| `inactivity`           | Send an inactivity notice to the guild staff           | `/inactivity (time) [reason]`             | Guild Member | Amber        |
+| `information`          | Shows information about the bot.                       | `/information`                            | Anyone       | DuckySoLucky |
+| `invite`               | Invites the given user to the guild.                   | `/invite (u)`                             | Staff        | DuckySoLucky |
+| `kick`                 | Kicks the given user to the guild.                     | `/kick (u) (reason)`                      | Staff        | DuckySoLucky |
+| `linked`               | View who a user is linked to                           | `/linked [user] [u]`                      | Staff        | Amber        |
+| `list`                 | List of guild members.                                 | `/list`                                   | Anyone       | Amber        |
+| `manage-inactivity`    | Manage inactivity                                      | `/manage-inactivity [add] [delete] [get]` | Staff        | Amber        |
+| `mute`                 | Mutes the given user for a given amount of time.       | `/mute (u) (time)`                        | Staff        | DuckySoLucky |
+| `online`               | List of online members.                                | `/online`                                 | Anyone       | DuckySoLucky |
+| `permission-check`     | Check what level of permission a user has              | `/permission-check [user]`                | Staff        | Amber        |
+| `ping`                 | Show the latency of the bot.                           | `/ping`                                   | Anyone       | DuckySoLucky |
+| `promote`              | Promote the given user by one guild rank.              | `/promote (u)`                            | Staff        | DuckySoLucky |
+| `render-text`          | Render Text using the bots minecraft text rendering    | `/render-text (text) [u] [target]`        | Staff        | DuckySoLucky |
+| `requirements`         | Check a user's requirements to join the guild          | `/requirements [u]`                       | Anyone       | Amber        |
+| `restart`              | Restarts the bot.                                      | `/restart`                                | Staff        | GeorgeFilos  |
+| `send-to-channel`      | Force Sending to a channel                             | `/send-to-channel (message) (channel)`    | Admin        | Amber        |
+| `set-rank`             | Set rank of the given user.                            | `/set-rank (u) (rank)`                    | Staff        | Amber        |
+| `unmute`               | Unmute the given user.                                 | `/unmute (u)`                             | Staff        | DuckySoLucky |
+| `unverify`             | Remove your linked Minecraft account                   | `/unverify`                               | Verified     | Amber        |
+| `update`               | Update your current roles                              | `/update`                                 | Verified     | Amber        |
+| `uptime`               | Shows the uptime of the bot.                           | `/uptime`                                 | Admin        | DuckySoLucky |
+| `verify`               | Connect your Discord account to Minecraft              | `/verify (u)`                             | Anyone       | Amber        |
 
 ---
 
-This document is [auto generated](/scripts/docs/Commands.ts) and was last updated on `Sun, 22 Nov 2026 10:22:41 GMT` (`1795342961306`)
+This document is [auto generated](/scripts/docs/Commands.ts) and was last updated on `Sun, 22 Nov 2026 10:31:37 GMT` (`1795343497562`)
 
 To update this document please run `pnpm docgen` or contact a maintainer and ask them to update it.
 
