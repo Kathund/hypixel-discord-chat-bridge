@@ -15,7 +15,8 @@ class InviteCommand extends DiscordCommand<DiscordManagerWithBot> {
   override readonly data = new DiscordCommandDataBuilder()
     .setName("invite")
     .setDescription("Invites the given user to the guild.")
-    .addStringOption((option) => option.setName("username").setDescription("Minecraft Username").setRequired(true));
+    .addStringOption((option) => option.setName("username").setDescription("Minecraft Username").setRequired(true))
+    .setAuthors(["DuckySoLucky"]);
   override readonly flags = [CommandFlags.RequiresMinecraftBot];
   override readonly permission = CommandPermission.Staff;
 
@@ -31,9 +32,13 @@ class InviteCommand extends DiscordCommand<DiscordManagerWithBot> {
     } else if (action === GuildManagementAction.FailedInvite) {
       throw new HypixelDiscordChatBridgeError(message.replace(/\[(.*?)\]/g, "").trim());
     } else if (action === GuildManagementAction.OnlineInvite) {
-      await interaction.followUp({ embeds: [new SuccessEmbed().setDescription(replaceVariables(this.discord.application.messages.offlineInvite, { username }))] });
+      await interaction.followUp({
+        embeds: [new SuccessEmbed().setDescription(replaceVariables(this.discord.application.messages.onlineInvite, { username })).setDevFooter("DuckySoLucky")]
+      });
     } else if (action === GuildManagementAction.OfflineInvite) {
-      await interaction.followUp({ embeds: [new SuccessEmbed().setDescription(replaceVariables(this.discord.application.messages.offlineInvite, { username }))] });
+      await interaction.followUp({
+        embeds: [new SuccessEmbed().setDescription(replaceVariables(this.discord.application.messages.offlineInvite, { username })).setDevFooter("DuckySoLucky")]
+      });
     }
   }
 }

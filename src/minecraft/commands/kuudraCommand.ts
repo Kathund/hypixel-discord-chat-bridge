@@ -8,8 +8,7 @@ class KuudraCommand extends MinecraftCommand {
   override readonly data = new MinecraftCommandData()
     .setName("kuudra")
     .setDescription("Kuudra Stats of specified user.")
-    .setOptions([new MinecraftCommandDataOption().setName("username").setDescription("Minecraft Username")])
-    .setAuthors(["Amber"]);
+    .setOptions([new MinecraftCommandDataOption().setName("username").setDescription("Minecraft Username")]);
 
   override async execute(player: string, message: string) {
     player = this.getArgs(message)[0] || player;

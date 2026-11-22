@@ -11,8 +11,7 @@ class BlitzSurvivalGamesCommand extends MinecraftCommand {
     .setName("blitzsurvivalgames")
     .setDescription("Blitz Survival Games stats of specified user.")
     .setAliases(["blitz", "blitzsg", "bsg"])
-    .setOptions([new MinecraftCommandDataOption().setName("username").setDescription("Minecraft Username")])
-    .setAuthors(["Amber"]);
+    .setOptions([new MinecraftCommandDataOption().setName("username").setDescription("Minecraft Username")]);
 
   convertKit(mode: BlitzSurvivalGamesKitId): BlitzSurvivalGamesKitKey {
     switch (mode) {

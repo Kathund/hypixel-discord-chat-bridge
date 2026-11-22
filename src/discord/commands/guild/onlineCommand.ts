@@ -7,7 +7,7 @@ import { type ChatInputCommandInteractionWithGuild, CommandFlags, type DiscordMa
 import { MinecraftRequestTimeoutError } from "../../../minecraft/MinecraftRequestBroker.ts";
 
 class OnlineCommand extends DiscordCommand<DiscordManagerWithBot> {
-  override readonly data = new DiscordCommandDataBuilder().setName("online").setDescription("List of online members.");
+  override readonly data = new DiscordCommandDataBuilder().setName("online").setDescription("List of online members.").setAuthors(["DuckySoLucky"]);
   override readonly flags = [CommandFlags.RequiresMinecraftBot];
 
   async getMessages(): Promise<string[]> {
@@ -70,6 +70,7 @@ class OnlineCommand extends DiscordCommand<DiscordManagerWithBot> {
           .setTitle("Online Members")
           .setDescription(`${totalString}\n${onlineString}`)
           .setFields(...groups)
+          .setDevFooter("DuckySoLucky")
       ]
     });
   }

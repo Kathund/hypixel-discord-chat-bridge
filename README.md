@@ -32,3 +32,10 @@ that went into it. Thank you!
 - [Mowojang API](https://mowojang.matdoes.dev)
 - [DawJaw](https://dawjaw.net)
 - [Soopy](https://soopy.dev)
+
+## Fork
+
+This is a fork of [DuckySoLucky's hypixel-discord-chat-bridge](https://github.com/DuckySoLucky/hypixel-discord-chat-bridge). A lot of the core bridge components are
+straight 1 to 1 recreations or improved on recreations
+
+This project wouldn't be possible possible without DuckySoLucky's code

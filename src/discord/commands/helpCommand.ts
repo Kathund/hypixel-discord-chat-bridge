@@ -11,7 +11,8 @@ class HelpCommand extends DiscordCommand {
   override readonly data = new DiscordCommandDataBuilder()
     .setName("help")
     .setDescription("Shows the help menu.")
-    .addStringOption((option) => option.setName("command").setDescription("Bot information about a specific command"));
+    .addStringOption((option) => option.setName("command").setDescription("Bot information about a specific command"))
+    .setAuthors(["DuckySoLucky"]);
   override readonly flags = [CommandFlags.RequiresMinecraftBot];
 
   override async execute(interaction: ChatInputCommandInteractionWithGuild) {
@@ -22,7 +23,8 @@ class HelpCommand extends DiscordCommand {
       const helpMenu = new EmbedHelper()
         .setTitle("Hypixel Discord Chat Bridge Commands")
         .setDescription("`()` = **required** argument, `[]` = **optional** argument\n`u` = Minecraft Username")
-        .addFields({ name: "**Discord**: ", value: `${discordCommands}`, inline: true }, { name: "**Minecraft**: ", value: `${minecraftCommands}`, inline: true });
+        .addFields({ name: "**Discord**: ", value: `${discordCommands}`, inline: true }, { name: "**Minecraft**: ", value: `${minecraftCommands}`, inline: true })
+        .setDevFooter("DuckySoLucky");
 
       await interaction.followUp({ embeds: [helpMenu] });
       return;
@@ -49,7 +51,7 @@ class HelpCommand extends DiscordCommand {
     const embed = new EmbedHelper()
       .setTitle(`**${prefix}${command.data.name}**`)
       .setDescription(description.join("\n"))
-      .setDevFooter(command.data.authors[0] ?? "DuckySoLucky", "() = required, [] = optional");
+      .setDevFooter(command.data.authors[0] ?? "Kathund", "() = required, [] = optional");
 
     await interaction.followUp({ embeds: [embed] });
   }

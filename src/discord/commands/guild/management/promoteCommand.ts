@@ -15,7 +15,8 @@ class PromoteCommand extends DiscordCommand<DiscordManagerWithBot> {
   override readonly data = new DiscordCommandDataBuilder()
     .setName("promote")
     .setDescription("Promote the given user by one guild rank.")
-    .addStringOption((option) => option.setName("guild-member-username").setDescription("Minecraft Username").setRequired(true).setAutocomplete(true));
+    .addStringOption((option) => option.setName("guild-member-username").setDescription("Minecraft Username").setRequired(true).setAutocomplete(true))
+    .setAuthors(["DuckySoLucky"]);
   override readonly flags = [CommandFlags.RequiresMinecraftBot];
   override readonly permission = CommandPermission.Staff;
 
@@ -43,6 +44,7 @@ class PromoteCommand extends DiscordCommand<DiscordManagerWithBot> {
           new SuccessEmbed()
             .setDescription(replaceVariables(this.discord.application.messages.promotionMessage, { username, rank }))
             .setAuthor({ name: "Member Promoted", iconURL: `${this.discord.application.config.API.nmsr.baseURL}/face/${username}` })
+            .setDevFooter("DuckySoLucky")
         ]
       });
     }

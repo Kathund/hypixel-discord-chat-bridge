@@ -15,7 +15,8 @@ class DemoteCommand extends DiscordCommand<DiscordManagerWithBot> {
   override readonly data = new DiscordCommandDataBuilder()
     .setName("demote")
     .setDescription("Demotes the given user by one guild rank.")
-    .addStringOption((option) => option.setName("guild-member-username").setDescription("Minecraft Username").setRequired(true).setAutocomplete(true));
+    .addStringOption((option) => option.setName("guild-member-username").setDescription("Minecraft Username").setRequired(true).setAutocomplete(true))
+    .setAuthors(["DuckySoLucky"]);
   override readonly flags = [CommandFlags.RequiresMinecraftBot];
   override readonly permission = CommandPermission.Staff;
 
@@ -43,6 +44,7 @@ class DemoteCommand extends DiscordCommand<DiscordManagerWithBot> {
           new SuccessEmbed()
             .setDescription(replaceVariables(this.discord.application.messages.demotionMessage, { username, rank }))
             .setAuthor({ name: "Member Demote", iconURL: `${this.discord.application.config.API.nmsr.baseURL}/face/${username}` })
+            .setDevFooter("DuckySoLucky")
         ]
       });
     }

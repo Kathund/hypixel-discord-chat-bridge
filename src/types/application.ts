@@ -12,7 +12,7 @@ export type ApplicationWithBot = Application & { minecraft: MinecraftManagerWith
 export type ApplicationWithClientBot = Application & { discord: DiscordManagerWithClient; minecraft: MinecraftManagerWithBot };
 
 export type DevName = keyof typeof CommonDevs;
-export const DevTypes = ["Maintainer", "Contributor"] as const;
+export const DevTypes = ["Maintainer", "Legacy Maintainer", "Contributor"] as const;
 export type DevType = (typeof DevTypes)[number];
 
 export interface DevDiscordData {
@@ -28,17 +28,25 @@ export interface BasicDevData {
   note?: string;
 }
 
-export interface MaintainerDevData extends BasicDevData {
-  type: "Maintainer";
+export interface BaseMaintainerDevData extends BasicDevData {
   avatarURL: string;
   discord: DevDiscordData;
+}
+
+export interface MaintainerDevData extends BaseMaintainerDevData {
+  type: "Maintainer";
+  note: string;
+}
+
+export interface LegacyMaintainerDevData extends BaseMaintainerDevData {
+  type: "Legacy Maintainer";
 }
 
 export interface ContributorDevData extends BasicDevData {
   type: "Contributor";
 }
 
-export type DevData = MaintainerDevData | ContributorDevData;
+export type DevData = MaintainerDevData | LegacyMaintainerDevData | ContributorDevData;
 
 export interface CreditData {
   name: string;

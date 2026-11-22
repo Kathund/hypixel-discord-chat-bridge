@@ -7,7 +7,7 @@ import { replaceVariables, titleCase } from "../../utils/stringUtils.ts";
 import type DiscordManager from "../DiscordManager.ts";
 
 class InformationCommand extends DiscordCommand<DiscordManagerWithBot> {
-  override readonly data = new DiscordCommandDataBuilder().setName("information").setDescription("Shows information about the bot.");
+  override readonly data = new DiscordCommandDataBuilder().setName("information").setDescription("Shows information about the bot.").setAuthors(["DuckySoLucky"]);
   override readonly flags = [CommandFlags.RequiresMinecraftBot];
 
   static FormatCommandOptions(name: string, required?: boolean): string {
@@ -103,6 +103,7 @@ class InformationCommand extends DiscordCommand<DiscordManagerWithBot> {
             { name: "**Minecraft Information**:", value: InformationCommand.FormatInformation(minecraftInformation), inline: true },
             { name: "**General Information**:", value: InformationCommand.FormatInformation(generalInformation), inline: true }
           )
+          .setDevFooter("DuckySoLucky")
       ]
     });
   }

@@ -46,7 +46,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/DuckySoLucky/hypixel-discord-chat-bridge.git"
+    "url": "git+https://github.com/Kathund/hypixel-discord-chat-bridge.git"
   },
   "keywords": [
     "hypixel",
@@ -54,12 +54,12 @@
     "chat",
     "bridge"
   ],
-  "author": "DuckySoLucky",
+  "author": "Kathund",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/DuckySoLucky/hypixel-discord-chat-bridge/issues"
+    "url": "https://github.com/Kathund/hypixel-discord-chat-bridge/issues"
   },
-  "homepage": "https://github.com/DuckySoLucky/hypixel-discord-chat-bridge#readme",
+  "homepage": "https://github.com/Kathund/hypixel-discord-chat-bridge#readme",
   "dependencies": {
     "@inquirer/prompts": "8.7.3",
     "axios": "1.21.1",

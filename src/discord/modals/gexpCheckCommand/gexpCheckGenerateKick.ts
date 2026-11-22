@@ -25,7 +25,7 @@ class GexpCheckGenerateKickModal extends DiscordModal {
         `/g kick ${username} ${replaceVariables(reason, { gexp: member.weeklyExperience.toLocaleString(), requirement: options.requirement.toLocaleString(), username })}`
     );
     await interaction.followUp({
-      embeds: [new SuccessEmbed().setDescription("Attached a full list of kick commands for the selected users").setDevFooter("Amber")],
+      embeds: [new SuccessEmbed().setDescription("Attached a full list of kick commands for the selected users")],
       components: [
         new ActionRowBuilder<ButtonBuilder>().addComponents(
           new ButtonBuilder().setLabel("Execute commands as bot").setCustomId("gexpCheckGenerateKickExecute").setStyle(ButtonStyle.Danger)

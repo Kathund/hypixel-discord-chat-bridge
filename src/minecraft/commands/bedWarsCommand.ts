@@ -11,7 +11,8 @@ class BedwarsCommand extends MinecraftCommand {
     .setName("bedwars")
     .setDescription("BedWars stats of specified user.")
     .setAliases(["bw", "bws"])
-    .setOptions([new MinecraftCommandDataOption().setName("username").setDescription("Minecraft username")]);
+    .setOptions([new MinecraftCommandDataOption().setName("username").setDescription("Minecraft username")])
+    .setAuthors(["DuckySoLucky"]);
 
   convertMode(mode: BedWarsModeName): BedWarsInternalName {
     switch (mode) {

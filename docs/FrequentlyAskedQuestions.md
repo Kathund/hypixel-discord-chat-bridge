@@ -46,5 +46,4 @@ In the `config.json` under bridge there is the filter options. From there you ca
 
 ## How do I get extra help
 
-You can get extra help by reaching out to the maintainers dirrectly on discord. [@duckysolucky](https://discord.com/users/486155512568741900) and
-[@amber.rip](https://discord.com/users/1276524855445164098)
+You can get extra help by reaching out to the maintainers dirrectly on discord. [@amber.rip](https://discord.com/users/1276524855445164098)

@@ -7,7 +7,7 @@ class MinecraftCommandData {
   #description: string = "";
   #aliases: string[] = [];
   #options: MinecraftCommandDataOption[] = [];
-  #authors: DevName[] = ["DuckySoLucky"];
+  #authors: DevName[] = ["Kathund"];
 
   setName(name: string): this {
     this.#name = name;

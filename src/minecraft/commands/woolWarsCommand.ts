@@ -9,7 +9,8 @@ class WoolWarsCommand extends MinecraftCommand {
     .setName("woolwars")
     .setDescription("WoolWars stats of specified user.")
     .setAliases(["ww"])
-    .setOptions([new MinecraftCommandDataOption().setName("username").setDescription("Minecraft Username")]);
+    .setOptions([new MinecraftCommandDataOption().setName("username").setDescription("Minecraft Username")])
+    .setAuthors(["DuckySoLucky"]);
 
   override async execute(player: string, message: string) {
     player = this.getArgs(message)[0] || player;

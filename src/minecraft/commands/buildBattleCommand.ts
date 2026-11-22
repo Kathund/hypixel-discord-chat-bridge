@@ -9,8 +9,7 @@ class BuildBattleCommand extends MinecraftCommand {
     .setName("buildbattle")
     .setDescription("Build Battle Stats of specified user.")
     .setAliases(["bb"])
-    .setOptions([new MinecraftCommandDataOption().setName("username").setDescription("Minecraft Username")])
-    .setAuthors(["Amber"]);
+    .setOptions([new MinecraftCommandDataOption().setName("username").setDescription("Minecraft Username")]);
 
   override async execute(player: string, message: string) {
     player = this.getArgs(message)[0] || player;

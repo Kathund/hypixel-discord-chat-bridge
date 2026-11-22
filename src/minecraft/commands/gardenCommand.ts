@@ -9,8 +9,7 @@ class GardenCommand extends MinecraftCommand {
   override readonly data = new MinecraftCommandData()
     .setName("garden")
     .setDescription("Skyblock Garden Stats of specified user.")
-    .setOptions([new MinecraftCommandDataOption().setName("username").setDescription("Minecraft Username")])
-    .setAuthors(["Amber"]);
+    .setOptions([new MinecraftCommandDataOption().setName("username").setDescription("Minecraft Username")]);
   private readonly keyRemap: Record<string, string> = {
     "Nether Wart": "Wart",
     "Sugar Cane": "Cane",

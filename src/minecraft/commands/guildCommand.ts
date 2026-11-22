@@ -10,7 +10,8 @@ class GuildCommand extends MinecraftCommand {
     .setName("guild")
     .setDescription("View information of a guild")
     .setAliases(["g"])
-    .setOptions([new MinecraftCommandDataOption().setName("guild").setRequired(true)]);
+    .setOptions([new MinecraftCommandDataOption().setName("guild").setRequired(true)])
+    .setAuthors(["DuckySoLucky"]);
 
   override async execute(player: string, message: string) {
     const guild = await getGuild("name", this.getArgs(message).join(" "));

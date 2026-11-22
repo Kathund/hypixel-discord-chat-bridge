@@ -9,8 +9,7 @@ class CrimsonIsleCommand extends MinecraftCommand {
     .setName("crimsonisle")
     .setDescription("Crimson Isle Stats of specified user.")
     .setAliases(["crimson", "nether", "isle"])
-    .setOptions([new MinecraftCommandDataOption().setName("username").setDescription("Minecraft Username")])
-    .setAuthors(["Amber"]);
+    .setOptions([new MinecraftCommandDataOption().setName("username").setDescription("Minecraft Username")]);
 
   override async execute(player: string, message: string) {
     player = this.getArgs(message)[0] || player;

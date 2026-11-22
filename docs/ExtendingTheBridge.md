@@ -40,7 +40,7 @@ class ExampleCommand extends DiscordCommand<DiscordManagerWithPlugin<ExamplePlug
 }
 
 class ExamplePlugin extends BridgePlugin<ExamplePlugin> {
-  override readonly metadata = { name: "Example Plugin", description: "Example Plugins", version: "1.0.0", author: "DuckySoLucky" } as const;
+  override readonly metadata = { name: "Example Plugin", description: "Example Plugins", version: "1.0.0", author: "Kathund" } as const;
 
   constructor(context: BridgePluginContext) {
     super(context);
@@ -143,5 +143,4 @@ Looking for plugins? One of the maintainers has an entire list of them. Check it
 
 If you need any help help consider checking out the [FAQ](/docs/FrequentlyAskedQuestions.md)
 
-Feel free to reach out to the maintainers directly on Discord. [@duckysolucky](https://discord.com/users/486155512568741900),
-[@amber.rip](https://discord.com/users/1276524855445164098)
+Feel free to reach out to the maintainers directly on Discord. [@amber.rip](https://discord.com/users/1276524855445164098)

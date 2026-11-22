@@ -11,7 +11,8 @@ class DuelsCommand extends MinecraftCommand {
     .setName("duels")
     .setDescription("Duel stats of specified user.")
     .setAliases(["d"])
-    .setOptions([new MinecraftCommandDataOption().setName("username").setDescription("Minecraft Username")]);
+    .setOptions([new MinecraftCommandDataOption().setName("username").setDescription("Minecraft Username")])
+    .setAuthors(["DuckySoLucky"]);
 
   convertMode(mode: DuelsModeName): DuelsInternalName {
     return DuelsModeAliastoInternalMap[mode] as DuelsInternalName;

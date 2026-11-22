@@ -11,7 +11,8 @@ class AccessoriesCommand extends MinecraftCommand {
     .setName("accessories")
     .setDescription("Accessories of specified user.")
     .setAliases(["acc", "talismans", "talisman", "mp", "magicpower"])
-    .setOptions([new MinecraftCommandDataOption().setName("username").setDescription("Minecraft Username")]);
+    .setOptions([new MinecraftCommandDataOption().setName("username").setDescription("Minecraft Username")])
+    .setAuthors(["DuckySoLucky"]);
 
   getAccessories(accessories: SkyBlockInventoryItem[]) {
     try {

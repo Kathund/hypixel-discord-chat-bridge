@@ -11,8 +11,7 @@ class ForceVerifyCommand extends DiscordCommand<DiscordManagerWithBot> {
     .setName("force-verify")
     .setDescription("Connect Discord account to a Minecraft")
     .addUserOption((option) => option.setName("user").setDescription("Discord Username").setRequired(true))
-    .addStringOption((option) => option.setName("username").setDescription("Minecraft Username").setRequired(true))
-    .setAuthors(["Amber"]);
+    .addStringOption((option) => option.setName("username").setDescription("Minecraft Username").setRequired(true));
   override readonly flags = [CommandFlags.RequiresMinecraftBot, CommandFlags.VerificationCommand];
   override readonly permission = CommandPermission.Staff;
 

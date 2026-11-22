@@ -8,7 +8,8 @@ class SheepWarsCommand extends MinecraftCommand {
   override readonly data = new MinecraftCommandData()
     .setName("sheepwars")
     .setAliases(["sheep", "shep"])
-    .setOptions([new MinecraftCommandDataOption().setName("username")]);
+    .setOptions([new MinecraftCommandDataOption().setName("username")])
+    .setAuthors(["DuckySoLucky"]);
 
   override async execute(player: string, message: string) {
     player = this.getArgs(message)[0] || player;

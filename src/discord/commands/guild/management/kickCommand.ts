@@ -16,7 +16,8 @@ class KickCommand extends DiscordCommand<DiscordManagerWithBot> {
     .setName("kick")
     .setDescription("Kicks the given user to the guild.")
     .addStringOption((option) => option.setName("guild-member-username").setDescription("Minecraft Username").setRequired(true).setAutocomplete(true))
-    .addStringOption((option) => option.setName("reason").setDescription("Reason").setRequired(true));
+    .addStringOption((option) => option.setName("reason").setDescription("Reason").setRequired(true))
+    .setAuthors(["DuckySoLucky"]);
   override readonly flags = [CommandFlags.RequiresMinecraftBot];
   override readonly permission = CommandPermission.Staff;
 
@@ -36,6 +37,7 @@ class KickCommand extends DiscordCommand<DiscordManagerWithBot> {
           new SuccessEmbed()
             .setDescription(replaceVariables(this.discord.application.messages.kickMessage, { username }))
             .setAuthor({ name: "Member Kicked", iconURL: `${this.discord.application.config.API.nmsr.baseURL}/face/${username}` })
+            .setDevFooter("DuckySoLucky")
         ]
       });
     }

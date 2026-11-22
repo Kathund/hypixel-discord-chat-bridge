@@ -13,8 +13,7 @@ class GexpCheckCommand extends DiscordCommand {
   override readonly data = new DiscordCommandDataBuilder()
     .setName("gexp-check")
     .setDescription("Shows everyone under an set amount of gexp")
-    .addNumberOption((option) => option.setName("requirement").setDescription("Members below this GEXP number").setRequired(true).setMinValue(1))
-    .setAuthors(["Amber"]);
+    .addNumberOption((option) => option.setName("requirement").setDescription("Members below this GEXP number").setRequired(true).setMinValue(1));
   override readonly flags = [CommandFlags.InactivityCommand, CommandFlags.VerificationCommand];
   override readonly permission = CommandPermission.Staff;
 
@@ -102,7 +101,6 @@ class GexpCheckCommand extends DiscordCommand {
           .setAuthor({ name: `Showing ${filtered.length}/${users.length} (${((filtered.length / users.length) * 100).toFixed(2)}%) users - ${requirement}` })
           .setDescription(this.parseUsers(filtered).join("\n"))
           .addFields({ name: "Hidden Ranks", value: hiddenRanks.length > 0 ? hiddenRanks.join(", ") : "None" })
-          .setDevFooter("Amber")
       ],
       components: [
         ...Array.from({ length: Math.ceil(filterButtons.length / 5) }, (_, i) =>

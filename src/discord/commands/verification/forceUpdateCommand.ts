@@ -7,8 +7,7 @@ class ForceUpdateCommand extends DiscordCommand<DiscordManagerWithBot> {
   override readonly data = new DiscordCommandDataBuilder()
     .setName("force-update")
     .setDescription("Update user's roles")
-    .addUserOption((option) => option.setName("user").setDescription("Discord Username").setRequired(true))
-    .setAuthors(["Amber"]);
+    .addUserOption((option) => option.setName("user").setDescription("Discord Username").setRequired(true));
   override readonly flags = [CommandFlags.RequiresMinecraftBot, CommandFlags.VerificationCommand];
   override readonly permission = CommandPermission.Staff;
 

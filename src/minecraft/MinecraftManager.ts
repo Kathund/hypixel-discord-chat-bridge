@@ -128,7 +128,7 @@ class MinecraftManager extends CommunicationBridge implements Lifecycle {
     return createClient({
       host: this.application.config.minecraft.bot.server,
       port: this.application.config.minecraft.bot.port,
-      username: "DuckySoLucky",
+      username: "Kathund",
       auth: "microsoft",
       version: this.application.config.minecraft.bot.version,
       profilesFolder: this.application.config.minecraft.bot.accountsLocation

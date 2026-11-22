@@ -9,7 +9,8 @@ class GuildExperienceCommand extends MinecraftCommand {
     .setName("guildexp")
     .setDescription("Guilds experience of specified user.")
     .setAliases(["gexp"])
-    .setOptions([new MinecraftCommandDataOption().setName("username").setDescription("Minecraft Username")]);
+    .setOptions([new MinecraftCommandDataOption().setName("username").setDescription("Minecraft Username")])
+    .setAuthors(["DuckySoLucky"]);
 
   override async execute(player: string, message: string) {
     player = this.getArgs(message)[0] || player;

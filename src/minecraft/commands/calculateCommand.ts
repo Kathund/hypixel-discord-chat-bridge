@@ -8,7 +8,8 @@ class CalculateCommand extends MinecraftCommand {
     .setName("calculate")
     .setDescription("Calculate.")
     .setAliases(["math", "calc"])
-    .setOptions([new MinecraftCommandDataOption().setName("calculation").setRequired(true)]);
+    .setOptions([new MinecraftCommandDataOption().setName("calculation").setRequired(true)])
+    .setAuthors(["DuckySoLucky"]);
 
   override execute(player: string, message: string) {
     const calculation = message.replace(/[^-()\d/*+.]/g, "");

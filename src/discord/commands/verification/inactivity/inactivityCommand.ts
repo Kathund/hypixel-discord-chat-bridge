@@ -12,8 +12,7 @@ class InactivityCommand extends DiscordCommand {
     .setName("inactivity")
     .setDescription("Send an inactivity notice to the guild staff")
     .addStringOption((option) => option.setName("time").setDescription("The time you are inactive for (e.g. 1d, 72h, 2w)").setRequired(true))
-    .addStringOption((option) => option.setName("reason").setDescription("The reason you are going away"))
-    .setAuthors(["Amber"]);
+    .addStringOption((option) => option.setName("reason").setDescription("The reason you are going away"));
   override readonly flags = [CommandFlags.InactivityCommand, CommandFlags.VerificationCommand];
   override readonly permission = CommandPermission.GuildMember;
 
@@ -27,9 +26,7 @@ class InactivityCommand extends DiscordCommand {
     if (isNaN(time)) throw new HypixelDiscordChatBridgeError("Please input a valid time");
     const reason = interaction.options.getString("reason") ?? "No reason provided";
     await new InactiveUser({ discordId: interaction.user.id, reason, duration: time }, this.discord.application.data.inactivity).save();
-    await interaction.followUp({
-      embeds: [new SuccessEmbed().setDescription("Inactivity request has been successfully sent to the guild staff.").setDevFooter("Amber")]
-    });
+    await interaction.followUp({ embeds: [new SuccessEmbed().setDescription("Inactivity request has been successfully sent to the guild staff.")] });
   }
 }
 

@@ -7,14 +7,15 @@ class ExecuteCommand extends DiscordCommand<DiscordManagerWithBot> {
   override readonly data = new DiscordCommandDataBuilder()
     .setName("execute")
     .setDescription("Executes commands as the minecraft bot.")
-    .addStringOption((option) => option.setName("command").setDescription("Minecraft Command").setRequired(true));
+    .addStringOption((option) => option.setName("command").setDescription("Minecraft Command").setRequired(true))
+    .setAuthors(["DuckySoLucky"]);
   override readonly flags = [CommandFlags.RequiresMinecraftBot, CommandFlags.DebugCommand];
   override readonly permission = CommandPermission.Admin;
 
   override async execute(interaction: ChatInputCommandInteractionWithGuild) {
     const command = interaction.options.getString("command", true);
     this.discord.application.minecraft.bot.chat(`/${command}`);
-    await interaction.followUp({ embeds: [new SuccessEmbed().setDescription(`Successfully executed \`/${command}\``)] });
+    await interaction.followUp({ embeds: [new SuccessEmbed().setDescription(`Successfully executed \`/${command}\``).setDevFooter("DuckySoLucky")] });
   }
 }
 

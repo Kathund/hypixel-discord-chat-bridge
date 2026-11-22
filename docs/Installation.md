@@ -14,7 +14,7 @@
 1. Clone the repository:
 
 ```bash
-  git clone https://github.com/DuckySoLucky/hypixel-discord-chat-bridge.git
+  git clone https://github.com/Kathund/hypixel-discord-chat-bridge.git
   cd hypixel-discord-chat-bridge
 ```
 
@@ -60,7 +60,7 @@ To sign into a minecraft account please see the [FAQ](./FAQ.md#how-do-i-add-a-mi
 1. Clone the repository:
 
 ```bash
-  git clone https://github.com/DuckySoLucky/hypixel-discord-chat-bridge.git
+  git clone https://github.com/Kathund/hypixel-discord-chat-bridge.git
   cd hypixel-discord-chat-bridge
 ```
 
@@ -94,7 +94,7 @@ sudo chown -R 1000:1000 config.json data plugins
 ```
 
 ```bash
-  docker container run --restart=unless-stopped -itd -v ./config.json:/app/config.json -v ./data/:/app/data/ -v ./plugins/:/app/plugins/ --name hypixel-discord-chat-bridge ghcr.io/duckysolucky/hypixel-discord-chat-bridge:latest
+  docker container run --restart=unless-stopped -itd -v ./config.json:/app/config.json -v ./data/:/app/data/ -v ./plugins/:/app/plugins/ --name hypixel-discord-chat-bridge ghcr.io/kathund/hypixel-discord-chat-bridge:latest
 ```
 
 Note that the path of the configuration source file must either be relative (with the `./`) or absolute.
@@ -118,5 +118,4 @@ To sign into a Minecraft account please see the [FAQ](./FAQ.md#how-do-i-add-a-mi
 
 If you need any help help consider checking out the [FAQ](/docs/FrequentlyAskedQuestions.md)
 
-Feel free to reach out to the maintainers directly on Discord. [@duckysolucky](https://discord.com/users/486155512568741900),
-[@amber.rip](https://discord.com/users/1276524855445164098)
+Feel free to reach out to the maintainers directly on Discord. [@amber.rip](https://discord.com/users/1276524855445164098)

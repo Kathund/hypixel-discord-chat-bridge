@@ -8,7 +8,8 @@ class SkyWarsCommand extends MinecraftCommand {
     .setName("skywars")
     .setDescription("Skywars stats of specified user.")
     .setAliases(["sw"])
-    .setOptions([new MinecraftCommandDataOption().setName("username").setDescription("Minecraft Username")]);
+    .setOptions([new MinecraftCommandDataOption().setName("username").setDescription("Minecraft Username")])
+    .setAuthors(["DuckySoLucky"]);
 
   override async execute(player: string, message: string) {
     player = this.getArgs(message)[0] || player;

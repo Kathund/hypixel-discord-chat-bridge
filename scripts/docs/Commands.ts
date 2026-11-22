@@ -38,7 +38,7 @@ lines = addTable(
           command.data.aliases.length ? command.data.aliases.join(", ") : "None",
           `\`!${command.data.name}${optionsString}\``,
           "Anyone",
-          command.data.authors[0] ?? "DuckySoLucky"
+          command.data.authors[0] ?? "Kathund"
         ];
       })
   ],
@@ -60,7 +60,7 @@ lines = addTable(
           command.data.description,
           `\`/${command.data.name}${optionsString}\``,
           getDiscordCommandPermission(command.permission),
-          command.data.authors[0] ?? "DuckySoLucky"
+          command.data.authors[0] ?? "Kathund"
         ];
       })
   ],

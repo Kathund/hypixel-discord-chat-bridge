@@ -9,7 +9,7 @@ import { type Application, BridgePlugin, type BridgePluginContext } from "hypixe
 import type { ShowcasePluginConfig } from "./config.ts";
 
 class ShowcasePlugin extends BridgePlugin<ShowcasePlugin> {
-  override readonly metadata = { name: "Plugin API Showcase", description: "Example plugin for the Plugin API", version: "1.0.0", author: "DuckySoLucky" } as const;
+  override readonly metadata = { name: "Plugin API Showcase", description: "Example plugin for the Plugin API", version: "1.0.0", author: "Kathund" } as const;
   readonly #eventLogger: ShowcaseEventLogger;
   #started: boolean = false;
 

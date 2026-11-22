@@ -14,7 +14,8 @@ class EightBallCommand extends MinecraftCommand {
     .setName("8ball")
     .setDescription("Ask an 8ball a question.")
     .setAliases(["8b"])
-    .setOptions([new MinecraftCommandDataOption().setName("question").setRequired(true)]);
+    .setOptions([new MinecraftCommandDataOption().setName("question").setRequired(true)])
+    .setAuthors(["DuckySoLucky"]);
 
   override async execute(player: string, message: string) {
     if (this.getArgs(message).length === 0) throw new HypixelDiscordChatBridgeError("You must provide a question.");

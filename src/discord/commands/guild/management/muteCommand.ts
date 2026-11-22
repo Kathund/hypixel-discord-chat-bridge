@@ -16,7 +16,8 @@ class MuteCommand extends DiscordCommand<DiscordManagerWithBot> {
     .setName("mute")
     .setDescription("Mutes the given user for a given amount of time.")
     .addStringOption((option) => option.setName("guild-member-username").setDescription("Minecraft Username").setRequired(true).setAutocomplete(true))
-    .addStringOption((option) => option.setName("time").setDescription("Time").setRequired(true));
+    .addStringOption((option) => option.setName("time").setDescription("Time").setRequired(true))
+    .setAuthors(["DuckySoLucky"]);
   override readonly flags = [CommandFlags.RequiresMinecraftBot];
   override readonly permission = CommandPermission.Staff;
 
@@ -36,10 +37,12 @@ class MuteCommand extends DiscordCommand<DiscordManagerWithBot> {
       throw new HypixelDiscordChatBridgeError(replaceVariables(this.discord.application.messages.notInGuildMessage, { username }));
     } else if (action === GuildManagementAction.UserMute) {
       await interaction.followUp({
-        embeds: [new SuccessEmbed().setDescription(replaceVariables(this.discord.application.messages.userMuteMessage, { username, time }))]
+        embeds: [new SuccessEmbed().setDescription(replaceVariables(this.discord.application.messages.userMuteMessage, { username, time })).setDevFooter("DuckySoLucky")]
       });
     } else if (action === GuildManagementAction.GuildMute) {
-      await interaction.followUp({ embeds: [new SuccessEmbed().setDescription(replaceVariables(this.discord.application.messages.guildMuteMessage, { time }))] });
+      await interaction.followUp({
+        embeds: [new SuccessEmbed().setDescription(replaceVariables(this.discord.application.messages.guildMuteMessage, { time })).setDevFooter("DuckySoLucky")]
+      });
     }
   }
 }

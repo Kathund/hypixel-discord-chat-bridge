@@ -5,6 +5,7 @@ import HypixelDiscordChatBridgeError from "../../private/error.ts";
 import MowojangAPI from "../../private/MowojangAPI.ts";
 import RequirementsCommand from "../../discord/commands/requirementsCommand.ts";
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, ComponentType } from "discord.js";
+import { CommonDevs } from "../../private/constants.ts";
 import { delay, isUuid } from "../../utils/miscUtils.ts";
 import { parseChatComponent } from "../../utils/minecraftUtils.ts";
 import { replaceAllRanks } from "../../utils/hypixelUtils.ts";
@@ -204,7 +205,7 @@ class MessageHandler {
           `/gc ${replaceVariables(this.minecraft.application.config.minecraft.guild.welcomer.message, {
             prefix: this.minecraft.application.config.minecraft.commands.normal.prefix,
             username
-          })}${this.minecraft.application.config.minecraft.guild.welcomer.showCredits ? " | by @duckysolucky" : ""}`
+          })}${this.minecraft.application.config.minecraft.guild.welcomer.showCredits ? ` | by @${CommonDevs.Kathund.discord.username}` : ""}`
         );
       }
 

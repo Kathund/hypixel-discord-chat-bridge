@@ -21,7 +21,7 @@ Embed styles are basically templates that embeds can use to preset stuff. There 
 1. Generic Embed Template
 
 - This is the default/generic embed style. All embeds should be based start from this style. It sets the color to blue, sets the timestamp to the current time sets the
-  footer to the DuckySoLucky dev footer
+  footer to the Kathund dev footer
 
 2. Warning Embed Style
 
@@ -37,5 +37,4 @@ Embed styles are basically templates that embeds can use to preset stuff. There 
 
 If you need any help help consider checking out the [FAQ](/docs/FrequentlyAskedQuestions.md)
 
-Feel free to reach out to the maintainers directly on Discord. [@duckysolucky](https://discord.com/users/486155512568741900),
-[@amber.rip](https://discord.com/users/1276524855445164098)
+Feel free to reach out to the maintainers directly on Discord. [@amber.rip](https://discord.com/users/1276524855445164098)

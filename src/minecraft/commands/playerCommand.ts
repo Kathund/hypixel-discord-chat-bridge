@@ -8,7 +8,8 @@ class PlayerCommand extends MinecraftCommand {
   override readonly data = new MinecraftCommandData()
     .setName("player")
     .setDescription("Get Hypixel Player Stats")
-    .setOptions([new MinecraftCommandDataOption().setName("username").setDescription("Minecraft Username")]);
+    .setOptions([new MinecraftCommandDataOption().setName("username").setDescription("Minecraft Username")])
+    .setAuthors(["DuckySoLucky"]);
 
   override async execute(player: string, message: string) {
     player = this.getArgs(message)[0] || player;

@@ -21,8 +21,7 @@ class CreditsCommand extends DiscordCommand {
             .sort(([, a], [, b]) => a.displayName.localeCompare(b.displayName))
             .map(([key, dev]) => ({ name: `${convertDevDataToName(dev)} - ${dev.type}`, value: key }))
         )
-    )
-    .setAuthors(["Amber"]);
+    );
 
   static getDevSelectMenu(): StringSelectMenuBuilder {
     return new StringSelectMenuBuilder()
@@ -57,8 +56,7 @@ class CreditsCommand extends DiscordCommand {
           .filter(({ type }) => type === "Maintainer")
           .map((dev) => convertDevDataToName(dev))
           .join(", ")}`
-      })
-      .setDevFooter("Amber");
+      });
     return { embeds: [embed], components: [new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(CreditsCommand.getDevSelectMenu())] };
   }
 
@@ -86,7 +84,6 @@ class CreditsCommand extends DiscordCommand {
             { name: "Minecraft Commands", value: minecraftCommands.length === 0 ? "None" : minecraftCommands.join("\n"), inline: true }
           )
           .setThumbnail(devData.avatarURL ?? null)
-          .setDevFooter("Amber")
       ],
       components: [
         new ActionRowBuilder<ButtonBuilder>().addComponents(buttons),

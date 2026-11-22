@@ -10,7 +10,8 @@ class SlayersCommand extends MinecraftCommand {
     .setName("slayer")
     .setDescription("Slayer of specified user.")
     .setAliases(["slayers"])
-    .setOptions([new MinecraftCommandDataOption().setName("username").setDescription("Minecraft Username")]);
+    .setOptions([new MinecraftCommandDataOption().setName("username").setDescription("Minecraft Username")])
+    .setAuthors(["DuckySoLucky"]);
 
   override async execute(player: string, message: string) {
     player = this.getArgs(message)[0] || player;

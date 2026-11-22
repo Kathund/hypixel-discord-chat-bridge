@@ -12,7 +12,7 @@ import {
 import { SuccessEmbed } from "../../private/EmbedHelper.ts";
 
 class UpdateCommand extends DiscordCommand<DiscordManagerWithBot> {
-  override readonly data = new DiscordCommandDataBuilder().setName("update").setDescription("Update your current roles").setAuthors(["Amber"]);
+  override readonly data = new DiscordCommandDataBuilder().setName("update").setDescription("Update your current roles").setAuthors(["Kathund"]);
   override readonly flags = [CommandFlags.RequiresMinecraftBot, CommandFlags.VerificationCommand];
   override readonly permission = CommandPermission.Linked;
   discordId: string | null = null;
@@ -24,11 +24,7 @@ class UpdateCommand extends DiscordCommand<DiscordManagerWithBot> {
     const response = await linkedUser.updateRoles();
     if (response === null) throw new HypixelDiscordChatBridgeError("Something wen't wrong with updating");
     await interaction.followUp({
-      embeds: [
-        new SuccessEmbed()
-          .setDescription(`Successfully synced <@${this.discordId}>'s roles with \`${await MowojangAPI.getUsername(linkedUser.uuid)}\`'s stats!`)
-          .setDevFooter("Amber")
-      ]
+      embeds: [new SuccessEmbed().setDescription(`Successfully synced <@${this.discordId}>'s roles with \`${await MowojangAPI.getUsername(linkedUser.uuid)}\`'s stats!`)]
     });
     this.discordId = null;
   }

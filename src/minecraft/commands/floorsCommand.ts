@@ -13,8 +13,7 @@ class FloorCommand extends MinecraftCommand {
     .setName("floor")
     .setDescription("Returns stats about a floor")
     .setAliases(["f1", "f2", "f3", "f4", "f5", "f6", "f7", "m1", "m2", "m3", "m4", "m5", "m6", "m7"])
-    .setOptions([new MinecraftCommandDataOption().setName("username").setDescription("Minecraft Username")])
-    .setAuthors(["Amber"]);
+    .setOptions([new MinecraftCommandDataOption().setName("username").setDescription("Minecraft Username")]);
 
   override async execute(player: string, message: string) {
     player = this.getArgs(message)[0] || player;

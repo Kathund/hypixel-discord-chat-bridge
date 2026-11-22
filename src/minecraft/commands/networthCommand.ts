@@ -9,7 +9,8 @@ class NetworthCommand extends MinecraftCommand {
     .setName("networth")
     .setDescription("Networth of specified user.")
     .setAliases(["nw"])
-    .setOptions([new MinecraftCommandDataOption().setName("username").setRequired(true)]);
+    .setOptions([new MinecraftCommandDataOption().setName("username").setRequired(true)])
+    .setAuthors(["DuckySoLucky"]);
 
   override async execute(player: string, message: string) {
     player = this.getArgs(message)[0] || player;

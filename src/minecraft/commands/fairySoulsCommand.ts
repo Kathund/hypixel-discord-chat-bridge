@@ -8,7 +8,8 @@ class FairySoulsCommand extends MinecraftCommand {
     .setName("fairysouls")
     .setDescription("Fairy Souls of specified user.")
     .setAliases(["fs", "fairysoul"])
-    .setOptions([new MinecraftCommandDataOption().setName("username").setDescription("Minecraft Username")]);
+    .setOptions([new MinecraftCommandDataOption().setName("username").setDescription("Minecraft Username")])
+    .setAuthors(["DuckySoLucky"]);
 
   override async execute(player: string, message: string) {
     player = this.getArgs(message)[0] || player;

@@ -17,7 +17,7 @@ import {
 import type { DevName } from "../../../types/application.ts";
 
 class DiscordCommandDataBuilder extends SlashCommandBuilder {
-  #authors: DevName[] = ["DuckySoLucky"];
+  #authors: DevName[] = ["Kathund"];
   constructor() {
     super();
     this.setContexts(InteractionContextType.Guild);

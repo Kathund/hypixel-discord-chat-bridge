@@ -15,7 +15,8 @@ class UnmuteCommand extends DiscordCommand<DiscordManagerWithBot> {
   override readonly data = new DiscordCommandDataBuilder()
     .setName("unmute")
     .setDescription("Unmute the given user.")
-    .addStringOption((option) => option.setName("guild-member-username").setDescription("Minecraft Username").setRequired(true).setAutocomplete(true));
+    .addStringOption((option) => option.setName("guild-member-username").setDescription("Minecraft Username").setRequired(true).setAutocomplete(true))
+    .setAuthors(["DuckySoLucky"]);
   override readonly flags = [CommandFlags.RequiresMinecraftBot];
   override readonly permission = CommandPermission.Staff;
 
@@ -29,9 +30,11 @@ class UnmuteCommand extends DiscordCommand<DiscordManagerWithBot> {
     } else if (action === GuildManagementAction.NotInGuild) {
       throw new HypixelDiscordChatBridgeError(replaceVariables(this.discord.application.messages.notInGuildMessage, { username }));
     } else if (action === GuildManagementAction.UserUnmute) {
-      await interaction.followUp({ embeds: [new SuccessEmbed().setDescription(replaceVariables(this.discord.application.messages.userUnmuteMessage, { username }))] });
+      await interaction.followUp({
+        embeds: [new SuccessEmbed().setDescription(replaceVariables(this.discord.application.messages.userUnmuteMessage, { username })).setDevFooter("DuckySoLucky")]
+      });
     } else if (action === GuildManagementAction.GuildUnmute) {
-      await interaction.followUp({ embeds: [new SuccessEmbed().setDescription(this.discord.application.messages.guildUnmuteMessage)] });
+      await interaction.followUp({ embeds: [new SuccessEmbed().setDescription(this.discord.application.messages.guildUnmuteMessage).setDevFooter("DuckySoLucky")] });
     }
   }
 }

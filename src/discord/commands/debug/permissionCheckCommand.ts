@@ -8,8 +8,7 @@ class PermissionCheckCommand extends DiscordCommand<DiscordManagerWithBot> {
   override readonly data = new DiscordCommandDataBuilder()
     .setName("permission-check")
     .setDescription("Check what level of permission a user has")
-    .addUserOption((option) => option.setName("user").setDescription("The user to check (Defaults to self)"))
-    .setAuthors(["Amber"]);
+    .addUserOption((option) => option.setName("user").setDescription("The user to check (Defaults to self)"));
   override readonly flags = [CommandFlags.DebugCommand];
   override readonly permission = CommandPermission.Staff;
 
@@ -32,7 +31,6 @@ class PermissionCheckCommand extends DiscordCommand<DiscordManagerWithBot> {
         new SuccessEmbed()
           .setDescription(`Permissions for <@${user.id}>`)
           .setFields(...perms.map(({ name, value }) => ({ name, value: value ? ":white_check_mark:" : ":x:", inline: true })))
-          .setDevFooter("Amber")
       ]
     });
   }

@@ -15,7 +15,8 @@ class GuildTopCommand extends DiscordCommand<DiscordManagerWithBot> {
         .setName("time")
         .setDescription("Days ago")
         .addChoices(...Array.from({ length: 14 }, (_, index) => ({ name: `${index + 1} Day ago`, value: (index + 1).toString() })))
-    );
+    )
+    .setAuthors(["DuckySoLucky"]);
   override readonly flags = [CommandFlags.RequiresMinecraftBot];
 
   async getMessages(time: string | null): Promise<string[]> {
@@ -61,7 +62,7 @@ class GuildTopCommand extends DiscordCommand<DiscordManagerWithBot> {
       .join("");
 
     if (!description) throw new HypixelDiscordChatBridgeError("Failed to parse the top 10 guild members data.");
-    await interaction.followUp({ embeds: [new EmbedHelper().setAuthor({ name: "Top 10 Guild Members" }).setDescription(description)] });
+    await interaction.followUp({ embeds: [new EmbedHelper().setAuthor({ name: "Top 10 Guild Members" }).setDescription(description).setDevFooter("DuckySoLucky")] });
   }
 }
 

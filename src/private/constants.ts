@@ -3,27 +3,27 @@ import type { CreditData, DevData } from "../types/application.ts";
 import type { EmbedStyleData, EmbedStyleName } from "../types/discord.ts";
 
 export const EmbedStyles: Record<EmbedStyleName, EmbedStyleData> = {
-  Generic: { color: "Blue", footer: "DuckySoLucky" },
-  Warning: { author: { name: "An Warning has occurred" }, color: "Yellow", footer: "DuckySoLucky" },
-  Error: { author: { name: "An Error has occurred" }, color: "Red", footer: "DuckySoLucky" },
-  Success: { author: { name: "Success" }, color: "Green", footer: "DuckySoLucky" }
+  Generic: { color: "Blue", footer: "Kathund" },
+  Warning: { author: { name: "An Warning has occurred" }, color: "Yellow", footer: "Kathund" },
+  Error: { author: { name: "An Error has occurred" }, color: "Red", footer: "Kathund" },
+  Success: { author: { name: "Success" }, color: "Green", footer: "Kathund" }
 };
 
 export const CommonDevs = {
-  "DuckySoLucky": {
-    displayName: "DuckySoLucky",
-    githubUsername: "duckysolucky",
-    type: "Maintainer",
-    avatarURL: "https://imgur.com/tgwQJTX.png",
-    discord: { username: "duckysolucky", id: "486155512568741900" }
-  },
-  "Amber": {
+  "Kathund": {
     displayName: "Amber",
     githubUsername: "kathund",
     type: "Maintainer",
     avatarURL: "https://kathund.dev/kathund.png",
     discord: { username: "amber.rip", id: "1276524855445164098" },
     note: ":purple_heart:"
+  },
+  "DuckySoLucky": {
+    displayName: "DuckySoLucky",
+    githubUsername: "duckysolucky",
+    type: "Legacy Maintainer",
+    avatarURL: "https://imgur.com/tgwQJTX.png",
+    discord: { username: "duckysolucky", id: "486155512568741900" }
   },
   "GeorgeFilos": {
     displayName: "George",

@@ -58,8 +58,7 @@ class BlacklistCommand extends DiscordCommand {
         .setDescription("Look up a blacklist")
         .addUserOption((option) => option.setName("user").setDescription("Discord Username"))
         .addStringOption((option) => option.setName("username").setDescription("Minecraft Username"))
-    )
-    .setAuthors(["Amber"]);
+    );
   override readonly flags = [CommandFlags.BlacklistCommand];
   override readonly permission = CommandPermission.Staff;
   override readonly response = BasicInteractionResponse.Ephemeral;
@@ -110,7 +109,7 @@ class BlacklistCommand extends DiscordCommand {
           shareUser,
           user: interaction.user
         });
-        await interaction.followUp({ embeds: [new SuccessEmbed().setDescription("User has been blacklisted").setDevFooter("Amber")] });
+        await interaction.followUp({ embeds: [new SuccessEmbed().setDescription("User has been blacklisted")] });
         break;
       }
       case "remove": {
@@ -120,7 +119,7 @@ class BlacklistCommand extends DiscordCommand {
           : await this.discord.application.data.blacklist.getUserByDiscordId(user!.id);
         if (!blacklistUser) throw new HypixelDiscordChatBridgeError("User is not blacklisted");
         await blacklistUser.delete({ alertUser, shareUser, user: interaction.user, reason });
-        await interaction.followUp({ embeds: [new SuccessEmbed().setDescription("User has been unblacklisted").setDevFooter("Amber")] });
+        await interaction.followUp({ embeds: [new SuccessEmbed().setDescription("User has been unblacklisted")] });
         break;
       }
       case "get": {

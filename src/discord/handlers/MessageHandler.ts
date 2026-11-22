@@ -108,7 +108,7 @@ class MessageHandler {
       };
       output = output.replace(roleMentionPattern, replaceRoleMention);
 
-      // Replace <@486155512568741900> with @DuckySoLucky
+      // Replace <@1276524855445164098> with @amber.rip
       const userMentionPattern = /<@!?(\d+)>/g;
 
       const replaceUserMention = (_match: string, mentionedUserId: string): string => {

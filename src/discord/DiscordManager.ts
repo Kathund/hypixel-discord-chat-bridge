@@ -84,7 +84,7 @@ class DiscordManager extends CommunicationBridge implements Lifecycle {
           try {
             if (!this.isClientOnline() || !this.client.user) return;
             console.discord(`Discord client ready, logged in as ${this.client.user.username} (${this.client.user.id})!`);
-            this.client.user.setPresence({ activities: [{ name: "/help | by @duckysolucky" }] });
+            this.client.user.setPresence({ activities: [{ name: `/help | by @${CommonDevs.Kathund.discord.username}` }] });
             await this.loadGuild();
             const guild = await this.getChannel("Guild");
             if (guild) await guild.send({ embeds: [new EmbedHelper().setAuthor({ name: "Chat Bridge is Online" }).setColor("Green").setFooter(null)] });
@@ -172,7 +172,7 @@ class DiscordManager extends CommunicationBridge implements Lifecycle {
       const webhooks = await channel.fetchWebhooks();
 
       if (webhooks.size === 0) {
-        await channel.createWebhook({ name: "Hypixel Chat Bridge", avatar: CommonDevs.DuckySoLucky?.avatarURL });
+        await channel.createWebhook({ name: "Hypixel Chat Bridge", avatar: CommonDevs.Kathund?.avatarURL });
         return await this.getWebhook(type);
       }
 

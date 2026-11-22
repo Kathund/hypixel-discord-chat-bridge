@@ -13,8 +13,7 @@ class VerifyCommand extends DiscordCommand<DiscordManagerWithBot> {
   override readonly data = new DiscordCommandDataBuilder()
     .setName("verify")
     .setDescription("Connect your Discord account to Minecraft")
-    .addStringOption((option) => option.setName("username").setDescription("Minecraft Username").setRequired(true))
-    .setAuthors(["Amber"]);
+    .addStringOption((option) => option.setName("username").setDescription("Minecraft Username").setRequired(true));
   override readonly flags = [CommandFlags.RequiresMinecraftBot, CommandFlags.VerificationCommand];
 
   override async execute(interaction: ChatInputCommandInteractionWithGuild) {
@@ -43,12 +42,7 @@ class VerifyCommand extends DiscordCommand<DiscordManagerWithBot> {
       await new LinkedUser({ discordId: interaction.user.id, uuid }, this.discord.application.data.linked).save();
 
       await interaction.followUp({
-        embeds: [
-          new SuccessEmbed()
-            .setDescription(`You have Successfully linked your account to \`${nickname}\``)
-            .setAuthor({ name: "Successfully linked!" })
-            .setDevFooter("Amber")
-        ]
+        embeds: [new SuccessEmbed().setDescription(`You have Successfully linked your account to \`${nickname}\``).setAuthor({ name: "Successfully linked!" })]
       });
 
       const updateCommand = new UpdateCommand(this.discord);
@@ -73,7 +67,6 @@ class VerifyCommand extends DiscordCommand<DiscordManagerWithBot> {
             .setAuthor({ name: "Link with Hypixel Social Media" })
             .setFields({ name: "Instructions:", value: instructions })
             .setImage("https://media.discordapp.net/attachments/922202066653417512/1066476136953036800/tutorial.gif")
-            .setDevFooter("Amber")
         ],
         flags: MessageFlags.Ephemeral
       });
