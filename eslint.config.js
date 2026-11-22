@@ -100,7 +100,6 @@ export default [
       "no-useless-assignment": "error",
       "no-inner-declarations": "error",
       "import/no-self-import": "error",
-      "import/no-unresolved": "error",
       "no-implicit-coercion": "error",
       "import/no-deprecated": "error",
       "@stylistic/eol-last": "error",
